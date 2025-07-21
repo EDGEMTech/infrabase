@@ -1,0 +1,1 @@
+savedcmd_/home/rossierd/soo/infrabase/build/../linux/usr/src/modules/Module.symvers :=  scripts/mod/modpost -M        -o /home/rossierd/soo/infrabase/build/../linux/usr/src/modules/Module.symvers -T /home/rossierd/soo/infrabase/build/../linux/usr/src/modules/modules.order -i Module.symvers -e 
