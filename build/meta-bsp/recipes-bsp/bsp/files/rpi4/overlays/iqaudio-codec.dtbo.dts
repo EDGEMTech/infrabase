@@ -1,0 +1,54 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			da2713@1a {
+				#sound-dai-cells = <0x00>;
+				compatible = "dlg,da7213";
+				reg = <0x1a>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "iqaudio,iqaudio-codec";
+			i2s-controller = <0xffffffff>;
+			status = "okay";
+			phandle = <0x01>;
+		};
+	};
+
+	__overrides__ {
+	};
+
+	__symbols__ {
+		iqaudio_dac = "/fragment@2/__overlay__";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@2/__overlay__:i2s-controller:0";
+		i2c1 = "/fragment@1:target:0";
+		sound = "/fragment@2:target:0";
+	};
+};

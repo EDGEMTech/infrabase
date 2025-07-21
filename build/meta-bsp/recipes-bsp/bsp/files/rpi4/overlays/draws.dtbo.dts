@@ -1,0 +1,295 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+
+		__overlay__ {
+
+			regulators {
+				compatible = "simple-bus";
+				#address-cells = <0x01>;
+				#size-cells = <0x00>;
+
+				udrc0_ldoin {
+					compatible = "regulator-fixed";
+					regulator-name = "ldoin";
+					regulator-min-microvolt = <0x325aa0>;
+					regulator-max-microvolt = <0x325aa0>;
+					regulator-always-on;
+					phandle = <0x05>;
+				};
+
+				sc16is752_draws_clk {
+					compatible = "fixed-clock";
+					#clock-cells = <0x00>;
+					clock-frequency = <0x1c2000>;
+					phandle = <0x06>;
+				};
+			};
+
+			pps {
+				compatible = "pps-gpio";
+				pinctrl-names = "default";
+				pinctrl-0 = <0x01>;
+				gpios = <0xffffffff 0x07 0x00>;
+				status = "okay";
+				phandle = <0x0f>;
+			};
+
+			iio-hwmon {
+				compatible = "iio-hwmon";
+				status = "okay";
+				io-channels = <0x02 0x04 0x02 0x05 0x02 0x06 0x02 0x07>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			tlv320aic32x4@18 {
+				compatible = "ti,tlv320aic32x4";
+				reg = <0x18>;
+				#sound-dai-cells = <0x00>;
+				status = "okay";
+				clocks = <0xffffffff 0x26>;
+				clock-names = "mclk";
+				assigned-clocks = <0xffffffff 0x26>;
+				assigned-clock-rates = <0x17d7840>;
+				pinctrl-names = "default";
+				pinctrl-0 = <0x03 0x04>;
+				reset-gpios = <0xffffffff 0x0d 0x00>;
+				iov-supply = <0x05>;
+				ldoin-supply = <0x05>;
+				phandle = <0x09>;
+			};
+
+			sc16is752@50 {
+				compatible = "nxp,sc16is752";
+				reg = <0x50>;
+				clocks = <0x06>;
+				interrupt-parent = <0xffffffff>;
+				interrupts = <0x11 0x02>;
+				pinctrl-names = "default";
+				pinctrl-0 = <0x07>;
+				phandle = <0x10>;
+			};
+
+			tla2024@48 {
+				compatible = "ti,ads1015";
+				reg = <0x48>;
+				#address-cells = <0x01>;
+				#size-cells = <0x00>;
+				#io-channel-cells = <0x01>;
+				phandle = <0x02>;
+
+				channel@4 {
+					reg = <0x04>;
+					ti,gain = <0x01>;
+					ti,datarate = <0x04>;
+					phandle = <0x0a>;
+				};
+
+				channel@5 {
+					reg = <0x05>;
+					ti,gain = <0x01>;
+					ti,datarate = <0x04>;
+					phandle = <0x0b>;
+				};
+
+				channel@6 {
+					reg = <0x06>;
+					ti,gain = <0x02>;
+					ti,datarate = <0x04>;
+					phandle = <0x0c>;
+				};
+
+				channel@7 {
+					reg = <0x07>;
+					ti,gain = <0x02>;
+					ti,datarate = <0x04>;
+					phandle = <0x0d>;
+				};
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "simple-audio-card";
+			i2s-controller = <0xffffffff>;
+			status = "okay";
+			simple-audio-card,name = "draws";
+			simple-audio-card,format = "i2s";
+			simple-audio-card,bitclock-master = <0x08>;
+			simple-audio-card,frame-master = <0x08>;
+			simple-audio-card,widgets = "Line\0Line In\0Line\0Line Out";
+			simple-audio-card,routing = "IN1_R\0Line In\0IN1_L\0Line In\0CM_L\0Line In\0CM_R\0Line In\0Line Out\0LOR\0Line Out\0LOL";
+			phandle = <0x0e>;
+
+			simple-audio-card,cpu {
+				sound-dai = <0xffffffff>;
+				phandle = <0x08>;
+			};
+
+			simple-audio-card,codec {
+				sound-dai = <0x09>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			gpclk0_pin {
+				brcm,pins = <0x04>;
+				brcm,function = <0x04>;
+				phandle = <0x03>;
+			};
+
+			aic3204_reset {
+				brcm,pins = <0x0d>;
+				brcm,function = <0x01>;
+				brcm,pull = <0x01>;
+				phandle = <0x04>;
+			};
+
+			aic3204_gpio {
+				brcm,pins = <0x1a>;
+				phandle = <0x11>;
+			};
+
+			sc16is752_irq {
+				brcm,pins = <0x11>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x02>;
+				phandle = <0x07>;
+			};
+
+			pps_pins {
+				brcm,pins = <0x07>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	__overrides__ {
+		draws_adc_ch4_gain = "\0\0\0\nti,gain:0";
+		draws_adc_ch4_datarate = "\0\0\0\nti,datarate:0";
+		draws_adc_ch5_gain = "\0\0\0\vti,gain:0";
+		draws_adc_ch5_datarate = "\0\0\0\vti,datarate:0";
+		draws_adc_ch6_gain = "\0\0\0\fti,gain:0";
+		draws_adc_ch6_datarate = "\0\0\0\fti,datarate:0";
+		draws_adc_ch7_gain = "\0\0\0\rti,gain:0";
+		draws_adc_ch7_datarate = "\0\0\0\rti,datarate:0";
+		alsaname = [00 00 00 0e 73 69 6d 70 6c 65 2d 61 75 64 69 6f 2d 63 61 72 64 2c 6e 61 6d 65 00];
+	};
+
+	__symbols__ {
+		udrc0_ldoin = "/fragment@1/__overlay__/regulators/udrc0_ldoin";
+		sc16is752_clk = "/fragment@1/__overlay__/regulators/sc16is752_draws_clk";
+		pps = "/fragment@1/__overlay__/pps";
+		tlv320aic32x4 = "/fragment@2/__overlay__/tlv320aic32x4@18";
+		sc16is752 = "/fragment@2/__overlay__/sc16is752@50";
+		tla2024 = "/fragment@2/__overlay__/tla2024@48";
+		adc_ch4 = "/fragment@2/__overlay__/tla2024@48/channel@4";
+		adc_ch5 = "/fragment@2/__overlay__/tla2024@48/channel@5";
+		adc_ch6 = "/fragment@2/__overlay__/tla2024@48/channel@6";
+		adc_ch7 = "/fragment@2/__overlay__/tla2024@48/channel@7";
+		snd = "/fragment@3/__overlay__";
+		dailink0_master = "/fragment@3/__overlay__/simple-audio-card,cpu";
+		gpclk0_pin = "/fragment@4/__overlay__/gpclk0_pin";
+		aic3204_reset = "/fragment@4/__overlay__/aic3204_reset";
+		aic3204_gpio = "/fragment@4/__overlay__/aic3204_gpio";
+		sc16is752_irq = "/fragment@4/__overlay__/sc16is752_irq";
+		pps_pins = "/fragment@4/__overlay__/pps_pins";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@3/__overlay__:i2s-controller:0\0/fragment@3/__overlay__/simple-audio-card,cpu:sound-dai:0";
+		gpio = "/fragment@1/__overlay__/pps:gpios:0\0/fragment@2/__overlay__/tlv320aic32x4@18:reset-gpios:0\0/fragment@2/__overlay__/sc16is752@50:interrupt-parent:0\0/fragment@4:target:0";
+		i2c_arm = "/fragment@2:target:0";
+		clocks = "/fragment@2/__overlay__/tlv320aic32x4@18:clocks:0\0/fragment@2/__overlay__/tlv320aic32x4@18:assigned-clocks:0";
+		sound = "/fragment@3:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@1 {
+
+			__overlay__ {
+
+				pps {
+					pinctrl-0 = <0x00>;
+				};
+
+				iio-hwmon {
+					io-channels = <0x00 0x08 0x10 0x18>;
+				};
+			};
+		};
+
+		fragment@2 {
+
+			__overlay__ {
+
+				tlv320aic32x4@18 {
+					pinctrl-0 = <0x00 0x04>;
+					iov-supply = <0x00>;
+					ldoin-supply = <0x00>;
+				};
+
+				sc16is752@50 {
+					clocks = <0x00>;
+					pinctrl-0 = <0x00>;
+				};
+			};
+		};
+
+		fragment@3 {
+
+			__overlay__ {
+				simple-audio-card,bitclock-master = <0x00>;
+				simple-audio-card,frame-master = <0x00>;
+
+				simple-audio-card,codec {
+					sound-dai = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			draws_adc_ch4_gain = <0x00>;
+			draws_adc_ch4_datarate = <0x00>;
+			draws_adc_ch5_gain = <0x00>;
+			draws_adc_ch5_datarate = <0x00>;
+			draws_adc_ch6_gain = <0x00>;
+			draws_adc_ch6_datarate = <0x00>;
+			draws_adc_ch7_gain = <0x00>;
+			draws_adc_ch7_datarate = <0x00>;
+			alsaname = <0x00>;
+		};
+	};
+};

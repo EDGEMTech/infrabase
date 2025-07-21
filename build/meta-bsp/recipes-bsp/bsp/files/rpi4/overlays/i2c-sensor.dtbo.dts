@@ -1,0 +1,387 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			bme280@76 {
+				compatible = "bosch,bme280";
+				reg = <0x76>;
+				status = "okay";
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			bmp085@77 {
+				compatible = "bosch,bmp085";
+				reg = <0x77>;
+				default-oversampling = <0x03>;
+				status = "okay";
+				phandle = <0x0b>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			bmp180@77 {
+				compatible = "bosch,bmp180";
+				reg = <0x77>;
+				status = "okay";
+				phandle = <0x0c>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			bmp280@76 {
+				compatible = "bosch,bmp280";
+				reg = <0x76>;
+				status = "okay";
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			htu21@40 {
+				compatible = "htu21";
+				reg = <0x40>;
+				status = "okay";
+				phandle = <0x0d>;
+			};
+		};
+	};
+
+	fragment@5 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			lm75@4f {
+				compatible = "lm75";
+				reg = <0x4f>;
+				status = "okay";
+				phandle = <0x04>;
+			};
+		};
+	};
+
+	fragment@6 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			si7020@40 {
+				compatible = "si7020";
+				reg = <0x40>;
+				status = "okay";
+				phandle = <0x0e>;
+			};
+		};
+	};
+
+	fragment@7 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			tmp102@48 {
+				compatible = "ti,tmp102";
+				reg = <0x48>;
+				status = "okay";
+				phandle = <0x03>;
+			};
+		};
+	};
+
+	fragment@8 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			hdc100x@40 {
+				compatible = "hdc100x";
+				reg = <0x40>;
+				status = "okay";
+				phandle = <0x05>;
+			};
+		};
+	};
+
+	fragment@9 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			tsl4531@29 {
+				compatible = "tsl4531";
+				reg = <0x29>;
+				status = "okay";
+				phandle = <0x0f>;
+			};
+		};
+	};
+
+	fragment@10 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			veml6070@38 {
+				compatible = "veml6070";
+				reg = <0x38>;
+				status = "okay";
+				phandle = <0x10>;
+			};
+		};
+	};
+
+	fragment@11 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			sht3x@44 {
+				compatible = "sht3x";
+				reg = <0x44>;
+				status = "okay";
+				phandle = <0x06>;
+			};
+		};
+	};
+
+	fragment@12 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			ds1621@48 {
+				compatible = "ds1621";
+				reg = <0x48>;
+				status = "okay";
+				phandle = <0x07>;
+			};
+		};
+	};
+
+	fragment@13 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			max17040@36 {
+				compatible = "maxim,max17040";
+				reg = <0x36>;
+				status = "okay";
+				phandle = <0x11>;
+			};
+		};
+	};
+
+	fragment@14 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			bme680@76 {
+				compatible = "bosch,bme680";
+				reg = <0x76>;
+				status = "okay";
+				phandle = <0x08>;
+			};
+		};
+	};
+
+	fragment@15 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			sps30@69 {
+				compatible = "sensirion,sps30";
+				reg = <0x69>;
+				status = "okay";
+				phandle = <0x12>;
+			};
+		};
+	};
+
+	fragment@16 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			sgp30@58 {
+				compatible = "sensirion,sgp30";
+				reg = <0x58>;
+				status = "okay";
+				phandle = <0x13>;
+			};
+		};
+	};
+
+	fragment@17 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			ccs811@5b {
+				compatible = "ccs811";
+				reg = <0x5b>;
+				status = "okay";
+				phandle = <0x09>;
+			};
+		};
+	};
+
+	fragment@18 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			bh1750@23 {
+				compatible = "bh1750";
+				reg = <0x23>;
+				status = "okay";
+				phandle = <0x0a>;
+			};
+		};
+	};
+
+	__overrides__ {
+		addr = <0x01 0x7265673a 0x30000000 0x27265 0x673a3000 0x03 0x7265673a 0x30000000 0x47265 0x673a3000 0x05 0x7265673a 0x30000000 0x67265 0x673a3000 0x07 0x7265673a 0x30000000 0x87265 0x673a3000 0x09 0x7265673a 0x30000000 0xa7265 0x673a3000>;
+		bme280 = [00 00 00 00 2b 30 00];
+		bmp085 = [00 00 00 00 2b 31 00];
+		bmp180 = [00 00 00 00 2b 32 00];
+		bmp280 = [00 00 00 00 2b 33 00];
+		htu21 = [00 00 00 00 2b 34 00];
+		lm75 = [00 00 00 00 2b 35 00];
+		lm75addr = [00 00 00 04 72 65 67 3a 30 00];
+		si7020 = [00 00 00 00 2b 36 00];
+		tmp102 = [00 00 00 00 2b 37 00];
+		hdc100x = [00 00 00 00 2b 38 00];
+		tsl4531 = [00 00 00 00 2b 39 00];
+		veml6070 = <0x00 0x2b313000>;
+		sht3x = <0x00 0x2b313100>;
+		ds1621 = <0x00 0x2b313200>;
+		max17040 = <0x00 0x2b313300>;
+		bme680 = <0x00 0x2b313400>;
+		sps30 = <0x00 0x2b313500>;
+		sgp30 = <0x00 0x2b313600>;
+		ccs811 = <0x00 0x2b313700>;
+		bh1750 = <0x00 0x2b313800>;
+	};
+
+	__symbols__ {
+		bme280 = "/fragment@0/__dormant__/bme280@76";
+		bmp085 = "/fragment@1/__dormant__/bmp085@77";
+		bmp180 = "/fragment@2/__dormant__/bmp180@77";
+		bmp280 = "/fragment@3/__dormant__/bmp280@76";
+		htu21 = "/fragment@4/__dormant__/htu21@40";
+		lm75 = "/fragment@5/__dormant__/lm75@4f";
+		si7020 = "/fragment@6/__dormant__/si7020@40";
+		tmp102 = "/fragment@7/__dormant__/tmp102@48";
+		hdc100x = "/fragment@8/__dormant__/hdc100x@40";
+		tsl4531 = "/fragment@9/__dormant__/tsl4531@29";
+		veml6070 = "/fragment@10/__dormant__/veml6070@38";
+		sht3x = "/fragment@11/__dormant__/sht3x@44";
+		ds1621 = "/fragment@12/__dormant__/ds1621@48";
+		max17040 = "/fragment@13/__dormant__/max17040@36";
+		bme680 = "/fragment@14/__dormant__/bme680@76";
+		sps30 = "/fragment@15/__dormant__/sps30@69";
+		sgp30 = "/fragment@16/__dormant__/sgp30@58";
+		ccs811 = "/fragment@17/__dormant__/ccs811@5b";
+		bh1750 = "/fragment@18/__dormant__/bh1750@23";
+	};
+
+	__fixups__ {
+		i2c_arm = "/fragment@0:target:0\0/fragment@1:target:0\0/fragment@2:target:0\0/fragment@3:target:0\0/fragment@4:target:0\0/fragment@5:target:0\0/fragment@6:target:0\0/fragment@7:target:0\0/fragment@8:target:0\0/fragment@9:target:0\0/fragment@10:target:0\0/fragment@11:target:0\0/fragment@12:target:0\0/fragment@13:target:0\0/fragment@14:target:0\0/fragment@15:target:0\0/fragment@16:target:0\0/fragment@17:target:0\0/fragment@18:target:0";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			addr = <0x00 0x0a 0x14 0x1e 0x28 0x32 0x3c 0x46 0x50 0x5a>;
+			lm75addr = <0x00>;
+		};
+	};
+};

@@ -1,0 +1,175 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			mcp@68 {
+				reg = <0x68>;
+				compatible = "microchip,mcp3421";
+				status = "okay";
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			mcp@68 {
+				reg = <0x68>;
+				compatible = "microchip,mcp3422";
+				status = "okay";
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			mcp@68 {
+				reg = <0x68>;
+				compatible = "microchip,mcp3423";
+				status = "okay";
+				phandle = <0x03>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			mcp@68 {
+				reg = <0x68>;
+				compatible = "microchip,mcp3424";
+				status = "okay";
+				phandle = <0x04>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			mcp@68 {
+				reg = <0x68>;
+				compatible = "microchip,mcp3425\0mcp3425";
+				status = "okay";
+				phandle = <0x05>;
+			};
+		};
+	};
+
+	fragment@5 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			mcp@68 {
+				reg = <0x68>;
+				compatible = "microchip,mcp3426";
+				status = "okay";
+				phandle = <0x06>;
+			};
+		};
+	};
+
+	fragment@6 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			mcp@68 {
+				reg = <0x68>;
+				compatible = "microchip,mcp3427";
+				status = "okay";
+				phandle = <0x07>;
+			};
+		};
+	};
+
+	fragment@7 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			mcp@68 {
+				reg = <0x68>;
+				compatible = "microchip,mcp3428";
+				status = "okay";
+				phandle = <0x08>;
+			};
+		};
+	};
+
+	__overrides__ {
+		addr = <0x01 0x7265673a 0x30000000 0x27265 0x673a3000 0x03 0x7265673a 0x30000000 0x47265 0x673a3000 0x05 0x7265673a 0x30000000 0x67265 0x673a3000 0x07 0x7265673a 0x30000000 0x87265 0x673a3000>;
+		mcp3421 = [00 00 00 00 3d 30 00];
+		mcp3422 = [00 00 00 00 3d 31 00];
+		mcp3423 = [00 00 00 00 3d 32 00];
+		mcp3424 = [00 00 00 00 3d 33 00];
+		mcp3425 = [00 00 00 00 3d 34 00];
+		mcp3426 = [00 00 00 00 3d 35 00];
+		mcp3427 = [00 00 00 00 3d 36 00];
+		mcp3428 = [00 00 00 00 3d 37 00];
+	};
+
+	__symbols__ {
+		mcp3421 = "/fragment@0/__dormant__/mcp@68";
+		mcp3422 = "/fragment@1/__dormant__/mcp@68";
+		mcp3423 = "/fragment@2/__dormant__/mcp@68";
+		mcp3424 = "/fragment@3/__dormant__/mcp@68";
+		mcp3425 = "/fragment@4/__dormant__/mcp@68";
+		mcp3426 = "/fragment@5/__dormant__/mcp@68";
+		mcp3427 = "/fragment@6/__dormant__/mcp@68";
+		mcp3428 = "/fragment@7/__dormant__/mcp@68";
+	};
+
+	__fixups__ {
+		i2c1 = "/fragment@0:target:0\0/fragment@1:target:0\0/fragment@2:target:0\0/fragment@3:target:0\0/fragment@4:target:0\0/fragment@5:target:0\0/fragment@6:target:0\0/fragment@7:target:0";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			addr = <0x00 0x0a 0x14 0x1e 0x28 0x32 0x3c 0x46>;
+		};
+	};
+};

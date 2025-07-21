@@ -1,0 +1,180 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			imx477@1a {
+				reg = <0x1a>;
+				status = "okay";
+				clocks = <0x01>;
+				clock-names = "xclk";
+				VANA-supply = <0xffffffff>;
+				VDIG-supply = <0x02>;
+				VDDL-supply = <0x03>;
+				rotation = <0xb4>;
+				orientation = <0x02>;
+				compatible = "sony,imx477";
+				phandle = <0x06>;
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x04>;
+						clock-lanes = <0x00>;
+						data-lanes = <0x01 0x02>;
+						clock-noncontinuous;
+						link-frequencies = <0x00 0x1ad27480>;
+						phandle = <0x05>;
+					};
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+
+			port {
+
+				endpoint {
+					remote-endpoint = <0x05>;
+					clock-lanes = <0x00>;
+					data-lanes = <0x01 0x02>;
+					clock-noncontinuous;
+					phandle = <0x04>;
+				};
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target-path = "/";
+
+		__overlay__ {
+
+			fixedregulator@0 {
+				compatible = "regulator-fixed";
+				regulator-name = "imx477_vdig";
+				regulator-min-microvolt = <0x100590>;
+				regulator-max-microvolt = <0x100590>;
+				phandle = <0x02>;
+			};
+
+			fixedregulator@1 {
+				compatible = "regulator-fixed";
+				regulator-name = "imx477_vddl";
+				regulator-min-microvolt = <0x1b7740>;
+				regulator-max-microvolt = <0x1b7740>;
+				phandle = <0x03>;
+			};
+
+			camera-clk {
+				compatible = "fixed-clock";
+				#clock-cells = <0x00>;
+				clock-frequency = <0x16e3600>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@5 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+			regulator-name = "imx477_vana";
+			startup-delay-us = <0x493e0>;
+			regulator-min-microvolt = <0x2ab980>;
+			regulator-max-microvolt = <0x2ab980>;
+		};
+	};
+
+	__overrides__ {
+		rotation = [00 00 00 06 72 6f 74 61 74 69 6f 6e 3a 30 00];
+		orientation = [00 00 00 06 6f 72 69 65 6e 74 61 74 69 6f 6e 3a 30 00];
+	};
+
+	__symbols__ {
+		imx477 = "/fragment@0/__overlay__/imx477@1a";
+		imx477_0 = "/fragment@0/__overlay__/imx477@1a/port/endpoint";
+		csi1_ep = "/fragment@1/__overlay__/port/endpoint";
+		imx477_vdig = "/fragment@3/__overlay__/fixedregulator@0";
+		imx477_vddl = "/fragment@3/__overlay__/fixedregulator@1";
+		imx477_clk = "/fragment@3/__overlay__/camera-clk";
+	};
+
+	__fixups__ {
+		i2c_csi_dsi = "/fragment@0:target:0";
+		cam1_reg = "/fragment@0/__overlay__/imx477@1a:VANA-supply:0\0/fragment@5:target:0";
+		csi1 = "/fragment@1:target:0";
+		i2c0if = "/fragment@2:target:0";
+		i2c0mux = "/fragment@4:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@0 {
+
+			__overlay__ {
+
+				imx477@1a {
+					clocks = <0x00>;
+					VDIG-supply = <0x00>;
+					VDDL-supply = <0x00>;
+
+					port {
+
+						endpoint {
+							remote-endpoint = <0x00>;
+						};
+					};
+				};
+			};
+		};
+
+		fragment@1 {
+
+			__overlay__ {
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x00>;
+					};
+				};
+			};
+		};
+
+		__overrides__ {
+			rotation = <0x00>;
+			orientation = <0x00>;
+		};
+	};
+};

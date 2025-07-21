@@ -1,0 +1,114 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			ssd1351_pins {
+				brcm,pins = <0x19 0x18>;
+				brcm,function = <0x01 0x01>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			ssd1351@0 {
+				compatible = "solomon,ssd1351";
+				reg = <0x00>;
+				pinctrl-names = "default";
+				pinctrl-0 = <0x01>;
+				spi-max-frequency = <0x44aa20>;
+				bgr = <0x00>;
+				bpp = <0x10>;
+				rotate = <0x00>;
+				fps = <0x19>;
+				buswidth = <0x08>;
+				reset-gpios = <0xffffffff 0x19 0x01>;
+				dc-gpios = <0xffffffff 0x18 0x00>;
+				debug = <0x00>;
+				solomon,height = <0x80>;
+				solomon,width = <0x80>;
+				solomon,page-offset = <0x00>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	__overrides__ {
+		speed = <0x02 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000>;
+		rotate = [00 00 00 02 72 6f 74 61 74 65 3a 30 00];
+		fps = [00 00 00 02 66 70 73 3a 30 00];
+		debug = <0x02 0x64656275 0x673a3000>;
+		dc_pin = [00 00 00 02 64 63 2d 67 70 69 6f 73 3a 34 00 00 00 00 01 62 72 63 6d 2c 70 69 6e 73 3a 34 00];
+		reset_pin = [00 00 00 02 72 65 73 65 74 2d 67 70 69 6f 73 3a 34 00 00 00 00 01 62 72 63 6d 2c 70 69 6e 73 3a 30 00];
+	};
+
+	__symbols__ {
+		ssd1351_pins = "/fragment@3/__overlay__/ssd1351_pins";
+		ssd1351 = "/fragment@4/__overlay__/ssd1351@0";
+	};
+
+	__fixups__ {
+		spi0 = "/fragment@0:target:0\0/fragment@4:target:0";
+		spidev0 = "/fragment@1:target:0";
+		spidev1 = "/fragment@2:target:0";
+		gpio = "/fragment@3:target:0\0/fragment@4/__overlay__/ssd1351@0:reset-gpios:0\0/fragment@4/__overlay__/ssd1351@0:dc-gpios:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@4 {
+
+			__overlay__ {
+
+				ssd1351@0 {
+					pinctrl-0 = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			speed = <0x00>;
+			rotate = <0x00>;
+			fps = <0x00>;
+			debug = <0x00>;
+			dc_pin = <0x00 0x0f>;
+			reset_pin = <0x00 0x12>;
+		};
+	};
+};

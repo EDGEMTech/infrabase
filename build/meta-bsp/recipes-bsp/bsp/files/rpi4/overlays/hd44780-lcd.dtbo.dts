@@ -1,0 +1,69 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+
+			auxdisplay {
+				compatible = "hit,hd44780";
+				data-gpios = <0xffffffff 0x06 0x00 0xffffffff 0x0d 0x00 0xffffffff 0x13 0x00 0xffffffff 0x1a 0x00>;
+				enable-gpios = <0xffffffff 0x15 0x00>;
+				rs-gpios = <0xffffffff 0x14 0x00>;
+				display-height-chars = <0x02>;
+				display-width-chars = <0x10>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0x01>;
+
+		__dormant__ {
+			backlight-gpios = <0xffffffff 0x0c 0x00>;
+		};
+	};
+
+	__overrides__ {
+		pin_d4 = [00 00 00 01 64 61 74 61 2d 67 70 69 6f 73 3a 34 00];
+		pin_d5 = [00 00 00 01 64 61 74 61 2d 67 70 69 6f 73 3a 31 36 00];
+		pin_d6 = [00 00 00 01 64 61 74 61 2d 67 70 69 6f 73 3a 32 38 00];
+		pin_d7 = [00 00 00 01 64 61 74 61 2d 67 70 69 6f 73 3a 34 30 00];
+		pin_en = [00 00 00 01 65 6e 61 62 6c 65 2d 67 70 69 6f 73 3a 34 00];
+		pin_rs = [00 00 00 01 72 73 2d 67 70 69 6f 73 3a 34 00];
+		pin_bl = [00 00 00 00 2b 31 00 00 00 00 01 62 61 63 6b 6c 69 67 68 74 2d 67 70 69 6f 73 3a 34 00];
+		display_height = [00 00 00 01 64 69 73 70 6c 61 79 2d 68 65 69 67 68 74 2d 63 68 61 72 73 3a 30 00];
+		display_width = [00 00 00 01 64 69 73 70 6c 61 79 2d 77 69 64 74 68 2d 63 68 61 72 73 3a 30 00];
+	};
+
+	__symbols__ {
+		lcd_screen = "/fragment@0/__overlay__/auxdisplay";
+	};
+
+	__fixups__ {
+		gpio = "/fragment@0/__overlay__/auxdisplay:data-gpios:0\0/fragment@0/__overlay__/auxdisplay:data-gpios:12\0/fragment@0/__overlay__/auxdisplay:data-gpios:24\0/fragment@0/__overlay__/auxdisplay:data-gpios:36\0/fragment@0/__overlay__/auxdisplay:enable-gpios:0\0/fragment@0/__overlay__/auxdisplay:rs-gpios:0\0/fragment@1/__dormant__:backlight-gpios:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@1 {
+			target = <0x00>;
+		};
+
+		__overrides__ {
+			pin_d4 = <0x00>;
+			pin_d5 = <0x00>;
+			pin_d6 = <0x00>;
+			pin_d7 = <0x00>;
+			pin_en = <0x00>;
+			pin_rs = <0x00>;
+			pin_bl = <0x07>;
+			display_height = <0x00>;
+			display_width = <0x00>;
+		};
+	};
+};

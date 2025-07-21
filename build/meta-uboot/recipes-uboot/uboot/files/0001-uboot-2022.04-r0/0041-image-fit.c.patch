@@ -1,0 +1,4 @@
+--- /var/dev/wayland_lvgl/build/tmp/work/uboot-2022.04-r0/git/tools/boot/image-fit.c	1970-01-01 01:00:00.000000000 +0100
++++ ./tools/boot/image-fit.c	2024-03-02 10:11:47.648252207 +0100
+@@ -0,0 +1 @@
++#include <../boot/image-fit.c>

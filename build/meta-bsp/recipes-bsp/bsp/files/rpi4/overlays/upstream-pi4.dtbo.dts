@@ -1,0 +1,195 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2711";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@5 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@6 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@7 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@8 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@9 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@10 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@11 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@12 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@13 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@14 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@15 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@16 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			brcm,disable-hdmi;
+		};
+	};
+
+	fragment@17 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@18 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@19 {
+		target = <0xffffffff>;
+		#address-cells = <0x01>;
+		#size-cells = <0x01>;
+
+		__overlay__ {
+			compatible = "brcm,bcm2835-usb";
+			dr_mode = "otg";
+			g-np-tx-fifo-size = <0x20>;
+			g-rx-fifo-size = <0x22e>;
+			g-tx-fifo-size = <0x200 0x200 0x200 0x200 0x200 0x100 0x100>;
+			status = "okay";
+		};
+	};
+
+	__fixups__ {
+		ddc0 = "/fragment@0:target:0";
+		ddc1 = "/fragment@1:target:0";
+		hdmi0 = "/fragment@2:target:0";
+		hdmi1 = "/fragment@3:target:0";
+		hvs = "/fragment@4:target:0";
+		pixelvalve0 = "/fragment@5:target:0";
+		pixelvalve1 = "/fragment@6:target:0";
+		pixelvalve2 = "/fragment@7:target:0";
+		pixelvalve3 = "/fragment@8:target:0";
+		pixelvalve4 = "/fragment@9:target:0";
+		v3d = "/fragment@10:target:0";
+		vc4 = "/fragment@11:target:0";
+		txp = "/fragment@12:target:0";
+		fb = "/fragment@13:target:0";
+		firmwarekms = "/fragment@14:target:0";
+		vec = "/fragment@15:target:0";
+		audio = "/fragment@16:target:0";
+		dvp = "/fragment@17:target:0";
+		aon_intr = "/fragment@18:target:0";
+		usb = "/fragment@19:target:0";
+	};
+};

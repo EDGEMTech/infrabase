@@ -1,0 +1,102 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+
+		__overlay__ {
+
+			codec-mclk {
+				compatible = "fixed-clock";
+				#clock-cells = <0x00>;
+				clock-frequency = <0x2ee0000>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			cs42448@48 {
+				#sound-dai-cells = <0x00>;
+				compatible = "cirrus,cs42448";
+				reg = <0x48>;
+				clocks = <0x01>;
+				clock-names = "mclk";
+				status = "okay";
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "ai,audioinjector-octo-soundcard";
+			mult-gpios = <0xffffffff 0x1b 0x00 0xffffffff 0x16 0x00 0xffffffff 0x17 0x00 0xffffffff 0x18 0x00>;
+			reset-gpios = <0xffffffff 0x05 0x00>;
+			i2s-controller = <0xffffffff>;
+			codec = <0x02>;
+			status = "okay";
+			phandle = <0x03>;
+		};
+	};
+
+	__overrides__ {
+		non-stop-clocks = [00 00 00 03 6e 6f 6e 2d 73 74 6f 70 2d 63 6c 6f 63 6b 73 3f 00];
+	};
+
+	__symbols__ {
+		cs42448_mclk = "/fragment@1/__overlay__/codec-mclk";
+		cs42448 = "/fragment@2/__overlay__/cs42448@48";
+		snd = "/fragment@3/__overlay__";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@3/__overlay__:i2s-controller:0";
+		i2c1 = "/fragment@2:target:0";
+		sound = "/fragment@3:target:0";
+		gpio = "/fragment@3/__overlay__:mult-gpios:0\0/fragment@3/__overlay__:mult-gpios:12\0/fragment@3/__overlay__:mult-gpios:24\0/fragment@3/__overlay__:mult-gpios:36\0/fragment@3/__overlay__:reset-gpios:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+
+				cs42448@48 {
+					clocks = <0x00>;
+				};
+			};
+		};
+
+		fragment@3 {
+
+			__overlay__ {
+				codec = <0x00>;
+			};
+		};
+
+		__overrides__ {
+			non-stop-clocks = <0x00>;
+		};
+	};
+};

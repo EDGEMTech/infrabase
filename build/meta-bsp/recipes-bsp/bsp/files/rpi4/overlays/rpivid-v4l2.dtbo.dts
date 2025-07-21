@@ -1,0 +1,51 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2711";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x02>;
+			#size-cells = <0x02>;
+
+			codec@7eb10000 {
+				compatible = "raspberrypi,rpivid-vid-decoder";
+				reg = <0x00 0x7eb10000 0x00 0x1000 0x00 0x7eb00000 0x00 0x10000>;
+				reg-names = "intc\0hevc";
+				interrupts = <0x00 0x62 0x04>;
+				clocks = <0xffffffff 0x0b>;
+				clock-names = "hevc";
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			hevc-decoder@7eb00000 {
+				status = "disabled";
+			};
+
+			rpivid-local-intc@7eb10000 {
+				status = "disabled";
+			};
+
+			h264-decoder@7eb20000 {
+				status = "disabled";
+			};
+
+			vp9-decoder@7eb30000 {
+				status = "disabled";
+			};
+		};
+	};
+
+	__fixups__ {
+		scb = "/fragment@0:target:0\0/fragment@1:target:0";
+		firmware_clocks = "/fragment@0/__overlay__/codec@7eb10000:clocks:0";
+	};
+};

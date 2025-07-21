@@ -1,0 +1,65 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+
+			dht11@0 {
+				compatible = "dht11";
+				pinctrl-names = "default";
+				pinctrl-0 = <0x01>;
+				gpios = <0xffffffff 0x04 0x00>;
+				status = "okay";
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			dht11_pins@0 {
+				brcm,pins = <0x04>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	__overrides__ {
+		gpiopin = <0x01 0x6272636d 0x2c70696e 0x733a3000 0x01 0x7265673a 0x30000000 0x26770 0x696f733a 0x34000000 0x27265 0x673a3000>;
+	};
+
+	__symbols__ {
+		dht11 = "/fragment@0/__overlay__/dht11@0";
+		dht11_pins = "/fragment@1/__overlay__/dht11_pins@0";
+	};
+
+	__fixups__ {
+		gpio = "/fragment@0/__overlay__/dht11@0:gpios:0\0/fragment@1:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@0 {
+
+			__overlay__ {
+
+				dht11@0 {
+					pinctrl-0 = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			gpiopin = <0x00 0x10 0x1a 0x26>;
+		};
+	};
+};

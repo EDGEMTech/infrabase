@@ -1,0 +1,123 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+
+		__overlay__ {
+
+			max98357a {
+				compatible = "maxim,max98357a";
+				#sound-dai-cells = <0x00>;
+				sdmode-gpios = <0xffffffff 0x04 0x00>;
+				status = "okay";
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target-path = "/";
+
+		__dormant__ {
+
+			max98357a {
+				compatible = "maxim,max98357a";
+				#sound-dai-cells = <0x00>;
+				status = "okay";
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "simple-audio-card";
+			simple-audio-card,format = "i2s";
+			simple-audio-card,name = "MAX98357A";
+			status = "okay";
+
+			simple-audio-card,cpu {
+				sound-dai = <0xffffffff>;
+			};
+
+			simple-audio-card,codec {
+				sound-dai = <0x01>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			compatible = "simple-audio-card";
+			simple-audio-card,format = "i2s";
+			simple-audio-card,name = "MAX98357A";
+			status = "okay";
+
+			simple-audio-card,cpu {
+				sound-dai = <0xffffffff>;
+			};
+
+			simple-audio-card,codec {
+				sound-dai = <0x02>;
+			};
+		};
+	};
+
+	__overrides__ {
+		no-sdmode = "\0\0\0\0-1+2-3+4";
+		sdmode-pin = [00 00 00 01 73 64 6d 6f 64 65 2d 67 70 69 6f 73 3a 34 00];
+	};
+
+	__symbols__ {
+		max98357a_dac = "/fragment@1/__overlay__/max98357a";
+		max98357a_nsd = "/fragment@2/__dormant__/max98357a";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@3/__overlay__/simple-audio-card,cpu:sound-dai:0\0/fragment@4/__dormant__/simple-audio-card,cpu:sound-dai:0";
+		gpio = "/fragment@1/__overlay__/max98357a:sdmode-gpios:0";
+		sound = "/fragment@3:target:0\0/fragment@4:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@3 {
+
+			__overlay__ {
+
+				simple-audio-card,codec {
+					sound-dai = <0x00>;
+				};
+			};
+		};
+
+		fragment@4 {
+
+			__dormant__ {
+
+				simple-audio-card,codec {
+					sound-dai = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			sdmode-pin = <0x00>;
+		};
+	};
+};

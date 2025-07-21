@@ -1,0 +1,78 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			led_pins@19 {
+				brcm,pins = <0x13>;
+				brcm,function = <0x01>;
+				brcm,pull = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+
+		__overlay__ {
+
+			leds@0 {
+				compatible = "gpio-leds";
+				pinctrl-names = "default";
+				pinctrl-0 = <0x01>;
+				status = "okay";
+				phandle = <0x03>;
+
+				led {
+					label = "myled1";
+					gpios = <0xffffffff 0x13 0x00>;
+					linux,default-trigger = "none";
+					phandle = <0x02>;
+				};
+			};
+		};
+	};
+
+	__overrides__ {
+		gpio = <0x02 0x6770696f 0x733a3400 0x03 0x7265673a 0x30000000 0x16272 0x636d2c70 0x696e733a 0x30000000 0x17265 0x673a3000>;
+		label = [00 00 00 02 6c 61 62 65 6c 00];
+		active_low = <0x02 0x6770696f 0x733a3800>;
+		trigger = [00 00 00 02 6c 69 6e 75 78 2c 64 65 66 61 75 6c 74 2d 74 72 69 67 67 65 72 00];
+	};
+
+	__symbols__ {
+		led_pin = "/fragment@0/__overlay__/led_pins@19";
+		leds = "/fragment@1/__overlay__/leds@0";
+		led = "/fragment@1/__overlay__/leds@0/led";
+	};
+
+	__fixups__ {
+		gpio = "/fragment@0:target:0\0/fragment@1/__overlay__/leds@0/led:gpios:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@1 {
+
+			__overlay__ {
+
+				leds@0 {
+					pinctrl-0 = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			gpio = <0x00 0x0c 0x16 0x26>;
+			label = <0x00>;
+			active_low = <0x00>;
+			trigger = <0x00>;
+		};
+	};
+};

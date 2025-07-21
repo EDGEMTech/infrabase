@@ -1,0 +1,13 @@
+--- /var/dev/wayland_lvgl/build/tmp/work/uboot-2022.04-r0/git/arch/arm/dts/am335x-osd335x-common.dtsi	2024-03-02 13:32:12.486624556 +0100
++++ ./arch/arm/dts/am335x-osd335x-common.dtsi	2024-03-02 10:09:56.758890468 +0100
+@@ -16,6 +16,10 @@
+ 		device_type = "memory";
+ 		reg = <0x80000000 0x20000000>; /* 512 MB */
+ 	};
++
++	chosen {
++		tick-timer = &timer2;
++	};
+ };
+ 
+ &cpu0_opp_table {

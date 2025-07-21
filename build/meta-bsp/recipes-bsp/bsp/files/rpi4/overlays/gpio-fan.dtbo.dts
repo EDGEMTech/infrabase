@@ -1,0 +1,83 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+
+			gpio-fan@0 {
+				compatible = "gpio-fan";
+				gpios = <0xffffffff 0x0c 0x00>;
+				gpio-fan,speed-map = <0x00 0x00 0x1388 0x01>;
+				#cooling-cells = <0x02>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+		polling-delay = <0x7d0>;
+
+		__overlay__ {
+
+			trips {
+
+				trip-point@0 {
+					temperature = <0xd6d8>;
+					hysteresis = <0x2710>;
+					type = "active";
+					phandle = <0x01>;
+				};
+			};
+
+			cooling-maps {
+
+				map0 {
+					trip = <0x01>;
+					cooling-device = <0x02 0x01 0x01>;
+				};
+			};
+		};
+	};
+
+	__overrides__ {
+		gpiopin = <0x02 0x6770696f 0x733a3400 0x02 0x6272636d 0x2c70696e 0x733a3000>;
+		temp = [00 00 00 01 74 65 6d 70 65 72 61 74 75 72 65 3a 30 00];
+	};
+
+	__symbols__ {
+		fan0 = "/fragment@0/__overlay__/gpio-fan@0";
+		cpu_hot = "/fragment@1/__overlay__/trips/trip-point@0";
+	};
+
+	__fixups__ {
+		gpio = "/fragment@0/__overlay__/gpio-fan@0:gpios:0";
+		cpu_thermal = "/fragment@1:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@1 {
+
+			__overlay__ {
+
+				cooling-maps {
+
+					map0 {
+						trip = <0x00>;
+						cooling-device = <0x00>;
+					};
+				};
+			};
+		};
+
+		__overrides__ {
+			gpiopin = <0x00 0x0c>;
+			temp = <0x00>;
+		};
+	};
+};

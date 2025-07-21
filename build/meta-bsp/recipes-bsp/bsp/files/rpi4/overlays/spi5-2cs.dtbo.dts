@@ -1,0 +1,80 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2711";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			brcm,pins = <0x0c 0x1a>;
+			brcm,function = <0x01>;
+			phandle = <0x01>;
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			pinctrl-names = "default";
+			pinctrl-0 = <0xffffffff 0xffffffff>;
+			cs-gpios = <0xffffffff 0x0c 0x01 0xffffffff 0x1a 0x01>;
+			status = "okay";
+			phandle = <0x02>;
+
+			spidev@0 {
+				compatible = "spidev";
+				reg = <0x00>;
+				#address-cells = <0x01>;
+				#size-cells = <0x00>;
+				spi-max-frequency = <0x7735940>;
+				status = "okay";
+				phandle = <0x03>;
+			};
+
+			spidev@1 {
+				compatible = "spidev";
+				reg = <0x01>;
+				#address-cells = <0x01>;
+				#size-cells = <0x00>;
+				spi-max-frequency = <0x7735940>;
+				status = "okay";
+				phandle = <0x04>;
+			};
+		};
+	};
+
+	__overrides__ {
+		cs0_pin = [00 00 00 01 62 72 63 6d 2c 70 69 6e 73 3a 30 00 00 00 00 02 63 73 2d 67 70 69 6f 73 3a 34 00];
+		cs1_pin = <0x01 0x6272636d 0x2c70696e 0x733a3400 0x02 0x63732d67 0x70696f73 0x3a313600>;
+		cs0_spidev = [00 00 00 03 73 74 61 74 75 73 00];
+		cs1_spidev = [00 00 00 04 73 74 61 74 75 73 00];
+	};
+
+	__symbols__ {
+		frag0 = "/fragment@0/__overlay__";
+		frag1 = "/fragment@1/__overlay__";
+		spidev5_0 = "/fragment@1/__overlay__/spidev@0";
+		spidev5_1 = "/fragment@1/__overlay__/spidev@1";
+	};
+
+	__fixups__ {
+		spi5_cs_pins = "/fragment@0:target:0\0/fragment@1/__overlay__:pinctrl-0:4";
+		spi5 = "/fragment@1:target:0";
+		spi5_pins = "/fragment@1/__overlay__:pinctrl-0:0";
+		gpio = "/fragment@1/__overlay__:cs-gpios:0\0/fragment@1/__overlay__:cs-gpios:12";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			cs0_pin = <0x00 0x10>;
+			cs1_pin = <0x00 0x10>;
+			cs0_spidev = <0x00>;
+			cs1_spidev = <0x00>;
+		};
+	};
+};

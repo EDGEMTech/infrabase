@@ -1,0 +1,237 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@2 {
+		target-path = "spi1/spidev@0";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@3 {
+		target-path = "spi1/spidev@1";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@4 {
+		target-path = "spi1/spidev@2";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@5 {
+		target-path = "spi2/spidev@0";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@6 {
+		target-path = "spi2/spidev@1";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@7 {
+		target-path = "spi2/spidev@2";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@8 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			anyspi@0 {
+				reg = <0x00>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@9 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			anyspi@1 {
+				reg = <0x01>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@10 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			anyspi@0 {
+				reg = <0x00>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x03>;
+			};
+		};
+	};
+
+	fragment@11 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			anyspi@1 {
+				reg = <0x01>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x04>;
+			};
+		};
+	};
+
+	fragment@12 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			anyspi@2 {
+				reg = <0x02>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x05>;
+			};
+		};
+	};
+
+	fragment@13 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			anyspi@0 {
+				reg = <0x00>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x06>;
+			};
+		};
+	};
+
+	fragment@14 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			anyspi@1 {
+				reg = <0x01>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x07>;
+			};
+		};
+	};
+
+	fragment@15 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			anyspi@2 {
+				reg = <0x02>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x08>;
+			};
+		};
+	};
+
+	__overrides__ {
+		spi0-0 = [00 00 00 00 2b 30 2b 38 00];
+		spi0-1 = [00 00 00 00 2b 31 2b 39 00];
+		spi1-0 = "\0\0\0\0+2+10";
+		spi1-1 = "\0\0\0\0+3+11";
+		spi1-2 = "\0\0\0\0+4+12";
+		spi2-0 = "\0\0\0\0+5+13";
+		spi2-1 = "\0\0\0\0+6+14";
+		spi2-2 = "\0\0\0\0+7+15";
+		dev = <0x01 0x636f6d70 0x61746962 0x6c650000 0x263 0x6f6d7061 0x7469626c 0x65000000 0x3636f 0x6d706174 0x69626c65 0x00 0x4636f6d 0x70617469 0x626c6500 0x05 0x636f6d70 0x61746962 0x6c650000 0x663 0x6f6d7061 0x7469626c 0x65000000 0x7636f 0x6d706174 0x69626c65 0x00 0x8636f6d 0x70617469 0x626c6500>;
+		speed = <0x01 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000 0x02 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000 0x03 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000 0x04 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000 0x05 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000 0x06 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000 0x07 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000 0x08 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000>;
+	};
+
+	__symbols__ {
+		anyspi_00 = "/fragment@8/__dormant__/anyspi@0";
+		anyspi_01 = "/fragment@9/__dormant__/anyspi@1";
+		anyspi_10 = "/fragment@10/__dormant__/anyspi@0";
+		anyspi_11 = "/fragment@11/__dormant__/anyspi@1";
+		anyspi_12 = "/fragment@12/__dormant__/anyspi@2";
+		anyspi_20 = "/fragment@13/__dormant__/anyspi@0";
+		anyspi_21 = "/fragment@14/__dormant__/anyspi@1";
+		anyspi_22 = "/fragment@15/__dormant__/anyspi@2";
+	};
+
+	__fixups__ {
+		spidev0 = "/fragment@0:target:0";
+		spidev1 = "/fragment@1:target:0";
+		spi0 = "/fragment@8:target:0\0/fragment@9:target:0";
+		spi1 = "/fragment@10:target:0\0/fragment@11:target:0\0/fragment@12:target:0";
+		spi2 = "/fragment@13:target:0\0/fragment@14:target:0\0/fragment@15:target:0";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			dev = <0x00 0x0f 0x1e 0x2d 0x3c 0x4b 0x5a 0x69>;
+			speed = <0x00 0x18 0x30 0x48 0x60 0x78 0x90 0xa8>;
+		};
+	};
+};

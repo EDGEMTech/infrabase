@@ -1,0 +1,66 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+
+			onewire@0 {
+				compatible = "w1-gpio";
+				pinctrl-names = "default";
+				pinctrl-0 = <0x01>;
+				gpios = <0xffffffff 0x04 0x00>;
+				status = "okay";
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			w1_pins@0 {
+				brcm,pins = <0x04>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	__overrides__ {
+		gpiopin = <0x02 0x6770696f 0x733a3400 0x02 0x7265673a 0x30000000 0x16272 0x636d2c70 0x696e733a 0x30000000 0x17265 0x673a3000>;
+		pullup;
+	};
+
+	__symbols__ {
+		w1 = "/fragment@0/__overlay__/onewire@0";
+		w1_pins = "/fragment@1/__overlay__/w1_pins@0";
+	};
+
+	__fixups__ {
+		gpio = "/fragment@0/__overlay__/onewire@0:gpios:0\0/fragment@1:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@0 {
+
+			__overlay__ {
+
+				onewire@0 {
+					pinctrl-0 = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			gpiopin = <0x00 0x0c 0x16 0x26>;
+		};
+	};
+};

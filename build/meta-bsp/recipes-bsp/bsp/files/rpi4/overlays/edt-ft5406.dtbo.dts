@@ -1,0 +1,59 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			ts@38 {
+				compatible = "edt,edt-ft5406";
+				reg = <0x38>;
+				touchscreen-size-x = <0x320>;
+				touchscreen-size-y = <0x1e0>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	__overrides__ {
+		sizex = [00 00 00 01 74 6f 75 63 68 73 63 72 65 65 6e 2d 73 69 7a 65 2d 78 3a 30 00];
+		sizey = [00 00 00 01 74 6f 75 63 68 73 63 72 65 65 6e 2d 73 69 7a 65 2d 79 3a 30 00];
+		invx = <0x01 0x746f7563 0x68736372 0x65656e2d 0x696e7665 0x72746564 0x2d783f00>;
+		invy = <0x01 0x746f7563 0x68736372 0x65656e2d 0x696e7665 0x72746564 0x2d793f00>;
+		swapxy = [00 00 00 01 74 6f 75 63 68 73 63 72 65 65 6e 2d 73 77 61 70 70 65 64 2d 78 2d 79 3f 00];
+	};
+
+	__symbols__ {
+		ft5406 = "/fragment@0/__overlay__/ts@38";
+	};
+
+	__fixups__ {
+		i2c_csi_dsi = "/fragment@0:target:0";
+		i2c0if = "/fragment@1:target:0";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			sizex = <0x00>;
+			sizey = <0x00>;
+			invx = <0x00>;
+			invy = <0x00>;
+			swapxy = <0x00>;
+		};
+	};
+};

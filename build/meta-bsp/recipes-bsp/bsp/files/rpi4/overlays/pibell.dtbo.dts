@@ -1,0 +1,126 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+
+			spdif-transmitter {
+				#address-cells = <0x00>;
+				#size-cells = <0x00>;
+				#sound-dai-cells = <0x00>;
+				compatible = "linux,spdif-dit";
+				status = "okay";
+				phandle = <0x02>;
+			};
+
+			card-codec {
+				#sound-dai-cells = <0x00>;
+				compatible = "invensense,ics43432";
+				status = "okay";
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#sound-dai-cells = <0x00>;
+			status = "okay";
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "simple-audio-card";
+			simple-audio-card,name = "PiBell";
+			status = "okay";
+			phandle = <0x03>;
+
+			simple-audio-card,dai-link@0 {
+				format = "i2s";
+				phandle = <0x04>;
+
+				cpu {
+					sound-dai = <0xffffffff>;
+					phandle = <0x05>;
+				};
+
+				codec {
+					sound-dai = <0x01>;
+					phandle = <0x06>;
+				};
+			};
+
+			simple-audio-card,dai-link@1 {
+				format = "i2s";
+				phandle = <0x07>;
+
+				cpu {
+					sound-dai = <0xffffffff>;
+					phandle = <0x08>;
+				};
+
+				codec {
+					sound-dai = <0x02>;
+					phandle = <0x09>;
+				};
+			};
+		};
+	};
+
+	__overrides__ {
+		alsaname = [00 00 00 03 73 69 6d 70 6c 65 2d 61 75 64 69 6f 2d 63 61 72 64 2c 6e 61 6d 65 00];
+	};
+
+	__symbols__ {
+		codec_out = "/fragment@0/__overlay__/spdif-transmitter";
+		codec_in = "/fragment@0/__overlay__/card-codec";
+		snd = "/fragment@2/__overlay__";
+		capture_link = "/fragment@2/__overlay__/simple-audio-card,dai-link@0";
+		r_cpu_dai = "/fragment@2/__overlay__/simple-audio-card,dai-link@0/cpu";
+		r_codec_dai = "/fragment@2/__overlay__/simple-audio-card,dai-link@0/codec";
+		playback_link = "/fragment@2/__overlay__/simple-audio-card,dai-link@1";
+		p_cpu_dai = "/fragment@2/__overlay__/simple-audio-card,dai-link@1/cpu";
+		p_codec_dai = "/fragment@2/__overlay__/simple-audio-card,dai-link@1/codec";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@1:target:0\0/fragment@2/__overlay__/simple-audio-card,dai-link@0/cpu:sound-dai:0\0/fragment@2/__overlay__/simple-audio-card,dai-link@1/cpu:sound-dai:0";
+		sound = "/fragment@2:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+
+				simple-audio-card,dai-link@0 {
+
+					codec {
+						sound-dai = <0x00>;
+					};
+				};
+
+				simple-audio-card,dai-link@1 {
+
+					codec {
+						sound-dai = <0x00>;
+					};
+				};
+			};
+		};
+
+		__overrides__ {
+			alsaname = <0x00>;
+		};
+	};
+};

@@ -1,0 +1,63 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			phandle = <0x01>;
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			brcm,pins = <0x0c 0x0d>;
+			brcm,function = <0x04>;
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			brcm,pins = <0x12 0x13>;
+			brcm,function = <0x02>;
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			brcm,disable-headphones = <0x00>;
+		};
+	};
+
+	__overrides__ {
+		swap_lr = [00 00 00 01 73 77 61 70 5f 6c 72 3f 00];
+		enable_jack = [00 00 00 01 65 6e 61 62 6c 65 5f 6a 61 63 6b 3f 00];
+		pins_12_13 = [00 00 00 00 2b 31 2d 32 00];
+		pins_18_19 = [00 00 00 00 2d 31 2b 32 00];
+	};
+
+	__symbols__ {
+		frag0 = "/fragment@0/__overlay__";
+	};
+
+	__fixups__ {
+		audio_pins = "/fragment@0:target:0\0/fragment@1:target:0\0/fragment@2:target:0";
+		audio = "/fragment@3:target:0";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			swap_lr = <0x00>;
+			enable_jack = <0x00>;
+		};
+	};
+};

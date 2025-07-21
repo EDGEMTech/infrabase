@@ -1,0 +1,65 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			gpio_ir_tx_pins@12 {
+				brcm,pins = <0x12>;
+				brcm,function = <0x01>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+
+		__overlay__ {
+
+			gpio-ir-transmitter@12 {
+				compatible = "gpio-ir-tx";
+				pinctrl-names = "default";
+				pinctrl-0 = <0x01>;
+				gpios = <0xffffffff 0x12 0x00>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	__overrides__ {
+		gpio_pin = <0x02 0x6770696f 0x733a3400 0x02 0x7265673a 0x30000000 0x16272 0x636d2c70 0x696e733a 0x30000000 0x17265 0x673a3000>;
+		invert = <0x02 0x6770696f 0x733a3800>;
+	};
+
+	__symbols__ {
+		gpio_ir_tx_pins = "/fragment@0/__overlay__/gpio_ir_tx_pins@12";
+		gpio_ir_tx = "/fragment@1/__overlay__/gpio-ir-transmitter@12";
+	};
+
+	__fixups__ {
+		gpio = "/fragment@0:target:0\0/fragment@1/__overlay__/gpio-ir-transmitter@12:gpios:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@1 {
+
+			__overlay__ {
+
+				gpio-ir-transmitter@12 {
+					pinctrl-0 = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			gpio_pin = <0x00 0x0c 0x16 0x26>;
+			invert = <0x00>;
+		};
+	};
+};

@@ -1,0 +1,178 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			ov7251@60 {
+				compatible = "ovti,ov7251";
+				reg = <0x60>;
+				status = "okay";
+				clocks = <0x01>;
+				clock-names = "xclk";
+				clock-frequency = <0x16e3600>;
+				vdddo-supply = <0x02>;
+				vdda-supply = <0xffffffff>;
+				vddd-supply = <0x03>;
+				rotation = <0x00>;
+				orientation = <0x02>;
+				phandle = <0x06>;
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x04>;
+						clock-lanes = <0x00>;
+						data-lanes = <0x01>;
+						clock-noncontinuous;
+						link-frequencies = <0x00 0x1b2e0200>;
+						phandle = <0x05>;
+					};
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+
+			port {
+
+				endpoint {
+					remote-endpoint = <0x05>;
+					data-lanes = <0x01>;
+					phandle = <0x04>;
+				};
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target-path = "/";
+
+		__overlay__ {
+
+			fixedregulator@1 {
+				compatible = "regulator-fixed";
+				regulator-name = "ov7251_dovdd";
+				regulator-min-microvolt = <0x1b7740>;
+				regulator-max-microvolt = <0x1b7740>;
+				phandle = <0x02>;
+			};
+
+			fixedregulator@2 {
+				compatible = "regulator-fixed";
+				regulator-name = "ov7251_dvdd";
+				regulator-min-microvolt = <0x124f80>;
+				regulator-max-microvolt = <0x124f80>;
+				phandle = <0x03>;
+			};
+
+			ov7251-clk {
+				compatible = "fixed-clock";
+				#clock-cells = <0x00>;
+				clock-frequency = <0x16e3600>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@5 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+			regulator-name = "ov7251_avdd";
+			regulator-min-microvolt = <0x2ab980>;
+			regulator-max-microvolt = <0x2ab980>;
+		};
+	};
+
+	__overrides__ {
+		rotation = [00 00 00 06 72 6f 74 61 74 69 6f 6e 3a 30 00];
+		orientation = [00 00 00 06 6f 72 69 65 6e 74 61 74 69 6f 6e 3a 30 00];
+	};
+
+	__symbols__ {
+		ov7251 = "/fragment@0/__overlay__/ov7251@60";
+		ov7251_0 = "/fragment@0/__overlay__/ov7251@60/port/endpoint";
+		csi1_ep = "/fragment@1/__overlay__/port/endpoint";
+		ov7251_dovdd = "/fragment@3/__overlay__/fixedregulator@1";
+		ov7251_dvdd = "/fragment@3/__overlay__/fixedregulator@2";
+		ov7251_clk = "/fragment@3/__overlay__/ov7251-clk";
+	};
+
+	__fixups__ {
+		i2c_csi_dsi = "/fragment@0:target:0";
+		cam1_reg = "/fragment@0/__overlay__/ov7251@60:vdda-supply:0\0/fragment@5:target:0";
+		csi1 = "/fragment@1:target:0";
+		i2c0if = "/fragment@2:target:0";
+		i2c0mux = "/fragment@4:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@0 {
+
+			__overlay__ {
+
+				ov7251@60 {
+					clocks = <0x00>;
+					vdddo-supply = <0x00>;
+					vddd-supply = <0x00>;
+
+					port {
+
+						endpoint {
+							remote-endpoint = <0x00>;
+						};
+					};
+				};
+			};
+		};
+
+		fragment@1 {
+
+			__overlay__ {
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x00>;
+					};
+				};
+			};
+		};
+
+		__overrides__ {
+			rotation = <0x00>;
+			orientation = <0x00>;
+		};
+	};
+};

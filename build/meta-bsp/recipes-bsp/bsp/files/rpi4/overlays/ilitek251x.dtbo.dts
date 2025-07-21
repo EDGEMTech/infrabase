@@ -1,0 +1,76 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			ili251x_pins {
+				brcm,pins = <0x04>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x02>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			ili251x@41 {
+				compatible = "ilitek,ili251x";
+				reg = <0x41>;
+				pinctrl-names = "default";
+				pinctrl-0 = <0x01>;
+				interrupt-parent = <0xffffffff>;
+				interrupts = <0x04 0x08>;
+				touchscreen-size-x = <0x4000>;
+				touchscreen-size-y = <0x2580>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	__overrides__ {
+		interrupt = [00 00 00 01 62 72 63 6d 2c 70 69 6e 73 3a 30 00 00 00 00 02 69 6e 74 65 72 72 75 70 74 73 3a 30 00];
+		sizex = [00 00 00 02 74 6f 75 63 68 73 63 72 65 65 6e 2d 73 69 7a 65 2d 78 3a 30 00];
+		sizey = [00 00 00 02 74 6f 75 63 68 73 63 72 65 65 6e 2d 73 69 7a 65 2d 79 3a 30 00];
+	};
+
+	__symbols__ {
+		ili251x_pins = "/fragment@0/__overlay__/ili251x_pins";
+		ili251x = "/fragment@1/__overlay__/ili251x@41";
+	};
+
+	__fixups__ {
+		gpio = "/fragment@0:target:0\0/fragment@1/__overlay__/ili251x@41:interrupt-parent:0";
+		i2c1 = "/fragment@1:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@1 {
+
+			__overlay__ {
+
+				ili251x@41 {
+					pinctrl-0 = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			interrupt = <0x00 0x10>;
+			sizex = <0x00>;
+			sizey = <0x00>;
+		};
+	};
+};

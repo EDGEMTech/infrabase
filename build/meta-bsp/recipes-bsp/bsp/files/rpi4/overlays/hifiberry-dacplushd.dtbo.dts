@@ -1,0 +1,109 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+
+			pll_dachd_osc {
+				compatible = "hifiberry,dachd-clk";
+				#clock-cells = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			pcm1792a@4c {
+				compatible = "ti,pcm1792a";
+				#sound-dai-cells = <0x00>;
+				#clock-cells = <0x00>;
+				clocks = <0x01>;
+				reg = <0x4c>;
+				status = "okay";
+			};
+
+			pll@62 {
+				compatible = "hifiberry,dachd-clk";
+				#clock-cells = <0x00>;
+				reg = <0x62>;
+				clocks = <0x01>;
+				status = "okay";
+				common_pll_regs = [02 53 03 00 07 20 0f 00 10 0d 11 1d 12 0d 13 8c 14 8c 15 8c 16 8c 17 8c 18 2a 1c 00 1d 0f 1f 00 2a 00 2c 00 2f 00 30 00 31 00 32 00 34 00 37 00 38 00 39 00 3a 00 3b 01 3e 00 3f 00 40 00 41 00 5a 00 5b 00 95 00 96 00 97 00 98 00 99 00 9a 00 9b 00 a2 00 a3 00 a4 00 b7 92];
+				192k_pll_regs = [1a 0c 1b 35 1e f0 20 09 21 50 2b 02 2d 10 2e 40 33 01 35 22 36 80 3c 22 3d 46];
+				96k_pll_regs = [1a 0c 1b 35 1e f0 20 09 21 50 2b 02 2d 10 2e 40 33 01 35 47 36 00 3c 32 3d 46];
+				48k_pll_regs = [1a 0c 1b 35 1e f0 20 09 21 50 2b 02 2d 10 2e 40 33 01 35 90 36 00 3c 42 3d 46];
+				176k4_pll_regs = [1a 3d 1b 09 1e f3 20 13 21 75 2b 04 2d 11 2e e0 33 02 35 25 36 c0 3c 22 3d 7a];
+				88k2_pll_regs = [1a 3d 1b 09 1e f3 20 13 21 75 2b 04 2d 11 2e e0 33 01 35 4d 36 80 3c 32 3d 7a];
+				44k1_pll_regs = [1a 3d 1b 09 1e f3 20 13 21 75 2b 04 2d 11 2e e0 33 01 35 9d 36 00 3c 42 3d 7a];
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "hifiberry,hifiberry-dacplushd";
+			i2s-controller = <0xffffffff>;
+			clocks = <0x02 0x00>;
+			reset-gpio = <0xffffffff 0x10 0x01>;
+			status = "okay";
+		};
+	};
+
+	__symbols__ {
+		dachd_osc = "/fragment@0/__overlay__/pll_dachd_osc";
+		pll = "/fragment@2/__overlay__/pll@62";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@1:target:0\0/fragment@3/__overlay__:i2s-controller:0";
+		i2c1 = "/fragment@2:target:0";
+		sound = "/fragment@3:target:0";
+		gpio = "/fragment@3/__overlay__:reset-gpio:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+
+				pcm1792a@4c {
+					clocks = <0x00>;
+				};
+
+				pll@62 {
+					clocks = <0x00>;
+				};
+			};
+		};
+
+		fragment@3 {
+
+			__overlay__ {
+				clocks = <0x00>;
+			};
+		};
+	};
+};

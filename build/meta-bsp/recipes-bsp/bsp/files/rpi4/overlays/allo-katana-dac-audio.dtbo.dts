@@ -1,0 +1,116 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#sound-dai-cells = <0x00>;
+			status = "okay";
+
+			port {
+				phandle = <0x03>;
+
+				endpoint {
+					remote-endpoint = <0x01>;
+					bitclock-master = <0x01>;
+					frame-master = <0x01>;
+					dai-format = "i2s";
+					phandle = <0x02>;
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			allo-katana-codec@30 {
+				#sound-dai-cells = <0x00>;
+				compatible = "allo,allo-katana-codec";
+				reg = <0x30>;
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x02>;
+						phandle = <0x01>;
+					};
+				};
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "audio-graph-card";
+			label = "Allo Katana";
+			dais = <0x03>;
+			status = "okay";
+			phandle = <0x04>;
+		};
+	};
+
+	__symbols__ {
+		cpu_port = "/fragment@0/__overlay__/port";
+		cpu_endpoint = "/fragment@0/__overlay__/port/endpoint";
+		codec_endpoint = "/fragment@1/__overlay__/allo-katana-codec@30/port/endpoint";
+		katana_dac = "/fragment@2/__overlay__";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0";
+		i2c1 = "/fragment@1:target:0";
+		sound = "/fragment@2:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@0 {
+
+			__overlay__ {
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x00>;
+						bitclock-master = <0x00>;
+						frame-master = <0x00>;
+					};
+				};
+			};
+		};
+
+		fragment@1 {
+
+			__overlay__ {
+
+				allo-katana-codec@30 {
+
+					port {
+
+						endpoint {
+							remote-endpoint = <0x00>;
+						};
+					};
+				};
+			};
+		};
+
+		fragment@2 {
+
+			__overlay__ {
+				dais = <0x00>;
+			};
+		};
+	};
+};

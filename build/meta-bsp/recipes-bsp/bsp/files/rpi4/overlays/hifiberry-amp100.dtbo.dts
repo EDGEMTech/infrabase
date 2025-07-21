@@ -1,0 +1,102 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+
+			dacpro_osc {
+				compatible = "hifiberry,dacpro-clk";
+				#clock-cells = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			pcm5122@4d {
+				#sound-dai-cells = <0x00>;
+				compatible = "ti,pcm5122";
+				reg = <0x4d>;
+				clocks = <0x01>;
+				AVDD-supply = <0xffffffff>;
+				DVDD-supply = <0xffffffff>;
+				CPVDD-supply = <0xffffffff>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "hifiberry,hifiberry-dacplus";
+			i2s-controller = <0xffffffff>;
+			status = "okay";
+			mute-gpio = <0xffffffff 0x04 0x00>;
+			reset-gpio = <0xffffffff 0x11 0x11>;
+			phandle = <0x02>;
+		};
+	};
+
+	__overrides__ {
+		24db_digital_gain = [00 00 00 02 68 69 66 69 62 65 72 72 79 2c 32 34 64 62 5f 64 69 67 69 74 61 6c 5f 67 61 69 6e 3f 00];
+		slave = [00 00 00 02 68 69 66 69 62 65 72 72 79 2d 64 61 63 70 6c 75 73 2c 73 6c 61 76 65 3f 00];
+		leds_off = <0x02 0x68696669 0x62657272 0x792d6461 0x63706c75 0x732c6c65 0x64735f6f 0x66663f00>;
+		mute_ext_ctl = [00 00 00 02 68 69 66 69 62 65 72 72 79 2d 64 61 63 70 6c 75 73 2c 6d 75 74 65 5f 65 78 74 5f 63 74 6c 3a 30 00];
+		auto_mute = [00 00 00 02 68 69 66 69 62 65 72 72 79 2d 64 61 63 70 6c 75 73 2c 61 75 74 6f 5f 6d 75 74 65 3f 00];
+	};
+
+	__symbols__ {
+		dacpro_osc = "/fragment@0/__overlay__/dacpro_osc";
+		hifiberry_dacplus = "/fragment@3/__overlay__";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@1:target:0\0/fragment@3/__overlay__:i2s-controller:0";
+		i2c1 = "/fragment@2:target:0";
+		vdd_3v3_reg = "/fragment@2/__overlay__/pcm5122@4d:AVDD-supply:0\0/fragment@2/__overlay__/pcm5122@4d:DVDD-supply:0\0/fragment@2/__overlay__/pcm5122@4d:CPVDD-supply:0";
+		sound = "/fragment@3:target:0";
+		gpio = "/fragment@3/__overlay__:mute-gpio:0\0/fragment@3/__overlay__:reset-gpio:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+
+				pcm5122@4d {
+					clocks = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			24db_digital_gain = <0x00>;
+			slave = <0x00>;
+			leds_off = <0x00>;
+			mute_ext_ctl = <0x00>;
+			auto_mute = <0x00>;
+		};
+	};
+};

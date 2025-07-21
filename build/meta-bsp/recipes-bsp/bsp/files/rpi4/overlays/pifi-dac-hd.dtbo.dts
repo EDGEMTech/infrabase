@@ -1,0 +1,79 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			pcm5142@4c {
+				#sound-dai-cells = <0x00>;
+				compatible = "ti,pcm5142";
+				reg = <0x4c>;
+				status = "okay";
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "simple-audio-card";
+			simple-audio-card,name = "PiFi-DAC-HD";
+			status = "okay";
+
+			simple-audio-card,dai-link@1 {
+				format = "i2s";
+
+				cpu {
+					sound-dai = <0xffffffff>;
+				};
+
+				codec {
+					sound-dai = <0x01>;
+				};
+			};
+		};
+	};
+
+	__symbols__ {
+		pcm5142 = "/fragment@1/__overlay__/pcm5142@4c";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@2/__overlay__/simple-audio-card,dai-link@1/cpu:sound-dai:0";
+		i2c1 = "/fragment@1:target:0";
+		sound = "/fragment@2:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+
+				simple-audio-card,dai-link@1 {
+
+					codec {
+						sound-dai = <0x00>;
+					};
+				};
+			};
+		};
+	};
+};

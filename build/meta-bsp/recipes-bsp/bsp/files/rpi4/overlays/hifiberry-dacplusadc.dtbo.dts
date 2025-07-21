@@ -1,0 +1,111 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+
+			dacpro_osc {
+				compatible = "hifiberry,dacpro-clk";
+				#clock-cells = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			pcm5122@4d {
+				#sound-dai-cells = <0x00>;
+				compatible = "ti,pcm5122";
+				reg = <0x4d>;
+				clocks = <0x01>;
+				AVDD-supply = <0xffffffff>;
+				DVDD-supply = <0xffffffff>;
+				CPVDD-supply = <0xffffffff>;
+				status = "okay";
+				phandle = <0x03>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target-path = "/";
+
+		__overlay__ {
+
+			dmic {
+				#sound-dai-cells = <0x00>;
+				compatible = "dmic-codec";
+				num-channels = <0x02>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "hifiberry,hifiberry-dacplusadc";
+			i2s-controller = <0xffffffff>;
+			status = "okay";
+			phandle = <0x02>;
+		};
+	};
+
+	__overrides__ {
+		24db_digital_gain = [00 00 00 02 68 69 66 69 62 65 72 72 79 2c 32 34 64 62 5f 64 69 67 69 74 61 6c 5f 67 61 69 6e 3f 00];
+		slave = <0x02 0x68696669 0x62657272 0x792d6461 0x63706c75 0x73616463 0x2c736c61 0x76653f00>;
+		leds_off = [00 00 00 02 68 69 66 69 62 65 72 72 79 2d 64 61 63 70 6c 75 73 61 64 63 2c 6c 65 64 73 5f 6f 66 66 3f 00];
+	};
+
+	__symbols__ {
+		dacpro_osc = "/fragment@0/__overlay__/dacpro_osc";
+		pcm_codec = "/fragment@2/__overlay__/pcm5122@4d";
+		hifiberry_dacplusadc = "/fragment@4/__overlay__";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@1:target:0\0/fragment@4/__overlay__:i2s-controller:0";
+		i2c1 = "/fragment@2:target:0";
+		vdd_3v3_reg = "/fragment@2/__overlay__/pcm5122@4d:AVDD-supply:0\0/fragment@2/__overlay__/pcm5122@4d:DVDD-supply:0\0/fragment@2/__overlay__/pcm5122@4d:CPVDD-supply:0";
+		sound = "/fragment@4:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+
+				pcm5122@4d {
+					clocks = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			24db_digital_gain = <0x00>;
+			slave = <0x00>;
+			leds_off = <0x00>;
+		};
+	};
+};

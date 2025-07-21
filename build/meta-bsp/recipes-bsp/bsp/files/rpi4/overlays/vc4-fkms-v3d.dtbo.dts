@@ -1,0 +1,88 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			size = <0x10000000>;
+			phandle = <0x01>;
+		};
+	};
+
+	__overrides__ {
+		cma-512 = <0x01 0x73697a65 0x3a303d00 0x20000000>;
+		cma-448 = <0x01 0x73697a65 0x3a303d00 0x1c000000>;
+		cma-384 = <0x01 0x73697a65 0x3a303d00 0x18000000>;
+		cma-320 = <0x01 0x73697a65 0x3a303d00 0x14000000>;
+		cma-256 = <0x01 0x73697a65 0x3a303d00 0x10000000>;
+		cma-192 = <0x01 0x73697a65 0x3a303d00 0xc000000>;
+		cma-128 = <0x01 0x73697a65 0x3a303d00 0x8000000>;
+		cma-96 = <0x01 0x73697a65 0x3a303d00 0x6000000>;
+		cma-64 = <0x01 0x73697a65 0x3a303d00 0x4000000>;
+		cma-size = [00 00 00 01 73 69 7a 65 3a 30 00];
+		cma-default = [00 00 00 00 2d 30 00];
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	__symbols__ {
+		frag0 = "/fragment@0/__overlay__";
+	};
+
+	__fixups__ {
+		cma = "/fragment@0:target:0";
+		fb = "/fragment@1:target:0";
+		firmwarekms = "/fragment@2:target:0";
+		v3d = "/fragment@3:target:0";
+		vc4 = "/fragment@4:target:0";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			cma-512 = <0x00>;
+			cma-448 = <0x00>;
+			cma-384 = <0x00>;
+			cma-320 = <0x00>;
+			cma-256 = <0x00>;
+			cma-192 = <0x00>;
+			cma-128 = <0x00>;
+			cma-96 = <0x00>;
+			cma-64 = <0x00>;
+			cma-size = <0x00>;
+		};
+	};
+};

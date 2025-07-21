@@ -1,0 +1,462 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			abx80x@69 {
+				compatible = "abracon,abx80x";
+				reg = <0x69>;
+				abracon,tc-diode = "standard";
+				abracon,tc-resistor = <0x00>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			ds1307@68 {
+				compatible = "dallas,ds1307";
+				reg = <0x68>;
+				phandle = <0x03>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			ds1339@68 {
+				compatible = "dallas,ds1339";
+				trickle-resistor-ohms = <0x00>;
+				reg = <0x68>;
+				phandle = <0x04>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			ds3231@68 {
+				compatible = "maxim,ds3231";
+				reg = <0x68>;
+				phandle = <0x05>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			mcp7940x@6f {
+				compatible = "microchip,mcp7940x";
+				reg = <0x6f>;
+				phandle = <0x06>;
+			};
+		};
+	};
+
+	fragment@5 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			mcp7941x@6f {
+				compatible = "microchip,mcp7941x";
+				reg = <0x6f>;
+				phandle = <0x07>;
+			};
+		};
+	};
+
+	fragment@6 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			pcf2127@51 {
+				compatible = "nxp,pcf2127";
+				reg = <0x51>;
+			};
+		};
+	};
+
+	fragment@7 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			pcf8523@68 {
+				compatible = "nxp,pcf8523";
+				reg = <0x68>;
+				phandle = <0x08>;
+			};
+		};
+	};
+
+	fragment@8 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			pcf8563@51 {
+				compatible = "nxp,pcf8563";
+				reg = <0x51>;
+				phandle = <0x09>;
+			};
+		};
+	};
+
+	fragment@9 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			m41t62@68 {
+				compatible = "st,m41t62";
+				reg = <0x68>;
+				phandle = <0x0a>;
+			};
+		};
+	};
+
+	fragment@10 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			rv3028@52 {
+				compatible = "microcrystal,rv3028";
+				reg = <0x52>;
+				phandle = <0x0e>;
+			};
+		};
+	};
+
+	fragment@11 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			pcf2129@51 {
+				compatible = "nxp,pcf2129";
+				reg = <0x51>;
+			};
+		};
+	};
+
+	fragment@12 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			pcf85363@51 {
+				compatible = "nxp,pcf85363";
+				reg = <0x51>;
+			};
+		};
+	};
+
+	fragment@13 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			rv1805@69 {
+				compatible = "microcrystal,rv1805";
+				reg = <0x69>;
+				abracon,tc-diode = "standard";
+				abracon,tc-resistor = <0x00>;
+				phandle = <0x0b>;
+			};
+		};
+	};
+
+	fragment@14 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sd3078@32 {
+				compatible = "whwave,sd3078";
+				reg = <0x32>;
+				phandle = <0x10>;
+			};
+		};
+	};
+
+	fragment@15 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			pcf85063@51 {
+				compatible = "nxp,pcf85063";
+				reg = <0x51>;
+			};
+		};
+	};
+
+	fragment@16 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			pcf85063a@51 {
+				compatible = "nxp,pcf85063a";
+				reg = <0x51>;
+			};
+		};
+	};
+
+	fragment@17 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			ds1340@68 {
+				compatible = "dallas,ds1340";
+				trickle-resistor-ohms = <0x00>;
+				reg = <0x68>;
+				phandle = <0x0d>;
+			};
+		};
+	};
+
+	fragment@18 {
+		target = <0x01>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			s35390a@30 {
+				compatible = "ablic,s35390a";
+				reg = <0x30>;
+				phandle = <0x0c>;
+			};
+		};
+	};
+
+	__overrides__ {
+		abx80x = [00 00 00 00 2b 30 00];
+		ds1307 = [00 00 00 00 2b 31 00];
+		ds1339 = [00 00 00 00 2b 32 00];
+		ds1340 = <0x00 0x2b313700>;
+		ds3231 = [00 00 00 00 2b 33 00];
+		mcp7940x = [00 00 00 00 2b 34 00];
+		mcp7941x = [00 00 00 00 2b 35 00];
+		pcf2127 = [00 00 00 00 2b 36 00];
+		pcf8523 = [00 00 00 00 2b 37 00];
+		pcf8563 = [00 00 00 00 2b 38 00];
+		m41t62 = [00 00 00 00 2b 39 00];
+		rv3028 = <0x00 0x2b313000>;
+		pcf2129 = <0x00 0x2b313100>;
+		pcf85363 = <0x00 0x2b313200>;
+		rv1805 = <0x00 0x2b313300>;
+		sd3078 = <0x00 0x2b313400>;
+		pcf85063 = <0x00 0x2b313500>;
+		pcf85063a = <0x00 0x2b313600>;
+		s35390a = <0x00 0x2b313800>;
+		addr = [00 00 00 02 72 65 67 3a 30 00 00 00 00 03 72 65 67 3a 30 00 00 00 00 04 72 65 67 3a 30 00 00 00 00 05 72 65 67 3a 30 00 00 00 00 06 72 65 67 3a 30 00 00 00 00 07 72 65 67 3a 30 00 00 00 00 08 72 65 67 3a 30 00 00 00 00 09 72 65 67 3a 30 00 00 00 00 0a 72 65 67 3a 30 00 00 00 00 0b 72 65 67 3a 30 00 00 00 00 0c 72 65 67 3a 30 00];
+		trickle-diode-type = [00 00 00 02 61 62 72 61 63 6f 6e 2c 74 63 2d 64 69 6f 64 65 00 00 00 00 0b 61 62 72 61 63 6f 6e 2c 74 63 2d 64 69 6f 64 65 00];
+		trickle-resistor-ohms = <0x04 0x74726963 0x6b6c652d 0x72657369 0x73746f72 0x2d6f686d 0x733a3000 0x0d 0x74726963 0x6b6c652d 0x72657369 0x73746f72 0x2d6f686d 0x733a3000 0x02 0x61627261 0x636f6e2c 0x74632d72 0x65736973 0x746f723a 0x30000000 0xe7472 0x69636b6c 0x652d7265 0x73697374 0x6f722d6f 0x686d733a 0x30000000 0xb6162 0x7261636f 0x6e2c7463 0x2d726573 0x6973746f 0x723a3000>;
+		backup-switchover-mode = [00 00 00 0e 62 61 63 6b 75 70 2d 73 77 69 74 63 68 6f 76 65 72 2d 6d 6f 64 65 3a 30 00];
+		wakeup-source = [00 00 00 04 77 61 6b 65 75 70 2d 73 6f 75 72 63 65 3f 00 00 00 00 05 77 61 6b 65 75 70 2d 73 6f 75 72 63 65 3f 00 00 00 00 06 77 61 6b 65 75 70 2d 73 6f 75 72 63 65 3f 00 00 00 00 07 77 61 6b 65 75 70 2d 73 6f 75 72 63 65 3f 00 00 00 00 0a 77 61 6b 65 75 70 2d 73 6f 75 72 63 65 3f 00];
+		i2c0 = [00 00 00 0f 74 61 72 67 65 74 3a 30 3d 00 ff ff ff ff];
+		i2c_csi_dsi = [00 00 00 0f 74 61 72 67 65 74 3a 30 3d 00 ff ff ff ff 00 00 00 00 2b 31 30 31 2b 31 30 32 00];
+	};
+
+	fragment@100 {
+		target = <0xffffffff>;
+		phandle = <0x0f>;
+
+		__overlay__ {
+			status = "okay";
+			phandle = <0x01>;
+		};
+	};
+
+	fragment@101 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+		};
+	};
+
+	fragment@102 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+		};
+	};
+
+	__symbols__ {
+		abx80x = "/fragment@0/__dormant__/abx80x@69";
+		ds1307 = "/fragment@1/__dormant__/ds1307@68";
+		ds1339 = "/fragment@2/__dormant__/ds1339@68";
+		ds3231 = "/fragment@3/__dormant__/ds3231@68";
+		mcp7940x = "/fragment@4/__dormant__/mcp7940x@6f";
+		mcp7941x = "/fragment@5/__dormant__/mcp7941x@6f";
+		pcf8523 = "/fragment@7/__dormant__/pcf8523@68";
+		pcf8563 = "/fragment@8/__dormant__/pcf8563@51";
+		m41t62 = "/fragment@9/__dormant__/m41t62@68";
+		rv3028 = "/fragment@10/__dormant__/rv3028@52";
+		rv1805 = "/fragment@13/__dormant__/rv1805@69";
+		sd3078 = "/fragment@14/__dormant__/sd3078@32";
+		ds1340 = "/fragment@17/__dormant__/ds1340@68";
+		s35390a = "/fragment@18/__dormant__/s35390a@30";
+		frag100 = "/fragment@100";
+		i2cbus = "/fragment@100/__overlay__";
+	};
+
+	__fixups__ {
+		i2c0 = "/__overrides__:i2c0:14";
+		i2c_csi_dsi = "/__overrides__:i2c_csi_dsi:14";
+		i2c_arm = "/fragment@100:target:0";
+		i2c0if = "/fragment@101:target:0";
+		i2c0mux = "/fragment@102:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@0 {
+			target = <0x00>;
+		};
+
+		fragment@1 {
+			target = <0x00>;
+		};
+
+		fragment@2 {
+			target = <0x00>;
+		};
+
+		fragment@3 {
+			target = <0x00>;
+		};
+
+		fragment@4 {
+			target = <0x00>;
+		};
+
+		fragment@5 {
+			target = <0x00>;
+		};
+
+		fragment@6 {
+			target = <0x00>;
+		};
+
+		fragment@7 {
+			target = <0x00>;
+		};
+
+		fragment@8 {
+			target = <0x00>;
+		};
+
+		fragment@9 {
+			target = <0x00>;
+		};
+
+		fragment@10 {
+			target = <0x00>;
+		};
+
+		fragment@11 {
+			target = <0x00>;
+		};
+
+		fragment@12 {
+			target = <0x00>;
+		};
+
+		fragment@13 {
+			target = <0x00>;
+		};
+
+		fragment@14 {
+			target = <0x00>;
+		};
+
+		fragment@15 {
+			target = <0x00>;
+		};
+
+		fragment@16 {
+			target = <0x00>;
+		};
+
+		fragment@17 {
+			target = <0x00>;
+		};
+
+		fragment@18 {
+			target = <0x00>;
+		};
+
+		__overrides__ {
+			addr = <0x00 0x0a 0x14 0x1e 0x28 0x32 0x3c 0x46 0x50 0x5a 0x64>;
+			trickle-diode-type = <0x00 0x15>;
+			trickle-resistor-ohms = <0x00 0x1c 0x38 0x52 0x6e>;
+			backup-switchover-mode = <0x00>;
+			wakeup-source = <0x00 0x13 0x26 0x39 0x4c>;
+			i2c0 = <0x00>;
+			i2c_csi_dsi = <0x00>;
+		};
+	};
+};

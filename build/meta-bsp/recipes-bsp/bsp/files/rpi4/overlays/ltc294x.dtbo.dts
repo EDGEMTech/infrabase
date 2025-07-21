@@ -1,0 +1,105 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			ltc2941@64 {
+				compatible = "lltc,ltc2941";
+				reg = <0x64>;
+				lltc,resistor-sense = <0x32>;
+				lltc,prescaler-exponent = <0x07>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			ltc2942@64 {
+				compatible = "lltc,ltc2942";
+				reg = <0x64>;
+				lltc,resistor-sense = <0x32>;
+				lltc,prescaler-exponent = <0x07>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			ltc2943@64 {
+				compatible = "lltc,ltc2943";
+				reg = <0x64>;
+				lltc,resistor-sense = <0x32>;
+				lltc,prescaler-exponent = <0x07>;
+				phandle = <0x03>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			ltc2944@64 {
+				compatible = "lltc,ltc2944";
+				reg = <0x64>;
+				lltc,resistor-sense = <0x32>;
+				lltc,prescaler-exponent = <0x07>;
+				phandle = <0x04>;
+			};
+		};
+	};
+
+	__overrides__ {
+		ltc2941 = [00 00 00 00 2b 30 00];
+		ltc2942 = [00 00 00 00 2b 31 00];
+		ltc2943 = [00 00 00 00 2b 32 00];
+		ltc2944 = [00 00 00 00 2b 33 00];
+		resistor-sense = <0x01 0x6c6c7463 0x2c726573 0x6973746f 0x722d7365 0x6e73653a 0x30000000 0x26c6c 0x74632c72 0x65736973 0x746f722d 0x73656e73 0x653a3000 0x03 0x6c6c7463 0x2c726573 0x6973746f 0x722d7365 0x6e73653a 0x30000000 0x46c6c 0x74632c72 0x65736973 0x746f722d 0x73656e73 0x653a3000>;
+		prescaler-exponent = <0x01 0x6c6c7463 0x2c707265 0x7363616c 0x65722d65 0x78706f6e 0x656e743a 0x30000000 0x26c6c 0x74632c70 0x72657363 0x616c6572 0x2d657870 0x6f6e656e 0x743a3000 0x03 0x6c6c7463 0x2c707265 0x7363616c 0x65722d65 0x78706f6e 0x656e743a 0x30000000 0x46c6c 0x74632c70 0x72657363 0x616c6572 0x2d657870 0x6f6e656e 0x743a3000>;
+	};
+
+	__symbols__ {
+		ltc2941 = "/fragment@0/__dormant__/ltc2941@64";
+		ltc2942 = "/fragment@1/__dormant__/ltc2942@64";
+		ltc2943 = "/fragment@2/__dormant__/ltc2943@64";
+		ltc2944 = "/fragment@3/__dormant__/ltc2944@64";
+	};
+
+	__fixups__ {
+		i2c_arm = "/fragment@0:target:0\0/fragment@1:target:0\0/fragment@2:target:0\0/fragment@3:target:0";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			resistor-sense = <0x00 0x1a 0x34 0x4e>;
+			prescaler-exponent = <0x00 0x1e 0x3c 0x5a>;
+		};
+	};
+};

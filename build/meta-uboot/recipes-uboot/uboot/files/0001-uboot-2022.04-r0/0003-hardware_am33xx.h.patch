@@ -1,0 +1,10 @@
+--- /var/dev/wayland_lvgl/build/tmp/work/uboot-2022.04-r0/git/arch/arm/include/asm/arch-am33xx/hardware_am33xx.h	2024-03-02 13:32:12.590623897 +0100
++++ ./arch/arm/include/asm/arch-am33xx/hardware_am33xx.h	2024-03-02 10:09:56.758890468 +0100
+@@ -60,6 +60,7 @@
+ 
+ /* RTC base address */
+ #define RTC_BASE			0x44E3E000
++#define RTC_OSC				(RTC_BASE + 0x0054)
+ 
+ /* OTG */
+ #define USB0_OTG_BASE			0x47401000

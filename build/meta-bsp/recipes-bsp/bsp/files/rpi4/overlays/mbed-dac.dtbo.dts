@@ -1,0 +1,79 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			codec@1a {
+				#sound-dai-cells = <0x00>;
+				reg = <0x1a>;
+				compatible = "ti,tlv320aic23";
+				status = "okay";
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "simple-audio-card";
+			i2s-controller = <0xffffffff>;
+			status = "okay";
+			simple-audio-card,name = "mbed-DAC";
+			simple-audio-card,widgets = "Microphone\0Mic Jack\0Line\0Line In\0Headphone\0Headphone Jack";
+			simple-audio-card,routing = "Headphone Jack\0LHPOUT\0Headphone Jack\0RHPOUT\0LLINEIN\0Line In\0RLINEIN\0Line In\0MICIN\0Mic Jack";
+			simple-audio-card,format = "i2s";
+
+			simple-audio-card,cpu {
+				sound-dai = <0xffffffff>;
+			};
+
+			simple-audio-card,codec {
+				sound-dai = <0x01>;
+				system-clock-frequency = <0xbb8000>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	__symbols__ {
+		tlv320aic23 = "/fragment@1/__overlay__/codec@1a";
+		sound_master = "/fragment@2/__overlay__/simple-audio-card,codec";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@2/__overlay__:i2s-controller:0\0/fragment@2/__overlay__/simple-audio-card,cpu:sound-dai:0";
+		i2c1 = "/fragment@1:target:0";
+		sound = "/fragment@2:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+
+				simple-audio-card,codec {
+					sound-dai = <0x00>;
+				};
+			};
+		};
+	};
+};

@@ -1,0 +1,42 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/soc/firmware";
+
+		__overlay__ {
+
+			touchscreen {
+				compatible = "raspberrypi,firmware-ts";
+				touchscreen-size-x = <0x320>;
+				touchscreen-size-y = <0x1e0>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	__overrides__ {
+		touchscreen-size-x = [00 00 00 01 74 6f 75 63 68 73 63 72 65 65 6e 2d 73 69 7a 65 2d 78 3a 30 00];
+		touchscreen-size-y = [00 00 00 01 74 6f 75 63 68 73 63 72 65 65 6e 2d 73 69 7a 65 2d 79 3a 30 00];
+		touchscreen-inverted-x = <0x01 0x746f7563 0x68736372 0x65656e2d 0x696e7665 0x72746564 0x2d783f00>;
+		touchscreen-inverted-y = <0x01 0x746f7563 0x68736372 0x65656e2d 0x696e7665 0x72746564 0x2d793f00>;
+		touchscreen-swapped-x-y = [00 00 00 01 74 6f 75 63 68 73 63 72 65 65 6e 2d 73 77 61 70 70 65 64 2d 78 2d 79 3f 00];
+	};
+
+	__symbols__ {
+		ts = "/fragment@0/__overlay__/touchscreen";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			touchscreen-size-x = <0x00>;
+			touchscreen-size-y = <0x00>;
+			touchscreen-inverted-x = <0x00>;
+			touchscreen-inverted-y = <0x00>;
+			touchscreen-swapped-x-y = <0x00>;
+		};
+	};
+};

@@ -1,0 +1,112 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+
+		__overlay__ {
+
+			codec-reg-1v8 {
+				compatible = "regulator-fixed";
+				regulator-name = "tlv320aic3204_1v8";
+				regulator-min-microvolt = <0x1b7740>;
+				regulator-max-microvolt = <0x1b7740>;
+				regulator-always-on;
+				phandle = <0x02>;
+			};
+
+			codec_osc {
+				compatible = "fixed-clock";
+				#clock-cells = <0x00>;
+				clock-frequency = <0xb71b00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			codec-rst {
+				brcm,pins = <0x1a>;
+				brcm,function = <0x01>;
+				phandle = <0x03>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			tlv320aic32x4@18 {
+				#sound-dai-cells = <0x00>;
+				compatible = "ti,tlv320aic32x4";
+				reg = <0x18>;
+				clocks = <0x01>;
+				clock-names = "mclk";
+				iov-supply = <0xffffffff>;
+				ldoin-supply = <0xffffffff>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				reset-gpios = <0xffffffff 0x1a 0x00>;
+				status = "okay";
+				phandle = <0x04>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "as,audiosense-pi";
+			i2s-controller = <0xffffffff>;
+			status = "okay";
+		};
+	};
+
+	__symbols__ {
+		codec_reg_1v8 = "/fragment@1/__overlay__/codec-reg-1v8";
+		codec_osc = "/fragment@1/__overlay__/codec_osc";
+		codec_rst = "/fragment@2/__overlay__/codec-rst";
+		codec = "/fragment@3/__overlay__/tlv320aic32x4@18";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@4/__overlay__:i2s-controller:0";
+		gpio = "/fragment@2:target:0\0/fragment@3/__overlay__/tlv320aic32x4@18:reset-gpios:0";
+		i2c1 = "/fragment@3:target:0";
+		vdd_3v3_reg = "/fragment@3/__overlay__/tlv320aic32x4@18:iov-supply:0\0/fragment@3/__overlay__/tlv320aic32x4@18:ldoin-supply:0";
+		sound = "/fragment@4:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@3 {
+
+			__overlay__ {
+
+				tlv320aic32x4@18 {
+					clocks = <0x00>;
+				};
+			};
+		};
+	};
+};

@@ -1,0 +1,172 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			pcm5122@4c {
+				#sound-dai-cells = <0x00>;
+				compatible = "ti,pcm5122";
+				reg = <0x4c>;
+				AVDD-supply = <0xffffffff>;
+				DVDD-supply = <0xffffffff>;
+				CPVDD-supply = <0xffffffff>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "iqaudio,iqaudio-dac";
+			i2s-controller = <0xffffffff>;
+			mute-gpios = <0x01 0x00 0x00>;
+			iqaudio-dac,auto-mute-amp;
+			status = "okay";
+			phandle = <0x03>;
+		};
+	};
+
+	fragment@3 {
+		target-path = "/";
+
+		__overlay__ {
+
+			ghost-amp {
+				compatible = "rpi,gpio-fsm";
+				pinctrl-names = "default";
+				pinctrl-0 = <0x02>;
+				debug = <0x00>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				num-swgpios = <0x01>;
+				gpio-line-names = "enable";
+				input-gpios = <0xffffffff 0x05 0x01>;
+				output-gpios = <0xffffffff 0x16 0x00 0xffffffff 0x17 0x00 0xffffffff 0x18 0x00>;
+				shutdown-timeout-ms = <0x3e8>;
+				phandle = <0x01>;
+
+				amp_off {
+					start_state;
+					shutdown_state;
+					set = <0x20001 0x00 0x10001 0x00 0x01 0x00>;
+					amp_on_1 = <0x02 0x01>;
+					fault = <0x00 0x01>;
+				};
+
+				amp_on_1 {
+					set = <0x01 0x01>;
+					amp_on_2 = <0x03 0x3e8>;
+					amp_off = <0x04 0x00>;
+					fault = <0x00 0x01>;
+				};
+
+				amp_on_2 {
+					set = <0x10001 0x01>;
+					amp_on_wait = <0x02 0x00>;
+					amp_on = <0x03 0x01>;
+					fault = <0x00 0x01>;
+				};
+
+				amp_on {
+					set = <0x20001 0x01>;
+					amp_on_wait = <0x02 0x00>;
+					fault = <0x00 0x01>;
+				};
+
+				amp_on_wait {
+					set = <0x20001 0x00>;
+					amp_off_1 = <0x03 0x1b7740 0x04 0x00>;
+					amp_on = <0x02 0x01>;
+					fault = <0x00 0x01>;
+				};
+
+				amp_off_1 {
+					set = <0x10001 0x00>;
+					amp_on = <0x02 0x01>;
+					amp_off = <0x03 0x64>;
+					fault = <0x00 0x01>;
+				};
+
+				fault {
+					set = <0x20001 0x00 0x10001 0x00 0x01 0x00>;
+					amp_off = <0x00 0x00>;
+					shutdown_state;
+				};
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			ghost_amp_pins {
+				brcm,pins = <0x05 0x16 0x17 0x18>;
+				brcm,function = <0x00 0x01 0x01 0x01>;
+				brcm,pull = <0x02 0x00 0x00 0x00>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	__overrides__ {
+		fsm_debug = <0x01 0x64656275 0x673a3000>;
+	};
+
+	__symbols__ {
+		iqaudio_dac = "/fragment@2/__overlay__";
+		amp = "/fragment@3/__overlay__/ghost-amp";
+		ghost_amp_pins = "/fragment@4/__overlay__/ghost_amp_pins";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@2/__overlay__:i2s-controller:0";
+		i2c1 = "/fragment@1:target:0";
+		vdd_3v3_reg = "/fragment@1/__overlay__/pcm5122@4c:AVDD-supply:0\0/fragment@1/__overlay__/pcm5122@4c:DVDD-supply:0\0/fragment@1/__overlay__/pcm5122@4c:CPVDD-supply:0";
+		sound = "/fragment@2:target:0";
+		gpio = "/fragment@3/__overlay__/ghost-amp:input-gpios:0\0/fragment@3/__overlay__/ghost-amp:output-gpios:0\0/fragment@3/__overlay__/ghost-amp:output-gpios:12\0/fragment@3/__overlay__/ghost-amp:output-gpios:24\0/fragment@4:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+				mute-gpios = <0x00>;
+			};
+		};
+
+		fragment@3 {
+
+			__overlay__ {
+
+				ghost-amp {
+					pinctrl-0 = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			fsm_debug = <0x00>;
+		};
+	};
+};

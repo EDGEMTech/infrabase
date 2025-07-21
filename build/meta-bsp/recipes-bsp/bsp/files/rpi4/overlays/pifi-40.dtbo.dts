@@ -1,0 +1,77 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			audio-codec@1a {
+				compatible = "ti,tas5711";
+				reg = <0x1a>;
+				#sound-dai-cells = <0x00>;
+				sound-name-prefix = "Left";
+				status = "okay";
+				phandle = <0x01>;
+			};
+
+			audio-codec@1b {
+				compatible = "ti,tas5711";
+				reg = <0x1b>;
+				#sound-dai-cells = <0x00>;
+				sound-name-prefix = "Right";
+				status = "okay";
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "pifi,pifi-40";
+			audio-codec = <0x01 0x02>;
+			i2s-controller = <0xffffffff>;
+			pdn-gpios = <0xffffffff 0x17 0x01>;
+			status = "okay";
+			phandle = <0x03>;
+		};
+	};
+
+	__symbols__ {
+		tas5711l = "/fragment@1/__overlay__/audio-codec@1a";
+		tas5711r = "/fragment@1/__overlay__/audio-codec@1b";
+		pifi_40 = "/fragment@2/__overlay__";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@2/__overlay__:i2s-controller:0";
+		i2c1 = "/fragment@1:target:0";
+		sound = "/fragment@2:target:0";
+		gpio = "/fragment@2/__overlay__:pdn-gpios:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+				audio-codec = <0x00 0x04>;
+			};
+		};
+	};
+};

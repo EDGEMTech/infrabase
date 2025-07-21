@@ -1,0 +1,72 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			sainsmart18@0 {
+				compatible = "fbtft,sainsmart18";
+				reg = <0x00>;
+				pinctrl-names = "default";
+				spi-max-frequency = <0x2625a00>;
+				rotate = <0x5a>;
+				buswidth = <0x08>;
+				fps = <0x32>;
+				height = <0xa0>;
+				width = <0x80>;
+				reset-gpios = <0xffffffff 0x19 0x01>;
+				dc-gpios = <0xffffffff 0x18 0x00>;
+				debug = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	__overrides__ {
+		speed = <0x01 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000>;
+		rotate = [00 00 00 01 72 6f 74 61 74 65 3a 30 00];
+		fps = [00 00 00 01 66 70 73 3a 30 00];
+		bgr = [00 00 00 01 62 67 72 3f 00];
+		debug = <0x01 0x64656275 0x673a3000>;
+		dc_pin = [00 00 00 01 64 63 2d 67 70 69 6f 73 3a 34 00];
+		reset_pin = [00 00 00 01 72 65 73 65 74 2d 67 70 69 6f 73 3a 34 00];
+	};
+
+	__symbols__ {
+		ss18 = "/fragment@1/__overlay__/sainsmart18@0";
+	};
+
+	__fixups__ {
+		spidev0 = "/fragment@0:target:0";
+		spi0 = "/fragment@1:target:0";
+		gpio = "/fragment@1/__overlay__/sainsmart18@0:reset-gpios:0\0/fragment@1/__overlay__/sainsmart18@0:dc-gpios:0";
+	};
+
+	__local_fixups__ {
+
+		__overrides__ {
+			speed = <0x00>;
+			rotate = <0x00>;
+			fps = <0x00>;
+			bgr = <0x00>;
+			debug = <0x00>;
+			dc_pin = <0x00>;
+			reset_pin = <0x00>;
+		};
+	};
+};

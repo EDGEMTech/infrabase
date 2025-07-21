@@ -1,0 +1,87 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			cs4265@4e {
+				#sound-dai-cells = <0x00>;
+				compatible = "cirrus,cs4265";
+				reg = <0x4e>;
+				reset-gpios = <0xffffffff 0x05 0x00>;
+				status = "okay";
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "simple-audio-card";
+			i2s-controller = <0xffffffff>;
+			status = "okay";
+			simple-audio-card,name = "audioinjector-ultra";
+			simple-audio-card,widgets = "Line\0OUTPUTS\0Line\0INPUTS";
+			simple-audio-card,routing = "OUTPUTS\0LINEOUTL\0OUTPUTS\0LINEOUTR\0OUTPUTS\0SPDIFOUT\0LINEINL\0INPUTS\0LINEINR\0INPUTS\0MICL\0INPUTS\0MICR\0INPUTS";
+			simple-audio-card,format = "i2s";
+			simple-audio-card,bitclock-master = <0x01>;
+			simple-audio-card,frame-master = <0x01>;
+
+			simple-audio-card,cpu {
+				sound-dai = <0xffffffff>;
+				dai-tdm-slot-num = <0x02>;
+				dai-tdm-slot-width = <0x20>;
+			};
+
+			simple-audio-card,codec {
+				sound-dai = <0x02>;
+				system-clock-frequency = <0xbb8000>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	__symbols__ {
+		cs4265 = "/fragment@1/__overlay__/cs4265@4e";
+		sound_master = "/fragment@2/__overlay__/simple-audio-card,codec";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@2/__overlay__:i2s-controller:0\0/fragment@2/__overlay__/simple-audio-card,cpu:sound-dai:0";
+		i2c1 = "/fragment@1:target:0";
+		gpio = "/fragment@1/__overlay__/cs4265@4e:reset-gpios:0";
+		sound = "/fragment@2:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+				simple-audio-card,bitclock-master = <0x00>;
+				simple-audio-card,frame-master = <0x00>;
+
+				simple-audio-card,codec {
+					sound-dai = <0x00>;
+				};
+			};
+		};
+	};
+};

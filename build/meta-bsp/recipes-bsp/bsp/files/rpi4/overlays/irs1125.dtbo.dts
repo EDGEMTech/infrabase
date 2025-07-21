@@ -1,0 +1,149 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			irs1125@3D {
+				compatible = "infineon,irs1125";
+				reg = <0x3d>;
+				status = "okay";
+				pwdn-gpios = <0xffffffff 0x05 0x00>;
+				clocks = <0x01>;
+				phandle = <0x04>;
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x02>;
+						clock-lanes = <0x00>;
+						data-lanes = <0x01 0x02>;
+						clock-noncontinuous;
+						link-frequencies = <0x00 0x11b3dc40>;
+						phandle = <0x03>;
+					};
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+
+			port {
+
+				endpoint {
+					remote-endpoint = <0x03>;
+					data-lanes = <0x01 0x02>;
+					clock-noncontinuous;
+					phandle = <0x02>;
+				};
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@4 {
+		target-path = "/__overrides__";
+
+		__overlay__ {
+			cam0-pwdn-ctrl = [00 00 00 04 70 77 64 6e 2d 67 70 69 6f 73 3a 30 00];
+			cam0-pwdn = [00 00 00 04 70 77 64 6e 2d 67 70 69 6f 73 3a 34 00];
+		};
+	};
+
+	fragment@5 {
+		target-path = "/";
+
+		__overlay__ {
+
+			camera-clk {
+				compatible = "fixed-clock";
+				#clock-cells = <0x00>;
+				clock-frequency = <0x18cba80>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	__symbols__ {
+		irs1125 = "/fragment@0/__overlay__/irs1125@3D";
+		irs1125_0 = "/fragment@0/__overlay__/irs1125@3D/port/endpoint";
+		csi1_ep = "/fragment@1/__overlay__/port/endpoint";
+		irs1125_clk = "/fragment@5/__overlay__/camera-clk";
+	};
+
+	__fixups__ {
+		i2c_csi_dsi = "/fragment@0:target:0";
+		gpio = "/fragment@0/__overlay__/irs1125@3D:pwdn-gpios:0";
+		csi1 = "/fragment@1:target:0";
+		i2c0if = "/fragment@2:target:0";
+		i2c0mux = "/fragment@3:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@0 {
+
+			__overlay__ {
+
+				irs1125@3D {
+					clocks = <0x00>;
+
+					port {
+
+						endpoint {
+							remote-endpoint = <0x00>;
+						};
+					};
+				};
+			};
+		};
+
+		fragment@1 {
+
+			__overlay__ {
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x00>;
+					};
+				};
+			};
+		};
+
+		fragment@4 {
+
+			__overlay__ {
+				cam0-pwdn-ctrl = <0x00>;
+				cam0-pwdn = <0x00>;
+			};
+		};
+	};
+};

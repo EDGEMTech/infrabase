@@ -1,0 +1,251 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			imx290@1a {
+				reg = <0x1a>;
+				status = "okay";
+				clocks = <0x01>;
+				clock-names = "xclk";
+				clock-frequency = <0x2367b88>;
+				rotation = <0x00>;
+				orientation = <0x02>;
+				vdda-supply = <0xffffffff>;
+				vdddo-supply = <0x02>;
+				vddd-supply = <0x03>;
+				phandle = <0x06>;
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x04>;
+						clock-lanes = <0x00>;
+						phandle = <0x05>;
+					};
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+
+			port {
+
+				endpoint {
+					remote-endpoint = <0x05>;
+					phandle = <0x04>;
+				};
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target-path = "/";
+
+		__overlay__ {
+
+			fixedregulator@1 {
+				compatible = "regulator-fixed";
+				regulator-name = "imx290_vdddo";
+				regulator-min-microvolt = <0x1b7740>;
+				regulator-max-microvolt = <0x1b7740>;
+				phandle = <0x02>;
+			};
+
+			fixedregulator@2 {
+				compatible = "regulator-fixed";
+				regulator-name = "imx290_vddd";
+				regulator-min-microvolt = <0x16e360>;
+				regulator-max-microvolt = <0x16e360>;
+				phandle = <0x03>;
+			};
+
+			camera-clk {
+				compatible = "fixed-clock";
+				#clock-cells = <0x00>;
+				clock-frequency = <0x2367b88>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@5 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+			regulator-name = "imx290_vdda";
+			regulator-min-microvolt = <0x2ab980>;
+			regulator-max-microvolt = <0x2ab980>;
+		};
+	};
+
+	fragment@6 {
+		target = <0x05>;
+
+		__overlay__ {
+			data-lanes = <0x01 0x02>;
+			link-frequencies = <0x00 0x1a8dca60 0x00 0x11b3dc40>;
+		};
+	};
+
+	fragment@7 {
+		target = <0x05>;
+
+		__dormant__ {
+			data-lanes = <0x01 0x02 0x03 0x04>;
+			link-frequencies = <0x00 0xd46e530 0x00 0x8d9ee20>;
+		};
+	};
+
+	fragment@8 {
+		target = <0x04>;
+
+		__overlay__ {
+			data-lanes = <0x01 0x02>;
+		};
+	};
+
+	fragment@9 {
+		target = <0x04>;
+
+		__dormant__ {
+			data-lanes = <0x01 0x02 0x03 0x04>;
+		};
+	};
+
+	__overrides__ {
+		4lane = "\0\0\0\0-6+7-8+9";
+		clock-frequency = <0x01 0x636c6f63 0x6b2d6672 0x65717565 0x6e63793a 0x30000000 0x6636c 0x6f636b2d 0x66726571 0x75656e63 0x793a3000>;
+		rotation = [00 00 00 06 72 6f 74 61 74 69 6f 6e 3a 30 00];
+		orientation = [00 00 00 06 6f 72 69 65 6e 74 61 74 69 6f 6e 3a 30 00];
+		mono = "\0\0\0\0-101+102";
+	};
+
+	fragment@101 {
+		target = <0x06>;
+
+		__overlay__ {
+			compatible = "sony,imx290";
+		};
+	};
+
+	fragment@102 {
+		target = <0x06>;
+
+		__dormant__ {
+			compatible = "sony,imx290-mono";
+		};
+	};
+
+	__symbols__ {
+		imx290 = "/fragment@0/__overlay__/imx290@1a";
+		imx290_0 = "/fragment@0/__overlay__/imx290@1a/port/endpoint";
+		csi1_ep = "/fragment@1/__overlay__/port/endpoint";
+		imx290_vdddo = "/fragment@3/__overlay__/fixedregulator@1";
+		imx290_vddd = "/fragment@3/__overlay__/fixedregulator@2";
+		imx290_clk = "/fragment@3/__overlay__/camera-clk";
+	};
+
+	__fixups__ {
+		i2c_csi_dsi = "/fragment@0:target:0";
+		cam1_reg = "/fragment@0/__overlay__/imx290@1a:vdda-supply:0\0/fragment@5:target:0";
+		csi1 = "/fragment@1:target:0";
+		i2c0if = "/fragment@2:target:0";
+		i2c0mux = "/fragment@4:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@0 {
+
+			__overlay__ {
+
+				imx290@1a {
+					clocks = <0x00>;
+					vdddo-supply = <0x00>;
+					vddd-supply = <0x00>;
+
+					port {
+
+						endpoint {
+							remote-endpoint = <0x00>;
+						};
+					};
+				};
+			};
+		};
+
+		fragment@1 {
+
+			__overlay__ {
+
+				port {
+
+					endpoint {
+						remote-endpoint = <0x00>;
+					};
+				};
+			};
+		};
+
+		fragment@6 {
+			target = <0x00>;
+		};
+
+		fragment@7 {
+			target = <0x00>;
+		};
+
+		fragment@8 {
+			target = <0x00>;
+		};
+
+		fragment@9 {
+			target = <0x00>;
+		};
+
+		__overrides__ {
+			clock-frequency = <0x00 0x16>;
+			rotation = <0x00>;
+			orientation = <0x00>;
+		};
+
+		fragment@101 {
+			target = <0x00>;
+		};
+
+		fragment@102 {
+			target = <0x00>;
+		};
+	};
+};

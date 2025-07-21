@@ -1,0 +1,358 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@2 {
+		target-path = "spi1/spidev@0";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@3 {
+		target-path = "spi1/spidev@1";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@4 {
+		target-path = "spi1/spidev@2";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@5 {
+		target-path = "spi2/spidev@0";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@6 {
+		target-path = "spi2/spidev@1";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@7 {
+		target-path = "spi2/spidev@2";
+
+		__dormant__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@8 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			spi_nor@0 {
+				#address-cells = <0x01>;
+				#size-cells = <0x01>;
+				compatible = "jedec,spi-nor";
+				reg = <0x00>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@9 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			spi_nor@1 {
+				#address-cells = <0x01>;
+				#size-cells = <0x01>;
+				compatible = "jedec,spi-nor";
+				reg = <0x01>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@10 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			spi_nor@0 {
+				#address-cells = <0x01>;
+				#size-cells = <0x01>;
+				compatible = "jedec,spi-nor";
+				reg = <0x00>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x03>;
+			};
+		};
+	};
+
+	fragment@11 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			spi_nor@1 {
+				#address-cells = <0x01>;
+				#size-cells = <0x01>;
+				compatible = "jedec,spi-nor";
+				reg = <0x01>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x04>;
+			};
+		};
+	};
+
+	fragment@12 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			spi_nor@2 {
+				#address-cells = <0x01>;
+				#size-cells = <0x01>;
+				compatible = "jedec,spi-nor";
+				reg = <0x02>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x05>;
+			};
+		};
+	};
+
+	fragment@13 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			spi_nor@0 {
+				#address-cells = <0x01>;
+				#size-cells = <0x01>;
+				compatible = "jedec,spi-nor";
+				reg = <0x00>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x06>;
+			};
+		};
+	};
+
+	fragment@14 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			spi_nor@1 {
+				#address-cells = <0x01>;
+				#size-cells = <0x01>;
+				compatible = "jedec,spi-nor";
+				reg = <0x01>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x07>;
+			};
+		};
+	};
+
+	fragment@15 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			spi_nor@2 {
+				#address-cells = <0x01>;
+				#size-cells = <0x01>;
+				compatible = "jedec,spi-nor";
+				reg = <0x02>;
+				spi-max-frequency = <0x7a120>;
+				phandle = <0x08>;
+			};
+		};
+	};
+
+	fragment@16 {
+		target = <0x01>;
+
+		__dormant__ {
+			m25p,fast-read;
+		};
+	};
+
+	fragment@17 {
+		target = <0x02>;
+
+		__dormant__ {
+			m25p,fast-read;
+		};
+	};
+
+	fragment@18 {
+		target = <0x03>;
+
+		__dormant__ {
+			m25p,fast-read;
+		};
+	};
+
+	fragment@19 {
+		target = <0x04>;
+
+		__dormant__ {
+			m25p,fast-read;
+		};
+	};
+
+	fragment@20 {
+		target = <0x05>;
+
+		__dormant__ {
+			m25p,fast-read;
+		};
+	};
+
+	fragment@21 {
+		target = <0x06>;
+
+		__dormant__ {
+			m25p,fast-read;
+		};
+	};
+
+	fragment@22 {
+		target = <0x07>;
+
+		__dormant__ {
+			m25p,fast-read;
+		};
+	};
+
+	fragment@23 {
+		target = <0x08>;
+
+		__dormant__ {
+			m25p,fast-read;
+		};
+	};
+
+	__overrides__ {
+		flash-spi0-0 = [00 00 00 00 2b 30 2b 38 00];
+		flash-spi0-1 = [00 00 00 00 2b 31 2b 39 00];
+		flash-spi1-0 = "\0\0\0\0+2+10";
+		flash-spi1-1 = "\0\0\0\0+3+11";
+		flash-spi1-2 = "\0\0\0\0+4+12";
+		flash-spi2-0 = "\0\0\0\0+5+13";
+		flash-spi2-1 = "\0\0\0\0+6+14";
+		flash-spi2-2 = "\0\0\0\0+7+15";
+		flash-fastr-spi0-0 = "\0\0\0\0+0+8+16";
+		flash-fastr-spi0-1 = "\0\0\0\0+1+9+17";
+		flash-fastr-spi1-0 = "\0\0\0\0+2+10+18";
+		flash-fastr-spi1-1 = "\0\0\0\0+3+11+19";
+		flash-fastr-spi1-2 = "\0\0\0\0+4+12+20";
+		flash-fastr-spi2-0 = "\0\0\0\0+5+13+21";
+		flash-fastr-spi2-1 = "\0\0\0\0+6+14+22";
+		flash-fastr-spi2-2 = "\0\0\0\0+7+15+23";
+	};
+
+	__symbols__ {
+		spi_nor_00 = "/fragment@8/__dormant__/spi_nor@0";
+		spi_nor_01 = "/fragment@9/__dormant__/spi_nor@1";
+		spi_nor_10 = "/fragment@10/__dormant__/spi_nor@0";
+		spi_nor_11 = "/fragment@11/__dormant__/spi_nor@1";
+		spi_nor_12 = "/fragment@12/__dormant__/spi_nor@2";
+		spi_nor_20 = "/fragment@13/__dormant__/spi_nor@0";
+		spi_nor_21 = "/fragment@14/__dormant__/spi_nor@1";
+		spi_nor_22 = "/fragment@15/__dormant__/spi_nor@2";
+	};
+
+	__fixups__ {
+		spidev0 = "/fragment@0:target:0";
+		spidev1 = "/fragment@1:target:0";
+		spi0 = "/fragment@8:target:0\0/fragment@9:target:0";
+		spi1 = "/fragment@10:target:0\0/fragment@11:target:0\0/fragment@12:target:0";
+		spi2 = "/fragment@13:target:0\0/fragment@14:target:0\0/fragment@15:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@16 {
+			target = <0x00>;
+		};
+
+		fragment@17 {
+			target = <0x00>;
+		};
+
+		fragment@18 {
+			target = <0x00>;
+		};
+
+		fragment@19 {
+			target = <0x00>;
+		};
+
+		fragment@20 {
+			target = <0x00>;
+		};
+
+		fragment@21 {
+			target = <0x00>;
+		};
+
+		fragment@22 {
+			target = <0x00>;
+		};
+
+		fragment@23 {
+			target = <0x00>;
+		};
+	};
+};

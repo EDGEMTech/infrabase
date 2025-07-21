@@ -1,0 +1,94 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+
+		__overlay__ {
+
+			codec-mclk {
+				compatible = "fixed-clock";
+				#clock-cells = <0x00>;
+				clock-frequency = <0x1770000>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+			status = "okay";
+
+			cs4271@10 {
+				#sound-dai-cells = <0x00>;
+				compatible = "cirrus,cs4271";
+				reg = <0x10>;
+				reset-gpio = <0xffffffff 0x05 0x00>;
+				clocks = <0x01>;
+				clock-names = "mclk";
+				status = "okay";
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			compatible = "ai,audioinjector-isolated-soundcard";
+			mute-gpios = <0xffffffff 0x11 0x00>;
+			i2s-controller = <0xffffffff>;
+			codec = <0x02>;
+			status = "okay";
+			phandle = <0x03>;
+		};
+	};
+
+	__symbols__ {
+		cs4272_mclk = "/fragment@1/__overlay__/codec-mclk";
+		cs4272 = "/fragment@2/__overlay__/cs4271@10";
+		snd = "/fragment@3/__overlay__";
+	};
+
+	__fixups__ {
+		i2s = "/fragment@0:target:0\0/fragment@3/__overlay__:i2s-controller:0";
+		i2c1 = "/fragment@2:target:0";
+		gpio = "/fragment@2/__overlay__/cs4271@10:reset-gpio:0\0/fragment@3/__overlay__:mute-gpios:0";
+		sound = "/fragment@3:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+
+				cs4271@10 {
+					clocks = <0x00>;
+				};
+			};
+		};
+
+		fragment@3 {
+
+			__overlay__ {
+				codec = <0x00>;
+			};
+		};
+	};
+};

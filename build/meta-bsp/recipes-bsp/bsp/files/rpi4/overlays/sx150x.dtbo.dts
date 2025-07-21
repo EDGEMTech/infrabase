@@ -1,0 +1,2171 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			status = "okay";
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1501q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1501q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x03>;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1501q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x05>;
+			};
+		};
+	};
+
+	fragment@5 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1501q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x07>;
+			};
+		};
+	};
+
+	fragment@6 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1502q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x09>;
+			};
+		};
+	};
+
+	fragment@7 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1502q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x0a>;
+			};
+		};
+	};
+
+	fragment@8 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1502q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x0b>;
+			};
+		};
+	};
+
+	fragment@9 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1502q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x0c>;
+			};
+		};
+	};
+
+	fragment@10 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1503q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x0d>;
+			};
+		};
+	};
+
+	fragment@11 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1503q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x0e>;
+			};
+		};
+	};
+
+	fragment@12 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1504q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x0f>;
+			};
+		};
+	};
+
+	fragment@13 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1504q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x10>;
+			};
+		};
+	};
+
+	fragment@14 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1504q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x11>;
+			};
+		};
+	};
+
+	fragment@15 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1504q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x12>;
+			};
+		};
+	};
+
+	fragment@16 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1505q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x13>;
+			};
+		};
+	};
+
+	fragment@17 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1505q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x14>;
+			};
+		};
+	};
+
+	fragment@18 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1505q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x15>;
+			};
+		};
+	};
+
+	fragment@19 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1505q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x16>;
+			};
+		};
+	};
+
+	fragment@20 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1506q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x17>;
+			};
+		};
+	};
+
+	fragment@21 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1506q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x18>;
+			};
+		};
+	};
+
+	fragment@22 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@3E {
+				compatible = "semtech,sx1507q";
+				reg = <0x3e>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x19>;
+			};
+		};
+	};
+
+	fragment@23 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@3E {
+				compatible = "semtech,sx1507q";
+				reg = <0x3e>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x1b>;
+			};
+		};
+	};
+
+	fragment@24 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@3F {
+				compatible = "semtech,sx1507q";
+				reg = <0x3f>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x1d>;
+			};
+		};
+	};
+
+	fragment@25 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@3F {
+				compatible = "semtech,sx1507q";
+				reg = <0x3f>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x1f>;
+			};
+		};
+	};
+
+	fragment@26 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@70 {
+				compatible = "semtech,sx1507q";
+				reg = <0x70>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x21>;
+			};
+		};
+	};
+
+	fragment@27 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@70 {
+				compatible = "semtech,sx1507q";
+				reg = <0x70>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x23>;
+			};
+		};
+	};
+
+	fragment@28 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@71 {
+				compatible = "semtech,sx1507q";
+				reg = <0x71>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x24>;
+			};
+		};
+	};
+
+	fragment@29 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@71 {
+				compatible = "semtech,sx1507q";
+				reg = <0x71>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x26>;
+			};
+		};
+	};
+
+	fragment@30 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1508q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x28>;
+			};
+		};
+	};
+
+	fragment@31 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@20 {
+				compatible = "semtech,sx1508q";
+				reg = <0x20>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x29>;
+			};
+		};
+	};
+
+	fragment@32 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1508q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x2a>;
+			};
+		};
+	};
+
+	fragment@33 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@21 {
+				compatible = "semtech,sx1508q";
+				reg = <0x21>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x2b>;
+			};
+		};
+	};
+
+	fragment@34 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@22 {
+				compatible = "semtech,sx1508q";
+				reg = <0x22>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x2c>;
+			};
+		};
+	};
+
+	fragment@35 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@22 {
+				compatible = "semtech,sx1508q";
+				reg = <0x22>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x2e>;
+			};
+		};
+	};
+
+	fragment@36 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@23 {
+				compatible = "semtech,sx1508q";
+				reg = <0x23>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x30>;
+			};
+		};
+	};
+
+	fragment@37 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@23 {
+				compatible = "semtech,sx1508q";
+				reg = <0x23>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x32>;
+			};
+		};
+	};
+
+	fragment@38 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@3E {
+				compatible = "semtech,sx1509q";
+				reg = <0x3e>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x34>;
+			};
+		};
+	};
+
+	fragment@39 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@3E {
+				compatible = "semtech,sx1509q";
+				reg = <0x3e>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x35>;
+			};
+		};
+	};
+
+	fragment@40 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@3F {
+				compatible = "semtech,sx1509q";
+				reg = <0x3f>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x36>;
+			};
+		};
+	};
+
+	fragment@41 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@3F {
+				compatible = "semtech,sx1509q";
+				reg = <0x3f>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x37>;
+			};
+		};
+	};
+
+	fragment@42 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@70 {
+				compatible = "semtech,sx1509q";
+				reg = <0x70>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x38>;
+			};
+		};
+	};
+
+	fragment@43 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@70 {
+				compatible = "semtech,sx1509q";
+				reg = <0x70>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x3a>;
+			};
+		};
+	};
+
+	fragment@44 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@71 {
+				compatible = "semtech,sx1509q";
+				reg = <0x71>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x3b>;
+			};
+		};
+	};
+
+	fragment@45 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			sx150x@71 {
+				compatible = "semtech,sx1509q";
+				reg = <0x71>;
+				gpio-controller;
+				#gpio-cells = <0x02>;
+				#interrupt-cells = <0x02>;
+				interrupts = <0x19 0x02>;
+				status = "okay";
+				phandle = <0x3c>;
+			};
+		};
+	};
+
+	fragment@46 {
+		target = <0x01>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x02>;
+		};
+	};
+
+	fragment@47 {
+		target = <0x03>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x04>;
+		};
+	};
+
+	fragment@48 {
+		target = <0x05>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x06>;
+		};
+	};
+
+	fragment@49 {
+		target = <0x07>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x08>;
+		};
+	};
+
+	fragment@50 {
+		target = <0x09>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x02>;
+		};
+	};
+
+	fragment@51 {
+		target = <0x0a>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x04>;
+		};
+	};
+
+	fragment@52 {
+		target = <0x0b>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x06>;
+		};
+	};
+
+	fragment@53 {
+		target = <0x0c>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x08>;
+		};
+	};
+
+	fragment@54 {
+		target = <0x0d>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x02>;
+		};
+	};
+
+	fragment@55 {
+		target = <0x0e>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x04>;
+		};
+	};
+
+	fragment@56 {
+		target = <0x0f>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x02>;
+		};
+	};
+
+	fragment@57 {
+		target = <0x10>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x04>;
+		};
+	};
+
+	fragment@58 {
+		target = <0x11>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x06>;
+		};
+	};
+
+	fragment@59 {
+		target = <0x12>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x08>;
+		};
+	};
+
+	fragment@60 {
+		target = <0x13>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x02>;
+		};
+	};
+
+	fragment@61 {
+		target = <0x14>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x04>;
+		};
+	};
+
+	fragment@62 {
+		target = <0x15>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x06>;
+		};
+	};
+
+	fragment@63 {
+		target = <0x16>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x08>;
+		};
+	};
+
+	fragment@64 {
+		target = <0x17>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x02>;
+		};
+	};
+
+	fragment@65 {
+		target = <0x18>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x04>;
+		};
+	};
+
+	fragment@66 {
+		target = <0x19>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x1a>;
+		};
+	};
+
+	fragment@67 {
+		target = <0x1b>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x1c>;
+		};
+	};
+
+	fragment@68 {
+		target = <0x1d>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x1e>;
+		};
+	};
+
+	fragment@69 {
+		target = <0x1f>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x20>;
+		};
+	};
+
+	fragment@70 {
+		target = <0x21>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x22>;
+		};
+	};
+
+	fragment@71 {
+		target = <0x23>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x22>;
+		};
+	};
+
+	fragment@72 {
+		target = <0x24>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x25>;
+		};
+	};
+
+	fragment@73 {
+		target = <0x26>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x27>;
+		};
+	};
+
+	fragment@74 {
+		target = <0x28>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x02>;
+		};
+	};
+
+	fragment@75 {
+		target = <0x29>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x04>;
+		};
+	};
+
+	fragment@76 {
+		target = <0x2a>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x06>;
+		};
+	};
+
+	fragment@77 {
+		target = <0x2b>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x08>;
+		};
+	};
+
+	fragment@78 {
+		target = <0x2c>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x2d>;
+		};
+	};
+
+	fragment@79 {
+		target = <0x2e>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x2f>;
+		};
+	};
+
+	fragment@80 {
+		target = <0x30>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x31>;
+		};
+	};
+
+	fragment@81 {
+		target = <0x32>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x33>;
+		};
+	};
+
+	fragment@82 {
+		target = <0x34>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x1a>;
+		};
+	};
+
+	fragment@83 {
+		target = <0x35>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x1c>;
+		};
+	};
+
+	fragment@84 {
+		target = <0x36>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x1e>;
+		};
+	};
+
+	fragment@85 {
+		target = <0x37>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x20>;
+		};
+	};
+
+	fragment@86 {
+		target = <0x38>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x39>;
+		};
+	};
+
+	fragment@87 {
+		target = <0x3a>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x22>;
+		};
+	};
+
+	fragment@88 {
+		target = <0x3b>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x25>;
+		};
+	};
+
+	fragment@89 {
+		target = <0x3c>;
+
+		__dormant__ {
+			interrupt-parent = <0xffffffff>;
+			interrupt-controller;
+			pinctrl-names = "default";
+			pinctrl-0 = <0x27>;
+		};
+	};
+
+	fragment@90 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_0_20_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	fragment@91 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_1_20_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x04>;
+			};
+		};
+	};
+
+	fragment@92 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_0_21_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x06>;
+			};
+		};
+	};
+
+	fragment@93 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_1_21_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x08>;
+			};
+		};
+	};
+
+	fragment@94 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_0_22_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x2d>;
+			};
+		};
+	};
+
+	fragment@95 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_1_22_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x2f>;
+			};
+		};
+	};
+
+	fragment@96 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_0_23_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x31>;
+			};
+		};
+	};
+
+	fragment@97 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_1_23_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x33>;
+			};
+		};
+	};
+
+	fragment@98 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_0_3E_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x1a>;
+			};
+		};
+	};
+
+	fragment@99 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_1_3E_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x1c>;
+			};
+		};
+	};
+
+	fragment@100 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_0_3F_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x1e>;
+			};
+		};
+	};
+
+	fragment@101 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_1_3F_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x20>;
+			};
+		};
+	};
+
+	fragment@102 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_0_70_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x39>;
+			};
+		};
+	};
+
+	fragment@103 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_1_70_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x22>;
+			};
+		};
+	};
+
+	fragment@104 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_0_71_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x25>;
+			};
+		};
+	};
+
+	fragment@105 {
+		target = <0xffffffff>;
+
+		__dormant__ {
+
+			sx150x_1_71_pins {
+				brcm,pins = <0x00>;
+				brcm,function = <0x00>;
+				brcm,pull = <0x00>;
+				phandle = <0x27>;
+			};
+		};
+	};
+
+	__overrides__ {
+		sx1501-0-20 = [00 00 00 00 2b 30 2b 32 00];
+		sx1501-1-20 = [00 00 00 00 2b 31 2b 33 00];
+		sx1501-0-21 = [00 00 00 00 2b 30 2b 34 00];
+		sx1501-1-21 = [00 00 00 00 2b 31 2b 35 00];
+		sx1502-0-20 = [00 00 00 00 2b 30 2b 36 00];
+		sx1502-1-20 = [00 00 00 00 2b 31 2b 37 00];
+		sx1502-0-21 = [00 00 00 00 2b 30 2b 38 00];
+		sx1502-1-21 = [00 00 00 00 2b 31 2b 39 00];
+		sx1503-0-20 = "\0\0\0\0+0+10";
+		sx1503-1-20 = "\0\0\0\0+1+11";
+		sx1504-0-20 = "\0\0\0\0+0+12";
+		sx1504-1-20 = "\0\0\0\0+1+13";
+		sx1504-0-21 = "\0\0\0\0+0+14";
+		sx1504-1-21 = "\0\0\0\0+1+15";
+		sx1505-0-20 = "\0\0\0\0+0+16";
+		sx1505-1-20 = "\0\0\0\0+1+17";
+		sx1505-0-21 = "\0\0\0\0+0+18";
+		sx1505-1-21 = "\0\0\0\0+1+19";
+		sx1506-0-20 = "\0\0\0\0+0+20";
+		sx1506-1-20 = "\0\0\0\0+1+21";
+		sx1507-0-3E = "\0\0\0\0+0+22";
+		sx1507-1-3E = "\0\0\0\0+1+23";
+		sx1507-0-3F = "\0\0\0\0+0+24";
+		sx1507-1-3F = "\0\0\0\0+1+25";
+		sx1507-0-70 = "\0\0\0\0+0+26";
+		sx1507-1-70 = "\0\0\0\0+1+27";
+		sx1507-0-71 = "\0\0\0\0+0+28";
+		sx1507-1-71 = "\0\0\0\0+1+29";
+		sx1508-0-20 = "\0\0\0\0+0+30";
+		sx1508-1-20 = "\0\0\0\0+1+31";
+		sx1508-0-21 = "\0\0\0\0+0+32";
+		sx1508-1-21 = "\0\0\0\0+1+33";
+		sx1508-0-22 = "\0\0\0\0+0+34";
+		sx1508-1-22 = "\0\0\0\0+1+35";
+		sx1508-0-23 = "\0\0\0\0+0+36";
+		sx1508-1-23 = "\0\0\0\0+1+37";
+		sx1509-0-3E = "\0\0\0\0+0+38";
+		sx1509-1-3E = "\0\0\0\0+1+39";
+		sx1509-0-3F = "\0\0\0\0+0+40";
+		sx1509-1-3F = "\0\0\0\0+1+41";
+		sx1509-0-70 = "\0\0\0\0+0+42";
+		sx1509-1-70 = "\0\0\0\0+1+43";
+		sx1509-0-71 = "\0\0\0\0+0+44";
+		sx1509-1-71 = "\0\0\0\0+1+45";
+		sx1501-0-20-int-gpio = <0x00 0x2b34362b 0x39300000 0x262 0x72636d2c 0x70696e73 0x3a300000 0x169 0x6e746572 0x72757074 0x733a3000>;
+		sx1501-1-20-int-gpio = <0x00 0x2b34372b 0x39310000 0x462 0x72636d2c 0x70696e73 0x3a300000 0x369 0x6e746572 0x72757074 0x733a3000>;
+		sx1501-0-21-int-gpio = <0x00 0x2b34382b 0x39320000 0x662 0x72636d2c 0x70696e73 0x3a300000 0x569 0x6e746572 0x72757074 0x733a3000>;
+		sx1501-1-21-int-gpio = "\0\0\0\0+49+93\0\0\0\0\bbrcm,pins:0\0\0\0\0\ainterrupts:0";
+		sx1502-0-20-int-gpio = <0x00 0x2b35302b 0x39300000 0x262 0x72636d2c 0x70696e73 0x3a300000 0x969 0x6e746572 0x72757074 0x733a3000>;
+		sx1502-1-20-int-gpio = <0x00 0x2b35312b 0x39310000 0x462 0x72636d2c 0x70696e73 0x3a300000 0xa69 0x6e746572 0x72757074 0x733a3000>;
+		sx1502-0-21-int-gpio = <0x00 0x2b35322b 0x39320000 0x662 0x72636d2c 0x70696e73 0x3a300000 0xb69 0x6e746572 0x72757074 0x733a3000>;
+		sx1502-1-21-int-gpio = "\0\0\0\0+53+93\0\0\0\0\bbrcm,pins:0\0\0\0\0\finterrupts:0";
+		sx1503-0-20-int-gpio = <0x00 0x2b35342b 0x39300000 0x262 0x72636d2c 0x70696e73 0x3a300000 0xd69 0x6e746572 0x72757074 0x733a3000>;
+		sx1503-1-20-int-gpio = <0x00 0x2b35352b 0x39310000 0x462 0x72636d2c 0x70696e73 0x3a300000 0xe69 0x6e746572 0x72757074 0x733a3000>;
+		sx1504-0-20-int-gpio = <0x00 0x2b35362b 0x39300000 0x262 0x72636d2c 0x70696e73 0x3a300000 0xf69 0x6e746572 0x72757074 0x733a3000>;
+		sx1504-1-20-int-gpio = <0x00 0x2b35372b 0x39310000 0x462 0x72636d2c 0x70696e73 0x3a300000 0x1069 0x6e746572 0x72757074 0x733a3000>;
+		sx1504-0-21-int-gpio = <0x00 0x2b35382b 0x39320000 0x662 0x72636d2c 0x70696e73 0x3a300000 0x1169 0x6e746572 0x72757074 0x733a3000>;
+		sx1504-1-21-int-gpio = <0x00 0x2b35392b 0x39330000 0x862 0x72636d2c 0x70696e73 0x3a300000 0x1269 0x6e746572 0x72757074 0x733a3000>;
+		sx1505-0-20-int-gpio = <0x00 0x2b36302b 0x39300000 0x262 0x72636d2c 0x70696e73 0x3a300000 0x1369 0x6e746572 0x72757074 0x733a3000>;
+		sx1505-1-20-int-gpio = <0x00 0x2b36312b 0x39310000 0x462 0x72636d2c 0x70696e73 0x3a300000 0x1469 0x6e746572 0x72757074 0x733a3000>;
+		sx1505-0-21-int-gpio = <0x00 0x2b36322b 0x39320000 0x662 0x72636d2c 0x70696e73 0x3a300000 0x1569 0x6e746572 0x72757074 0x733a3000>;
+		sx1505-1-21-int-gpio = <0x00 0x2b36332b 0x39330000 0x862 0x72636d2c 0x70696e73 0x3a300000 0x1669 0x6e746572 0x72757074 0x733a3000>;
+		sx1506-0-20-int-gpio = <0x00 0x2b36342b 0x39300000 0x262 0x72636d2c 0x70696e73 0x3a300000 0x1769 0x6e746572 0x72757074 0x733a3000>;
+		sx1506-1-20-int-gpio = <0x00 0x2b36352b 0x39310000 0x462 0x72636d2c 0x70696e73 0x3a300000 0x1869 0x6e746572 0x72757074 0x733a3000>;
+		sx1507-0-3E-int-gpio = <0x00 0x2b36362b 0x39380000 0x1a62 0x72636d2c 0x70696e73 0x3a300000 0x1969 0x6e746572 0x72757074 0x733a3000>;
+		sx1507-1-3E-int-gpio = <0x00 0x2b36372b 0x39390000 0x1c62 0x72636d2c 0x70696e73 0x3a300000 0x1b69 0x6e746572 0x72757074 0x733a3000>;
+		sx1507-0-3F-int-gpio = [00 00 00 00 2b 36 38 2b 31 30 30 00 00 00 00 1e 62 72 63 6d 2c 70 69 6e 73 3a 30 00 00 00 00 1d 69 6e 74 65 72 72 75 70 74 73 3a 30 00];
+		sx1507-1-3F-int-gpio = [00 00 00 00 2b 36 39 2b 31 30 31 00 00 00 00 20 62 72 63 6d 2c 70 69 6e 73 3a 30 00 00 00 00 1f 69 6e 74 65 72 72 75 70 74 73 3a 30 00];
+		sx1507-0-70-int-gpio = "\0\0\0\0+60+102\0\0\0\09brcm,pins:0\0\0\0\0!interrupts:0";
+		sx1507-1-70-int-gpio = "\0\0\0\0+71+103\0\0\0\0\"brcm,pins:0\0\0\0\0#interrupts:0";
+		sx1507-0-71-int-gpio = "\0\0\0\0+72+104\0\0\0\0%brcm,pins:0\0\0\0\0$interrupts:0";
+		sx1507-1-71-int-gpio = "\0\0\0\0+73+105\0\0\0\0'brcm,pins:0\0\0\0\0&interrupts:0";
+		sx1508-0-20-int-gpio = <0x00 0x2b37342b 0x39300000 0x262 0x72636d2c 0x70696e73 0x3a300000 0x2869 0x6e746572 0x72757074 0x733a3000>;
+		sx1508-1-20-int-gpio = <0x00 0x2b37352b 0x39310000 0x462 0x72636d2c 0x70696e73 0x3a300000 0x2969 0x6e746572 0x72757074 0x733a3000>;
+		sx1508-0-21-int-gpio = <0x00 0x2b37362b 0x39320000 0x662 0x72636d2c 0x70696e73 0x3a300000 0x2a69 0x6e746572 0x72757074 0x733a3000>;
+		sx1508-1-21-int-gpio = "\0\0\0\0+77+93\0\0\0\0\bbrcm,pins:0\0\0\0\0+interrupts:0";
+		sx1508-0-22-int-gpio = "\0\0\0\0+78+94\0\0\0\0-brcm,pins:0\0\0\0\0,interrupts:0";
+		sx1508-1-22-int-gpio = "\0\0\0\0+79+95\0\0\0\0/brcm,pins:0\0\0\0\0.interrupts:0";
+		sx1508-0-23-int-gpio = "\0\0\0\0+80+96\0\0\0\01brcm,pins:0\0\0\0\00interrupts:0";
+		sx1508-1-23-int-gpio = "\0\0\0\0+81+97\0\0\0\03brcm,pins:0\0\0\0\02interrupts:0";
+		sx1509-0-3E-int-gpio = <0x00 0x2b38322b 0x39380000 0x1a62 0x72636d2c 0x70696e73 0x3a300000 0x3469 0x6e746572 0x72757074 0x733a3000>;
+		sx1509-1-3E-int-gpio = <0x00 0x2b38332b 0x39390000 0x1c62 0x72636d2c 0x70696e73 0x3a300000 0x3569 0x6e746572 0x72757074 0x733a3000>;
+		sx1509-0-3F-int-gpio = [00 00 00 00 2b 38 34 2b 31 30 30 00 00 00 00 1e 62 72 63 6d 2c 70 69 6e 73 3a 30 00 00 00 00 36 69 6e 74 65 72 72 75 70 74 73 3a 30 00];
+		sx1509-1-3F-int-gpio = "\0\0\0\0+85+101\0\0\0\0 brcm,pins:0\0\0\0\07interrupts:0";
+		sx1509-0-70-int-gpio = "\0\0\0\0+86+102\0\0\0\09brcm,pins:0\0\0\0\08interrupts:0";
+		sx1509-1-70-int-gpio = "\0\0\0\0+87+103\0\0\0\0\"brcm,pins:0\0\0\0\0:interrupts:0";
+		sx1509-0-71-int-gpio = "\0\0\0\0+88+104\0\0\0\0%brcm,pins:0\0\0\0\0;interrupts:0";
+		sx1509-1-71-int-gpio = "\0\0\0\0+89+105\0\0\0\0'brcm,pins:0\0\0\0\0<interrupts:0";
+	};
+
+	__symbols__ {
+		sx1501_0_20 = "/fragment@2/__dormant__/sx150x@20";
+		sx1501_1_20 = "/fragment@3/__dormant__/sx150x@20";
+		sx1501_0_21 = "/fragment@4/__dormant__/sx150x@21";
+		sx1501_1_21 = "/fragment@5/__dormant__/sx150x@21";
+		sx1502_0_20 = "/fragment@6/__dormant__/sx150x@20";
+		sx1502_1_20 = "/fragment@7/__dormant__/sx150x@20";
+		sx1502_0_21 = "/fragment@8/__dormant__/sx150x@21";
+		sx1502_1_21 = "/fragment@9/__dormant__/sx150x@21";
+		sx1503_0_20 = "/fragment@10/__dormant__/sx150x@20";
+		sx1503_1_20 = "/fragment@11/__dormant__/sx150x@20";
+		sx1504_0_20 = "/fragment@12/__dormant__/sx150x@20";
+		sx1504_1_20 = "/fragment@13/__dormant__/sx150x@20";
+		sx1504_0_21 = "/fragment@14/__dormant__/sx150x@21";
+		sx1504_1_21 = "/fragment@15/__dormant__/sx150x@21";
+		sx1505_0_20 = "/fragment@16/__dormant__/sx150x@20";
+		sx1505_1_20 = "/fragment@17/__dormant__/sx150x@20";
+		sx1505_0_21 = "/fragment@18/__dormant__/sx150x@21";
+		sx1505_1_21 = "/fragment@19/__dormant__/sx150x@21";
+		sx1506_0_20 = "/fragment@20/__dormant__/sx150x@20";
+		sx1506_1_20 = "/fragment@21/__dormant__/sx150x@20";
+		sx1507_0_3E = "/fragment@22/__dormant__/sx150x@3E";
+		sx1507_1_3E = "/fragment@23/__dormant__/sx150x@3E";
+		sx1507_0_3F = "/fragment@24/__dormant__/sx150x@3F";
+		sx1507_1_3F = "/fragment@25/__dormant__/sx150x@3F";
+		sx1507_0_70 = "/fragment@26/__dormant__/sx150x@70";
+		sx1507_1_70 = "/fragment@27/__dormant__/sx150x@70";
+		sx1507_0_71 = "/fragment@28/__dormant__/sx150x@71";
+		sx1507_1_71 = "/fragment@29/__dormant__/sx150x@71";
+		sx1508_0_20 = "/fragment@30/__dormant__/sx150x@20";
+		sx1508_1_20 = "/fragment@31/__dormant__/sx150x@20";
+		sx1508_0_21 = "/fragment@32/__dormant__/sx150x@21";
+		sx1508_1_21 = "/fragment@33/__dormant__/sx150x@21";
+		sx1508_0_22 = "/fragment@34/__dormant__/sx150x@22";
+		sx1508_1_22 = "/fragment@35/__dormant__/sx150x@22";
+		sx1508_0_23 = "/fragment@36/__dormant__/sx150x@23";
+		sx1508_1_23 = "/fragment@37/__dormant__/sx150x@23";
+		sx1509_0_3E = "/fragment@38/__dormant__/sx150x@3E";
+		sx1509_1_3E = "/fragment@39/__dormant__/sx150x@3E";
+		sx1509_0_3F = "/fragment@40/__dormant__/sx150x@3F";
+		sx1509_1_3F = "/fragment@41/__dormant__/sx150x@3F";
+		sx1509_0_70 = "/fragment@42/__dormant__/sx150x@70";
+		sx1509_1_70 = "/fragment@43/__dormant__/sx150x@70";
+		sx1509_0_71 = "/fragment@44/__dormant__/sx150x@71";
+		sx1509_1_71 = "/fragment@45/__dormant__/sx150x@71";
+		sx150x_0_20_pins = "/fragment@90/__dormant__/sx150x_0_20_pins";
+		sx150x_1_20_pins = "/fragment@91/__dormant__/sx150x_1_20_pins";
+		sx150x_0_21_pins = "/fragment@92/__dormant__/sx150x_0_21_pins";
+		sx150x_1_21_pins = "/fragment@93/__dormant__/sx150x_1_21_pins";
+		sx150x_0_22_pins = "/fragment@94/__dormant__/sx150x_0_22_pins";
+		sx150x_1_22_pins = "/fragment@95/__dormant__/sx150x_1_22_pins";
+		sx150x_0_23_pins = "/fragment@96/__dormant__/sx150x_0_23_pins";
+		sx150x_1_23_pins = "/fragment@97/__dormant__/sx150x_1_23_pins";
+		sx150x_0_3E_pins = "/fragment@98/__dormant__/sx150x_0_3E_pins";
+		sx150x_1_3E_pins = "/fragment@99/__dormant__/sx150x_1_3E_pins";
+		sx150x_0_3F_pins = "/fragment@100/__dormant__/sx150x_0_3F_pins";
+		sx150x_1_3F_pins = "/fragment@101/__dormant__/sx150x_1_3F_pins";
+		sx150x_0_70_pins = "/fragment@102/__dormant__/sx150x_0_70_pins";
+		sx150x_1_70_pins = "/fragment@103/__dormant__/sx150x_1_70_pins";
+		sx150x_0_71_pins = "/fragment@104/__dormant__/sx150x_0_71_pins";
+		sx150x_1_71_pins = "/fragment@105/__dormant__/sx150x_1_71_pins";
+	};
+
+	__fixups__ {
+		i2c0 = "/fragment@0:target:0\0/fragment@2:target:0\0/fragment@4:target:0\0/fragment@6:target:0\0/fragment@8:target:0\0/fragment@10:target:0\0/fragment@12:target:0\0/fragment@14:target:0\0/fragment@16:target:0\0/fragment@18:target:0\0/fragment@20:target:0\0/fragment@22:target:0\0/fragment@24:target:0\0/fragment@26:target:0\0/fragment@28:target:0\0/fragment@30:target:0\0/fragment@32:target:0\0/fragment@34:target:0\0/fragment@36:target:0\0/fragment@38:target:0\0/fragment@40:target:0\0/fragment@42:target:0\0/fragment@44:target:0";
+		i2c1 = "/fragment@1:target:0\0/fragment@3:target:0\0/fragment@5:target:0\0/fragment@7:target:0\0/fragment@9:target:0\0/fragment@11:target:0\0/fragment@13:target:0\0/fragment@15:target:0\0/fragment@17:target:0\0/fragment@19:target:0\0/fragment@21:target:0\0/fragment@23:target:0\0/fragment@25:target:0\0/fragment@27:target:0\0/fragment@29:target:0\0/fragment@31:target:0\0/fragment@33:target:0\0/fragment@35:target:0\0/fragment@37:target:0\0/fragment@39:target:0\0/fragment@41:target:0\0/fragment@43:target:0\0/fragment@45:target:0";
+		gpio = "/fragment@46/__dormant__:interrupt-parent:0\0/fragment@47/__dormant__:interrupt-parent:0\0/fragment@48/__dormant__:interrupt-parent:0\0/fragment@49/__dormant__:interrupt-parent:0\0/fragment@50/__dormant__:interrupt-parent:0\0/fragment@51/__dormant__:interrupt-parent:0\0/fragment@52/__dormant__:interrupt-parent:0\0/fragment@53/__dormant__:interrupt-parent:0\0/fragment@54/__dormant__:interrupt-parent:0\0/fragment@55/__dormant__:interrupt-parent:0\0/fragment@56/__dormant__:interrupt-parent:0\0/fragment@57/__dormant__:interrupt-parent:0\0/fragment@58/__dormant__:interrupt-parent:0\0/fragment@59/__dormant__:interrupt-parent:0\0/fragment@60/__dormant__:interrupt-parent:0\0/fragment@61/__dormant__:interrupt-parent:0\0/fragment@62/__dormant__:interrupt-parent:0\0/fragment@63/__dormant__:interrupt-parent:0\0/fragment@64/__dormant__:interrupt-parent:0\0/fragment@65/__dormant__:interrupt-parent:0\0/fragment@66/__dormant__:interrupt-parent:0\0/fragment@67/__dormant__:interrupt-parent:0\0/fragment@68/__dormant__:interrupt-parent:0\0/fragment@69/__dormant__:interrupt-parent:0\0/fragment@70/__dormant__:interrupt-parent:0\0/fragment@71/__dormant__:interrupt-parent:0\0/fragment@72/__dormant__:interrupt-parent:0\0/fragment@73/__dormant__:interrupt-parent:0\0/fragment@74/__dormant__:interrupt-parent:0\0/fragment@75/__dormant__:interrupt-parent:0\0/fragment@76/__dormant__:interrupt-parent:0\0/fragment@77/__dormant__:interrupt-parent:0\0/fragment@78/__dormant__:interrupt-parent:0\0/fragment@79/__dormant__:interrupt-parent:0\0/fragment@80/__dormant__:interrupt-parent:0\0/fragment@81/__dormant__:interrupt-parent:0\0/fragment@82/__dormant__:interrupt-parent:0\0/fragment@83/__dormant__:interrupt-parent:0\0/fragment@84/__dormant__:interrupt-parent:0\0/fragment@85/__dormant__:interrupt-parent:0\0/fragment@86/__dormant__:interrupt-parent:0\0/fragment@87/__dormant__:interrupt-parent:0\0/fragment@88/__dormant__:interrupt-parent:0\0/fragment@89/__dormant__:interrupt-parent:0\0/fragment@90:target:0\0/fragment@91:target:0\0/fragment@92:target:0\0/fragment@93:target:0\0/fragment@94:target:0\0/fragment@95:target:0\0/fragment@96:target:0\0/fragment@97:target:0\0/fragment@98:target:0\0/fragment@99:target:0\0/fragment@100:target:0\0/fragment@101:target:0\0/fragment@102:target:0\0/fragment@103:target:0\0/fragment@104:target:0\0/fragment@105:target:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@46 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@47 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@48 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@49 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@50 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@51 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@52 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@53 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@54 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@55 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@56 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@57 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@58 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@59 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@60 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@61 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@62 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@63 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@64 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@65 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@66 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@67 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@68 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@69 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@70 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@71 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@72 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@73 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@74 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@75 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@76 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@77 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@78 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@79 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@80 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@81 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@82 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@83 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@84 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@85 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@86 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@87 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@88 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		fragment@89 {
+			target = <0x00>;
+
+			__dormant__ {
+				pinctrl-0 = <0x00>;
+			};
+		};
+
+		__overrides__ {
+			sx1501-0-20-int-gpio = <0x0b 0x1b>;
+			sx1501-1-20-int-gpio = <0x0b 0x1b>;
+			sx1501-0-21-int-gpio = <0x0b 0x1b>;
+			sx1501-1-21-int-gpio = <0x0b 0x1b>;
+			sx1502-0-20-int-gpio = <0x0b 0x1b>;
+			sx1502-1-20-int-gpio = <0x0b 0x1b>;
+			sx1502-0-21-int-gpio = <0x0b 0x1b>;
+			sx1502-1-21-int-gpio = <0x0b 0x1b>;
+			sx1503-0-20-int-gpio = <0x0b 0x1b>;
+			sx1503-1-20-int-gpio = <0x0b 0x1b>;
+			sx1504-0-20-int-gpio = <0x0b 0x1b>;
+			sx1504-1-20-int-gpio = <0x0b 0x1b>;
+			sx1504-0-21-int-gpio = <0x0b 0x1b>;
+			sx1504-1-21-int-gpio = <0x0b 0x1b>;
+			sx1505-0-20-int-gpio = <0x0b 0x1b>;
+			sx1505-1-20-int-gpio = <0x0b 0x1b>;
+			sx1505-0-21-int-gpio = <0x0b 0x1b>;
+			sx1505-1-21-int-gpio = <0x0b 0x1b>;
+			sx1506-0-20-int-gpio = <0x0b 0x1b>;
+			sx1506-1-20-int-gpio = <0x0b 0x1b>;
+			sx1507-0-3E-int-gpio = <0x0b 0x1b>;
+			sx1507-1-3E-int-gpio = <0x0b 0x1b>;
+			sx1507-0-3F-int-gpio = <0x0c 0x1c>;
+			sx1507-1-3F-int-gpio = <0x0c 0x1c>;
+			sx1507-0-70-int-gpio = <0x0c 0x1c>;
+			sx1507-1-70-int-gpio = <0x0c 0x1c>;
+			sx1507-0-71-int-gpio = <0x0c 0x1c>;
+			sx1507-1-71-int-gpio = <0x0c 0x1c>;
+			sx1508-0-20-int-gpio = <0x0b 0x1b>;
+			sx1508-1-20-int-gpio = <0x0b 0x1b>;
+			sx1508-0-21-int-gpio = <0x0b 0x1b>;
+			sx1508-1-21-int-gpio = <0x0b 0x1b>;
+			sx1508-0-22-int-gpio = <0x0b 0x1b>;
+			sx1508-1-22-int-gpio = <0x0b 0x1b>;
+			sx1508-0-23-int-gpio = <0x0b 0x1b>;
+			sx1508-1-23-int-gpio = <0x0b 0x1b>;
+			sx1509-0-3E-int-gpio = <0x0b 0x1b>;
+			sx1509-1-3E-int-gpio = <0x0b 0x1b>;
+			sx1509-0-3F-int-gpio = <0x0c 0x1c>;
+			sx1509-1-3F-int-gpio = <0x0c 0x1c>;
+			sx1509-0-70-int-gpio = <0x0c 0x1c>;
+			sx1509-1-70-int-gpio = <0x0c 0x1c>;
+			sx1509-0-71-int-gpio = <0x0c 0x1c>;
+			sx1509-1-71-int-gpio = <0x0c 0x1c>;
+		};
+	};
+};

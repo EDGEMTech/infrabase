@@ -1,0 +1,96 @@
+/dts-v1/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			status = "okay";
+
+			spidev@0 {
+				status = "disabled";
+			};
+
+			spidev@1 {
+				status = "disabled";
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+
+			pitft_pins {
+				brcm,pins = <0x19>;
+				brcm,function = <0x01>;
+				brcm,pull = <0x00>;
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <0xffffffff>;
+
+		__overlay__ {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
+
+			pitft@0 {
+				compatible = "ilitek,ili9340";
+				reg = <0x00>;
+				pinctrl-names = "default";
+				pinctrl-0 = <0x01>;
+				spi-max-frequency = <0x1e84800>;
+				rotate = <0x5a>;
+				fps = <0x19>;
+				bgr;
+				buswidth = <0x08>;
+				dc-gpios = <0xffffffff 0x19 0x00>;
+				debug = <0x00>;
+				phandle = <0x02>;
+			};
+		};
+	};
+
+	__overrides__ {
+		speed = <0x02 0x7370692d 0x6d61782d 0x66726571 0x75656e63 0x793a3000>;
+		rotate = [00 00 00 02 72 6f 74 61 74 65 3a 30 00];
+		fps = [00 00 00 02 66 70 73 3a 30 00];
+		debug = <0x02 0x64656275 0x673a3000>;
+	};
+
+	__symbols__ {
+		pitft_pins = "/fragment@1/__overlay__/pitft_pins";
+		pitft = "/fragment@2/__overlay__/pitft@0";
+	};
+
+	__fixups__ {
+		spi0 = "/fragment@0:target:0\0/fragment@2:target:0";
+		gpio = "/fragment@1:target:0\0/fragment@2/__overlay__/pitft@0:dc-gpios:0";
+	};
+
+	__local_fixups__ {
+
+		fragment@2 {
+
+			__overlay__ {
+
+				pitft@0 {
+					pinctrl-0 = <0x00>;
+				};
+			};
+		};
+
+		__overrides__ {
+			speed = <0x00>;
+			rotate = <0x00>;
+			fps = <0x00>;
+			debug = <0x00>;
+		};
+	};
+};
