@@ -7,5 +7,4 @@
 +
 +# Infrabase
 +dtb-$(CONFIG_ARCH_VEXPRESS) += virt64.dtb virt64_guest.dtb
- 
 +

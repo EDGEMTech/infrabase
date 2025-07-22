@@ -1,6 +1,6 @@
 --- /home/rossierd/soo/infrabase/build/tmp/work/linux-6.12-r0/linux-6.12/arch/arm64/boot/dts/arm/virt64.dts	1970-01-01 01:00:00.000000000 +0100
 +++ ./arch/arm64/boot/dts/arm/virt64.dts	2025-05-23 17:03:21.241455633 +0200
-@@ -0,0 +1,406 @@
+@@ -0,0 +1,401 @@
 +/dts-v1/;
 +
 +/ {
@@ -385,7 +385,7 @@
 +			enable-method = "psci";
 +			compatible = "arm,cortex-a72";
 +			device_type = "cpu";
-+		};
++		};	
 +	};
 +
 +	timer {
