@@ -1,0 +1,52 @@
+# Ignore all generated files :
+*.[oa]
+*.cmd
+*.tmp*
+*.log
+*.ko
+*.mk
+*.builtin
+*.dtb
+*.su
+*.pyc
+*.backup
+*.itb
+
+build/bitbake
+
+**/doxy/**
+**/generated/**
+**/rootfs/build/**
+**/rootfs/host/**
+**/rootfs/target/**
+**/doc/build/**
+**/linux/usr/build/**
+avz/**
+
+vmlinux*
+uImage*
+modules.order
+**/include/config/**
+
+# Backup files
+*~
+*.d
+*.back
+
+# Hidden files
+.*
+
+# Bitbake build
+**/build/tmp/**
+
+# Build system generated directories
+u-boot
+/qemu
+linux/linux
+rootfs/buildroot
+so3
+
+# except the followings:
+!.gitignore #Don't ignore the ignore file ;-)
+!*.tmpl #TaMPLate files for the man documentation
+
