@@ -1,1 +1,0 @@
-savedcmd_/home/rossierd/soo/infrabase/build/../linux/usr/src/modules/modtry.mod := printf '%s\n'   modtry.o | awk '!x[$$0]++ { print("/home/rossierd/soo/infrabase/build/../linux/usr/src/modules/"$$0) }' > /home/rossierd/soo/infrabase/build/../linux/usr/src/modules/modtry.mod
