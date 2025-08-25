@@ -27,7 +27,7 @@ IB_TARGET = "${IB_LINUX_PATH}"
 
 do_configure () {
 	cd ${IB_TARGET}
-	make ${IB_LINUX_CONFIG}
+	make ${IB_CONFIG}
 }
 
 do_build () {

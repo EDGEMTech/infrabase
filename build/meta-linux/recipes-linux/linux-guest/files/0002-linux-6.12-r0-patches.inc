@@ -1,4 +1,4 @@
-SRC_URI += "\ 
+SRC_URI:linux-guest += "\ 
     file://0068-Makefile.patch \ 
     file://0108-roxml_tune.h.patch \ 
     file://0071-Kconfig.patch \ 
