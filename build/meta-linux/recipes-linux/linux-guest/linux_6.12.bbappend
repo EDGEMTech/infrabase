@@ -11,7 +11,7 @@ require files/0002-${PF}-patches.inc
 do_configure[nostamp] = "1"
 do_configure:linux-guest () {
 	cd ${IB_TARGET}
-	make ${IB_LINUX_CONFIG}
+	make ${IB_CONFIG}
 }
 
 do_build:linux-guest () {
@@ -23,6 +23,5 @@ do_build:linux-guest () {
 	  
 	# Compile the device tree files
 	make dtbs
-
 }
  

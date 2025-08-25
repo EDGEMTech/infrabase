@@ -1,4 +1,4 @@
-SRC_URI:linux-guest += "\ 
+SRC_URI:append:linux-guest = "\ 
     file://0068-Makefile.patch \ 
     file://0108-roxml_tune.h.patch \ 
     file://0071-Kconfig.patch \ 
@@ -96,7 +96,7 @@ SRC_URI:linux-guest += "\
     file://0025-avz.h.patch \ 
     file://0012-vdevback.c.patch \ 
     file://0031-vsensej.h.patch \ 
-    file://0002-virt64_defconfig.patch \ 
+    file://0002-virt64_guest_defconfig.patch \ 
     file://0010-Makefile.patch \ 
     file://0073-meminfo.c.patch \ 
     file://0026-asf.h.patch \ 
