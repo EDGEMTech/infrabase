@@ -39,10 +39,10 @@ do_itb[nostamp] = "1"
 
 do_itb () {
 
-	if [ ! -f ${IB_ITB_PATH}/${IB_PLATFORM}.its ]; then
-		bbfatal "No corresponding ITS found for platform ${IB_PLATFORM}"
+	if [ ! -f ${IB_ITB_PATH}/${IB_TARGET_ITS}.its ]; then
+		bbfatal "No corresponding ITS found (${IB_TARGET_ITS})"
 	else
-		mkimage -f ${IB_ITB_PATH}/${IB_LINUX_ITS}.its ${IB_ITB_PATH}/${IB_PLATFORM}.itb
+		mkimage -f ${IB_ITB_PATH}/${IB_TARGET_ITS}.its ${IB_ITB_PATH}/${IB_TARGET_ITS}.itb
 	fi
 	
 }

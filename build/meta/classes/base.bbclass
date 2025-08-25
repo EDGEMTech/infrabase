@@ -31,10 +31,6 @@ python () {
 }
 
 
-# Platform overrides for Infrabase
-
-OVERRIDES += ":${IB_PLATFORM}:${IB_PLAT_CPU}"
-
 BB_DEFAULT_TASK ?= "build"
 CLASSOVERRIDE ?= "class-target"
 

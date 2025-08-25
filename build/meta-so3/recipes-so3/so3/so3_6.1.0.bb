@@ -14,13 +14,17 @@ OVERRIDES += ":so3"
 # Where the working directory will be placed in infrabase root dir
 IB_TARGET = "${IB_SO3_PATH}"
 
-SRCREV = "3b9fe41a85ed62df673d6295271fbd9c1e94648a"
+# Until the current MR of so3 repository is merged, we use the commit of the branch
+SRC_URI = "git://github.com/smartobjectoriented/so3.git;branch=180-adaptation-for-avz-support;protocol=https"
+SRCREV = "84e3d8471e9e417d6f4b712bc3298c4fcc9ad147"
 
-SRC_URI = "git://github.com/smartobjectoriented/so3.git;branch=main;protocol=https"
+# SRC_URI = "git://github.com/smartobjectoriented/so3.git;branch=main;protocol=https"
+# SRCREV = "3b9fe41a85ed62df673d6295271fbd9c1e94648a"
 
+do_configure[nostamp] = "1"
 do_configure () {
 	cd ${IB_SO3_PATH}/so3
-	make ${IB_SO3_CONFIG}
+	make ${IB_CONFIG}
 }
 
 do_build () {

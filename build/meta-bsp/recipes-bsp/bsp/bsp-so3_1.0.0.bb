@@ -6,7 +6,7 @@ DESCRIPTION = "SO3 Board Support Package (BSP) which builds the whole set of sof
 LICENSE = "GPLv2"
 
 # Version and revision
-PV = "6.1"
+PV = "1.0.0"
 PR = "r0"
 
 inherit filesystem
@@ -37,10 +37,10 @@ do_itb[nostamp] = "1"
 do_itb[depends] = "usr-so3:do_deploy"
 do_itb () {
 
-	if [ ! -f ${IB_ITB_PATH}/${IB_SO3_PLATFORM}.its ]; then
-		bbfatal "No corresponding ITS found for container ${IB_SO3_PLATFORM}"
+	if [ ! -f ${IB_ITB_PATH}/${IB_TARGET_ITS}.its ]; then
+		bbfatal "No corresponding ITS found (${IB_TARGET_ITS})"
 	else
-		mkimage -f ${IB_ITB_PATH}/${IB_SO3_ITS}.its ${IB_ITB_PATH}/${IB_SO3_PLATFORM}.itb
+		mkimage -f ${IB_ITB_PATH}/${IB_TARGET_ITS}.its ${IB_ITB_PATH}/${IB_TARGET_ITS}.itb
 	fi
 	
 }

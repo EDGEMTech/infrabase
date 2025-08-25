@@ -17,6 +17,7 @@ usage()
   echo "  Components options:"
   echo "    -a    Deploy all"
   echo "    -b    Deploy boot components only (u-boot, kernel, dtb)"
+  echo "    -c    Deploy SO3 capsules into the target"
   echo "    -r    Deploy rootfs (secondary)"
   echo "    -u    Deploy usr apps"
   echo "    -s    Deploy SO3"
@@ -26,13 +27,16 @@ usage()
   exit 1
 }
 
-while getopts "abrsuv" o; do
+while getopts "abcrsuv" o; do
   case "$o" in
     a)
       deploy_all=y
       ;;
     b)
       deploy_boot=y
+      ;;
+    c)
+      deploy_capsules=y
       ;;
     r)
       deploy_rootfs=y
@@ -77,7 +81,9 @@ if [ "$deploy_usr" ]; then
     bitbake usr-linux -c deploy ${VERBOSE}
 fi
 
-
+if [ "$deploy_capsules" ]; then
+    bitbake bsp-capsules -c deploy ${VERBOSE}
+fi
 
 
 

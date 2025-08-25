@@ -3,8 +3,6 @@ inherit filesystem
 inherit logging
 inherit rootfs
 
-OVERRIDES += ":linux"
-
 # Class for managing the user space environment
 
 # Deployment of user space components

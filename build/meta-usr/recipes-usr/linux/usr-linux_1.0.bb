@@ -19,6 +19,7 @@ IB_TARGET = "${IB_DIR}/linux/usr"
 
 IB_TOOLCHAIN_FILE_PATH = "${IB_ROOTFS_PATH}/host/share/buildroot/toolchainfile.cmake"
 
+do_build[nostamp] = "1"
 do_build[depends] = "rootfs-linux:do_build"
 do_unpack[depends] += "linux:do_build"
 
