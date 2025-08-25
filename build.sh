@@ -16,15 +16,13 @@ usage()
   echo "Where OPTIONS are:"
   echo "  Components options:"
   echo "    -a    Build all (pursuing the build is possible)"
-  echo "    -ac   Build all after a general cleaning (refresh)"
   echo "    -b    Build U-boot"
+  echo "    -c    By adding this option with another, it performs a fresh build (clean)
   echo "    -f    Create and prepare the filesystem"
   echo "    -l    Build Linux"
-  echo "    -lc   Build Linux (with refresh)"
   echo "    -q    Build QEMU with custom patches (framebuffer enabled)"
-  echo "    -rc   Build rootfs from scratch (pursuing the build is possible)"
-  echo "    -r    Build rootfs from scratch (with refresh)"
-  echo "    -as   Build SO3"
+  echo "    -r    Build rootfs (pursuing the build if possible)"
+  echo "    -s    Build SO3"
   echo "    -u    Build usr apps"
   echo "    -v    Build with log verbosity"
   echo "    -z    Build AVZ"
@@ -57,7 +55,7 @@ while getopts "abcflqrsuvz" o; do
       build_uboot=y
       ;;
     c)
-      build_all_clear=y
+      build_clear=y
       ;;
     f)
       build_filesystem=y
@@ -95,9 +93,11 @@ cd build
 source env.sh
 
 if [ "$build_all" ]; then
-    if [ "$build_all_clear" ]; then
+    if [ "$build_clear" ]; then
       if [ "$build_so3" ]; then
         rm -f tmp/stamps/bsp-so3*
+        rm -f tmp/stamps/so3*
+        rm -f tmp/stamps/usr-so3*
       else
         rm -f tmp/stamps/*
       fi
@@ -106,7 +106,7 @@ if [ "$build_all" ]; then
     if [ "$build_so3" ]; then
       bitbake bsp-so3 ${VERBOSE}
     else
-       bitbake bsp-linux ${VERBOSE}
+      bitbake bsp-linux ${VERBOSE}
     fi
 fi
 
@@ -115,7 +115,7 @@ if [ "$build_filesystem" ]; then
 fi
 
 if [ "$build_uboot" ]; then
-    if [ "$build_all_clear" ]; then
+    if [ "$build_clear" ]; then
       rm -f tmp/stamps/uboot*
     fi
 
@@ -126,7 +126,7 @@ fi
 
 if [ "$build_linux" ]; then
 
-    if [ "$build_all_clear" ]; then
+    if [ "$build_clear" ]; then
       rm -f tmp/stamps/linux*
     fi
 
@@ -134,7 +134,7 @@ if [ "$build_linux" ]; then
 fi
 
 if [ "$build_qemu" ]; then
-    if [ "$build_all_clear" ]; then
+    if [ "$build_clear" ]; then
       rm -f tmp/stamps/qemu*
     fi
 
@@ -143,7 +143,7 @@ fi
 
 if [ "$build_rootfs" ]; then
 
-    if [ "$build_all_clear" ]; then
+    if [ "$build_clear" ]; then
       rm -f tmp/stamps/rootfs-linux*
       rm -f tmp/stamps/buildroot*
       bitbake rootfs-linux -c clean
@@ -153,7 +153,7 @@ if [ "$build_rootfs" ]; then
 fi
 
 if [ "$build_usr" ]; then
-    if [ "$build_all_clear" ]; then
+    if [ "$build_clear" ]; then
       rm -f tmp/stamps/usr*
     fi
 
@@ -161,9 +161,19 @@ if [ "$build_usr" ]; then
 fi
 
 if [ "$build_avz" ]; then
-    if [ "$build_all_clear" ]; then
+    if [ "$build_clear" ]; then
       rm -f tmp/stamps/avz*
     fi
 
     bitbake avz ${VERBOSE}
 fi
+
+ if [ "$build_so3" ]; then
+    if [ "$build_clear" ]; then
+        rm -f tmp/stamps/bsp-so3*
+        rm -f tmp/stamps/so3*
+        rm -f tmp/stamps/usr-so3*
+    fi
+
+    bitbake bsp-so3 ${VERBOSE} 
+  fi
