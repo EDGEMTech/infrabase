@@ -8,6 +8,7 @@ FILESEXTRAPATHS:linux-guest:prepend = "${THISDIR}/../linux-guest/files/0002-${PF
  
 require files/0002-${PF}-patches.inc
 
+do_configure[nostamp] = "1"
 do_configure:linux-guest () {
 	cd ${IB_TARGET}
 	make ${IB_LINUX_CONFIG}

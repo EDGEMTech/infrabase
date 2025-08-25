@@ -17,7 +17,7 @@ usage()
   echo "  Components options:"
   echo "    -a    Build all (pursuing the build is possible)"
   echo "    -b    Build U-boot"
-  echo "    -c    By adding this option with another, it performs a fresh build (clean)
+  echo "    -c    By adding this option with another, it performs a fresh build (clean)"
   echo "    -f    Create and prepare the filesystem"
   echo "    -l    Build Linux"
   echo "    -q    Build QEMU with custom patches (framebuffer enabled)"

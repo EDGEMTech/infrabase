@@ -25,9 +25,9 @@
 
   		avz {
 			description = "AVZ Hypervisor (64-bit) Polymorphic SO3";
-            data = /incbin/("../avz/so3.bin");
+            		data = /incbin/("../../avz/so3.bin");
 			type = "kernel";
-            os = "linux";
+            		os = "linux";
 			arch = "arm64";
 			compression = "none";
 			load = <0x40080000>;
@@ -40,7 +40,7 @@
 
 		linux {
 			description = "Linux kernel";
-			data = /incbin/("../linux/linux/arch/arm64/boot/Image");
+			data = /incbin/("../linux/arch/arm64/boot/Image");
 			type = "guest";
 			arch = "arm64";
 			os = "linux";
@@ -49,9 +49,9 @@
 			entry = <0x41000000>;
 		};
 
-         avz_dt {
+         	avz_dt {
 			description = "Flattened Device Tree blob";
-			data = /incbin/("../avz/dts/virt64_avz.dtb");
+			data = /incbin/("../../avz/dts/virt64_avz.dtb");
 			type = "avz_dt";
 			arch = "arm64";
 			compression = "none";
@@ -59,9 +59,9 @@
 			load = <0x46000000>;
 		};
 		
-        fdt {
+       	 	fdt {
 			description = "Linux device tree blob";
-			data = /incbin/("../linux/linux/arch/arm64/boot/dts/arm/virt64_guest.dtb");
+			data = /incbin/("../linux/arch/arm64/boot/dts/arm/virt64_guest.dtb");
 			type = "flat_dt";
 			arch = "arm64";
 			compression = "none";
@@ -70,7 +70,7 @@
 
 		initrd {
 			description = "Initial rootfs (initrd)";
-			data = /incbin/("../linux/rootfs/board/virt64/initrd.cpio");
+			data = /incbin/("../rootfs/board/virt64/initrd.cpio");
 			type = "ramdisk";
 			arch = "arm64";
 			os = "linux";			
@@ -84,10 +84,10 @@
 		
 		agency {
 			description = "SOO Agency on virt64";
-		    kernel = "avz";
-             loadables = "avz_dt", "linux"; 
-             fdt = "fdt"; 
-             ramdisk = "initrd"; 
+		    	kernel = "avz";
+            	 	loadables = "avz_dt", "linux"; 
+             		fdt = "fdt"; 
+             		ramdisk = "initrd"; 
 		};
 	
 	};

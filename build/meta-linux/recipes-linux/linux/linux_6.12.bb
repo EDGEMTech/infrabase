@@ -25,6 +25,7 @@ require files/0001-${PF}-patches.inc
 # Where the working directory will be placed in infrabase root dir
 IB_TARGET = "${IB_LINUX_PATH}"
 
+do_configure[nostamp] = "1"
 do_configure () {
 	cd ${IB_TARGET}
 	make ${IB_CONFIG}
