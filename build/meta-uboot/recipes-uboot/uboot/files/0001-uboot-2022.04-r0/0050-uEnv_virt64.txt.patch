@@ -1,7 +1,14 @@
---- /var/dev/wayland_lvgl/build/tmp/work/uboot-2022.04-r0/git/uEnv.d/uEnv_virt64.txt	1970-01-01 01:00:00.000000000 +0100
-+++ ./uEnv.d/uEnv_virt64.txt	2024-03-02 10:09:57.050883524 +0100
-@@ -0,0 +1,4 @@
+diff --git a/uEnv.d/uEnv_virt64.txt b/uEnv.d/uEnv_virt64.txt
+new file mode 100644
+index 00000000000..7442db209b0
+--- /dev/null
++++ b/uEnv.d/uEnv_virt64.txt
+@@ -0,0 +1,8 @@
 +fdt_high=ffffffffffffffff
 +initrd_high=ffffffffffffffff
 +start=load virtio 0 0x70000000 virt64.itb; bootm 0x70000000
-+ 
++
++bootargs=console=ttyAMA0,115200n8 root=/dev/ram rw slub_debug=PUZ
++
++# Uncomment if there is no initrd
++# bootargs=console=ttyAMA0,115200n8 root=/dev/mmcblk0p1 rw slub_debug=PUZ

@@ -14,21 +14,28 @@ def __platform_init_storage(d):
     IB_STORAGE = d.getVar('IB_STORAGE')
     IB_ROOTFS_SIZE = d.getVar('IB_ROOTFS_SIZE')
     IB_PLATFORM = d.getVar('IB_PLATFORM')
-    IB_DEVICE = d.getVar('IB_DEVICE')
+    IB_STORAGE_DEVICE = d.getVar('IB_STORAGE_DEVICE')
     IB_DIR = d.getVar('IB_DIR')
     WORKDIR = d.getVar('WORKDIR')
 
-    store_filename = "sdcard.img." + IB_PLATFORM
+    store_filename = f"sdcard.img.{IB_PLATFORM}"
+    store_path = os.path.join(WORKDIR, store_filename)
+    devname = IB_STORAGE_DEVICE
 
     if IB_STORAGE == "soft":
 
         # Create image first
-        print("Creating sdcard.img.{} ...".format(IB_PLATFORM))
+        print(f"Creating {store_path}")
 
         dd_size = IB_ROOTFS_SIZE
-        subprocess.run(["truncate", "-s", dd_size, os.path.join(WORKDIR, "sdcard.img.{}".format(IB_PLATFORM))])
+        subprocess.run(["truncate", "-s", dd_size, store_path])
 
-        devname = subprocess.run(["sudo", "losetup", "--partscan", "--find", "--show", os.path.join(WORKDIR, "sdcard.img.{}".format(IB_PLATFORM))], capture_output=True, text=True).stdout.strip()
+        devname = subprocess.run(["losetup", "--partscan", "--find", "--show", store_path],
+                capture_output=True, text=True).stdout.strip()
+        print(devname)
+
+        if devname == "":
+            bb.fatal(f"{store_path}")
 
         # Keep device name only without /dev/
         devname = devname.replace("/dev/", "")
@@ -37,8 +44,8 @@ def __platform_init_storage(d):
 
         os.makedirs(os.path.join(WORKDIR, "filesystem"), exist_ok=True)
 
-        target_link = os.path.join(IB_DIR, "filesystem/"+store_filename)
-        source_link = os.path.join(WORKDIR, store_filename)
+        target_link = os.path.join(IB_DIR, f"filesystem/{store_filename}")
+        source_link = store_path
 
         # Check if the symbolic link already exists
         if os.path.islink(target_link):
@@ -47,35 +54,33 @@ def __platform_init_storage(d):
 
         os.symlink(source_link, target_link)
 
-    else:
 
-        devname = IB_DEVICE + ":" + IB_PLATFORM
 
-    print("devname is defined as", devname)
-
-    if not os.path.exists("/dev/{}".format(devname)):
-        print("Unfortunately, /dev/{} does not exist...".format(devname))
+    if not os.path.exists(f"/dev/{devname}"):
+        print(f"Unfortunately, /dev/{devname} does not exist...")
         exit(1)
 
+    print(f"Partitioning and formatting: {devname}")
+
     # Create the partition layout this way
+    # TODO: use sfdisk(8) which is more suitable for scripting
     fdisk_input = "o\nn\np\n\n\n+128M\nt\nc\na\nn\np\n\n\n+1600M\nw\n"
-    subprocess.run(["sudo", "fdisk", "/dev/{}".format(devname)], input=fdisk_input.encode())
+    subprocess.run(["fdisk", f"/dev/{devname}"], input=fdisk_input.encode())
 
     print("Waiting ...")
 
+    # TODO: use ionotify(7)
     # Give a chance to the real SD-card to be sync'd
     time.sleep(2)
 
     if devname[-1].isdigit():
         devname += "p"
 
-    subprocess.run(["sudo", "mkfs.fat", "-F32", "-a", "-v", "-n", "boot", "/dev/{}1".format(devname)])
-    subprocess.run(["sudo", "mkfs.ext4", "-L", "rootfs1", "/dev/{}2".format(devname)])
+    subprocess.run(["mkfs.fat", "-F32", "-a", "-v", "-n", "boot", f"/dev/{devname}1"])
+    subprocess.run(["mkfs.ext4", "-L", "rootfs1", f"/dev/{devname}2"])
 
     if IB_STORAGE == "soft":
-        subprocess.run(["sudo", "losetup", "-D"])
+        subprocess.run(["losetup", "-D"])
 
     print("Done! The storage is now initialized")
-
-
 

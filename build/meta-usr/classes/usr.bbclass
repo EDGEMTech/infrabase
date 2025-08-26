@@ -43,8 +43,19 @@ def __retrieve_usr_dir(d):
     
     dst_dir = d.getVar('S')
 
+    # Copy the while contents of usr in the temporary working directory
+    # so that it will be possible to handle the fetch of submodules before
+    # the execution of attach_infrabase task
+
     cmd = f"cp -r {src_dir}/. {dst_dir}/"
     result = subprocess.run(cmd, shell=True, check=True)
+
+    # However, we need to remove the patches directory which will lead to some 
+    # issues in subsequent builds.
+
+    cmd = f"rm -rf {dst_dir}/patches"
+    result = subprocess.run(cmd, shell=True, check=True)
+
 
 python retrieve_usr_dir() {
     __retrieve_usr_dir(d)
