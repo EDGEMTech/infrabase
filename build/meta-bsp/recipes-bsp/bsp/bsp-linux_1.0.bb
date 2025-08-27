@@ -49,7 +49,7 @@ do_itb () {
 
 # Deploy everything
 
-do_deploy[depends] = "usr-linux:do_deploy uboot:do_deploy"
+do_deploy[depends] = "filesystem:do_fs_check usr-linux:do_deploy uboot:do_deploy"
  
 do_deploy[nostamp] = "1"
 python do_deploy() {
@@ -63,6 +63,8 @@ addtask do_itb before do_deploy
 addtask do_deploy
 
 do_deploy_boot[nostamp] = "1"
+do_deploy_boot[depends] = "filesystem:do_fs_check"
+
 python do_deploy_boot() {
 
     bb.plain("Deploy Linux boot (u-boot, itb)")

@@ -28,20 +28,6 @@ IB_TARGET = "${IB_UBOOT_PATH}"
 # do_configure[depends] += "atf:do_build"
 # do_configure[depends] += "bsp-linux:do_build_firmware"
 
-do_build () {
-	
-	bbplain "Building U-boot with ${CORES} cores..."
-	cd ${IB_TARGET}
-	make -j${CORES}
-}
-
-do_deploy[nostamp] = "1"
-do_deploy () {
-	bbwarn "Deployment of U-boot is achieved in the BSP recipe since it strongly
-		depends on the platform"
-}
-addtask do_deploy
-
 # The following code is here as example, but actually currently not used
 do_configure () {
 	
@@ -70,3 +56,26 @@ do_configure () {
 	
 }
 
+do_build () {
+	
+	bbplain "Building U-boot with ${CORES} cores..."
+	cd ${IB_TARGET}
+	make -j${CORES}
+}
+
+def __do_deploy(d):
+
+    WORKDIR = d.getVar("WORKDIR")
+
+    bb.warn(("Deployment of U-boot is achieved in the BSP recipe"
+        " since it strongly depends on the platform"))
+
+    # This task runs as root - avoid creating temp files as root
+    utils_restore_user_ownership(d)
+
+python do_deploy () {
+    __do_deploy(d)
+}
+
+do_deploy[nostamp] = "1"
+addtask do_deploy

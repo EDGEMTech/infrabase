@@ -7,7 +7,7 @@ LICENSE = "GPLv2"
 # be copied to the rootfs. Be aware that it is a deploy directory and not
 # the rootfs itself; this is achieved with the do_deploy task (by the bsp recipe)
 
-do_usr_install_apps:linux-guest:append () {
+do_usr_install_apps:linux-soo:append () {
    
     usr_do_install_file_root "${IB_TARGET}/build/src/soo/injector"
     usr_do_install_file_root "${IB_TARGET}/build/src/soo/restoreme"

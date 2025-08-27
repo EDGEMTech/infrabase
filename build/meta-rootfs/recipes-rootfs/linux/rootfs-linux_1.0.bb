@@ -21,6 +21,9 @@ do_configure[noexec] = "1"
 do_build[depends] = "${IB_ROOTFS_METHOD}:do_build"
 do_build[depends] += "linux:do_build"
 
+# Check that the image is present before deploying rootfs
+do_deploy[depends] += "filesystem:do_fs_check"
+
 do_build[nostamp] = "1"
 do_build () {
 
@@ -55,9 +58,8 @@ python do_deploy () {
 
     bb.plain("Deploy the rootfs into the filesystem")
 
-    __do_check_fs(d)
     __do_fs_mount(d)
-	
+
     d.setVar('ROOTFS_FILENAME', 'rootfs')
     __do_rootfs_mount(d)
 
@@ -74,29 +76,26 @@ python do_deploy () {
     # Read and preserve the current working directory 
     original_cwd = os.getcwd()
     os.chdir("{}/fs".format(WORKDIR))
-    
+
     # Change directory to IB_FILESYSTEM_PATH/IB_ROOTFS_PARTITION
     os.chdir("{}/{}".format(IB_FILESYSTEM_PATH, IB_ROOTFS_PARTITION))
 
     # Copy files from IB_TARGET/fs to IB_FILESYSTEM_PATH/IB_ROOTFS_PARTITION
-    
     cmd = f"ls {IB_TARGET}/fs/."
-    
     result = subprocess.run(cmd, shell=True, check=True)
 
-    cmd = f"sudo cp -r {IB_TARGET}/fs/. {IB_FILESYSTEM_PATH}/{IB_ROOTFS_PARTITION}"
-    print(cmd)
+    cmd = f"cp -rv {IB_TARGET}/fs/. {IB_FILESYSTEM_PATH}/{IB_ROOTFS_PARTITION}"
+
     result = subprocess.run(cmd, shell=True, check=True)
 
     # Change back to the original working directory
     os.chdir(original_cwd)
-        
+
     __do_rootfs_umount(d)
-	
     __do_fs_umount(d)
-	
+
+    # Avoid creating logs,stamps and run files as root
+    utils_restore_user_ownership(d)
+
 }
 addtask do_deploy
-
-
-

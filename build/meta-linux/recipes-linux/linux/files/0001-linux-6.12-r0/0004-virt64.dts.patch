@@ -1,6 +1,6 @@
 --- /home/rossierd/soo/infrabase/build/tmp/work/linux-6.12-r0/linux-6.12/arch/arm64/boot/dts/arm/virt64.dts	1970-01-01 01:00:00.000000000 +0100
-+++ ./arch/arm64/boot/dts/arm/virt64.dts	2025-05-23 17:03:21.241455633 +0200
-@@ -0,0 +1,401 @@
++++ ./arch/arm64/boot/dts/arm/virt64.dts	2025-08-27 08:31:08.946957849 +0200
+@@ -0,0 +1,389 @@
 +/dts-v1/;
 +
 +/ {
@@ -8,18 +8,6 @@
 +	#size-cells = <0x02>;
 +	#address-cells = <0x02>;
 +	compatible = "linux,dummy-virt";
-+
-+	chosen {
-+	        /*	bootargs = "root=/dev/ram rw slub_debug=PUZ initcall_debug=1 ignore_loglevel"; */
-+			/* bootargs = "console=ttyAMA0,115200n8 root=/dev/ram rw slub_debug=PUZ"; */
-+			/* bootargs = "console=ttyAMA0,115200n8 raid=noautodetect root=/dev/nfs ip=dhcp nfsroot=192.168.1.113:/mnt/img/octopus_virt rw init=/sbin/init"; */
-+			
-+	       		/* bootargs = "console=ttyAMA0,115200n8 root=/dev/mmcblk0p1 rw slub_debug=PUZ";  */
-+	        	stdout-path = "/pl011@9000000";			 
-+	        	/* bootargs = "console=ttyAMA0,115200n8 root=/dev/ram rw initcall_debug=1";  */
-+	        	/* bootargs = "console=ttyAMA0,115200n8 root=/dev/vda2 rw earlyprintk"; */ 
-+			 bootargs = "console=ttyAMA0,115200n8 root=/dev/ram rw slub_debug=PUZ earlyprintk";
-+		};
 +	
 +	psci {
 +		migrate = <0xc4000005>;
