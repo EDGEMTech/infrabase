@@ -82,7 +82,6 @@ addtask do_deploy_boot
 
 do_clean[nostamp] = "1"
 do_clean () {
-	cd ${TMPDIR}/stamps
-	rm bsp-so3*
+	rm ${TMPDIR}/stamps/bsp-so3*
 }
 addtask do_clean
