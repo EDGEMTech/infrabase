@@ -85,7 +85,6 @@ python do_deploy () {
     result = subprocess.run(cmd, shell=True, check=True)
 
     cmd = f"cp -rv {IB_TARGET}/fs/. {IB_FILESYSTEM_PATH}/{IB_ROOTFS_PARTITION}"
-    bb.plain(cmd)
 
     result = subprocess.run(cmd, shell=True, check=True)
 
