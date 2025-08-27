@@ -21,7 +21,7 @@ do_configure[noexec] = "1"
 
 # Building all components
 
-do_build[depends] = "usr-so3:do_build uboot:do_build" 
+do_build[depends] = "usr-so3:do_build" 
 
 do_build () {
 	bbplain "Everything built OK ..."
