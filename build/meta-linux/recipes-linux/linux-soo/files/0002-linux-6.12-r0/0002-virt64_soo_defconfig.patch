@@ -1,5 +1,5 @@
---- /home/rossierd/soo/micofe/build/tmp/work/linux-6.12-r0/linux-6.12/arch/arm64/configs/virt64_guest_defconfig	1970-01-01 01:00:00.000000000 +0100
-+++ ./arch/arm64/configs/virt64_guest_defconfig	2025-08-25 16:59:35.135082466 +0200
+--- /home/rossierd/soo/micofe/build/tmp/work/linux-6.12-r0/linux-6.12/arch/arm64/configs/virt64_soo_defconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/configs/virt64_soo_defconfig	2025-08-25 16:59:35.135082466 +0200
 @@ -0,0 +1,8994 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
