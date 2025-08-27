@@ -1,6 +1,6 @@
 --- /home/rossierd/soo/infrabase/build/tmp/work/linux-6.12-r0/linux-6.12/arch/arm64/boot/dts/arm/virt64_guest.dts	1970-01-01 01:00:00.000000000 +0100
-+++ ./arch/arm64/boot/dts/arm/virt64_guest.dts	2025-07-15 18:02:21.765486306 +0200
-@@ -0,0 +1,414 @@
++++ ./arch/arm64/boot/dts/arm/virt64_guest.dts	2025-08-27 08:31:08.947351137 +0200
+@@ -0,0 +1,406 @@
 +/dts-v1/;
 +
 +/ {
@@ -22,14 +22,6 @@
 +		};
 +	};
 +
-+	chosen {
-+	        	/* bootargs = "root=/dev/ram rw slub_debug=PUZ initcall_debug=1 ignore_loglevel"; */
-+			bootargs = "root=/dev/ram rw console=ttyAMA0,115200n8 slub_debug=PUZ earlyprintk";
-+	       		/*  bootargs = "console=ttyAMA0,115200n8 root=/dev/mmcblk0p1 rw slub_debug=PUZ";  */
-+	        	stdout-path = "/pl011@9000000";			 
-+	        	/* bootargs = "console=ttyAMA0,115200n8 root=/dev/ram rw initcall_debug=1"; */
-+	        	/* bootargs = "console=ttyAMA0,115200n8 root=/dev/mmcblk0p2 rw earlyprintk"; */
-+		};
 + 	console {
 +		focus-dom-max = <3>;
 +	};
