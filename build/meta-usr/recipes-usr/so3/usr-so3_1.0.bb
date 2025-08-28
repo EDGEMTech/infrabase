@@ -64,3 +64,8 @@ do_usr_install_apps () {
 
         usr_do_install_file_dir "${IB_TARGET}/out/*" .
 }
+
+do_usr_clean:append () {
+    rm -f ${TMPDIR}/stamps/usr-so3*
+}
+

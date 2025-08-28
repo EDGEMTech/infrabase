@@ -33,3 +33,9 @@ do_build () {
 	cd ${IB_SO3_PATH}/so3
 	make
 }
+
+do_clean[nostamp] = "1"
+do_clean () {
+	rm -f ${TMPDIR}/stamps/so3*
+}
+addtask do_clean

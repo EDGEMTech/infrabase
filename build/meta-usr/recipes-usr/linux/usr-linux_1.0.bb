@@ -74,7 +74,7 @@ usr_os_build () {
 # be copied to the rootfs. Be aware that it is a deploy directory and not
 # the rootfs itself; this is achieved with the do_deploy task (by the bsp recipe)
 
-do_usr_install_apps () {
+do_install_apps () {
     
     # Installation of the deploy/ content
     usr_do_install_file_root "${IB_TARGET}/build/src/graphic/drm-utils/drm-info"
@@ -89,7 +89,9 @@ do_usr_install_apps () {
     usr_do_install_file_root "${IB_TARGET}/src/modules/*.ko"
 }
 
-usr_os_clean () {
+do_clean:append () {
 	# Clean the modules
 	make -C ${IB_LINUX_PATH} M=${IB_TARGET}/src/modules clean
+
+    rm -f ${TMPDIR}/stamps/usr-linux*
 }

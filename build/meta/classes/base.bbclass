@@ -121,7 +121,7 @@ python base_do_handle_symlinks() {
 # If some files are fetched from a git directory, bitbake
 # unpacked them to ${WORKDIR}/git directory. So, we want
 # to move the contents to the target ${S} directory so that
-# doing a updiff task will use the same approach for all receipes
+# doing a updiff task will use the same approach for all recipes
 
 python do_handle_fetch_git() {
     import os
@@ -135,12 +135,11 @@ python do_handle_fetch_git() {
         bb.note(f"Source directory {src_dir} does not exist — skipping copy.")
         return
 
-    cmd = f"cp -r {src_dir}/. {dst_dir}/"
-
+    cmd = f"cp -r {src_dir}/* {dst_dir}/"
     result = subprocess.run(cmd, shell=True, check=True)
 }
 do_unpack[postfuncs] = "do_handle_fetch_git"
-
+ 
 base_do_attach_infrabase () {
 	echo "Attaching ${PN} to ${IB_TARGET}"
 	
@@ -150,7 +149,7 @@ base_do_attach_infrabase () {
 	fi
 	
 	mkdir -p ${IB_TARGET}
-	cp -r ${S}/. ${IB_TARGET}
+	cp -r ${S}/* ${IB_TARGET}
 }
 
 addtask cleansstate after do_clean

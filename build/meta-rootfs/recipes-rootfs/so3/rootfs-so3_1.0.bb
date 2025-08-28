@@ -47,3 +47,9 @@ do_deploy () {
 	echo No specific deployment for SO3 since it is fully contained in the ITB file
 }
 addtask do_deploy
+
+do_clean[nostamp] = "1"
+do_clean () {
+	rm -f ${TMPDIR}/stamps/rootfs-so3*
+}
+addtask do_clean

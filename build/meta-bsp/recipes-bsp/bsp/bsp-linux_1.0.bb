@@ -81,9 +81,9 @@ do_attach_infrabase () {
     
 }
 
+do_clean[depends] = "usr-linux:do_clean linux:do_clean uboot:do_clean"
 do_clean[nostamp] = "1"
 do_clean () {
-	cd ${TMPDIR}/stamps
-	rm bsp-linux*
+	rm -f ${TMPDIR}/stamps/bsp-linux*
 }
 addtask do_clean

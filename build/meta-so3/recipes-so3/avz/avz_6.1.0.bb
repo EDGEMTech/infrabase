@@ -47,3 +47,9 @@ do_build () {
 	cd ${IB_TARGET} 
 	make
 }
+
+do_clean[nostamp] = "1"
+do_clean () {
+	rm -f ${TMPDIR}/stamps/avz*
+}
+addtask do_clean

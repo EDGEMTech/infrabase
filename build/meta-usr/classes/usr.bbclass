@@ -39,8 +39,9 @@ def __retrieve_usr_dir(d):
     import os
     import subprocess
    
+    bb.plain("-- Retrieve the usr dir into the workdir --")
+
     src_dir = d.getVar('IB_TARGET')
-    
     dst_dir = d.getVar('S')
 
     # Copy the while contents of usr in the temporary working directory
@@ -83,7 +84,7 @@ do_build () {
 	mkdir -p ${IB_TARGET}/build/deploy
 		
 	# Proceed with local deployment
-	do_usr_install_apps
+	do_install_apps
 	
 }
 
@@ -96,8 +97,6 @@ usr_do_clean () {
 	
 	# Clean the user space apps
 	rm -rf ${IB_TARGET}/build
-
-	usr_os_clean
 }
 
 EXPORT_FUNCTIONS  do_clean

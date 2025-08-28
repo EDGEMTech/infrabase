@@ -67,9 +67,9 @@ python do_deploy_boot() {
 addtask do_itb before do_deploy_boot
 addtask do_deploy_boot
 
+do_clean[depends] = "usr-so3:do_clean so3:do_clean uboot:do_clean"
 do_clean[nostamp] = "1"
 do_clean () {
-	cd ${TMPDIR}/stamps
-	rm bsp-so3*
+	rm -f ${TMPDIR}/stamps/bsp-so3*
 }
 addtask do_clean

@@ -32,3 +32,7 @@ python do_handle_fetch_git() {
     # Update the working usr directory so that do_attach_infrabase will copy everything.
     __retrieve_usr_dir(d)
 } 
+
+do_clean:append () {
+     rm -rf ${IB_TARGET}/lib/lvgl/*
+}
