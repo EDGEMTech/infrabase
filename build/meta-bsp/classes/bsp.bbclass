@@ -25,5 +25,3 @@ def __do_deploy_boot(d):
         __do_fs_umount(d)
 
     utils_restore_user_ownership(d)
-
-do_attach_infrabase[noexec] = "1"

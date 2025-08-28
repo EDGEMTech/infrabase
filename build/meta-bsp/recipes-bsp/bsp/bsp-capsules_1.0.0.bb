@@ -18,6 +18,7 @@ OVERRIDES += ":so3"
 IB_TARGET = "${IB_BSP_PATH}"
  
 do_configure[noexec] = "1"
+do_attach_infrabase[noexec] = "1"
 
 # Building all components
 
