@@ -62,16 +62,17 @@ python retrieve_usr_dir() {
     __retrieve_usr_dir(d)
 }
 
+
+do_configure () {
+    mkdir -p ${IB_TARGET}/build
+}
+
 # Build of user space custom applications
 
 do_build () {
 
-	# Build the specific apps and other user space things
-	usr_os_build
-	
-	mkdir -p ${IB_TARGET}/build
 	cd ${IB_TARGET}/build
-	
+	 
 	# User space applications
 	cmake -Wno-dev --no-warn-unused-cli -DCMAKE_BUILD_TYPE=${IB_USR_BUILD_TYPE} \
 		-DCMAKE_KERNEL_PATH=${IB_LINUX_PATH} -DCMAKE_TOOLCHAIN_FILE=${IB_TOOLCHAIN_FILE_PATH} ..

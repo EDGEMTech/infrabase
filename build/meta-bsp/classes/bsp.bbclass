@@ -26,3 +26,4 @@ def __do_deploy_boot(d):
 
     utils_restore_user_ownership(d)
 
+do_attach_infrabase[noexec] = "1"

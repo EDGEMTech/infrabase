@@ -39,7 +39,7 @@ python do_handle_fetch_git() {
     target_dir = d.getVar('S')
     dst_dir = os.path.join(target_dir, 'src', 'lvgl', 'lv_port_linux')
 
-    cmd = f"cp -r {gitdir}/. {dst_dir}/"
+    cmd = f"cp -r {gitdir}/* {dst_dir}/"
     result = subprocess.run(cmd, shell=True, check=True)
 } 
 

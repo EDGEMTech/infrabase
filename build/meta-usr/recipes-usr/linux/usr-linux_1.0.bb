@@ -23,8 +23,6 @@ do_build[nostamp] = "1"
 do_build[depends] = "rootfs-linux:do_build"
 do_unpack[depends] += "linux:do_build"
 
-do_configure[noexec] = "1"
-
 do_deploy[depends] = "rootfs-linux:do_deploy"
 do_deploy[nostamp] = "1"
 
@@ -57,7 +55,7 @@ python do_deploy() {
 addtask do_deploy
 
 # Build extra components which is not in src/ directory like modules
-usr_os_build () {
+do_build:prepend () {
 
 	# Modules
  
