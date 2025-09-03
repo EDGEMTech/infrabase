@@ -21,13 +21,14 @@ usage()
   echo "    -r    Deploy rootfs (secondary)"
   echo "    -u    Deploy usr apps"
   echo "    -s    Deploy SO3"
+  echo "    -t    Deploy U-boot only"
   echo "    -v    Build with log verbosity"
   echo
 
   exit 1
 }
 
-while getopts "abcrsuv" o; do
+while getopts "abcrstuv" o; do
   case "$o" in
     a)
       deploy_all=y
@@ -43,6 +44,9 @@ while getopts "abcrsuv" o; do
       ;;
     s)
       deploy_so3=y
+      ;;
+    t)
+      deploy_uboot=y
       ;;
     u)
       deploy_usr=y
@@ -85,5 +89,7 @@ if [ "$deploy_capsules" ]; then
     bitbake bsp-capsules -c deploy ${VERBOSE}
 fi
 
-
+if [ "$deploy_uboot" ]; then
+    bitbake uboot -c deploy ${VERBOSE}
+fi
 

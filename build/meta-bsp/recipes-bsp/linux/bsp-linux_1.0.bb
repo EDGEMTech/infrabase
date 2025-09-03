@@ -50,7 +50,7 @@ do_itb () {
 
 # Deploy everything
 
-do_deploy[depends] = "filesystem:do_fs_check usr-linux:do_deploy uboot:do_deploy"
+do_deploy[depends] = "filesystem:do_fs_check usr-linux:do_deploy"
  
 do_deploy[nostamp] = "1"
 python do_deploy() {

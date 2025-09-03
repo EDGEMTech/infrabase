@@ -74,14 +74,8 @@ do_build:prepend () {
 
 do_install_apps () {
     
-    # Installation of the deploy/ content
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/drm-utils/drm-info"
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/drm_tool/drm_tool"
+    usr_do_install_file_root "${IB_TARGET}/build/src/examples/hello"
     
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/kmscube/kmscube"
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/gbmtest/gbmtest"
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/fb_benchmark/fb_benchmark"
-
     # Installation of modules if any
     
     usr_do_install_file_root "${IB_TARGET}/src/modules/*.ko"
@@ -90,6 +84,11 @@ do_install_apps () {
 do_clean:append () {
 	# Clean the modules
 	make -C ${IB_LINUX_PATH} M=${IB_TARGET}/src/modules clean
-
+ 
     rm -f ${TMPDIR}/stamps/usr-linux*
+
+    # Remove the usr organization in the build directory to avoid
+    # having old files in the next copy of usr tree.
+
+    rm -rf ${S}
 }

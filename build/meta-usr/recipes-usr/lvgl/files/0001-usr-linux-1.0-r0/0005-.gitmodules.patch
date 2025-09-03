@@ -1,0 +1,15 @@
+--- /home/rossierd/soo/infrabase/build/tmp/work/usr-linux-1.0-r0/usr-linux-1.0/.gitmodules	2025-09-03 16:54:39.438936214 +0200
++++ ./.gitmodules	1970-01-01 01:00:00.000000000 +0100
+@@ -1,12 +0,0 @@
+-[submodule "lv_examples"]
+-	path = lv_examples
+-	url = https://github.com/littlevgl/lv_examples.git
+-[submodule "lv_drivers"]
+-	path = lv_drivers
+-	url = https://github.com/littlevgl/lv_drivers.git
+-[submodule "lvgl"]
+-	path = lvgl
+-	url = https://github.com/littlevgl/lvgl.git
+-[submodule "lv_demos"]
+-	path = lv_demos
+-	url = https://github.com/lvgl/lv_demos

@@ -1,0 +1,10 @@
+--- /home/rossierd/soo/infrabase/build/tmp/work/usr-linux-1.0-r0/usr-linux-1.0/src/CMakeLists.txt	2025-09-03 16:54:39.440034096 +0200
++++ ./src/CMakeLists.txt	2025-09-03 16:56:16.389180310 +0200
+@@ -1,4 +1,6 @@
+ 
+-add_subdirectory(examples)
++add_subdirectory(graphic)
++add_subdirectory(lvgl)
++add_subdirectory(soo)
+ 
+ 

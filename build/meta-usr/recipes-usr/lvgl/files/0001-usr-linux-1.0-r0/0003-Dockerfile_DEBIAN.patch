@@ -1,0 +1,19 @@
+--- /home/rossierd/soo/infrabase/build/tmp/work/usr-linux-1.0-r0/usr-linux-1.0/docker/Dockerfile_DEBIAN	2025-09-03 16:54:39.439322793 +0200
++++ ./docker/Dockerfile_DEBIAN	1970-01-01 01:00:00.000000000 +0100
+@@ -1,16 +0,0 @@
+-ARG BASE_OS
+-FROM "$BASE_OS"
+-
+-RUN DEBIAN_FRONTEND="noninteractive" apt-get update
+-
+-# Build tools
+-RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y make cmake build-essential python3-venv
+-
+-# Required for LV_USE_SDL
+-RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y libsdl2-dev libsdl2-image-dev
+-
+-# Required for LV_USE_LINUX_DRM linux-headers-generic provides an included header file
+-RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y libevdev-dev libdrm-dev linux-headers-generic
+-
+-RUN mkdir /workdir
+-WORKDIR /workdir

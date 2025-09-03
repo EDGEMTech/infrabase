@@ -7,6 +7,7 @@ LICENSE = "GPLv2"
 PR = "r0"
 PV = "2022.04"
 
+inherit filesystem
 inherit uboot
 inherit bsp
 
@@ -66,21 +67,25 @@ do_build () {
 	make -j${CORES}
 }
 
-def __do_deploy(d):
+def __do_platform_deploy(d):
+    import os
+    import subprocess
 
-    WORKDIR = d.getVar("WORKDIR")
+    src_dir = d.getVar('FILE_DIRNAME')
+    dst_dir = d.getVar('IB_FILESYSTEM_PATH')
+    u_boot_path = d.getVar('IB_UBOOT_PATH')
+    
+    cmd = f"sudo cp {u_boot_path}/u-boot.bin {dst_dir}/p1/"
+    result = subprocess.run(cmd, shell=True, check=True)
+ 
 
-    bb.warn(("Deployment of U-boot is achieved in the BSP recipe"
-        " since it strongly depends on the platform"))
+python do_deploy() {
+    
+    bb.plain("Deploy U-boot only ...")
 
-    # This task runs as root - avoid creating temp files as root
-    utils_restore_user_ownership(d)
-
-python do_deploy () {
-    __do_deploy(d)
+    __do_deploy_boot(d);
 }
-
-do_deploy[nostamp] = "1"
+ 
 addtask do_deploy
 
 do_clean[nostamp] = "1"

@@ -17,7 +17,7 @@ usage()
   echo "  Components options:"
   echo "    -a    Build all (pursuing the build is possible)"
   echo "    -b    Build U-boot"
-  echo "    -c    By adding this option with another, it performs a fresh build (clean)"
+  echo "    -c    Clean generated files and structures for the recipe indicated as second argument"
   echo "    -f    Create and prepare the filesystem"
   echo "    -l    Build Linux"
   echo "    -q    Build QEMU with custom patches (framebuffer enabled)"
@@ -99,12 +99,14 @@ if [ "$build_all" ]; then
       else
         bitbake bsp-linux -c clean
       fi
-    fi
-
-    if [ "$build_so3" ]; then
-      bitbake bsp-so3 ${VERBOSE}
+    
     else
-      bitbake bsp-linux ${VERBOSE}
+
+      if [ "$build_so3" ]; then
+        bitbake bsp-so3 ${VERBOSE}
+      else
+        bitbake bsp-linux ${VERBOSE}
+      fi
     fi
 fi
 
@@ -115,57 +117,57 @@ fi
 if [ "$build_uboot" ]; then
     if [ "$build_clean" ]; then
       bitbake uboot -c clean
+    else
+      bitbake uboot ${VERBOSE}
     fi
-
-    bitbake uboot ${VERBOSE}
 fi
 
 if [ "$build_linux" ]; then
 
     if [ "$build_clean" ]; then
       bitbake linux -c clean
+    else
+      bitbake linux ${VERBOSE}
     fi
-
-    bitbake linux ${VERBOSE}
 fi
 
 if [ "$build_qemu" ]; then
     if [ "$build_clean" ]; then
       bitbake qemu -c clean
+    else
+      bitbake qemu ${VERBOSE}
     fi
-
-    bitbake qemu ${VERBOSE}
 fi
 
 if [ "$build_rootfs" ]; then
 
     if [ "$build_clean" ]; then
       bitbake rootfs-linux -c clean
+    else
+      bitbake rootfs-linux ${VERBOSE}
     fi
-    
-    bitbake rootfs-linux ${VERBOSE}
 fi
 
 if [ "$build_usr" ]; then
     if [ "$build_clean" ]; then
       bitbake usr-linux -c clean
+    else
+      bitbake usr-linux ${VERBOSE}
     fi
-
-    bitbake usr-linux ${VERBOSE}
 fi
 
 if [ "$build_avz" ]; then
     if [ "$build_clean" ]; then
       bitbake avz -c clean
+    else
+      bitbake avz ${VERBOSE}
     fi
-
-    bitbake avz ${VERBOSE}
 fi
 
  if [ "$build_so3" ]; then
     if [ "$build_clean" ]; then
       bitbake bsp-so3 -c clean
+    else
+      bitbake bsp-so3 ${VERBOSE} 
     fi
-
-    bitbake bsp-so3 ${VERBOSE} 
   fi
