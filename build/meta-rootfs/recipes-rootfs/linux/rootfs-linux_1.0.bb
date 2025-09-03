@@ -99,3 +99,11 @@ python do_deploy () {
 
 }
 addtask do_deploy
+
+do_clean[depends] = "buildroot:do_clean"
+
+do_clean[nostamp] = "1"
+do_clean () {
+	rm -f ${TMPDIR}/stamps/qemu*
+}
+addtask do_clean

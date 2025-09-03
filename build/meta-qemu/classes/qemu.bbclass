@@ -9,6 +9,7 @@ qemu_do_configure () {
 
 }
 
+do_build[nostamp] = "1"
 do_build () {
 	echo "Building QEMU with ${CORES} cores..."
 	cd ${IB_DIR}/qemu

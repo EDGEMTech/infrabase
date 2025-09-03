@@ -51,3 +51,9 @@ do_build () {
 	fi
 
 }
+
+do_clean[nostamp] = "1"
+do_clean () {
+	rm -f ${TMPDIR}/stamps/linux*
+}
+addtask do_clean

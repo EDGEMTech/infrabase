@@ -25,3 +25,8 @@ IB_TARGET = "${IB_DIR}/qemu"
 QEMU_CONFIGURE:virt32 = "--target-list=arm-softmmu --disable-attr --disable-werror --disable-docs"
 QEMU_CONFIGURE:virt64 = "--target-list=aarch64-softmmu --disable-attr --disable-werror --disable-docs --enable-sdl"
 
+do_clean[nostamp] = "1"
+do_clean () {
+	rm -f ${TMPDIR}/stamps/qemu*
+}
+addtask do_clean

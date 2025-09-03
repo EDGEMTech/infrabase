@@ -23,8 +23,6 @@ do_build[nostamp] = "1"
 do_build[depends] = "rootfs-linux:do_build"
 do_unpack[depends] += "linux:do_build"
 
-do_configure[noexec] = "1"
-
 do_deploy[depends] = "rootfs-linux:do_deploy"
 do_deploy[nostamp] = "1"
 
@@ -57,7 +55,7 @@ python do_deploy() {
 addtask do_deploy
 
 # Build extra components which is not in src/ directory like modules
-usr_os_build () {
+do_build:prepend () {
 
 	# Modules
  
@@ -74,7 +72,7 @@ usr_os_build () {
 # be copied to the rootfs. Be aware that it is a deploy directory and not
 # the rootfs itself; this is achieved with the do_deploy task (by the bsp recipe)
 
-do_usr_install_apps () {
+do_install_apps () {
     
     # Installation of the deploy/ content
     usr_do_install_file_root "${IB_TARGET}/build/src/graphic/drm-utils/drm-info"
@@ -89,7 +87,9 @@ do_usr_install_apps () {
     usr_do_install_file_root "${IB_TARGET}/src/modules/*.ko"
 }
 
-usr_os_clean () {
+do_clean:append () {
 	# Clean the modules
 	make -C ${IB_LINUX_PATH} M=${IB_TARGET}/src/modules clean
+
+    rm -f ${TMPDIR}/stamps/usr-linux*
 }

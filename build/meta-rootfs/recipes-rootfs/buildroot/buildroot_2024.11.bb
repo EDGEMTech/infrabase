@@ -55,9 +55,9 @@ do_clean () {
 	rm -rf ${IB_ROOTFS_PATH}/scripts
 	rm -rf ${IB_ROOTFS_PATH}/images
 	rm -rf ${IB_ROOTFS_PATH}/staging
-	
-}
 
+	rm -f ${TMPDIR}/stamps/buildroot*
+}
 addtask do_clean
 
 

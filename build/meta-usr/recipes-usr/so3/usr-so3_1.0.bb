@@ -20,8 +20,6 @@ do_build[nostamp] = "1"
 do_build[depends] = "rootfs-so3:do_build"
 do_unpack[depends] += "so3:do_build"
 
-do_configure[noexec] = "1"
-
 do_deploy[depends] = "rootfs-so3:do_build"
 do_deploy[nostamp] = "1"
 
@@ -48,15 +46,9 @@ python do_deploy() {
 addtask do_deploy
 do_deploy[nostamp] = "1"
 
-usr_os_build () {
-
-	bbplain "Nothing at the moment"
-	
-}
-
 # Installation of the user space components
 
-do_usr_install_apps () {
+do_install_apps () {
 
         # All ELF applications available in usr
 
@@ -64,3 +56,8 @@ do_usr_install_apps () {
 
         usr_do_install_file_dir "${IB_TARGET}/out/*" .
 }
+
+do_clean:append () {
+    rm -f ${TMPDIR}/stamps/usr-so3*
+}
+

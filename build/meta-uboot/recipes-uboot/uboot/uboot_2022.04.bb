@@ -29,6 +29,8 @@ IB_TARGET = "${IB_UBOOT_PATH}"
 # do_configure[depends] += "bsp-linux:do_build_firmware"
 
 # The following code is here as example, but actually currently not used
+
+do_configure[nostamp] = "1"
 do_configure () {
 	
 	cd ${IB_TARGET}
@@ -56,6 +58,7 @@ do_configure () {
 	
 }
 
+do_build[nostamp] = "1"
 do_build () {
 	
 	bbplain "Building U-boot with ${CORES} cores..."
@@ -79,3 +82,9 @@ python do_deploy () {
 
 do_deploy[nostamp] = "1"
 addtask do_deploy
+
+do_clean[nostamp] = "1"
+do_clean () {
+	rm -f ${TMPDIR}/stamps/uboot*
+}
+addtask do_clean

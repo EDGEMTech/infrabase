@@ -25,7 +25,7 @@ python do_handle_fetch_git() {
     import subprocess
 
     # Now fetch the submodule to get lvgl within lv_port_linux
-    bb.plain("Now, fetching submodule ...")
+    bb.plain("Now, fetching submodule for lv_port_linux ...")
 
     gitdir = os.path.join(d.getVar('WORKDIR'), 'git')
     
@@ -39,14 +39,18 @@ python do_handle_fetch_git() {
     target_dir = d.getVar('S')
     dst_dir = os.path.join(target_dir, 'src', 'lvgl', 'lv_port_linux')
 
-    cmd = f"cp -r {gitdir}/. {dst_dir}/"
-
+    cmd = f"cp -r {gitdir}/* {dst_dir}/"
     result = subprocess.run(cmd, shell=True, check=True)
 } 
 
+do_clean:append () {
+     rm -rf ${IB_TARGET}/src/lvgl/lv_port_linux/*
+     rm -rf ${S}/src/lvgl/lv_port_linux/*
+}
+
 # Install the lvglsim application into the deploy directory
-do_usr_install_apps:append () {
-	
+do_install_apps:append () {
+
           usr_do_install_file_root "${IB_TARGET}/build/bin/lvglsim"
-     
+          
 }
