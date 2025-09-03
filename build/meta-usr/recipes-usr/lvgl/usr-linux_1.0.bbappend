@@ -8,14 +8,10 @@ SRCREV = "e9b4a18331c6087ac01fcd17f026ec2f0b1f2bc8"
 
 SRC_URI:lvgl = "git://github.com/lvgl/lv_port_linux.git;branch=master;protocol=https"
 
-# These patches bring lvgl in the usr structure
-FILESPATH:prepend = "${THISDIR}/../lvgl/files/0001-${PF}:"
-
-# These patches contain lv_port_linux patch
-FILESPATH:prepend = "${THISDIR}/../lvgl/files/0002-${PF}:"
+# These patches bring lv_port_linux/lvgl in the usr structure
+FILESPATH:lvgl:prepend = "${THISDIR}/../lvgl/files/0001-${PF}:"
 
 require files/0001-${PF}-patches.inc
-require files/0002-${PF}-patches.inc
 
 # Prepare to set up lv_port_linux in our user space environment
 
@@ -63,12 +59,16 @@ do_install_apps:lvgl:append () {
     usr_do_install_file_root "${IB_TARGET}/build/src/graphic/gbmtest/gbmtest"
     usr_do_install_file_root "${IB_TARGET}/build/src/graphic/fb_benchmark/fb_benchmark"
 
-    usr_do_install_file_root "${IB_TARGET}/build/bin/lvglsim"
-          
+    usr_do_install_file_root "${IB_TARGET}/build/bin/lvglsim"         
 }
 
 do_clean:lvgl:append () {
-     rm -rf ${IB_TARGET}/src/lvgl/lv_port_linux
-     rm -rf ${S}/src/lvgl/lv_port_linux
+     
+     rm -rf ${IB_TARGET}/src/lvgl
+     rm -rf ${IB_TARGET}/src/graphic
+     cp ${IB_TARGET}.back/src/CMakeLists.txt ${IB_TARGET}/src/
+     
+     rm -rf ${S}
+
      rm -rf ${WORKDIR}/git
 }

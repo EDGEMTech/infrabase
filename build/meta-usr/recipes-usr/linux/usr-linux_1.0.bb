@@ -19,7 +19,6 @@ IB_TARGET = "${IB_DIR}/linux/usr"
 
 IB_TOOLCHAIN_FILE_PATH = "${IB_ROOTFS_PATH}/host/share/buildroot/toolchainfile.cmake"
 
-do_build[nostamp] = "1"
 do_build[depends] = "rootfs-linux:do_build"
 do_unpack[depends] += "linux:do_build"
 
@@ -90,5 +89,11 @@ do_clean:append () {
     # Remove the usr organization in the build directory to avoid
     # having old files in the next copy of usr tree.
 
-    rm -rf ${S}
+   rm -f ${WORKDIR}/*.patch
+
+   # Remove all patches
+   rm -rf ${IB_TARGET}/patches
+	
+   # Clean the user space apps
+   rm -rf ${IB_TARGET}/build
 }

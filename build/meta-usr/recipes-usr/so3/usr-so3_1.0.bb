@@ -16,7 +16,6 @@ IB_TARGET = "${IB_DIR}/so3/usr"
 
 IB_TOOLCHAIN_FILE_PATH = "${IB_TARGET}/${IB_PLAT_CPU}_toolchain.cmake"
 
-do_build[nostamp] = "1"
 do_build[depends] = "rootfs-so3:do_build"
 
 # Make sure so3 has been installed correctly to fetch other components if required

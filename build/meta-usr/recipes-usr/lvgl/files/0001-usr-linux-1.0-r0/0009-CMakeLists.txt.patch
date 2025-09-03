@@ -1,7 +1,0 @@
---- /home/rossierd/soo/infrabase/build/tmp/work/usr-linux-1.0-r0/usr-linux-1.0/src/examples/CMakeLists.txt	2025-09-03 16:54:39.440012037 +0200
-+++ ./src/examples/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
-@@ -1,4 +0,0 @@
--
--add_executable(hello hello.c)
--
--target_link_libraries(hello c)

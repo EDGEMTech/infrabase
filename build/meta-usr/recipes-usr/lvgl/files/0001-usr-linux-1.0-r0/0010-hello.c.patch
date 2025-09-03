@@ -1,8 +1,0 @@
---- /home/rossierd/soo/infrabase/build/tmp/work/usr-linux-1.0-r0/usr-linux-1.0/src/examples/hello.c	2025-09-03 16:54:39.439990354 +0200
-+++ ./src/examples/hello.c	1970-01-01 01:00:00.000000000 +0100
-@@ -1,5 +0,0 @@
--#include <stdio.h>
--
--int main(int argc, char **argv) {
--    printf("Hello world !\n ");
--}
