@@ -28,9 +28,8 @@ python do_handle_fetch_git() {
     gitdir = os.path.join(d.getVar('WORKDIR'), 'git')
     dst_dir = d.getVar('S')
 
-    cmd = f"cp -r {gitdir}/so3/. {dst_dir}/"
-
-    result = subprocess.run(cmd, shell=True, check=True)
+    cmd = f"find . -not -path '*/.git/*' -and \( -type f -or -type d -empty \) -exec cp -r --parents -t {dst_dir} {{}} +"
+    result = subprocess.run(cmd, shell=True, check=True, cwd=os.path.join(gitdir, "so3"))
 }
 
 do_configure () {

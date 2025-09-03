@@ -36,9 +36,9 @@ The following packages need to be installed:
 
 
     sudo apt install make cmake gcc-arm-none-eabi libc-dev \
-    bison flex bash patch mount dtc \
-    dosfstools u-boot-tools net-tools \aaafuu
-    bridge-utils iptables dnsmasq libressl-dev \
+    bison flex bash patch mount device-tree-compiler \
+    dosfstools u-boot-tools net-tools \
+    bridge-utils iptables dnsmasq libssl-dev \
     util-linux e2fsprogs
  
 Since the documentation relies on `Sphinx <https://www.sphinx-doc.org>`_, 
@@ -137,7 +137,7 @@ It can be achieved with the following script:
 
 .. code-block:: bash
 
-   $ ./source env.sh
+   $ source env.sh
    
 However, the :term:`standard script` executes this command before invoking *bitbake* commands.
 
@@ -163,7 +163,7 @@ QEMU
 ****
 
 The installation of *QEMU* depends on the necessity to have the emulated framebuffer or not.
-Currently, the QEMU macine is ``virt`` and is referred as **virt32** for 32-bit and **virt64**
+Currently, the QEMU machine is ``virt`` and is referred as **virt32** for 32-bit and **virt64**
 for 64-bit versions in *Infrabase*.
 
 For the standard installation, QEMU can be installed via the standard ``apt-get`` command.

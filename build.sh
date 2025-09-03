@@ -55,7 +55,7 @@ while getopts "abcflqrsuvz" o; do
       build_uboot=y
       ;;
     c)
-      build_clear=y
+      build_clean=y
       ;;
     f)
       build_filesystem=y
@@ -93,13 +93,11 @@ cd build
 source env.sh
 
 if [ "$build_all" ]; then
-    if [ "$build_clear" ]; then
+    if [ "$build_clean" ]; then
       if [ "$build_so3" ]; then
-        rm -f tmp/stamps/bsp-so3*
-        rm -f tmp/stamps/so3*
-        rm -f tmp/stamps/usr-so3*
+        bitbake bsp-so3 -c clean
       else
-        rm -f tmp/stamps/*
+        bitbake bsp-linux -c clean
       fi
     fi
 
@@ -115,27 +113,25 @@ if [ "$build_filesystem" ]; then
 fi
 
 if [ "$build_uboot" ]; then
-    if [ "$build_clear" ]; then
-      rm -f tmp/stamps/uboot*
+    if [ "$build_clean" ]; then
+      bitbake uboot -c clean
     fi
-
-    rm -f tmp/stamps/uboot*
 
     bitbake uboot ${VERBOSE}
 fi
 
 if [ "$build_linux" ]; then
 
-    if [ "$build_clear" ]; then
-      rm -f tmp/stamps/linux*
+    if [ "$build_clean" ]; then
+      bitbake linux -c clean
     fi
 
     bitbake linux ${VERBOSE}
 fi
 
 if [ "$build_qemu" ]; then
-    if [ "$build_clear" ]; then
-      rm -f tmp/stamps/qemu*
+    if [ "$build_clean" ]; then
+      bitbake qemu -c clean
     fi
 
     bitbake qemu ${VERBOSE}
@@ -143,9 +139,7 @@ fi
 
 if [ "$build_rootfs" ]; then
 
-    if [ "$build_clear" ]; then
-      rm -f tmp/stamps/rootfs-linux*
-      rm -f tmp/stamps/buildroot*
+    if [ "$build_clean" ]; then
       bitbake rootfs-linux -c clean
     fi
     
@@ -153,26 +147,24 @@ if [ "$build_rootfs" ]; then
 fi
 
 if [ "$build_usr" ]; then
-    if [ "$build_clear" ]; then
-      rm -f tmp/stamps/usr*
+    if [ "$build_clean" ]; then
+      bitbake usr-linux -c clean
     fi
 
     bitbake usr-linux ${VERBOSE}
 fi
 
 if [ "$build_avz" ]; then
-    if [ "$build_clear" ]; then
-      rm -f tmp/stamps/avz*
+    if [ "$build_clean" ]; then
+      bitbake avz -c clean
     fi
 
     bitbake avz ${VERBOSE}
 fi
 
  if [ "$build_so3" ]; then
-    if [ "$build_clear" ]; then
-        rm -f tmp/stamps/bsp-so3*
-        rm -f tmp/stamps/so3*
-        rm -f tmp/stamps/usr-so3*
+    if [ "$build_clean" ]; then
+      bitbake bsp-so3 -c clean
     fi
 
     bitbake bsp-so3 ${VERBOSE} 

@@ -40,7 +40,7 @@ die() {
 
 BASEDEPENDS = ""
 
-DEPENDS:prepend="${BASEDEPENDS} "
+DEPENDS:prepend = "${BASEDEPENDS} "
  
 # THISDIR only works properly with imediate expansion as it has to run
 # in the context of the location its used (:=)
@@ -130,17 +130,17 @@ python do_handle_fetch_git() {
     workdir = d.getVar('WORKDIR')
     dst_dir = d.getVar('S')
     src_dir = os.path.join(workdir, 'git')
-    
+
     if not os.path.isdir(src_dir):
         bb.note(f"Source directory {src_dir} does not exist — skipping copy.")
         return
 
-    cmd = f"cp -r {src_dir}/* {dst_dir}/"
-    result = subprocess.run(cmd, shell=True, check=True)
+    cmd = f"find . -not -path '*/.git/*' -and \( -type f -or -type d -empty \) -exec cp -r --parents -t {dst_dir} {{}} +"
+    result = subprocess.run(cmd, shell=True, check=True, cwd=src_dir)
 }
 do_unpack[postfuncs] = "do_handle_fetch_git"
  
-base_do_attach_infrabase () {
+do_attach_infrabase () {
 	echo "Attaching ${PN} to ${IB_TARGET}"
 	
 	if [ -d "${IB_TARGET}" ]; then
@@ -149,7 +149,7 @@ base_do_attach_infrabase () {
 	fi
 	
 	mkdir -p ${IB_TARGET}
-	cp -r ${S}/* ${IB_TARGET}
+	cp -r ${S}/. ${IB_TARGET}
 }
 
 addtask cleansstate after do_clean
