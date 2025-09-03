@@ -8,11 +8,6 @@ SRCREV = "c033a98afddd65aaafeebea625382a94020fe4a7"
 
 SRC_URI = "git://github.com/lvgl/lvgl.git;branch=release/v9.3;protocol=https"
 
-# These patches contain lv_port_linux patch
-FILESPATH:prepend = "${THISDIR}/../lvgl/files/0001-${PF}:"
-
-#require files/0001-${PF}-patches.inc
-
 # To obtain the LVGL library in SO3, we need to fetch the submodule
 # as defined in the SO3 git repository
 
@@ -32,9 +27,9 @@ python do_handle_fetch_git() {
     dst_dir = os.path.join(target_dir, 'lib', 'lvgl')
   
     # Fetch the submodules using full path
-    cmd = f"cp -r {gitdir}/* {dst_dir}/"
-    result = subprocess.run(cmd, shell=True, check=True)
-} 
+    cmd = f"find . -not -path '*/.git/*' -and \( -type f -or -type d -empty \) -exec cp -r --parents -t {dst_dir} {{}} +"
+    result = subprocess.run(cmd, shell=True, check=True, cwd=gitdir)
+}
 
 do_clean:append () {
      rm -rf ${IB_TARGET}/lib/lvgl/*

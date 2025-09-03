@@ -18,9 +18,10 @@ IB_TOOLCHAIN_FILE_PATH = "${IB_TARGET}/${IB_PLAT_CPU}_toolchain.cmake"
 
 do_build[nostamp] = "1"
 do_build[depends] = "rootfs-so3:do_build"
-do_unpack[depends] += "so3:do_build"
 
-do_deploy[depends] = "rootfs-so3:do_build"
+# Make sure so3 has been installed correctly to fetch other components if required
+do_unpack[depends] += "so3:do_attach_infrabase"
+
 do_deploy[nostamp] = "1"
 
 # Deploy the usr contents, i.e. the deploy/ dir, in the SO3 rootfs
@@ -30,16 +31,20 @@ python do_deploy() {
     
     d.setVar('ROOTFS_FILENAME', '')
 
-    __do_rootfs_mount(d)
-    
-    src_dir = os.path.join(d.getVar('IB_TARGET'), 'build', 'deploy')
-    dst_dir = os.path.join(d.getVar('IB_ROOTFS_PATH'), 'fs')
-    
-    cmd = f"sudo cp -r {src_dir}/. {dst_dir}/"
-    print(cmd)
-    result = subprocess.run(cmd, shell=True, check=True)
-    
-    __do_rootfs_umount(d)
+    if os.path.isdir(d.getVar('IB_ROOTFS_PATH')):
+        __do_rootfs_mount(d)
+        
+        src_dir = os.path.join(d.getVar('IB_TARGET'), 'build', 'deploy')
+        dst_dir = os.path.join(d.getVar('IB_ROOTFS_PATH'), 'fs')
+        
+        cmd = f"sudo cp -r {src_dir}/. {dst_dir}/"
+        
+        result = subprocess.run(cmd, shell=True, check=True)
+        
+        __do_rootfs_umount(d)
+    else:
+        utils_restore_user_ownership(d)
+        bb.fatal("Hum, it seeems the so3 usr has not been built correctly - rootfs missing...")
     
 }
  
@@ -53,7 +58,6 @@ do_install_apps () {
         # All ELF applications available in usr
 
         usr_do_install_file_dir "${IB_TARGET}/build/src/*.elf" .
-
         usr_do_install_file_dir "${IB_TARGET}/out/*" .
 }
 

@@ -3134,7 +3134,8 @@
 +# BR2_PACKAGE_MC is not set
 +# BR2_PACKAGE_MG is not set
 +# BR2_PACKAGE_MOST is not set
-+# BR2_PACKAGE_NANO is not set
++BR2_PACKAGE_NANO=y
++BR2_PACKAGE_NANO_TINY=y
 +# BR2_PACKAGE_UEMACS is not set
 +# BR2_PACKAGE_VIM is not set
 +

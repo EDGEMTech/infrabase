@@ -1,5 +1,5 @@
---- /home/rossierd/soo/micofe/build/tmp/work/linux-6.12-r0/linux-6.12/arch/arm64/kernel/entry.S	2024-11-17 23:15:08.000000000 +0100
-+++ ./arch/arm64/kernel/entry.S	2025-08-24 11:46:05.055536984 +0200
+--- /home/rossierd/soo/git/micofe/build/tmp/work/linux-6.12-r0/linux-6.12/arch/arm64/kernel/entry.S	2024-11-17 23:15:08.000000000 +0100
++++ ./arch/arm64/kernel/entry.S	2025-08-29 08:46:39.976604032 +0200
 @@ -28,6 +28,11 @@
  #include <asm/thread_info.h>
  #include <asm/asm-uaccess.h>

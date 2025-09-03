@@ -1,5 +1,5 @@
---- /home/rossierd/soo/micofe/build/tmp/work/linux-6.12-r0/linux-6.12/arch/arm64/kernel/smp.c	2024-11-17 23:15:08.000000000 +0100
-+++ ./arch/arm64/kernel/smp.c	2025-08-24 11:46:05.055019018 +0200
+--- /home/rossierd/soo/git/micofe/build/tmp/work/linux-6.12-r0/linux-6.12/arch/arm64/kernel/smp.c	2024-11-17 23:15:08.000000000 +0100
++++ ./arch/arm64/kernel/smp.c	2025-08-29 08:46:39.976376895 +0200
 @@ -53,6 +53,8 @@
  #include <asm/ptrace.h>
  #include <asm/virt.h>

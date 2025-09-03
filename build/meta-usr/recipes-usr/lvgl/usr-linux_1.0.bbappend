@@ -37,15 +37,20 @@ python do_handle_fetch_git() {
     # Then, copy the full git directory to the {S} directory
 
     target_dir = d.getVar('S')
+
+    # Make sure the target directory exists
+    cmd = f"mkdir -p {target_dir}/src/lvgl/lv_port_linux"
+    result = subprocess.run(cmd, shell=True, check=True)
+
     dst_dir = os.path.join(target_dir, 'src', 'lvgl', 'lv_port_linux')
 
-    cmd = f"cp -r {gitdir}/* {dst_dir}/"
-    result = subprocess.run(cmd, shell=True, check=True)
-} 
+    cmd = f"find . -not -path '*/.git/*' -and \( -type f -or -type d -empty \) -exec cp -r --parents -t {dst_dir} {{}} +"
+    result = subprocess.run(cmd, shell=True, check=True, cwd=gitdir)
+}
 
 do_clean:append () {
-     rm -rf ${IB_TARGET}/src/lvgl/lv_port_linux/*
-     rm -rf ${S}/src/lvgl/lv_port_linux/*
+     rm -rf ${IB_TARGET}/src/lvgl/lv_port_linux
+     rm -rf ${S}/src/lvgl/lv_port_linux
 }
 
 # Install the lvglsim application into the deploy directory

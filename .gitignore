@@ -13,6 +13,8 @@
 *.itb
 
 build/bitbake
+build/bitbake.lock
+build/cache
 
 **/doxy/**
 **/generated/**
@@ -27,6 +29,13 @@ vmlinux*
 uImage*
 modules.order
 **/include/config/**
+
+# Generated cpio
+*.cpio
+
+
+# BSP
+bsp
 
 # Backup files
 *~

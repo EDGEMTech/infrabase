@@ -25,7 +25,7 @@ Receipes contain rules to be executed for a specific application or component.
 Tasks are defined in classes or receipes and are the core functions managed by the build system.
 Tasks are either (**bash**) shell script or **python** functions
 
-Configurations are everyhwere, but the ``local.conf`` file located in ``conf/`` directory contains the 
+Configurations are everyhwere, but the ``local.conf`` file located in ``build/conf/`` directory contains the
 general configuration. Typically, this file contains the definition of ``PLATFORM``
 Configurations contain definition of *bitbake* variables that can be used by all recipes of the build system.
 
