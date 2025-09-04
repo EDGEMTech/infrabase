@@ -54,8 +54,6 @@ def __platform_init_storage(d):
 
         os.symlink(source_link, target_link)
 
-
-
     if not os.path.exists(f"/dev/{devname}"):
         print(f"Unfortunately, /dev/{devname} does not exist...")
         exit(1)

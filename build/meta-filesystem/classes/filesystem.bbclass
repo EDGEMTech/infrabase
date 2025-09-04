@@ -117,14 +117,15 @@ def __do_fs_mount(d):
     if utils_chk_is_root_user(d) == False:
         bb.fatal("Please re-run the task/script as root")
 
-    img_path = f"{WORKDIR}/sdcard.img.{IB_PLATFORM}"
+    if IB_STORAGE == "soft":
+        img_path = f"{WORKDIR}/sdcard.img.{IB_PLATFORM}"
 
-    # Check if image exists before running losetup
-    try:
-        os.stat(img_path)
-    except OSError as e:
-        if e.errno == errno.ENOENT:
-            bb.fatal(f"{img_path} does not exist")
+        # Check if image exists before running losetup
+        try:
+            os.stat(img_path)
+        except OSError as e:
+            if e.errno == errno.ENOENT:
+                bb.fatal(f"{img_path} does not exist")
 
     p1 = os.path.join(WORKDIR, "p1")
     p2 = os.path.join(WORKDIR, "p2")

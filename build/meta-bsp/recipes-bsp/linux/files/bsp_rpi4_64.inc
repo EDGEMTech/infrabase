@@ -12,7 +12,7 @@ def __do_platform_deploy(d):
     print("Platorm " + d.getVar('IB_PLATFORM'))
 
     subprocess.run(['sudo', 'cp -r',
-        os.path.join(d.getVar('FILE_DIRNAME'), "files/rpi4"),
+        os.path.join(d.getVar('FILE_DIRNAME'), "../bsp/rpi4"),
         os.path.join(d.getVar('IB_FILESYSTEM_PATH'), "p1")])
 
     subprocess.run(['sudo', 'cp',

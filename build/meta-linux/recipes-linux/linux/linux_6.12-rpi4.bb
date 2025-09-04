@@ -5,19 +5,19 @@ LICENSE = "GPLv2"
 
 # Revision and version
 PR = "r0"
-PV = "6.12"
+PV = "6.12-rpi4"
 
 OVERRIDES += ":linux"
 
 inherit linux
 
-SRC_URI = "https://mirrors.edge.kernel.org/pub/linux/kernel/v6.x/linux-6.12.tar.gz;protocol=https"
+SRC_URI = "https://github.com/raspberrypi/linux/archive/refs/heads/rpi-6.12.y.zip;protocol=https"
 
-SRC_URI[sha256sum] = "1376ce98485a0c8de4635d0bfb88760924e4a818c0439d830738bb1c690b7ca4"
+SRC_URI[sha256sum] = "f28ba6ca9cdbd9ae099133bb9772a0c6601a6dd729d0ba7ea9e50b08abb213a2"
 
 # Set of patches to be applied
 
-# These patches enables QEMU/virt64 with framebuffer
+# These patches contain rpi4 64-bits enhancement
 FILESPATH:prepend = "${THISDIR}/files/0001-${PF}:"
  
 require files/0001-${PF}-patches.inc
@@ -25,10 +25,17 @@ require files/0001-${PF}-patches.inc
 # Where the working directory will be placed in infrabase root dir
 IB_TARGET = "${IB_LINUX_PATH}"
 
+# Since the file is unzipped to a special name, we rename
+# to the right name following bitbake convention
+do_attach_infrabase:prepend() {
+	rm -rf ${S}
+	mv ${WORKDIR}/linux-rpi-6.12.y ${S}
+}
+
 do_configure[nostamp] = "1"
 do_configure () {
 	cd ${IB_TARGET}
-	make ${IB_CONFIG}
+	make ${IB_CONFIG} 
 }
 
 do_build () {
@@ -36,20 +43,11 @@ do_build () {
 	
 	cd ${IB_TARGET}
 	
-	if [ "${IB_PLATFORM}" = "x86-qemu" -o "${IB_PLATFORM}" = "x86-pc" ]; then
-		make -j${CORES} bzImage
-	else
-	
-	  if [ "${IB_PLATFORM}" = "bbb" ]; then
-	  	make -j${CORES} zImage
-	  else
-	    make -j${CORES} Image
-	  fi
-	  
-	  # Compile the device tree files
-	  make dtbs
-	fi
-
+	make -j${CORES} Image  
+	    
+	# Compile the device tree files
+	make dtbs
+	 
 }
 
 do_clean[nostamp] = "1"

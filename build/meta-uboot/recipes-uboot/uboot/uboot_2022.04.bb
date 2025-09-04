@@ -70,15 +70,25 @@ do_build () {
 def __do_platform_deploy(d):
     import os
     import subprocess
-
+   
     src_dir = d.getVar('FILE_DIRNAME')
     dst_dir = d.getVar('IB_FILESYSTEM_PATH')
     u_boot_path = d.getVar('IB_UBOOT_PATH')
+    IB_PLATFORM = d.getVar('IB_PLATFORM')
     
-    cmd = f"sudo cp {u_boot_path}/u-boot.bin {dst_dir}/p1/"
-    result = subprocess.run(cmd, shell=True, check=True)
- 
+    if IB_PLATFORM == "rpi4_64":
+         
+        cmd = f"sudo cp -r {src_dir}/bsp/rpi4/* {dst_dir}/p1/"
+        result = subprocess.run(cmd, shell=True, check=True)
 
+        cmd = f"sudo cp {u_boot_path}/u-boot.bin {dst_dir}/p1/kernel8.img"
+        result = subprocess.run(cmd, shell=True, check=True)
+
+    else:
+        cmd = f"sudo cp {u_boot_path}/u-boot.bin {dst_dir}/p1/"
+        result = subprocess.run(cmd, shell=True, check=True)
+ 
+do_deploy[nostamp] = "1"
 python do_deploy() {
     
     bb.plain("Deploy U-boot only ...")
