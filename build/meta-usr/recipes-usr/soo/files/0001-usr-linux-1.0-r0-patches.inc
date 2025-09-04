@@ -1,4 +1,4 @@
-SRC_URI:soo:append = "\ 
+SOO_URI = "\ 
     file://0004-CMakeLists.txt.patch \ 
     file://0021-container_logs.hpp.patch \ 
     file://0029-volume.hpp.patch \ 
@@ -13,7 +13,7 @@ SRC_URI:soo:append = "\
     file://0017-utils.cpp.patch \ 
     file://0012-image.cpp.patch \ 
     file://0011-daemon.hpp.patch \ 
-    file://0001-CMakeLists.txt.patch \ 
+    file://1001-CMakeLists.txt.patch \ 
     file://0030-webserver.cpp.patch \ 
     file://0008-container.cpp.patch \ 
     file://0002-modtry.mod.patch \ 

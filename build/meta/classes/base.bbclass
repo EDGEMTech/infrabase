@@ -51,7 +51,7 @@ do_fetch[dirs] = "${DL_DIR}"
 do_fetch[file-checksums] = "${@bb.fetch.get_checksum_file_list(d)}"
 
 do_fetch[vardeps] += "SRCREV"
-python base_do_fetch() {
+python do_fetch() {
 
     src_uri = (d.getVar('SRC_URI') or "").split()
     if not src_uri:
@@ -86,7 +86,7 @@ python do_listtasks() {
 do_unpack[dirs] = "${WORKDIR}"
 do_unpack[cleandirs] = "${@d.getVar('S') if os.path.normpath(d.getVar('S')) != os.path.normpath(d.getVar('WORKDIR')) else os.path.join('${S}', 'patches')}"
 
-python base_do_unpack() {
+python do_unpack() {
     src_uri = (d.getVar('SRC_URI') or "").split()
     if not src_uri:
         return
@@ -99,7 +99,7 @@ python base_do_unpack() {
 }
 
 addtask do_handle_symlinks
-python base_do_handle_symlinks() {
+python do_handle_symlinks() {
     import subprocess
     
     s = d.getVar('IB_SYMLINK:%s' % d.getVar('PN'))

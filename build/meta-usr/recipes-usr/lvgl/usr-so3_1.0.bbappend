@@ -33,5 +33,9 @@ python do_handle_fetch_git() {
 
 do_clean:append () {
      rm -rf ${IB_TARGET}/lib/lvgl/*
+     rm -rf ${IB_TARGET}/src/lib
+
+     rm -rf ${WORKDIR}/*
+     
      rm -rf ${S}/lib/lvgl/*
 }
