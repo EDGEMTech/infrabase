@@ -16,6 +16,10 @@ python do_handle_fetch_git() {
     import os
     import subprocess
 
+    ovrs = (d.getVar('OVERRIDES') or '').replace(' ', '').split(':')
+    if 'lvgl' not in ovrs:
+        return
+    
     # Now fetch the submodule to get lvgl within the usr/lib
     bb.plain("Now, copying LVGL at the right place ...")
 
@@ -32,10 +36,13 @@ python do_handle_fetch_git() {
 }
 
 do_clean:append () {
-     rm -rf ${IB_TARGET}/lib/lvgl/*
-     rm -rf ${IB_TARGET}/src/lib
 
-     rm -rf ${WORKDIR}/*
+     if echo ":${OVERRIDES}:" | grep -q ":lvgl"; then
+        rm -rf ${IB_TARGET}/lib/lvgl/*
+        rm -rf ${IB_TARGET}/src/lib
+
+        rm -rf ${WORKDIR}/*
      
-     rm -rf ${S}/lib/lvgl/*
+        rm -rf ${S}/lib/lvgl/*
+    fi
 }

@@ -32,4 +32,5 @@ SRC_URI += "\
     file://0007-bootm.c.patch \ 
     file://0018-virt32_defconfig.patch \  
     file://0017-rpi4_64_rpi_dtb_defconfig.patch \ 
+    file://0051-setexpr.c.patch \ 
 "
