@@ -14,4 +14,5 @@ SRC_URI += "\
     file://0003-bcm270x-rpi.dtsi.patch \ 
     file://0004-bcm2711.dtsi.patch \ 
     file://0013-bcm283x-rpi-usb-peripheral.dtsi.patch \ 
+    file://0016-rpi4_64_nomodules_defconfig.patch \
 "

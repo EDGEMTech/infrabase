@@ -53,12 +53,7 @@ do_build () {
 }
 
 do_clean[nostamp] = "1"
-do_clean () {
-	rm -f ${TMPDIR}/stamps/linux*
-	
-	cd ${IB_TARGET}
-	if [ -f .config ]; then
-        	make distclean
-    	fi
+python do_clean () {
+    __do_clean(d)
 }
 addtask do_clean
