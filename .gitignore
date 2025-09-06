@@ -33,10 +33,6 @@ modules.order
 # Generated cpio
 *.cpio
 
-
-# BSP
-bsp
-
 # Backup files
 *~
 *.d
