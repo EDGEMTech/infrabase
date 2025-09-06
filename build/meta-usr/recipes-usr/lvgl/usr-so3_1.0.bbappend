@@ -5,8 +5,11 @@ LICENSE = "MIT"
 # Fetch LVGL
 
 SRCREV = "c033a98afddd65aaafeebea625382a94020fe4a7"
+ 
+LVGL_URI = "git://github.com/lvgl/lvgl.git;branch=release/v9.3;protocol=https"
 
-SRC_URI = "git://github.com/lvgl/lvgl.git;branch=release/v9.3;protocol=https"
+SRC_URI += " ${@ d.expand(d.getVar('LVGL_URI') or '') \
+                 if 'lvgl' in (d.getVar('OVERRIDES') or '').split(':') else '' }"
 
 # To obtain the LVGL library in SO3, we need to fetch the submodule
 # as defined in the SO3 git repository

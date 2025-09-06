@@ -49,7 +49,6 @@ u-boot
 /qemu
 linux/linux
 rootfs/buildroot
-so3
 
 # except the followings:
 !.gitignore #Don't ignore the ignore file ;-)

@@ -11,6 +11,11 @@ PV = "1.0"
 
 OVERRIDES += ":so3"
 
+# These patches bring lv_port_linux/lvgl in the usr structure
+FILESPATH:prepend = "${THISDIR}/files/0001-${PF}:"
+
+require files/0001-${PF}-patches.inc
+
 # Where the working directory will be placed in infrabase root dir
 IB_TARGET = "${IB_DIR}/so3/usr"
 

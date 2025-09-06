@@ -1,8 +1,6 @@
 
 # Deployment on RPi4 (32-bit) platform
 
-echo "Platform rpi4"
-
 require bsp_arm_common.inc
 
 def __do_platform_deploy(d):
