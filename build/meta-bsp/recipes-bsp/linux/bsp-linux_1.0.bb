@@ -22,7 +22,7 @@ IB_TARGET = "${IB_BSP_PATH}"
 do_configure[noexec] = "1"
 do_attach_infrabase[noexec] = "1"
 
-include files/bsp_${IB_PLATFORM}.inc
+include ../bsp/files/bsp_${IB_PLATFORM}.inc
 
 # Building all components
 

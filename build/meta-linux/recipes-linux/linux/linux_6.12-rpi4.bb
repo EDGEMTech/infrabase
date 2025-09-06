@@ -27,9 +27,20 @@ IB_TARGET = "${IB_LINUX_PATH}"
 
 # Since the file is unzipped to a special name, we rename
 # to the right name following bitbake convention
-do_attach_infrabase:prepend() {
-	rm -rf ${S}
-	mv ${WORKDIR}/linux-rpi-6.12.y ${S}
+
+python do_patch:prepend() {
+    import os
+    import shutil
+    import subprocess
+
+    S = d.getVar('S')
+    WORKDIR = d.getVar('WORKDIR')
+
+    cmd = f"rm -rf {S}"
+    result = subprocess.run(cmd, shell=True, check=True)
+    
+    cmd = f"mv {WORKDIR}/linux-rpi-6.12.y {S}"
+    result = subprocess.run(cmd, shell=True, check=True)
 }
 
 do_configure[nostamp] = "1"
