@@ -11,9 +11,9 @@ OVERRIDES += ":linux"
 
 inherit linux
 
-SRC_URI = "git://github.com/raspberrypi/linux.git;branch=rpi-6.12.y;protocol=https"
+SRC_URI = "git://github.com/raspberrypi/linux.git;branch=rpi-6.12.y;tag=stable_20250702;protocol=https"
 
-SRCREV = "72384349123b855e32fd60070ebcce6db6b8714c"
+SRCREV = "8f77e03530f65209a377d25023e912b288e039cd"
 
 # Set of patches to be applied
 

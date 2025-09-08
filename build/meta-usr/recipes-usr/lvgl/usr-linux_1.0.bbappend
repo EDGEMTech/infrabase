@@ -26,6 +26,7 @@ python do_handle_fetch_git() {
 
     import os
     import subprocess
+    import shlex
      
     ovrs = (d.getVar('OVERRIDES') or '').replace(' ', '').split(':')
     if 'lvgl' not in ovrs:
@@ -51,7 +52,12 @@ python do_handle_fetch_git() {
 
     dst_dir = os.path.join(target_dir, 'src', 'lvgl', 'lv_port_linux')
 
-    cmd = f"find . -not -path '*/.git/*' -and \( -type f -or -type d -empty \) -exec cp -r --parents -t {dst_dir} {{}} +"
+    # Copy everything except .git, preserving symlinks/metadata
+    cmd = (
+        "find . -mindepth 1 -path './.git' -prune -o "
+        "-exec cp -a --parents -t {} {{}} +"
+    ).format(shlex.quote(dst_dir))
+
     result = subprocess.run(cmd, shell=True, check=True, cwd=gitdir)
     
 }

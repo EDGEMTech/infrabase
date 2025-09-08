@@ -126,6 +126,7 @@ python do_handle_symlinks() {
 python do_handle_fetch_git() {
     import os
     import subprocess
+    import shlex
 
     workdir = d.getVar('WORKDIR')
     dst_dir = d.getVar('S')
@@ -135,7 +136,12 @@ python do_handle_fetch_git() {
         bb.note(f"Source directory {src_dir} does not exist — skipping copy.")
         return
 
-    cmd = f"find . -not -path '*/.git/*' -and \( -type f -or -type d -empty \) -exec cp -r --parents -t {dst_dir} {{}} +"
+    # Copy everything except .git, preserving symlinks/metadata
+    cmd = (
+        "find . -mindepth 1 -path './.git' -prune -o "
+        "-exec cp -a --parents -t {} {{}} +"
+    ).format(shlex.quote(dst_dir))
+    
     result = subprocess.run(cmd, shell=True, check=True, cwd=src_dir)
 }
 do_unpack[postfuncs] = "do_handle_fetch_git"
