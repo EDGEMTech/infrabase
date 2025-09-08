@@ -11,9 +11,9 @@ OVERRIDES += ":linux"
 
 inherit linux
 
-SRC_URI = "https://github.com/raspberrypi/linux/archive/refs/heads/rpi-6.12.y.zip;protocol=https"
+SRC_URI = "git://github.com/raspberrypi/linux.git;branch=rpi-6.12.y;protocol=https"
 
-SRC_URI[sha256sum] = "f28ba6ca9cdbd9ae099133bb9772a0c6601a6dd729d0ba7ea9e50b08abb213a2"
+SRCREV = "72384349123b855e32fd60070ebcce6db6b8714c"
 
 # Set of patches to be applied
 
@@ -24,24 +24,6 @@ require files/0001-${PF}-patches.inc
 
 # Where the working directory will be placed in infrabase root dir
 IB_TARGET = "${IB_LINUX_PATH}"
-
-# Since the file is unzipped to a special name, we rename
-# to the right name following bitbake convention
-
-python do_patch:prepend() {
-    import os
-    import shutil
-    import subprocess
-
-    S = d.getVar('S')
-    WORKDIR = d.getVar('WORKDIR')
-
-    cmd = f"rm -rf {S}"
-    result = subprocess.run(cmd, shell=True, check=True)
-    
-    cmd = f"mv {WORKDIR}/linux-rpi-6.12.y {S}"
-    result = subprocess.run(cmd, shell=True, check=True)
-}
 
 do_configure[nostamp] = "1"
 do_configure () {
