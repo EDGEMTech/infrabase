@@ -31,17 +31,13 @@ do_build () {
 }
 addtask do_build
 
-do_clean[depends] = "${IB_ROOTFS_METHOD}:do_clean"
-do_clean[noexec] = "1"
-addtask do_clean
-
 do_attach_infrabase[depends] = "${IB_ROOTFS_METHOD}:do_attach_infrabase"
   
 do_attach_infrabase () {
 	
 	# Remove previous link if any
 	rm -f ${IB_TARGET}/board
-	
+
 	ln -fs ${FILE_DIRNAME}/files/board ${IB_TARGET}/board
 }
 
@@ -100,10 +96,15 @@ python do_deploy () {
 }
 addtask do_deploy
 
-do_clean[depends] = "buildroot:do_clean"
+do_clean[depends] = "${IB_ROOTFS_METHOD}:do_clean"
 
 do_clean[nostamp] = "1"
 do_clean () {
-	rm -f ${TMPDIR}/stamps/qemu*
+
+    rm ${IB_TARGET}/board/${IB_PLATFORM}/rootfs.cpio*
+    rm -f ${IB_TARGET}/board
+
+	rm -f ${TMPDIR}/stamps/rootfs-linux*
 }
 addtask do_clean
+ 
