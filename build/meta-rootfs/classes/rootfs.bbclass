@@ -114,7 +114,3 @@ addtask do_rootfs_mount
 
 addtask do_ramfs_umount
 addtask do_rootfs_umount
-
- 
-
-
