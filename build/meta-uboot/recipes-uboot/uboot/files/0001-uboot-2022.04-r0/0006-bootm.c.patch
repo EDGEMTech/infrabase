@@ -1,5 +1,5 @@
---- /var/dev/wayland_lvgl/build/tmp/work/uboot-2022.04-r0/git/boot/bootm.c	2024-03-02 13:32:12.850622250 +0100
-+++ ./boot/bootm.c	2024-03-02 10:09:56.890887329 +0100
+--- /home/rossierd/soo/git/infrabase/build/tmp/work/uboot-2022.04-r0/uboot-2022.04/boot/bootm.c	2025-09-11 16:09:42.881044678 +0200
++++ ./boot/bootm.c	2025-09-11 14:06:09.680553483 +0200
 @@ -251,6 +251,13 @@
  {
  	int ret;
