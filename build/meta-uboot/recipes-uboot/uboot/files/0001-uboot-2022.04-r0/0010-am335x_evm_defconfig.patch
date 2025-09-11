@@ -1,5 +1,5 @@
---- /home/rossierd/soo/git/infrabase/build/tmp/work/uboot-2022.04-r0/uboot-2022.04/configs/am335x_evm_defconfig	2025-09-11 16:09:42.902013474 +0200
-+++ ./configs/am335x_evm_defconfig	2025-09-11 14:06:09.606121733 +0200
+--- /home/rossierd/soo/git/infrabase/build/tmp/work/uboot-2022.04-r0/uboot-2022.04/configs/am335x_evm_defconfig	2025-09-11 16:44:26.727028493 +0200
++++ ./configs/am335x_evm_defconfig	2025-09-11 16:34:39.224756147 +0200
 @@ -2,7 +2,7 @@
  CONFIG_ARCH_CPU_INIT=y
  CONFIG_ARCH_OMAP2PLUS=y

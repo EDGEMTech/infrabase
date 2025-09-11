@@ -1,5 +1,5 @@
---- /home/rossierd/soo/git/infrabase/build/tmp/work/uboot-2022.04-r0/uboot-2022.04/boot/image-board.c	2025-09-11 16:09:42.881044678 +0200
-+++ ./boot/image-board.c	2025-09-11 14:06:09.680573763 +0200
+--- /home/rossierd/soo/git/infrabase/build/tmp/work/uboot-2022.04-r0/uboot-2022.04/boot/image-board.c	2025-09-11 16:44:26.707884622 +0200
++++ ./boot/image-board.c	2025-09-11 16:34:39.288145557 +0200
 @@ -767,6 +767,9 @@
  	const char *uname;
  	u8 img_type;

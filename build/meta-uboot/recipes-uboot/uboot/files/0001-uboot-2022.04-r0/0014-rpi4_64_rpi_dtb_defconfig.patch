@@ -1,5 +1,5 @@
 --- /home/rossierd/soo/git/infrabase/build/tmp/work/uboot-2022.04-r0/uboot-2022.04/configs/rpi4_64_rpi_dtb_defconfig	1970-01-01 01:00:00.000000000 +0100
-+++ ./configs/rpi4_64_rpi_dtb_defconfig	2025-09-11 14:06:09.618942937 +0200
++++ ./configs/rpi4_64_rpi_dtb_defconfig	2025-09-11 16:34:39.224804260 +0200
 @@ -0,0 +1,1382 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
