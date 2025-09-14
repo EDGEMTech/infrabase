@@ -21,7 +21,7 @@ usage()
   echo "    -r    Deploy rootfs (secondary)"
   echo "    -u    Deploy usr apps"
   echo "    -s    Deploy SO3"
-  echo "    -t    Deploy U-boot only"
+  echo "    -o    Deploy U-boot only"
   echo "    -v    Build with log verbosity"
   echo
 
@@ -39,14 +39,14 @@ while getopts "abcrstuv" o; do
     c)
       deploy_capsules=y
       ;;
+    o)
+      deploy_uboot=y
+      ;;
     r)
       deploy_rootfs=y
       ;;
     s)
       deploy_so3=y
-      ;;
-    t)
-      deploy_uboot=y
       ;;
     u)
       deploy_usr=y
@@ -62,34 +62,39 @@ done
 
 if [ $OPTIND -eq 1 ]; then usage; fi
 
+printf "\n*** NOTE: *** Deployment requires root access, to be able to mount/umount\n"
+printf "and access loop devices, you may be prompted for the password\n\n"
+
 cd build
 source env.sh
 
+bitbake_path=$(which bitbake)
+
 if [ "$deploy_all" ]; then
-    bitbake bsp-linux -c deploy ${VERBOSE}
+    sudo -E $bitbake_path bsp-linux -c deploy ${VERBOSE}
 fi
 
 if [ "$deploy_boot" ]; then
-    bitbake bsp-linux -c deploy_boot ${VERBOSE}
+    sudo -E $bitbake_path bsp-torizon -c deploy_boot ${VERBOSE}
 fi
 
 if [ "$deploy_so3" ]; then
-    bitbake bsp-so3 -c deploy ${VERBOSE}
+    sudo -E $bitbake_path bsp-so3 -c deploy ${VERBOSE}
 fi
 
 if [ "$deploy_rootfs" ]; then
-    bitbake rootfs-linux -c deploy ${VERBOSE}
+    sudo -E $bitbake_path rootfs-linux -c deploy ${VERBOSE}
 fi
 
 if [ "$deploy_usr" ]; then
-    bitbake usr-linux -c deploy ${VERBOSE}
+    sudo -E $bitbake_path usr-linux -c deploy ${VERBOSE}
 fi
 
 if [ "$deploy_capsules" ]; then
-    bitbake bsp-capsules -c deploy ${VERBOSE}
+    sudo -E $bitbake_path bitbake bsp-capsules -c deploy ${VERBOSE}
 fi
 
 if [ "$deploy_uboot" ]; then
-    bitbake uboot -c deploy ${VERBOSE}
+    sudo -E $bitbake_path bitbake uboot -c deploy ${VERBOSE}
 fi
 

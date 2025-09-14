@@ -111,7 +111,14 @@ if [ "$build_all" ]; then
 fi
 
 if [ "$build_filesystem" ]; then
-      bitbake filesystem ${VERBOSE}
+
+      printf "\n *** NOTE: *** Filesystem creation requires root access\n"
+      printf "to be able to mount/umount and access loop devices, you may\n"
+      printf "be prompted for the password\n\n"
+
+      bitbake_path=$(which bitbake)
+
+      sudo -E $bitbake_path filesystem ${VERBOSE}
 fi
 
 if [ "$build_uboot" ]; then
