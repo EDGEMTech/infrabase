@@ -22,7 +22,7 @@ IB_TARGET = "${IB_BSP_PATH}"
 do_configure[noexec] = "1"
 do_attach_infrabase[noexec] = "1"
 
-include files/bsp_${IB_PLATFORM}.inc
+include ../bsp/files/bsp_${IB_PLATFORM}.inc
 
 # Building all components
 
@@ -50,7 +50,7 @@ do_itb () {
 
 # Deploy everything
 
-do_deploy[depends] = "filesystem:do_fs_check usr-linux:do_deploy uboot:do_deploy"
+do_deploy[depends] = "filesystem:do_fs_check usr-linux:do_deploy"
  
 do_deploy[nostamp] = "1"
 python do_deploy() {

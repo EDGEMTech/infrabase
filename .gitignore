@@ -33,10 +33,6 @@ modules.order
 # Generated cpio
 *.cpio
 
-
-# BSP
-bsp
-
 # Backup files
 *~
 *.d
@@ -53,6 +49,8 @@ u-boot
 /qemu
 linux/linux
 rootfs/buildroot
+
+# so3 is fetched from the official repository
 so3
 
 # except the followings:

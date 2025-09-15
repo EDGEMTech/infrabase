@@ -17,7 +17,7 @@ SRC_URI[sha256sum] = "1376ce98485a0c8de4635d0bfb88760924e4a818c0439d830738bb1c69
 
 # Set of patches to be applied
 
-# These patches contain all patches related to SOO vt technology
+# These patches enables QEMU/virt64 with framebuffer
 FILESPATH:prepend = "${THISDIR}/files/0001-${PF}:"
  
 require files/0001-${PF}-patches.inc
@@ -53,7 +53,7 @@ do_build () {
 }
 
 do_clean[nostamp] = "1"
-do_clean () {
-	rm -f ${TMPDIR}/stamps/linux*
+python do_clean () {
+    __do_clean(d)
 }
 addtask do_clean

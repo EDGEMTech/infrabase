@@ -6,4 +6,5 @@ SRC_URI += "\
     file://0016-auto-root-login.patch \ 
     file://0018-Config.in.patch \ 
     file://0013-Config.in.patch \ 
+    file://0019-rpi4_64_defconfig.patch \
 "

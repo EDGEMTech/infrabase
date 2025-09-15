@@ -11,12 +11,16 @@ PV = "1.0"
 
 OVERRIDES += ":so3"
 
+# These patches bring lv_port_linux/lvgl in the usr structure
+FILESPATH:prepend = "${THISDIR}/files/0001-${PF}:"
+
+require files/0001-${PF}-patches.inc
+
 # Where the working directory will be placed in infrabase root dir
 IB_TARGET = "${IB_DIR}/so3/usr"
 
 IB_TOOLCHAIN_FILE_PATH = "${IB_TARGET}/${IB_PLAT_CPU}_toolchain.cmake"
 
-do_build[nostamp] = "1"
 do_build[depends] = "rootfs-so3:do_build"
 
 # Make sure so3 has been installed correctly to fetch other components if required
@@ -37,7 +41,7 @@ python do_deploy() {
         src_dir = os.path.join(d.getVar('IB_TARGET'), 'build', 'deploy')
         dst_dir = os.path.join(d.getVar('IB_ROOTFS_PATH'), 'fs')
         
-        cmd = f"sudo cp -r {src_dir}/. {dst_dir}/"
+        cmd = f"cp -r {src_dir}/. {dst_dir}/"
         
         result = subprocess.run(cmd, shell=True, check=True)
         

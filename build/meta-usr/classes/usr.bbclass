@@ -62,8 +62,10 @@ do_configure () {
 
 # Build of user space custom applications
 
+do_build[nostamp] = "1"
 do_build () {
 
+	mkdir -p ${IB_TARGET}/build
 	cd ${IB_TARGET}/build
 	 
 	# User space applications
@@ -84,7 +86,7 @@ do_build () {
 
 do_clean[nostamp] = "1"
 addtask do_clean
-usr_do_clean () {
+do_clean () {
 
 	# Remove all patches
 	rm -rf ${IB_TARGET}/patches
@@ -93,7 +95,6 @@ usr_do_clean () {
 	rm -rf ${IB_TARGET}/build
 }
 
-EXPORT_FUNCTIONS  do_clean
 
 
 

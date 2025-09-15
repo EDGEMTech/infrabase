@@ -19,7 +19,6 @@ IB_TARGET = "${IB_DIR}/linux/usr"
 
 IB_TOOLCHAIN_FILE_PATH = "${IB_ROOTFS_PATH}/host/share/buildroot/toolchainfile.cmake"
 
-do_build[nostamp] = "1"
 do_build[depends] = "rootfs-linux:do_build"
 do_unpack[depends] += "linux:do_build"
 
@@ -47,7 +46,7 @@ python do_deploy() {
         bb.fatal("The root directory is not present in the second partition; please deploy rootfs...")
       
  
-    os.system("sudo cp -r {}/build/deploy/* {}/{}/".format(IB_USR_PATH, IB_FILESYSTEM_PATH, IB_ROOTFS_PARTITION))
+    os.system("cp -r {}/build/deploy/* {}/{}/".format(IB_USR_PATH, IB_FILESYSTEM_PATH, IB_ROOTFS_PARTITION))
 	
     __do_fs_umount(d)
 }
@@ -74,14 +73,8 @@ do_build:prepend () {
 
 do_install_apps () {
     
-    # Installation of the deploy/ content
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/drm-utils/drm-info"
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/drm_tool/drm_tool"
+    usr_do_install_file_root "${IB_TARGET}/build/src/examples/hello"
     
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/kmscube/kmscube"
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/gbmtest/gbmtest"
-    usr_do_install_file_root "${IB_TARGET}/build/src/graphic/fb_benchmark/fb_benchmark"
-
     # Installation of modules if any
     
     usr_do_install_file_root "${IB_TARGET}/src/modules/*.ko"
@@ -90,6 +83,17 @@ do_install_apps () {
 do_clean:append () {
 	# Clean the modules
 	make -C ${IB_LINUX_PATH} M=${IB_TARGET}/src/modules clean
-
+ 
     rm -f ${TMPDIR}/stamps/usr-linux*
+
+    # Remove the usr organization in the build directory to avoid
+    # having old files in the next copy of usr tree.
+
+   rm -f ${WORKDIR}/*.patch
+
+   # Remove all patches
+   rm -rf ${IB_TARGET}/patches
+	
+   # Clean the user space apps
+   rm -rf ${IB_TARGET}/build
 }

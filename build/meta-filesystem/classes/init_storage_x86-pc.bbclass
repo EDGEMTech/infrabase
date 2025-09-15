@@ -17,7 +17,7 @@ do_filesystem_platform_init_storage () {
 
  		truncate -s $dd_size ${WORKDIR}/sdcard.img.${IB_PLATFORM}
 
-   		devname=$(sudo losetup --partscan --find --show ${WORKDIR}/sdcard.img.${IB_PLATFORM})
+   		devname=$(losetup --partscan --find --show ${WORKDIR}/sdcard.img.${IB_PLATFORM})
 
    		# Keep device name only without /dev/
    		devname=${devname#"/dev/"}
@@ -36,7 +36,7 @@ do_filesystem_platform_init_storage () {
 
 	# Create the partition layout this way
 
-	sudo parted -s /dev/"$devname" mklabel msdos mkpart primary ext4 1MiB 100%
+	parted -s /dev/"$devname" mklabel msdos mkpart primary ext4 1MiB 100%
 
 	bbnote Waiting...
 
@@ -49,13 +49,13 @@ do_filesystem_platform_init_storage () {
 
 	set +e
 
-	sudo mke2fs -F -t ext4 /dev/"$devname"1
-  	sudo e2label /dev/"$devname"1 rootfs
+	mke2fs -F -t ext4 /dev/"$devname"1
+  	e2label /dev/"$devname"1 rootfs
 
 	set -e
 
 	if [ "${IB_STORAGE}" = "soft" ]; then
-    	        sudo losetup -D
+    	        losetup -D
 	fi
 
 	bbnote "Done! The storage is now initialized"

@@ -1,1 +1,0 @@
-coherent_pool=1M 8250.nr_uarts=1 cma=64M cma=256M  smsc95xx.macaddr=DC:A6:32:18:DD:95 vc_mem.mem_base=0x3ec00000 vc_mem.mem_size=0x40000000 console=ttyS0,115200 root=/dev/ram fsck.repair=yes rootwait

@@ -42,8 +42,8 @@ def __do_platform_deploy(d):
     if not os.path.isfile(itb_path):
         bb.fatal(itb_path + " is missing ...")
  
-    subprocess.run(['sudo', 'mkdir', '-p', capsule_path])
-    subprocess.run(['sudo', 'cp', itb_path, capsule_path])
+    subprocess.run(['mkdir', '-p', capsule_path])
+    subprocess.run(['cp', itb_path, capsule_path])
 
 do_itb[nostamp] = "1"
 do_itb[depends] = "usr-so3:do_deploy"
