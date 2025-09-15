@@ -13,13 +13,13 @@ def __deploy_arm_common(d):
     if not os.path.isfile(uenv_path):
         bb.fatal(uenv_path + " is missing ...")
 
-    subprocess.run(['sudo', 'cp', uenv_path, filesys_path + "/uEnv.txt"])
+    subprocess.run(['cp', uenv_path, filesys_path + "/uEnv.txt"])
 
     if not os.path.isfile(itb_path):
         bb.fatal(itb_path + " is missing ...")
 
     # The target ITB loaded by U-boot has the name of the target platform
-    subprocess.run(['sudo', 'cp', itb_path, filesys_path + "/" + d.getVar('IB_PLATFORM') + ".itb"])
+    subprocess.run(['cp', itb_path, filesys_path + "/" + d.getVar('IB_PLATFORM') + ".itb"])
 
 
 do_build_firmware () {

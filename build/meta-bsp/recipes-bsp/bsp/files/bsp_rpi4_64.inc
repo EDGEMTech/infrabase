@@ -14,7 +14,7 @@ def __do_platform_deploy(d):
     dst = d.getVar('IB_FILESYSTEM_PATH')
     uboot_path = d.getVar('IB_UBOOT_PATH')
 
-    run(f"sudo cp -r {filedirname}/../bsp/rpi4/* {dst}/p1")
-    run(f"sudo cp {uboot_path}/u-boot.bin {dst}/p1/kernel8.img")
+    run(f"cp -r {filedirname}/../bsp/rpi4/* {dst}/p1")
+    run(f"cp {uboot_path}/u-boot.bin {dst}/p1/kernel8.img")
 
     __deploy_arm_common(d)

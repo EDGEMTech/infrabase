@@ -41,7 +41,7 @@ python do_deploy() {
         src_dir = os.path.join(d.getVar('IB_TARGET'), 'build', 'deploy')
         dst_dir = os.path.join(d.getVar('IB_ROOTFS_PATH'), 'fs')
         
-        cmd = f"sudo cp -r {src_dir}/. {dst_dir}/"
+        cmd = f"cp -r {src_dir}/. {dst_dir}/"
         
         result = subprocess.run(cmd, shell=True, check=True)
         

@@ -27,7 +27,7 @@ def do_filesystem_platform_init_storage(d):
 
     subprocess.run(["truncate", "-s", dd_size, os.path.join(WORKDIR, store_filename)])
 
-    devname = subprocess.check_output(["sudo", "losetup", "--partscan", "--find", "--show", os.path.join(WORKDIR, "sdcard.img.{}".format(IB_PLATFORM))], text=True).strip()
+    devname = subprocess.check_output(["losetup", "--partscan", "--find", "--show", os.path.join(WORKDIR, "sdcard.img.{}".format(IB_PLATFORM))], text=True).strip()
 
     # Keep device name only without /dev/
     devname = devname.replace("/dev/", "")
@@ -50,7 +50,7 @@ def do_filesystem_platform_init_storage(d):
 
     # Create the partition layout this way
     fdisk_input = "o\nn\np\n\n\n\n\n\nw\n"
-    subprocess.run(["sudo", "fdisk", "/dev/{}".format(devname)], input=fdisk_input.encode())
+    subprocess.run(["fdisk", "/dev/{}".format(devname)], input=fdisk_input.encode())
 
     print("Waiting ...")
 
@@ -60,10 +60,10 @@ def do_filesystem_platform_init_storage(d):
     if devname[-1].isdigit():
         devname += "p"
 
-    subprocess.run(["sudo", "mke2fs", "-F", "-t", "ext4", "/dev/{}1".format(devname)])
-    subprocess.run(["sudo", "e2label", "/dev/{}1".format(devname), "rootfs"])
+    subprocess.run(["mke2fs", "-F", "-t", "ext4", "/dev/{}1".format(devname)])
+    subprocess.run(["e2label", "/dev/{}1".format(devname), "rootfs"])
 
-    subprocess.run(["sudo", "losetup", "-D"])
+    subprocess.run(["losetup", "-D"])
 
     print("Done! The storage is now initialized")
 

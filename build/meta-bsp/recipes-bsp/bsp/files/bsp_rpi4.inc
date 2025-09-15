@@ -13,10 +13,10 @@ def __do_platform_deploy(d):
     dst_dir = d.getVar('IB_FILESYSTEM_PATH')
     u_boot_path = d.getVar('IB_UBOOT_PATH')
 
-    cmd = f"sudo cp -r ${src_dir}/files/rpi4/* ${dst_dir}/p1"
+    cmd = f"cp -r ${src_dir}/files/rpi4/* ${dst_dir}/p1"
     result = subprocess.run(cmd, shell=True, check=True)
     
-    cmd = f"sudo cp -${u_boot_path}/u-boot.bin ${dst_dir}/p1/kernel7.img"
+    cmd = f"cp -${u_boot_path}/u-boot.bin ${dst_dir}/p1/kernel7.img"
     result = subprocess.run(cmd, shell=True, check=True)
     
  

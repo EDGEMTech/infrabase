@@ -78,14 +78,14 @@ def __do_platform_deploy(d):
     
     if IB_PLATFORM == "rpi4_64":
          
-        cmd = f"sudo cp -r {src_dir}/bsp/rpi4/* {dst_dir}/p1/"
+        cmd = f"cp -r {src_dir}/bsp/rpi4/* {dst_dir}/p1/"
         result = subprocess.run(cmd, shell=True, check=True)
 
-        cmd = f"sudo cp {u_boot_path}/u-boot.bin {dst_dir}/p1/kernel8.img"
+        cmd = f"cp {u_boot_path}/u-boot.bin {dst_dir}/p1/kernel8.img"
         result = subprocess.run(cmd, shell=True, check=True)
 
     else:
-        cmd = f"sudo cp {u_boot_path}/u-boot.bin {dst_dir}/p1/"
+        cmd = f"cp {u_boot_path}/u-boot.bin {dst_dir}/p1/"
         result = subprocess.run(cmd, shell=True, check=True)
  
 do_deploy[nostamp] = "1"

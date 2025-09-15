@@ -75,7 +75,7 @@ if [ "$deploy_all" ]; then
 fi
 
 if [ "$deploy_boot" ]; then
-    sudo -E $bitbake_path bsp-torizon -c deploy_boot ${VERBOSE}
+    sudo -E $bitbake_path bsp-linux -c deploy_boot ${VERBOSE}
 fi
 
 if [ "$deploy_so3" ]; then

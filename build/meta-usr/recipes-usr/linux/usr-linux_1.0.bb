@@ -46,7 +46,7 @@ python do_deploy() {
         bb.fatal("The root directory is not present in the second partition; please deploy rootfs...")
       
  
-    os.system("sudo cp -r {}/build/deploy/* {}/{}/".format(IB_USR_PATH, IB_FILESYSTEM_PATH, IB_ROOTFS_PARTITION))
+    os.system("cp -r {}/build/deploy/* {}/{}/".format(IB_USR_PATH, IB_FILESYSTEM_PATH, IB_ROOTFS_PARTITION))
 	
     __do_fs_umount(d)
 }
