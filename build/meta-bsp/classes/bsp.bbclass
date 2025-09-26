@@ -4,7 +4,8 @@
 
 # Class for BSP - Main recipe
 
-IB_BSP_PATH = "${IB_DIR}/bsp"
+# The link to the firmwares of all boards
+IB_BSP_PATH = "${IB_DIR}/build/meta-bsp/recipes-bsp/bsp"
 
 # Path to the ITB files
 
