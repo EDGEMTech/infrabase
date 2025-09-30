@@ -3,7 +3,6 @@ SOO_URI = "\
     file://0021-container_logs.hpp.patch \ 
     file://0029-volume.hpp.patch \ 
     file://0028-volume.cpp.patch \ 
-    file://0003-modules.order.patch \ 
     file://0015-config.hpp.patch \ 
     file://0018-container.cpp.patch \ 
     file://0023-image.hpp.patch \ 
@@ -16,7 +15,6 @@ SOO_URI = "\
     file://1001-CMakeLists.txt.patch \ 
     file://0030-webserver.cpp.patch \ 
     file://0008-container.cpp.patch \ 
-    file://0002-modtry.mod.patch \ 
     file://0020-container_inspect.hpp.patch \ 
     file://0036-shutdownme.c.patch \ 
     file://0010-daemon.cpp.patch \ 
@@ -35,4 +33,7 @@ SOO_URI = "\
     file://0035-saveme.c.patch \ 
     file://0009-container.hpp.patch \ 
     file://0027-system.hpp.patch \ 
+    file://0002-debug.h.patch \ 
+    file://0001-core.h.patch \ 
+    file://0003-soo.h.patch \ 
 "
