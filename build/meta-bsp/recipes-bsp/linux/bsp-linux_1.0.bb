@@ -17,8 +17,6 @@ inherit uboot
 
 OVERRIDES += ":linux"
 
-IB_TARGET = "${IB_BSP_PATH}"
-
 do_configure[noexec] = "1"
 do_attach_infrabase[noexec] = "1"
 
@@ -74,13 +72,6 @@ python do_deploy_boot() {
 }
 addtask do_itb before do_deploy_boot
 addtask do_deploy_boot
-
-do_attach_infrabase () {
-
-	mkdir -p ${FILE_DIRNAME}/files/${IB_PLATFORM}
-	ln -fs ${FILE_DIRNAME}/files/${IB_PLATFORM} ${IB_TARGET}
-    
-}
 
 do_clean[depends] = "usr-linux:do_clean linux:do_clean uboot:do_clean"
 do_clean[nostamp] = "1"

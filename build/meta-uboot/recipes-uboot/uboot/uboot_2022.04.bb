@@ -71,14 +71,14 @@ def __do_platform_deploy(d):
     import os
     import subprocess
    
-    src_dir = d.getVar('FILE_DIRNAME')
+    src_dir = d.getVar('IB_BSP_PATH')
     dst_dir = d.getVar('IB_FILESYSTEM_PATH')
     u_boot_path = d.getVar('IB_UBOOT_PATH')
     IB_PLATFORM = d.getVar('IB_PLATFORM')
     
     if IB_PLATFORM == "rpi4_64":
          
-        cmd = f"cp -r {src_dir}/bsp/rpi4/* {dst_dir}/p1/"
+        cmd = f"cp -r {src_dir}/rpi4/* {dst_dir}/p1/"
         result = subprocess.run(cmd, shell=True, check=True)
 
         cmd = f"cp {u_boot_path}/u-boot.bin {dst_dir}/p1/kernel8.img"

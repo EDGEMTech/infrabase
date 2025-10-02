@@ -30,8 +30,9 @@ do_clean:append() {
   if echo ":${OVERRIDES}:" | grep -q ":soo"; then
 
     rm -rf ${IB_TARGET}/src/soo   
-    cp ${IB_TARGET}.back/src/CMakeLists.txt ${IB_TARGET}/src/   
+    rm -rf ${IB_TARGET}/include/soo
     
-    rm -rf ${WORKDIR}/*
+    cp ${IB_TARGET}.back/src/CMakeLists.txt ${IB_TARGET}/src/   
+  
   fi
 }

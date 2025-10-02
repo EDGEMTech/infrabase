@@ -16,8 +16,6 @@ inherit bsp
 
 OVERRIDES += ":so3"
 
-IB_TARGET = "${IB_BSP_PATH}"
- 
 include ../bsp/files/bsp_${IB_PLATFORM}.inc
 
 do_configure[noexec] = "1"
