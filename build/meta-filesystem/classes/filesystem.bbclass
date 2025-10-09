@@ -67,7 +67,7 @@ def __do_fs_init_storage(d):
     # Restore the ownership of the filesystem workdir to
     # the user that ran the task - note that this is done before the filesystem
     # is mounted to avoid touching the mounted rootfs
-    utils_chown_dir(WORKDIR)
+    utils_chown_dir(d, WORKDIR)
 
     os.symlink(WORKDIR, target_link)
 
@@ -83,8 +83,6 @@ def __do_fs_check(d):
     IB_PLATFORM = d.getVar('IB_PLATFORM')
     IB_STORAGE = d.getVar('IB_STORAGE')
     IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
-
-    uid = utils_get_user_uid()
 
     # Check if the user is running the filesystem recipe as root
     if utils_chk_is_root_user(d) == False:
@@ -168,7 +166,7 @@ def __do_fs_mount(d):
         json.dump(shdata, f);
 
     f.close()
-    utils_chown_file(path)
+    utils_chown_file(d, path)
 
     if devname[-1].isdigit():
         devname += "p"
@@ -202,8 +200,12 @@ def __do_fs_mount(d):
 
     utils_restore_user_ownership(d)
 
-def __do_main_umount(d, directory):
+def __do_main_umount(d, partition_number):
     import os
+
+    IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
+
+    directory = f"{IB_FILESYSTEM_PATH}/work/p{partition_number}"
 
     if os.path.ismount(directory):
         # TODO: use ionotify(7)
@@ -222,10 +224,12 @@ def __do_main_umount(d, directory):
     else:
         bb.warn(f"{directory} wasn't mounted - will remove mount point dir")
 
-    # Remove the mountpoint dir
+    # Remove the mountpoint dir and the symlink in the fs staging area
     os.system(f"rm -rf '{directory}'")
+    os.system(f"rm '{IB_FILESYSTEM_PATH}/p{partition_number}'")
 
     utils_restore_user_ownership(d)
+
 
 def __do_fs_umount(d):
 
@@ -236,10 +240,16 @@ def __do_fs_umount(d):
     if utils_chk_is_root_user(d) == False:
         bb.fatal("Please re-run the task/script as root")
 
-    __do_main_umount(d, f"{IB_FILESYSTEM_PATH}/work/p1")
-    __do_main_umount(d, f"{IB_FILESYSTEM_PATH}/work/p2")
+    __do_main_umount(d, 1)
+    __do_main_umount(d, 2)
 
     os.system("losetup -D")
+
+    # Change ownership of filesystem/sdcard.img.* and filesystem/work
+    utils_chown_dir(d, f"{IB_FILESYSTEM_PATH}", follow_symlinks=False, recursive=True)
+
+    # And of the filesystem/ dir itself
+    utils_chown_dir(d, f"{IB_FILESYSTEM_PATH}", follow_symlinks=False, recursive=False)
 
     utils_restore_user_ownership(d)
 

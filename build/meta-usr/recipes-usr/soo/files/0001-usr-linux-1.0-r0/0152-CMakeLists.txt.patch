@@ -1,0 +1,9 @@
+--- /home/rossierd/soo/micofe/build/tmp/work/usr-linux-1.0-r0/usr-linux-1.0/src/soo/CMakeLists.txt	2025-10-09 11:13:47.669641620 +0200
++++ ./src/soo/CMakeLists.txt	2025-10-09 16:10:29.757555480 +0200
+@@ -10,3 +10,6 @@
+ 
+ target_link_libraries(saveme zip)
+ target_link_libraries(restoreme zip)
++
++add_subdirectory(emiso_engine)
++

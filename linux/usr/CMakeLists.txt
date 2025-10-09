@@ -3,8 +3,8 @@
 
 cmake_minimum_required(VERSION 3.20)
 
-#project(linux-usr LANGUAGES C CXX)
-project(lvgl)
+project(linux-usr LANGUAGES C CXX)
+ 
 set(CXX_STANDARD 17)
 
 include_directories(

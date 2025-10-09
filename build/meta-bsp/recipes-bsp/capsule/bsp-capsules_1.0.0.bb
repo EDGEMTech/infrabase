@@ -34,7 +34,7 @@ def __do_platform_deploy(d):
     import os
     import subprocess   
 
-    capsule_path = d.getVar('IB_FILESYSTEM_PATH') + "/p2/root/capsules"
+    capsule_path = d.getVar('IB_FILESYSTEM_PATH') + "/p2/mnt/capsules/image"
     itb_path = d.getVar('IB_ITB_PATH') + "/" + d.getVar('IB_TARGET_ITS') + ".itb"
 
     if not os.path.isfile(itb_path):

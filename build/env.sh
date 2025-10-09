@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export PATH="$PATH:$PWD/bitbake/bin:$PWD/scripts"
+export PATH="$PATH:$PWD/build/bitbake/bin:$PWD/scripts"
 export BUILDDIR="$PWD"
 
 

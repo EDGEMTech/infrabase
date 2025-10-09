@@ -1,180 +1,176 @@
-#!/bin/bash
+#!/bin/sh
 
 # General build script for the infrabase infrastructure.
 
 # Copyright (c) 2014-2023 REDS Institute, HEIG-VD
 # Copyright (c) 2023-2025 EDGEMTech
 
-VERBOSE=""
+progname=$(basename $0)
 
-usage()
+pr_usage()
 {
-  echo "Infrabase build script"
-  echo ""
-  echo "Usage: $0 [OPTIONS]"
-  echo ""
-  echo "Where OPTIONS are:"
-  echo "  Components options:"
-  echo "    -a    Build all (pursuing the build is possible)"
-  echo "    -b    Build U-boot"
-  echo "    -c    Clean generated files and structures for the recipe indicated as second argument"
-  echo "    -f    Create and prepare the filesystem"
-  echo "    -l    Build Linux"
-  echo "    -q    Build QEMU with custom patches (framebuffer enabled)"
-  echo "    -r    Build rootfs (pursuing the build if possible)"
-  echo "    -s    Build SO3"
-  echo "    -u    Build usr apps"
-  echo "    -v    Build with log verbosity"
-  echo "    -z    Build AVZ"
-  echo
-
-  exit 1
+	printf "Infrabase build script\n\n"
+	printf "Usage: $progname [-h] [-l] [-a|-b|-x|-k|-f|-r] <recipe_name> [-c][-v]\n"
 }
 
-while IFS= read -r line; do
-  # Check if the line starts with "IB_PLATFORM"
-  if [[ $line == IB_PLATFORM* ]]; then
-  	# Extract the value between the quotes
-  	value=$(echo "$line" | awk -F'"' '{print $2}')
-    
-   	# Set the IB_PLATFORM variable to the extracted value
-   	IB_PLATFORM="$value"
-  	break
-  fi     
-done < build/conf/local.conf
+pr_help()
+{
 
+	printf "\nAvailable options:\n"
+	printf "    -h                           Print this help\n"
+	printf "    -l                           List available BSPs, kernels, components\n"
+	printf "    -a <bsp_recipe_name>         Build all, the name of BSP is required\n"
+	printf "    -k <kernel_recipe_name>      Build kernel only\n"
+	printf "    -x <component_recipe_name>   Build component or tool\n"
+	printf "    -r <rootfs_recipe_name>      Build rootfs\n"
+	printf "    -f                           Create and format filesystem image\n"
+	printf "    -b                           Build uboot only\n"
+	printf "    -v                           Emit verbose build logs\n"
+	printf "    -c                           Clean before rebuilding\n\n"
+	printf "Examples: \n\n"
+	printf "$progname -l                     Print all recipes\n"
+	printf "$progname -l -a                  Print all BSP recipes\n"
+	printf "$progname -l -k                  Print all kernel recipes\n"
+	printf "$progname -v -a bsp-linux -c     Clean and rebuild all emitting verbose logs\n"
+}
 
-echo "Platform = ${IB_PLATFORM}"
+if test $# -eq 0
+then
+	pr_usage
+	printf "\nUse $progname -h to show help\n"
+	exit 1
+fi
 
-while getopts "abcflqrsuvz" o; do
-  case "$o" in
-    a)
-      build_all=y
-      ;;
-    b)
-      build_uboot=y
-      ;;
-    c)
-      build_clean=y
-      ;;
-    f)
-      build_filesystem=y
-      ;;
-    l)
-      build_linux=y
-      ;;
-    q)
-      build_qemu=y
-      ;;
-    r)
-      build_rootfs=y
-      ;;
-    s)
-      build_so3=y
-      ;;
-    u)
-      build_usr=y
-      ;;
-    v)
-      VERBOSE="-vDDD"
-      ;;
-    z)
-      build_avz=y
-      ;;
-    *)
-      usage
-      ;;
-  esac
+. ./env.sh
+. ./scripts/common/bblayers.sh
+
+layernames=''
+recipename=''
+dolist=0
+dobuild=0
+doclean=0
+optverbose=0
+rootprivs=0
+
+while test $# -gt 0
+do
+	case "$1" in
+		-l)
+			dolist=1
+			;;
+		-h)
+			# Help summary
+			pr_usage
+			pr_help
+			exit
+			;;
+		-a)
+			if ! test -n "$2"
+			then
+				# List all recipes in 'meta-bsp'
+				layernames="meta-bsp"
+			else
+				recipename="$2"
+				dobuild=1
+			fi
+			;;
+		-r)
+			if ! test -n "$2"
+			then
+				layernames="meta-rootfs"
+			else
+				recipename="$2"
+				dobuild=1
+			fi
+			;;
+		-b)
+			layernames="meta-uboot"
+			recipename="uboot"
+			dobuild=1
+			;;
+		-x)
+			if test -n "$2"
+			then
+				recipename="$2"
+				dobuild=1
+			else
+				layernames="$IB_AUX_LAYERS"
+			fi
+			;;
+		-c)
+			doclean=1
+			;;
+		-v)
+			optverbose=1
+			;;
+		-k)
+			if ! test -n "$2"
+			then
+				layernames="meta-linux meta-so3"
+			else
+				recipename="$2"
+				dobuild=1
+			fi
+			;;
+		-f)
+			recipename="filesystem"
+			rootprivs=1
+			;;
+		-*)
+			printf "Error: unknown option: $1\n"
+			pr_usage
+			exit 1
+			;;
+	esac
+	shift
 done
 
-if [ $OPTIND -eq 1 ]; then usage; fi
+show_platform
 
-cd build
-source env.sh
-
-if [ "$build_all" ]; then
-    if [ "$build_clean" ]; then
-      if [ "$build_so3" ]; then
-        bitbake bsp-so3 -c clean
-      else
-        bitbake bsp-linux -c clean
-      fi
-    
-    else
-
-      if [ "$build_so3" ]; then
-        bitbake bsp-so3 ${VERBOSE}
-      else
-        bitbake bsp-linux ${VERBOSE}
-      fi
-    fi
+if test -z $recipename && test $dolist -eq 0
+then
+	printf "Error: Please specify recipe name\n\n"
+	pr_usage
+	exit 1
 fi
 
-if [ "$build_filesystem" ]; then
+# The user is willing to list available recipes
+# dolist action is available for component options
+if test $dolist -eq 1
+then
+	if test -z "$layernames"
+	then
+		printf "Listing ALL available recipes:\n"
+	else
+		printf "Listing recipes in layer(s): $layernames\n"
+	fi
 
-      printf "\n *** NOTE: *** Filesystem creation requires root access\n"
-      printf "to be able to mount/umount and access loop devices, you may\n"
-      printf "be prompted for the password\n\n"
-
-      bitbake_path=$(which bitbake)
-
-      sudo -E $bitbake_path filesystem ${VERBOSE}
+	available_recipes "$layernames"
+	exit
 fi
 
-if [ "$build_uboot" ]; then
-    if [ "$build_clean" ]; then
-      bitbake uboot -c clean
-    else
-      bitbake uboot ${VERBOSE}
-    fi
+IB_BB_OPTS=''
+
+if test $optverbose -eq 1
+then
+	IB_BB_OPTS='-vDDD'
 fi
 
-if [ "$build_linux" ]; then
-
-    if [ "$build_clean" ]; then
-      bitbake linux -c clean
-    else
-      bitbake linux ${VERBOSE}
-    fi
+if test $doclean -eq 1
+then
+	bitbake $recipename -c clean $IB_BB_OPTS
 fi
 
-if [ "$build_qemu" ]; then
-    if [ "$build_clean" ]; then
-      bitbake qemu -c clean
-    else
-      bitbake qemu ${VERBOSE}
-    fi
+if test $dobuild -eq 1
+then
+	if test $rootprivs -eq 1
+	then
+		printf "\n *** NOTE: *** '$recipename' requires root access\n"
+		printf "you may be prompted for the password\n\n"
+
+		preservedvars='IB_TOOLCHAIN_PATH,IB_UNPRIVILEDGED_USER_ID,IB_UNPRIVILEDGED_GROUP_ID'
+		sudo --preserve-env=$preservedvars sh -c ". $(pwd)/env.sh; bitbake $recipename ${IB_BB_OPTS}"
+	else
+		bitbake $recipename $IB_BB_OPTS
+	fi
 fi
-
-if [ "$build_rootfs" ]; then
-
-    if [ "$build_clean" ]; then
-      bitbake rootfs-linux -c clean
-    else
-      bitbake rootfs-linux ${VERBOSE}
-    fi
-fi
-
-if [ "$build_usr" ]; then
-    if [ "$build_clean" ]; then
-      bitbake usr-linux -c clean
-    else
-      bitbake usr-linux ${VERBOSE}
-    fi
-fi
-
-if [ "$build_avz" ]; then
-    if [ "$build_clean" ]; then
-      bitbake avz -c clean
-    else
-      bitbake avz ${VERBOSE}
-    fi
-fi
-
- if [ "$build_so3" ]; then
-    if [ "$build_clean" ]; then
-      bitbake bsp-so3 -c clean
-    else
-      bitbake bsp-so3 ${VERBOSE} 
-    fi
-  fi
