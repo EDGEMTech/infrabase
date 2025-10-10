@@ -55,7 +55,6 @@ python retrieve_usr_dir() {
     __retrieve_usr_dir(d)
 }
 
-
 do_configure () {
     mkdir -p ${IB_TARGET}/build
 }

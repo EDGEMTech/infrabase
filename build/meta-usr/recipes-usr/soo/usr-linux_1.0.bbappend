@@ -23,6 +23,8 @@ do_install_apps:append () {
         usr_do_install_file_root "${IB_TARGET}/build/src/soo/saveme"
         usr_do_install_file_root "${IB_TARGET}/build/src/soo/melist"
         usr_do_install_file_root "${IB_TARGET}/build/src/soo/shutdownme"
+
+        usr_do_install_file_root "${IB_TARGET}/build/src/soo/emiso_engine/emiso_engine"
     fi
 }
 
@@ -31,8 +33,11 @@ do_clean:append() {
 
     rm -rf ${IB_TARGET}/src/soo   
     rm -rf ${IB_TARGET}/include/soo
+
+    rm -rf ${S}
     
-    cp ${IB_TARGET}.back/src/CMakeLists.txt ${IB_TARGET}/src/   
+    [ -f ${IB_TARGET}.back/src/CMakeLists.txt ] && \
+      cp ${IB_TARGET}.back/src/CMakeLists.txt ${IB_TARGET}/src/ || true
   
   fi
 }

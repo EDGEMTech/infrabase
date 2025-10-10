@@ -10,19 +10,23 @@
 def __platform_init_storage(d):
     import os
     import subprocess
+    from bb.process import run
 
     IB_STORAGE = d.getVar('IB_STORAGE')
     IB_ROOTFS_SIZE = d.getVar('IB_ROOTFS_SIZE')
     IB_PLATFORM = d.getVar('IB_PLATFORM')
     IB_STORAGE_DEVICE = d.getVar('IB_STORAGE_DEVICE')
     IB_DIR = d.getVar('IB_DIR')
+    IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
     WORKDIR = d.getVar('WORKDIR')
-
+    
     store_filename = f"sdcard.img.{IB_PLATFORM}"
     store_path = os.path.join(WORKDIR, store_filename)
     devname = IB_STORAGE_DEVICE
 
     if IB_STORAGE == "soft":
+        # Make sure the filesystem dir exists
+        run(f"sudo mkdir -p {IB_FILESYSTEM_PATH}")
 
         # Create image first
         print(f"Creating {store_path}")

@@ -15,7 +15,8 @@ OVERRIDES += ":so3"
 IB_TARGET = "${IB_SO3_PATH}"
 
 SRC_URI = "git://github.com/smartobjectoriented/so3.git;branch=main;protocol=https"
-SRCREV = "6077eb580d4aa7579fd27f57dbdf5f36b466415b"
+SRCREV = "50446524cc7257db7c47f03ca2ca9704b4e206f6"
+
 
 do_configure[nostamp] = "1"
 do_configure () {

@@ -280,7 +280,7 @@
 +BR2_PRIMARY_SITE=""
 +BR2_BACKUP_SITE="http://sources.buildroot.net"
 +BR2_KERNEL_MIRROR="https://www.kernel.org/pub"
-+BR2_GNU_MIRROR="http://ftp.gnu.org/pub/gnu"
++BR2_GNU_MIRROR="https://ftpmirror.gnu.org/gnu"
 +BR2_LUAROCKS_MIRROR="http://rocks.moonscript.org"
 +BR2_CPAN_MIRROR="http://cpan.metacpan.org"
 +BR2_JLEVEL=0
@@ -1836,7 +1836,7 @@
 +BR2_PACKAGE_JSON_C=y
 +# BR2_PACKAGE_JSON_FOR_MODERN_CPP is not set
 +# BR2_PACKAGE_JSON_GLIB is not set
-+# BR2_PACKAGE_JSONCPP is not set
++BR2_PACKAGE_JSONCPP=y
 +# BR2_PACKAGE_LIBBSON is not set
 +# BR2_PACKAGE_LIBFASTJSON is not set
 +# BR2_PACKAGE_LIBJSON is not set
@@ -1987,7 +1987,7 @@
 +# BR2_PACKAGE_LIBGSASL is not set
 +# BR2_PACKAGE_LIBHTP is not set
 +# BR2_PACKAGE_LIBHTTPPARSER is not set
-+# BR2_PACKAGE_LIBHTTPSERVER is not set
++BR2_PACKAGE_LIBHTTPSERVER=y
 +# BR2_PACKAGE_LIBIDN is not set
 +# BR2_PACKAGE_LIBIDN2 is not set
 +# BR2_PACKAGE_LIBISCSI is not set
@@ -1996,7 +1996,8 @@
 +# BR2_PACKAGE_LIBMAXMINDDB is not set
 +# BR2_PACKAGE_LIBMBUS is not set
 +# BR2_PACKAGE_LIBMEMCACHED is not set
-+# BR2_PACKAGE_LIBMICROHTTPD is not set
++BR2_PACKAGE_LIBMICROHTTPD=y
++# BR2_PACKAGE_LIBMICROHTTPD_SSL is not set
 +# BR2_PACKAGE_LIBMINIUPNPC is not set
 +# BR2_PACKAGE_LIBMNL is not set
 +# BR2_PACKAGE_LIBMODBUS is not set
@@ -2993,7 +2994,7 @@
 +#
 +# BR2_PACKAGE_SWUPDATE is not set
 +# BR2_PACKAGE_SYSKLOGD is not set
-+# BR2_PACKAGE_SYSLOG_NG is not set
++BR2_PACKAGE_SYSLOG_NG=y
 +BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS=y
 +BR2_PACKAGE_SYSTEMD=y
 +# BR2_PACKAGE_SYSTEMD_INITRD is not set

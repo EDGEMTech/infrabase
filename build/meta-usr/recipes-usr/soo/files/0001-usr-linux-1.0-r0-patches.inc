@@ -36,4 +36,5 @@ SOO_URI = "\
     file://0002-debug.h.patch \ 
     file://0001-core.h.patch \ 
     file://0003-soo.h.patch \ 
+    file://0152-CMakeLists.txt.patch \ 
 "
