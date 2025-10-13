@@ -26,181 +26,12 @@
 
 inherit logging
 inherit utils
-inherit init_storage_${IB_PLATFORM}
+
+inherit fs_${IB_PLATFORM}
 
 IB_FILESYSTEM_PATH = "${IB_DIR}/filesystem"
 
-
-# Create and initialize the storage (including formatting partitions)
-def __do_fs_init_storage(d):
-
-    IB_STORAGE = d.getVar('IB_STORAGE')
-    IB_STORAGE_DEVICE = d.getVar('IB_STORAGE_DEVICE')
-
-    WORKDIR = d.getVar("WORKDIR")
-
-    # Perform the check as this task can also be executed from a
-    # script or directly using bitbake
-    if utils_chk_is_root_user(d) == False:
-        bb.fatal(("Please re-run the task/script as root - "
-                  "It is required to access loop devices"))
-
-    if IB_STORAGE == "remote":
-        return None
-
-    if IB_STORAGE == "hard" and IB_STORAGE_DEVICE == "":
-        bb.fatal(("No device found; please edit conf/local.conf"
-                  " IB_STORAGE_DEVICE is not set"))
-
-    # Perform the tasks specific to the platform
-    __platform_init_storage(d)
-
-    # Finally create a symlink to the workdir to be able
-    # to mount/umount more conveniently
-    target_link = os.path.join(d.getVar('IB_DIR'), "filesystem/work")
-
-    # Check if the symbolic link already exists
-    if os.path.islink(target_link):
-        # Remove the existing symbolic link
-        os.unlink(target_link)
-
-    # Restore the ownership of the filesystem workdir to
-    # the user that ran the task - note that this is done before the filesystem
-    # is mounted to avoid touching the mounted rootfs
-    utils_chown_dir(d, WORKDIR)
-
-    os.symlink(WORKDIR, target_link)
-
-    utils_restore_user_ownership(d)
-
-
-# Check the presence of the virtual disk image
-# if the deployment is done on the virtual ("soft") storage
-# and call filesystem:fs_init_storage() if it does not exist
-def __do_fs_check(d):
-    import subprocess
-
-    IB_PLATFORM = d.getVar('IB_PLATFORM')
-    IB_STORAGE = d.getVar('IB_STORAGE')
-    IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
-
-    # Check if the user is running the filesystem recipe as root
-    if utils_chk_is_root_user(d) == False:
-        bb.fatal("Please re-run the task/script as root")
-
-    if IB_STORAGE == "soft":
-        image_path = os.path.join(IB_FILESYSTEM_PATH , "work", f"sdcard.img.{IB_PLATFORM}")
-        if not os.path.isfile(image_path):
-            bb.plain((f"The filesystem image: sdcard.img.{IB_PLATFORM} "
-                      "does not exist - creating it"))
-            __do_fs_init_storage(d)
-
-    utils_restore_user_ownership(d)
-
-# Mount the partitions to p1, p2 respectively
-def __do_fs_mount(d):
-    import os
-    import subprocess
-    import json
-    import errno
-
-    WORKDIR = d.getVar('IB_FILESYSTEM_PATH') + "/work"
-    IB_STORAGE = d.getVar('IB_STORAGE')
-    IB_PLATFORM = d.getVar('IB_PLATFORM')
-    IB_STORAGE_DEVICE = d.getVar('IB_STORAGE_DEVICE')
-    IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
-    TMPDIR = d.getVar("TMPDIR")
-
-    # Check if the user is running the filesystem recipe as root
-    if utils_chk_is_root_user(d) == False:
-        bb.fatal("Please re-run the task/script as root")
-
-    if IB_STORAGE == "soft":
-        img_path = f"{WORKDIR}/sdcard.img.{IB_PLATFORM}"
-
-        # Check if image exists before running losetup
-        try:
-            os.stat(img_path)
-        except OSError as e:
-            if e.errno == errno.ENOENT:
-                bb.fatal(f"{img_path} does not exist")
-
-    p1 = os.path.join(WORKDIR, "p1")
-    p2 = os.path.join(WORKDIR, "p2")
-
-    if os.path.ismount(p1):
-        bb.warn(f"{p1} is already mounted - avoid remount")
-        utils_restore_user_ownership(d)
-        return
-
-    if os.path.ismount(p2):
-        bb.warn(f"{p2} is already mounted - avoid remount")
-        utils_restore_user_ownership(d)
-        return
-
-    os.makedirs(p1, exist_ok=True)
-    os.makedirs(p2, exist_ok=True)
-
-    if IB_STORAGE == "soft":
-
-        try:
-            devname = subprocess.check_output(
-                f"losetup --partscan --find --show {img_path}", shell=True,
-                text=True).strip()
-        except Exception as e:
-            bb.fatal((f"Could not attach image: {img_path}"
-                      f" to a loop device error: {e}"))
-
-        # Keep device name only without /dev/
-        devname = devname.replace("/dev/", "")
-    else:
-        devname = d.getVar('IB_STORAGE_DEVICE')
-
-    shdata = {
-        'IB_FILESYSTEM_DEVNAME': devname
-    }
-
-    # NOTE: Currently this file is only written too
-    path = os.path.join(TMPDIR, "global_datastore.json")
-    with open(path, "w") as f:
-        json.dump(shdata, f);
-
-    f.close()
-    utils_chown_file(d, path)
-
-    if devname[-1].isdigit():
-        devname += "p"
-
-    # TODO: handle more than 2 partitions
-    try:
-        subprocess.run(['mount', f'/dev/{devname}1', os.path.join(WORKDIR, 'p1')], check=True)
-
-    except Exception as e:
-        bb.fatal((f"Could not mount image: {IB_FILESYSTEM_PATH}"
-                  f" on /dev/{devname}1 error: {e}"))
-
-    try:
-        subprocess.run(['mount', f'/dev/{devname}2', os.path.join(WORKDIR, 'p2')], check=True)
-
-    except Exception as e:
-        bb.fatal((f"Could not mount image: {IB_FILESYSTEM_PATH}"
-                  f" on /dev/{devname}2 error: {e}"))
-
-    bb.note(f"Mounted filesystem at: {IB_FILESYSTEM_PATH}/p1,p2")
-
-    if os.path.ismount(os.path.join(WORKDIR, 'p1')):
-        if os.path.lexists(IB_FILESYSTEM_PATH + "/p1"):
-            os.remove(IB_FILESYSTEM_PATH + "/p1")
-        os.symlink(os.path.join(WORKDIR, 'p1'), IB_FILESYSTEM_PATH+"/p1")
-
-    if os.path.ismount(os.path.join(WORKDIR, 'p2')):
-        if os.path.lexists(IB_FILESYSTEM_PATH + "/p2"):
-            os.remove(IB_FILESYSTEM_PATH + "/p2")
-        os.symlink(os.path.join(WORKDIR, 'p2'), IB_FILESYSTEM_PATH+"/p2")
-
-    utils_restore_user_ownership(d)
-
-def __do_main_umount(d, partition_number):
+def __do_main_umount(d, directory):
     import os
 
     IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
@@ -230,29 +61,6 @@ def __do_main_umount(d, partition_number):
 
     utils_restore_user_ownership(d)
 
-
-def __do_fs_umount(d):
-
-    IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
-    WORKDIR = d.getVar('WORKDIR')
-
-    # Check if the user is running the filesystem recipe as root
-    if utils_chk_is_root_user(d) == False:
-        bb.fatal("Please re-run the task/script as root")
-
-    __do_main_umount(d, 1)
-    __do_main_umount(d, 2)
-
-    os.system("losetup -D")
-
-    # Change ownership of filesystem/sdcard.img.* and filesystem/work
-    utils_chown_dir(d, f"{IB_FILESYSTEM_PATH}", follow_symlinks=False, recursive=True)
-
-    # And of the filesystem/ dir itself
-    utils_chown_dir(d, f"{IB_FILESYSTEM_PATH}", follow_symlinks=False, recursive=False)
-
-    utils_restore_user_ownership(d)
-
 python do_fs_mount () {
     __do_fs_mount(d)
 }
@@ -276,8 +84,10 @@ addtask do_fs_umount
 
 # nostamp is necessary to let the user re-run this tasks many times
 # on demand from scripts
+
 do_fs_check[nostamp] = "1"
 do_fs_init_storage[nostamp] = "1"
 do_fs_mount[nostamp] = "1"
 do_fs_umount[nostamp] = "1"
+
 
