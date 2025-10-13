@@ -8,9 +8,10 @@ This chapter gives an overview of the Infrabase build system.
 The build commands are given in the :ref:`user guide chapter <user_guide>`.
 
 The ``Infrabase`` build system relies on various scripts and methods, but is mainly
-driven by ``bitbake`` receipes.
+driven by ``bitbake`` recipes.
 
-We call ``standard scripts`` those used so far as ``./build.sh``, ``./deploy.sh``, ``./mount.sh``, etc.
+We call ``standard scripts`` all shell scripts present in the ``scripts`` directory at the root of *Infrabase*,
+the most commonly used ones are ``build.sh``, ``deploy.sh``, ``mount.sh``
 
 The main concepts of *bitbake* are: ``layers``, ``configurations``, ``classes``, ``recipes`` and ``tasks``.
 
@@ -20,46 +21,45 @@ a component. It describes the overall build process with the different tasks bel
 Classes are configuration-independent functionalities/tasks and can have hierarchies (a base class
 can be inherited by other classes).
 
-Receipes contain rules to be executed for a specific application or component.
+Recipes contain rules to be executed for a specific application or component.
 
-Tasks are defined in classes or receipes and are the core functions managed by the build system.
+Tasks are defined in classes or recipes and are the core functions managed by the build system.
 Tasks are either (**bash**) shell script or **python** functions
 
-Configurations are everyhwere, but the ``local.conf`` file located in ``build/conf/`` directory contains the
-general configuration. Typically, this file contains the definition of ``PLATFORM``
-Configurations contain definition of *bitbake* variables that can be used by all recipes of the build system.
-
+Configurations are everywhere, but the ``local.conf`` file located in ``conf/`` directory contains the
+general configuration.
 
 Bitbake environment
 *******************
 
-Infrabase build system relies on `Bitbake <https://docs.yoctoproject.org/bitbake>`_ which is the
-underlying build system used by Yocto. The overall architecture is depicted on the figure below.
+The Infrabase build system relies on `Bitbake <https://docs.yoctoproject.org/bitbake>`_ which is the
+task orchestrator system used by Yocto. The overall architecture is depicted in the figure below.
 
 .. figure:: /img/Infrabase-Build_System.drawio.png
    :align: center
 
    Differences between Yocto and Infrabase in the build system architecture
 
-While Yocto is mainly distribution oriented (and Poky is the distribution reference on top of Yocto), Infrabase
-enables the building of various distributions, for example based on **buildroot** or **debootstrap**.
+While Yocto is closely related to other desktop-oriented distributions, using many of the same components
+as found on Desktops. Infrabase instead has opted to use **buildroot** which is more suitable for embedded use cases.
 
-**Open-embedded** is constituted of various meta files which enhance the *bitbake* build system and it
-has to be considered as part of the build system.
+*Infrabase* makes use of the ``meta`` layer from *OpenEmbedded* because it provides several classes
+which enhance the developer experience of a *Bitbake*-based build system - so they should be considered as
+an integral part of the *Infrabase*.
 
 Infrabase build system
 **********************
 
-In *Infrabase*, *bitbake* and some small parts of *openembedded* are used to build 
-the initial environment and to reconciliate patches of components after some modifications of source code. 
+In *Infrabase*, *bitbake* and some small parts of *OpenEmbedded* are used to build
+the initial environment and to reconcile patches of components after the modifications of the source code.
 
 After the initial clone of the repository, *bitbake* allows to build all components by fetching the
-code from the original location and applying related patchsets.
+code from the original location and applying the related patchsets.
 
 The updates of patches following some modifications of the repository are part of :ref:`the development flow <dev_flow>`.
 
-We differ *bitbake* script from :term:`standard script`. During the development, the standard scripts 
-available at the root directory and subdirectory (like *rootfs/* or *linux/usr*) should be used.
+We differentiate a *bitbake* script from a :term:`standard script`. To ease development, consider using the standard scripts from
+the ``scripts/`` directory, they can be invoked from anywhere in the project.
 
 Build system directory organization
 ***********************************
@@ -68,11 +68,12 @@ All build system files (except the standard scripts) are located in the ``build/
 
 .. warning::
    
-   Do not erase the ``build/`` directory. It is not automatically generated but
-   is stored *git*.
+   Do not delete the ``build/`` directory. It is **not** automatically generated and
+   is stored in *git*. This is because the ``build/`` directory contains layers. See
+   directories that beging with the ``meta-`` prefix.
 
 Actually, *bitbake* creates a ``tmp/`` subdirectory within ``build/``. If a complete re-build is required,
-you can delete *tmp/* at any time.
+you can delete ``tmp/`` at any time.
 
 .. figure:: /img/Infrabase-IB_Architecture.drawio.png
    :align: center
@@ -80,24 +81,21 @@ you can delete *tmp/* at any time.
    Build system directory organization as stored in git
 
 In *bitbake*, a layer corresponds to a ``meta`` directory entry. For example, the *meta/* directory is
-a generic layer which is used by all other layers. 
- 
-We focus on the **meta-linux** layer as an example. 
- 
+a generic layer which is used by all other layers.
+
+Let's focus on the **meta-linux** layer as an example.
+
 Directory ``conf/``
 ===================
 
-This directory is general to the build system and defines the main configuration for *bitbake* (in *bitbake.conf*)
-and for the project (in *local.conf*). 
+General configuration directory
 
-Each new layer must be added in *bitbake.conf* in order to tell *bitbake* to consider the recipes describes in this layer.
+**bitbake.conf** - Main configuration for *bitbake*, each new layer must be added to this file
+to tell *bitbake* to consider the recipes described in the layer directory.
 
-In ``local.conf``, most variables are specific to *infrabase*, like:
- 
-   - IB_PLATFORM
-   - IB_STORAGE
-   - IB_TOOLCHAIN
-   - *etc.*
+**local.conf** - Contains the influential project-wide configuration variables
+which by convention begin with the ``IB_`` prefix, these configuration variables can be used by any recipe.
+
 
 Directory ``meta-linux/classes``
 ================================
@@ -108,7 +106,7 @@ examples of tasks)
 Directory ``meta-linux/conf``
 =============================
 
-Each layer has a very similar file called ``layer.conf`` which tell *bitbake* further information
+Each layer has a very similar file called ``layer.conf`` which tells *bitbake* further information
 about the dependencies between layers and their priorities in the build process. Currently,
 all layers are processed with the same priority (4).
 
@@ -120,7 +118,16 @@ describes how to build the target component associated to the layer. Of course, 
 of releases/versions, there can be several recipes as well.
 
 Each recipe may have several subdirectories. Typically, a directory with the name of the component (*linux*) 
-which contains the recipe files and a ``files/`` directory which contains additional files like patches.
+which contains the recipe files and a ``files/`` directory which contains additional files and patches.
+
+Directory ``filesystem``
+========================
+
+This directory is special, it is used as a staging area for the preparation of the file
+system disk image. Before deployment or upon filesystem creation, symbolic links named
+``p[0-9]+`` are created. So for a disk image with 2 partitions ``filesystem/`` will contain ``p1`` and ``p2``.
+
+For more information read the :ref:`deployment section of the user guide chapter <user_guide_deployment>`.
 
 The recipe
 ----------
@@ -153,23 +160,29 @@ Once a task is executed successfully, a stamp file (0 byte) is created so that *
 
    Note that standard scripts remove the stamp files associated to the component to be re-built.
    Only the *bsp* recipe does not delete the stamps for individual components except the one
-   corresponding to itself. 
+   corresponding to itself.
 
 
 Infrabase Basic workflow
 ************************
 
-The initial build can be achieved by meas of the ``./build.sh -a`` command. It will fetch, patch, prepare
+Before running ``build.sh``, always start by sourcing the IB environment like so : ``. env.sh`` or ``source env.sh``
+This will modify the ``PATH`` variable - making it possible to invoke standard scripts from anywhere
+in the project.
+
+The initial build can be achieved by means of the ``build.sh -a <bsp_name>`` command. It will fetch, patch, prepare
 the environment and build everything (kernel, rootfs, apps, etc.).
 
+To list the available BSPs one can use ``build.sh -l -a``, this search for recipes in ``meta-bsp`` layer
+
 In the build process, there is a particular task called ``do_attach_infrabase`` which perform a copy
-of source code in the root environment of *infrabase*. Hence, the development can be done independently
+of source code to the root of *infrabase*. Hence, the development can be done independently
 of the ``tmp/`` directory managed by *bitbake*.
 
 Therefore, the development is done on the source code related to the branch while the original files
 are not modified (in *tmp/work/*) directories.
 
-This will allow the developers to perform a *diff* (using the ``do_updiff`` task) which will generate
+This allows developers to perform a *diff* (using the ``do_updiff`` task) which will generate
 the patches for the differences.
 
 .. warning::
@@ -210,27 +223,4 @@ To include a patchset in a recipe, the recipe file has to include the following 
 Each recipe can have one or several patchsets according to the patch organization, and 
 the first patchset should be called with prefix ``0001-``
 
-Infrabase recipes
-*****************
 
-General comments
-================
-
-If a task requires ``sudo`` to execute a command, it has to be configured so that no password is required.
-To do this, the following entry in the file ``/etc/sudoers`` should be added:
-
-.. code-block:: bash
-
-   <user>  ALL=(ALL) NOPASSWD: ALL
-
-Currently, the use of *fakeroot* commands, that could avoid setting no password with sudo, 
-does not allow to use ``losetup`` correctly.
-
-
-.. warning::
-
-   Using ``sudo`` in a task involves to set the attribute ``network`` of this task to ``"1"``. For example:
-   *do_init_storage[network] = "1"*
-   
-   
-   
