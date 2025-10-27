@@ -75,7 +75,7 @@ def __do_fs_init_storage(d):
     # Restore the ownership of the filesystem workdir to
     # the user that ran the task - note that this is done before the filesystem
     # is mounted to avoid touching the mounted rootfs
-    utils_chown_dir(WORKDIR)
+    utils_chown_dir(d, WORKDIR)
 
     os.symlink(WORKDIR, target_link)
 
