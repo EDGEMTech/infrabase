@@ -18,7 +18,6 @@ inherit filesystem
 def __do_deploy_boot(d):
 
     if d.getVar('IB_STORAGE') != "remote":
-        bb.warn("Now mounting")
         __do_fs_mount(d)
 
     __do_platform_deploy(d)
