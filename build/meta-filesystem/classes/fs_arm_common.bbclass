@@ -141,7 +141,7 @@ def __do_fs_check(d):
     IB_STORAGE = d.getVar('IB_STORAGE')
     IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
 
-    uid = utils_get_user_uid()
+    uid = utils_get_user_uid(d)
 
     # Check if the user is running the filesystem recipe as root
     if utils_chk_is_root_user(d) == False:
