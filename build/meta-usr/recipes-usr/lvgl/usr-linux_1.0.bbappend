@@ -84,7 +84,10 @@ do_clean:append () {
       
         rm -rf ${IB_TARGET}/src/lvgl
         rm -rf ${IB_TARGET}/src/graphic
-        cp ${IB_TARGET}.back/src/CMakeLists.txt ${IB_TARGET}/src/
+
+        if [ -f ${IB_TARGET}.back/src/CMakeLists.txt ]; then
+            cp ${IB_TARGET}.back/src/CMakeLists.txt ${IB_TARGET}/src/
+        fi
     
         rm -rf ${S}
 

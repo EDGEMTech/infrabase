@@ -1,11 +1,11 @@
-SRC_URI += "\ 
+SOO_URI:append = "\ 
     file://0020-capsule.cpp.patch \ 
     file://0040-plugins.hpp.patch \ 
     file://0039-plugins.cpp.patch \ 
     file://0006-receive.h.patch \ 
     file://0002-debug.h.patch \ 
     file://0038-network.hpp.patch \ 
-    file://0013-CMakeLists.txt.patch \ 
+    file://0052-CMakeLists.txt.patch \ 
     file://0022-daemon.cpp.patch \ 
     file://0046-webserver.hpp.patch \ 
     file://0029-utils.cpp.patch \ 
