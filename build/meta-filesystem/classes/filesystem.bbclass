@@ -26,7 +26,7 @@
 
 inherit logging
 inherit utils
-inherit init_storage_${IB_PLATFORM}
+inherit fs_${IB_PLATFORM}
 
 IB_FILESYSTEM_PATH = "${IB_DIR}/filesystem"
 
@@ -64,14 +64,7 @@ def __do_fs_init_storage(d):
         # Remove the existing symbolic link
         os.unlink(target_link)
 
-    # Restore the ownership of the filesystem workdir to
-    # the user that ran the task - note that this is done before the filesystem
-    # is mounted to avoid touching the mounted rootfs
-    utils_chown_dir(d, WORKDIR)
-
     os.symlink(WORKDIR, target_link)
-
-    utils_restore_user_ownership(d)
 
 
 # Check the presence of the virtual disk image
@@ -95,7 +88,6 @@ def __do_fs_check(d):
                       "does not exist - creating it"))
             __do_fs_init_storage(d)
 
-    utils_restore_user_ownership(d)
 
 # Mount the partitions to p1, p2 respectively
 def __do_fs_mount(d):
@@ -130,12 +122,10 @@ def __do_fs_mount(d):
 
     if os.path.ismount(p1):
         bb.warn(f"{p1} is already mounted - avoid remount")
-        utils_restore_user_ownership(d)
         return
 
     if os.path.ismount(p2):
         bb.warn(f"{p2} is already mounted - avoid remount")
-        utils_restore_user_ownership(d)
         return
 
     os.makedirs(p1, exist_ok=True)
@@ -198,7 +188,6 @@ def __do_fs_mount(d):
             os.remove(IB_FILESYSTEM_PATH + "/p2")
         os.symlink(os.path.join(WORKDIR, 'p2'), IB_FILESYSTEM_PATH+"/p2")
 
-    utils_restore_user_ownership(d)
 
 def __do_main_umount(d, partition_number):
     import os
@@ -230,7 +219,6 @@ def __do_main_umount(d, partition_number):
 
     utils_restore_user_ownership(d)
 
-
 def __do_fs_umount(d):
 
     IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
@@ -251,7 +239,6 @@ def __do_fs_umount(d):
     # And of the filesystem/ dir itself
     utils_chown_dir(d, f"{IB_FILESYSTEM_PATH}", follow_symlinks=False, recursive=False)
 
-    utils_restore_user_ownership(d)
 
 python do_fs_mount () {
     __do_fs_mount(d)
@@ -276,8 +263,10 @@ addtask do_fs_umount
 
 # nostamp is necessary to let the user re-run this tasks many times
 # on demand from scripts
+
 do_fs_check[nostamp] = "1"
 do_fs_init_storage[nostamp] = "1"
 do_fs_mount[nostamp] = "1"
 do_fs_umount[nostamp] = "1"
+
 

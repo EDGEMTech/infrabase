@@ -13,7 +13,7 @@ inherit filesystem
 inherit linux
 inherit logging
 inherit bsp
-inherit uboot 
+inherit uboot
 
 OVERRIDES += ":linux"
 
@@ -24,10 +24,10 @@ include ../bsp/files/bsp_${IB_PLATFORM}.inc
 
 # Building all components
 
-do_build[depends] = "usr-linux:do_build uboot:do_build" 
+do_build[depends] = "usr-linux:do_build uboot:do_build"
 
 addtask do_build
- 
+
 do_build () {
 	bbplain "Everything built OK ..."
 }
@@ -43,16 +43,16 @@ do_itb () {
 	else
 		mkimage -f ${IB_ITB_PATH}/${IB_TARGET_ITS}.its ${IB_ITB_PATH}/${IB_TARGET_ITS}.itb
 	fi
-	
+
 }
 
 # Deploy everything
 
 do_deploy[depends] = "filesystem:do_fs_check usr-linux:do_deploy"
- 
+
 do_deploy[nostamp] = "1"
 python do_deploy() {
-    
+
     bb.plain("Deploy Linux boot (u-boot, itb)")
 
     __do_deploy_boot(d);

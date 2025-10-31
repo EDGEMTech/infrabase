@@ -75,6 +75,32 @@ def __do_rootfs_umount(d):
         # Change back to the original working directory
         os.chdir(original_cwd)
 
+# This function extracts the torizon-rootfs contents from the tar archive
+# and writes to the second partition of the disk image
+# This function is specific to TorizonOS
+
+def __torizon_rootfs_archive_path(d):
+    import os
+
+    IB_ROOTFS_PATH = d.getVar('IB_ROOTFS_PATH')
+    IB_TORIZON_MACHINE_ID = d.getVar('IB_TORIZON_MACHINE_ID')
+    IB_TORIZON_MAIN_RECIPE = d.getVar('IB_TORIZON_MAIN_RECIPE')
+
+    # First, check if TorizonOS was built
+    if not os.path.exists(IB_ROOTFS_PATH):
+       __do_fs_umount(d)
+       bb.fatal((f"The image for {IB_TORIZON_MACHINE_ID} was not built, "
+                 "try running: 'build.sh -t' first"))
+
+
+    p  = f"{IB_ROOTFS_PATH}/{IB_TORIZON_MAIN_RECIPE}-{IB_TORIZON_MACHINE_ID}.ota.tar.zst"
+
+    if not os.path.exists(p):
+       bb.fatal(f"The rootfs archive: {p} is not present")
+
+    return p
+
+
 do_rootfs_mount[nostamp] = "1"
 
 python do_rootfs_mount () {

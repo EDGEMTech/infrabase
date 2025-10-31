@@ -31,6 +31,7 @@ def base_set_filespath(path, d):
     return ":".join(filespath)
 
 # Check if the user is root
+
 def utils_chk_is_root_user(d):
 
     import os
@@ -49,6 +50,7 @@ def utils_chk_is_root_user(d):
 # the user name of the active session similar to who -m
 # However logname(1) returns the user that opened the session
 # so doesn't work if running BB while impersonating a service account
+
 def utils_get_user_uid(d):
     import subprocess
     import os
@@ -100,6 +102,7 @@ def utils_get_user_gid(d):
 # is executed through sudo, Therefore
 # changing back to the user required to avoid
 # the need for sudo when cleaning the build/tmp directory
+
 def utils_chown_file(d, path, follow_symlinks=True, recursive=True):
     import os
     import subprocess
@@ -131,6 +134,7 @@ def utils_chown_file(d, path, follow_symlinks=True, recursive=True):
 
 # Change ownership of directory -
 # seperate function for clarity at the call site
+
 def utils_chown_dir(d, dir_path, follow_symlinks=True, recursive=True):
 
     utils_chown_file(d, dir_path, follow_symlinks, recursive)
@@ -138,6 +142,7 @@ def utils_chown_dir(d, dir_path, follow_symlinks=True, recursive=True):
 # Changes ownership of bitbake cache tmp/cache
 # and the temp dir of the task
 # NOTE: This is only called by tasks executed as root
+
 def utils_restore_user_ownership(d):
 
     CACHE_PATH = d.getVar("CACHE")
