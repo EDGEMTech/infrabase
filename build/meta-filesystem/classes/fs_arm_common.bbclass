@@ -269,8 +269,8 @@ def __do_fs_umount(d):
     if utils_chk_is_root_user(d) == False:
         bb.fatal("Please re-run the task/script as root")
 
-    __do_main_umount(d, 1)
-    __do_main_umount(d, 2)
+    __do_main_umount(d, f"{IB_FILESYSTEM_PATH}/work/p1")
+    __do_main_umount(d, f"{IB_FILESYSTEM_PATH}/work/p2")
 
     os.system("losetup -D")
 
