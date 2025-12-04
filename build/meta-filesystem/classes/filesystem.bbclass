@@ -30,7 +30,6 @@ inherit fs_${IB_PLATFORM}
 
 IB_FILESYSTEM_PATH = "${IB_DIR}/filesystem"
 
-
 # Create and initialize the storage (including formatting partitions)
 def __do_fs_init_storage(d):
 
