@@ -17,20 +17,22 @@ inherit uboot
 
 OVERRIDES += ":linux"
 
-do_configure[noexec] = "1"
+COMPATIBLE_PLATFORM = "virt32|virt64|rpi4_64|x86_qemu"
+
 do_attach_infrabase[noexec] = "1"
 
 include ../bsp/files/bsp_${IB_PLATFORM}.inc
+
+do_configure[noexec] = "1"
 
 # Building all components
 
 do_build[depends] = "usr-linux:do_build uboot:do_build"
 
-addtask do_build
-
 do_build () {
 	bbplain "Everything built OK ..."
 }
+addtask do_build
 
 ####################### Recipe to deploy everything
 
