@@ -4,9 +4,8 @@ LICENSE = "MIT"
 
 # Fetch LVGL
 
-SRCREV = "e9b4a18331c6087ac01fcd17f026ec2f0b1f2bc8"
-
-LVGL_URI = "git://github.com/lvgl/lv_port_linux.git;branch=master;protocol=https"
+LVGL_URI = "git://github.com/lvgl/lv_port_linux.git;branch=master;protocol=https;name=lvgl"
+SRCREV_lvgl = "e9b4a18331c6087ac01fcd17f026ec2f0b1f2bc8"
 
 SRC_URI += " ${@ d.expand(d.getVar('LVGL_URI') or '') \
                  if 'lvgl' in (d.getVar('OVERRIDES') or '').split(':') else '' }"
@@ -22,43 +21,31 @@ require files/0001-${PF}-patches.inc
 # with the retrieval of the LVGL submodule
 # Then, we move all the git contents in the consolidated working directory
 
-python do_handle_fetch_git() {
+python do_handle_fetch_git:prepend() {
 
     import os
     import subprocess
     import shlex
-     
-    ovrs = (d.getVar('OVERRIDES') or '').replace(' ', '').split(':')
-    if 'lvgl' not in ovrs:
-        return
+ 
+    # We compare against the value we expect.
+    # If it is not equal, we give a chance to other (same) functions
+    # in .bbappend to be executed.
     
-    # Now fetch the submodule to get lvgl within lv_port_linux
-    bb.plain("Now, fetching submodule for lv_port_linux ...")
+    ovrs = (d.getVar('OVERRIDES') or '').replace(' ', '').split(':')
+    if 'lvgl' in ovrs:
 
-    gitdir = os.path.join(d.getVar('WORKDIR'), 'git')
+        # Now fetch the submodule to get lvgl within lv_port_linux
+        bb.plain("Now, fetching submodule for lv_port_linux ...")
 
-    # Fetch the submodules using full path
-    subprocess.check_call(
-        ['git', '-C', gitdir, 'submodule', 'update', '--init', '--recursive']
-    )
+        gitdir = os.path.join(d.getVar('WORKDIR'), 'git')
 
-    # Then, copy the full git directory to the {S} directory
+        # Fetch the submodules using full path
+        subprocess.check_call(
+            ['git', '-C', gitdir, 'submodule', 'update', '--init', '--recursive']
+        )
 
-    target_dir = d.getVar('S')
-
-    # Make sure the target directory exists
-    cmd = f"mkdir -p {target_dir}/src/lvgl/lv_port_linux"
-    result = subprocess.run(cmd, shell=True, check=True)
-
-    dst_dir = os.path.join(target_dir, 'src', 'lvgl', 'lv_port_linux')
-
-    # Copy everything except .git, preserving symlinks/metadata
-    cmd = (
-        "find . -mindepth 1 -path './.git' -prune -o "
-        "-exec cp -a --parents -t {} {{}} +"
-    ).format(shlex.quote(dst_dir))
-
-    result = subprocess.run(cmd, shell=True, check=True, cwd=gitdir)
+        # Then, move the full git directory to the target directory within {S}
+        move_gitdir(d, 'src/lvgl/lv_port_linux')
     
 }
 
