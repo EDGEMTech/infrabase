@@ -32,7 +32,7 @@ python do_handle_fetch_git:prepend() {
         move_gitdir(d, 'lib/evl')
 }
 
-do_configure:append() {
+do_configure:prepend() {
 
   cd ${IB_TARGET}/lib/evl
 	 
@@ -42,7 +42,7 @@ do_configure:append() {
   meson setup --cross-file ~/edgemtech/customer/cybelec_linux/cybelec_linux/ib/linux/usr/lib/evl/meson/aarch64-none-linux-gnu -Dbuildtype=release -Dprefix=/usr/evl -Duapi=${IB_LINUX_PATH} . ${IB_TARGET}/lib/evl
 }
 
-do_build:append() {
+do_build:prepend() {
   
   cd ${IB_TARGET}/lib/evl/build
   meson compile

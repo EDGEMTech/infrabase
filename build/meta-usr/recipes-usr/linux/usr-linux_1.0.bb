@@ -81,9 +81,12 @@ do_install_apps () {
 }
 
 do_clean:append () {
-	# Clean the modules
-	make -C ${IB_LINUX_PATH} M=${IB_TARGET}/src/modules clean
- 
+    
+    # Clean the modules
+    if [ -d ${IB_TARGET}/src/modules ]; then
+	    make -C ${IB_LINUX_PATH} M=${IB_TARGET}/src/modules clean
+    fi
+    
     rm -f ${TMPDIR}/stamps/usr-linux*
 
     # Remove the usr organization in the build directory to avoid
