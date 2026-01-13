@@ -15,7 +15,7 @@ SRCREV = "e4b6ebd3de982ae7185dbf689a030e73fd06e0d2"
 
 SRC_URI = "git://github.com/u-boot/u-boot;branch=master;protocol=https"
 
-# Set of patches to be applied to get a version adapted with AVZ
+# Set of patches to be applied to get a version adapted
 # and adding various defconfig files.
 
 FILESPATH:prepend = "${THISDIR}/files/0001-${PF}:"

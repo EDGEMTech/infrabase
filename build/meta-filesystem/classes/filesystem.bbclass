@@ -153,7 +153,7 @@ def __do_fs_mount(d):
     # NOTE: Currently this file is only written too
     path = os.path.join(TMPDIR, "global_datastore.json")
     with open(path, "w") as f:
-        json.dump(shdata, f);
+        json.dump(shdata, f)
 
     f.close()
     utils_chown_file(d, path)
@@ -220,7 +220,8 @@ def __do_main_umount(d, partition_number):
     utils_restore_user_ownership(d)
 
 def __do_fs_umount(d):
-
+    import subprocess
+    
     IB_FILESYSTEM_PATH = d.getVar('IB_FILESYSTEM_PATH')
     WORKDIR = d.getVar('WORKDIR')
 
@@ -230,9 +231,13 @@ def __do_fs_umount(d):
 
     __do_main_umount(d, 1)
     __do_main_umount(d, 2)
+ 
+    try:
+        subprocess.run(['losetup', '-D'], check=True)
 
-    os.system("losetup -D")
-
+    except Exception as e:
+        bb.fatal(f"Failed during losetup -D operation, could not unmount all devices: {e}")
+   
     # Change ownership of filesystem/sdcard.img.* and filesystem/work
     utils_chown_dir(d, f"{IB_FILESYSTEM_PATH}", follow_symlinks=False, recursive=True)
 

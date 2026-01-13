@@ -11,6 +11,9 @@ IB_BSP_PATH = "${IB_DIR}/build/meta-bsp/recipes-bsp/bsp"
 
 IB_ITB_PATH:so3 = "${IB_DIR}/so3/target"
 IB_ITB_PATH:linux = "${IB_DIR}/linux/target"
+ 
+# This is the uEnv.txt file related to U-boot depending on the BSP
+IB_UENV = "${FILE_DIRNAME}/files/uEnv_${IB_PLATFORM}.txt"
 
 inherit logging
 inherit filesystem

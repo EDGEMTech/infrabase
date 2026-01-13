@@ -1,8 +1,8 @@
 require bsp_arm_common.inc
 
-do_itb:torizon () {
+do_itb () {
 	if [ ! -f ${IB_ITB_PATH}/${IB_TARGET_ITS}.its ]; then
-		bbfatal "No corresponding ITS found for platform ${IB_PLATFORM}"
+		bbfatal "${IB_DIR} No corresponding ITS found for platform ${IB_PLATFORM} ${IB_ITB_PATH}/${IB_TARGET_ITS}.its"
 	else
 		mkimage -f ${IB_ITB_PATH}/${IB_TARGET_ITS}.its ${IB_ITB_PATH}/${IB_TARGET_ITS}.itb
 	fi
@@ -10,7 +10,8 @@ do_itb:torizon () {
 
 
 def __do_platform_deploy(d):
-
+    import subprocess
+    
     print("Platorm " + d.getVar('IB_PLATFORM'))
 
     ovrs = (d.getVar('OVERRIDES') or '').replace(' ', '').split(':')
@@ -26,12 +27,11 @@ def __do_platform_deploy(d):
         IB_PLATFORM = d.getVar("IB_PLATFORM")
         IB_ITB_PATH = d.getVar("IB_ITB_PATH")
         IB_FILESYSTEM_PATH = d.getVar("IB_FILESYSTEM_PATH")
-
-        uenv_path = f"{IB_UBOOT_PATH}/uEnv.d/uEnv_{IB_PLATFORM}_torizon.txt"
+        IB_UENV = d.getVar("IB_UENV")
 
         torizon_rootfs_ar_path = __torizon_rootfs_archive_path(d)
         filesys_path = f"{IB_FILESYSTEM_PATH}/p1"
-        itb_path = f"{IB_ITB_PATH}/{IB_PLATFORM}_torizon.itb"
+        itb_path = f"{IB_ITB_PATH}/{IB_PLATFORM}.itb"
 
         cmd = (f"tar -tf {torizon_rootfs_ar_path} | grep ^\./ostree/boot.1.1 | "
             f"grep -o /[a-f0-9]*/$ | sed 's/\///g\'")
@@ -39,11 +39,11 @@ def __do_platform_deploy(d):
         res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         deployment_id = res.stdout.strip()
 
-        if not os.path.isfile(uenv_path):
-            bb.fatal(uenv_path + " is missing ...")
+        if not os.path.isfile(IB_UENV):
+            bb.fatal(IB_UENV + " is missing ...")
 
         # Read the uEnv file perform the substitution
-        with open(uenv_path) as uenv_file:
+        with open(IB_UENV) as uenv_file:
             uenv_content = uenv_file.read()
             uenv_file.close()
 

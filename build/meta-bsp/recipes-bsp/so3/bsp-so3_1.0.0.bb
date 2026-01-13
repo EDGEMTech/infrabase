@@ -73,3 +73,4 @@ do_clean () {
 	rm -f ${TMPDIR}/stamps/bsp-so3*
 }
 addtask do_clean
+

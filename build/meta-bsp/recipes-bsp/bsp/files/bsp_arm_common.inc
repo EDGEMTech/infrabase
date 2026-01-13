@@ -4,16 +4,14 @@
 def __deploy_arm_common(d):
     import os
     import subprocess
-
-    uenv_path = d.getVar('IB_UBOOT_PATH') + "/uEnv.d/uEnv_" + d.getVar('IB_PLATFORM') + ".txt"
-
+ 
     filesys_path = d.getVar('IB_FILESYSTEM_PATH') + "/p1"
     itb_path = d.getVar('IB_ITB_PATH') + "/" + d.getVar('IB_TARGET_ITS') + ".itb"
 
-    if not os.path.isfile(uenv_path):
+    if not os.path.isfile(IB_UENV):
         bb.fatal(uenv_path + " is missing ...")
 
-    subprocess.run(['cp', uenv_path, filesys_path + "/uEnv.txt"])
+    subprocess.run(['cp', IB_UENV, filesys_path + "/uEnv.txt"])
 
     if not os.path.isfile(itb_path):
         bb.fatal(itb_path + " is missing ...")

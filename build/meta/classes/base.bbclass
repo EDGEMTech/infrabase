@@ -28,6 +28,17 @@ python () {
             lib_path = os.path.join(layer_path, 'lib')
             if os.path.isdir(lib_path) and lib_path not in sys.path:
                 sys.path.insert(0, lib_path)
+
+    need_machine = d.getVar('COMPATIBLE_PLATFORM')
+    if need_machine and not bb.utils.to_boolean(d.getVar('PARSE_ALL_RECIPES', False)):
+        import re
+        compat_machines = (d.getVar('PLATFORMOVERRIDES') or "").split(":")
+        for m in compat_machines:
+            if re.match(need_machine, m):
+                break
+        else:
+            raise bb.parse.SkipRecipe("incompatible with machine %s (not in COMPATIBLE_PLATFORM)" % d.getVar('IB_PLATFORM'))
+
 }
 
 

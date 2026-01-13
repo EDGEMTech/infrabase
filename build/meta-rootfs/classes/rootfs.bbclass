@@ -90,7 +90,7 @@ def __torizon_rootfs_archive_path(d):
     if not os.path.exists(IB_ROOTFS_PATH):
        __do_fs_umount(d)
        bb.fatal((f"The image for {IB_TORIZON_MACHINE_ID} was not built, "
-                 "try running: 'build.sh -t' first"))
+                 f"try running: 'build.sh -t' first rootfs should be at {IB_ROOTFS_PATH}"))
 
 
     p  = f"{IB_ROOTFS_PATH}/{IB_TORIZON_MAIN_RECIPE}-{IB_TORIZON_MACHINE_ID}.ota.tar.zst"
