@@ -129,31 +129,54 @@ python do_handle_symlinks() {
             subprocess.call(statement, shell=True, cwd=where)
 }
 
+def move_gitdir(d, dst_dir):
+    import os
+    import subprocess
+    import shlex
+
+    target_dir = d.getVar('S')
+    gitdir = os.path.join(d.getVar('WORKDIR'), 'git')
+    
+    # Make sure the target directory exists
+    cmd = f"mkdir -p {target_dir}/{dst_dir}"
+    result = subprocess.run(cmd, shell=True, check=True)
+
+    # Copy everything except .git, preserving symlinks/metadata
+    cmd = (
+        "find . -mindepth 1 -path './.git' -prune -o "
+        "-exec cp -a --parents -t {} {{}} +"
+    ).format(shlex.quote(os.path.join(target_dir, dst_dir)))
+    
+    result = subprocess.run(cmd, shell=True, check=True, cwd=gitdir)
+
+    # Now erase the git directory
+    cmd = f"rm -rf {gitdir}"
+    result = subprocess.run(cmd, shell=True, check=True)
+
+
 # If some files are fetched from a git directory, bitbake
 # unpacked them to ${WORKDIR}/git directory. So, we want
 # to move the contents to the target ${S} directory so that
 # doing a updiff task will use the same approach for all recipes
 
+# Additional note: this function can be overriden in recipes
+# (.bbappend or other) using prepend (if many). So, the function
+# may return.
+
 python do_handle_fetch_git() {
     import os
     import subprocess
     import shlex
-
+ 
     workdir = d.getVar('WORKDIR')
-    dst_dir = d.getVar('S')
     src_dir = os.path.join(workdir, 'git')
 
     if not os.path.isdir(src_dir):
         bb.note(f"Source directory {src_dir} does not exist — skipping copy.")
         return
 
-    # Copy everything except .git, preserving symlinks/metadata
-    cmd = (
-        "find . -mindepth 1 -path './.git' -prune -o "
-        "-exec cp -a --parents -t {} {{}} +"
-    ).format(shlex.quote(dst_dir))
-    
-    result = subprocess.run(cmd, shell=True, check=True, cwd=src_dir)
+    move_gitdir(d, '.')
+ 
 }
 do_unpack[postfuncs] = "do_handle_fetch_git"
  
