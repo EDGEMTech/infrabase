@@ -1,6 +1,6 @@
 --- /home/rossierd/soo/git/micofe/build/tmp/work/linux-6.12-r0/linux-6.12/soo/include/soo/uapi/soo.h	1970-01-01 01:00:00.000000000 +0100
 +++ ./soo/include/soo/uapi/soo.h	2025-08-29 08:46:41.395924678 +0200
-@@ -0,0 +1,460 @@
+@@ -0,0 +1,462 @@
 +/*
 + * Copyright (C) 2014-2025 Daniel Rossier <daniel.rossier@heig-vd.ch>
 + *
@@ -269,6 +269,7 @@
 +typedef struct agency_ioctl_args {
 +	void *buffer; /* IN/OUT */
 +	int slotID;
++	unsigned capsuleID;
 +	long value; /* IN/OUT */
 +} agency_ioctl_args_t;
 +
@@ -307,6 +308,7 @@
 +typedef struct {
 +	void *itb_paddr;
 +	int slotID;
++   unsigned int capsuleID;
 +} avz_inject_capsule_t;
 +
 +/* AVZ_START_CAPSULE */

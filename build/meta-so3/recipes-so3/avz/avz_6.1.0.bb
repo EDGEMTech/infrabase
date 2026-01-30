@@ -15,8 +15,8 @@ OVERRIDES += ":avz"
 # Where the working directory will be placed in infrabase root dir
 IB_TARGET = "${IB_AVZ_PATH}"
 
-SRC_URI = "git://github.com/smartobjectoriented/so3.git;branch=main;protocol=https"
-SRCREV = "6077eb580d4aa7579fd27f57dbdf5f36b466415b"
+SRC_URI = "git://github.com/smartobjectoriented/so3.git;nobranch=1;protocol=https"
+SRCREV = "5f831ecc5071380b9f2b98e946c605598f040c98"
 
 python do_handle_fetch_git() {
 

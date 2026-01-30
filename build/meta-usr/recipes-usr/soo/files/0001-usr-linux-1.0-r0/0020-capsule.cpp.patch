@@ -1,6 +1,6 @@
 --- /home/rossierd/soo/micofe/build/tmp/work/usr-linux-1.0-r0/usr-linux-1.0/src/soo/emiso_engine/daemon/capsule.cpp	1970-01-01 01:00:00.000000000 +0100
 +++ ./src/soo/emiso_engine/daemon/capsule.cpp	2025-10-10 17:28:33.593649878 +0200
-@@ -0,0 +1,531 @@
+@@ -0,0 +1,542 @@
 +/*
 + * Copyright (C) 2023 Jean-Pierre Miceli <jean-pierre.miceli@heig-vd.ch>
 + *
@@ -80,7 +80,7 @@
 + * @param imageName   Name image, without .itb suffix, used to inject the capsule
 + * @return The ID of the create capsule or a negative value in case of error
 + */
-+int Capsule::inject(string imageName)
++int Capsule::inject(string imageName, bool start_capsule, unsigned capsuleId)
 +{
 +    int fd;
 +    int ret;
@@ -110,6 +110,7 @@
 +    args.buffer = capsuleBuf;
 +    args.value = capsuleSize;
 +    args.slotID = -1; /* Wherever */
++    args.capsuleID = capsuleId;
 +
 +    fd = open(SOO_CORE_DRV_PATH, O_RDWR);
 +    if (fd < 0) {
@@ -125,6 +126,10 @@
 +        close(fd);
 +        delete[] capsuleBuf;
 +        return EXIT_FAILURE;
++    }
++
++    if (start_capsule) {
++        ioctl(fd, AGENCY_IOCTL_START_CAPSULE, &args);
 +    }
 +
 +    delete[] capsuleBuf;
@@ -168,12 +173,17 @@
 +        return EXIT_FAILURE;
 +    }
 +
-+    args.buffer = new char[args.value];
++    args.buffer = malloc(args.value);
++    if (args.buffer == NULL) {
++        printf(LOG_PREFIX " %s - malloc failed\n", __func__);
++        close(fd);
++        return EXIT_FAILURE;
++    }
 +
 +    ret = ioctl(fd, AGENCY_IOCTL_READ_SNAPSHOT, &args);
 +    if (ret < 0) {
 +        printf(LOG_PREFIX "Read the snapshot IOCTL_READ_SNAPSHOT failed.\n");
-+        delete[] args.buffer;
++        free(args.buffer);
 +        close(fd);
 +        return EXIT_FAILURE;
 +    }
@@ -189,7 +199,7 @@
 +    if (!zip) {
 +        printf(LOG_PREFIX "Failed to open the zip file. Is there a bad sync after saving the snapshot?...\n");
 +        perror("");
-+        delete[] args.buffer;
++        free(args.buffer);
 +        close(fd);
 +        return EXIT_FAILURE;
 +    }
@@ -198,7 +208,7 @@
 +    zip_entry_close(zip);
 +
 +    zip_close(zip);
-+    delete[] args.buffer;
++    free(args.buffer);
 +
 +    return 0;
 +}
@@ -327,7 +337,7 @@
 +    cout << LOG_PREFIX "Create capsule " << capsuleName << " from image " << imageName << endl;
 +
 +    // Inject the Capsule
-+    slotId = this->inject(imageName);
++    slotId = this->inject(imageName, false, _capsuleIdx);
 +
 +    // Save the info of the new capsule
 +    CapsuleInfo capsule;
@@ -374,7 +384,7 @@
 +        slotId = this->restoreSnapshot(capsuleName);
 +
 +    } else if (_capsules[capsuleId].state == "exited") {
-+        slotId = this->inject(_capsules[capsuleId].image);
++        slotId = this->inject(_capsules[capsuleId].image, true, capsuleId);
 +
 +    } else {
 +        cerr << "[EMISO:DAEMON] Capsule start failed. The capsule it is not in a correct state ("
@@ -427,7 +437,7 @@
 +        return ret;
 +
 +    // re-create the capsule
-+    ret = this->inject(imageName);
++    ret = this->inject(imageName,  true, capsuleId);
 +    if (ret < 0)
 +        return ret;
 +
@@ -483,12 +493,13 @@
 + */
 +int Capsule::remove(unsigned capsuleId)
 +{
-+    int ret;
++    int ret = 0;
 +
-+    ret = this->shutdown(_capsules[capsuleId].slotId);
-+    if (ret == 0) {
++    if (_capsules[capsuleId].state == "running")
++        ret = this->shutdown(_capsules[capsuleId].slotId);
++
++    if (ret == 0)
 +        _capsules.erase(capsuleId);
-+    }
 +
 +    return ret;
 +}

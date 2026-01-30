@@ -19,7 +19,7 @@ require files/0001-${PF}-patches.inc
 # Where the working directory will be placed in infrabase root dir
 IB_TARGET = "${IB_DIR}/so3/usr"
 
-IB_TOOLCHAIN_PATH = "${IB_TARGET}/${IB_PLAT_CPU}_toolchain.cmake"
+IB_TOOLCHAIN_PATH = "${IB_TARGET}/${IB_PLAT_CPU}-linux-musl.cmake"
 
 do_build[depends] = "rootfs-so3:do_build"
 

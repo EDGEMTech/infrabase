@@ -14,8 +14,8 @@ OVERRIDES += ":so3"
 # Where the working directory will be placed in infrabase root dir
 IB_TARGET = "${IB_SO3_PATH}"
 
-SRC_URI = "git://github.com/smartobjectoriented/so3.git;branch=main;protocol=https"
-SRCREV = "50446524cc7257db7c47f03ca2ca9704b4e206f6"
+SRC_URI = "git://github.com/smartobjectoriented/so3.git;nobranch=1;protocol=https"
+SRCREV = "5f831ecc5071380b9f2b98e946c605598f040c98"
 
 
 do_configure[nostamp] = "1"

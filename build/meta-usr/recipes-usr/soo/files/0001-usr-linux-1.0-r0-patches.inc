@@ -5,7 +5,6 @@ SOO_URI:append = "\
     file://0006-receive.h.patch \ 
     file://0002-debug.h.patch \ 
     file://0038-network.hpp.patch \ 
-    file://0052-CMakeLists.txt.patch \ 
     file://0022-daemon.cpp.patch \ 
     file://0046-webserver.hpp.patch \ 
     file://0029-utils.cpp.patch \ 
@@ -21,7 +20,6 @@ SOO_URI:append = "\
     file://0042-system.hpp.patch \ 
     file://0016-CMakeLists.txt.patch \ 
     file://0050-saveme.c.patch \ 
-    file://0015-modules.order.patch \ 
     file://0001-core.h.patch \ 
     file://0025-image.hpp.patch \ 
     file://0048-melist.c.patch \ 
@@ -35,7 +33,6 @@ SOO_URI:append = "\
     file://0021-capsule.hpp.patch \ 
     file://0003-device_access.h.patch \ 
     file://0045-webserver.cpp.patch \ 
-    file://0014-modtry.mod.patch \ 
     file://0031-container.hpp.patch \ 
     file://0012-soo.h.patch \ 
     file://0043-volume.cpp.patch \ 
@@ -50,4 +47,5 @@ SOO_URI:append = "\
     file://0024-image.cpp.patch \ 
     file://0005-leds.h.patch \ 
     file://0010-core.h.patch \ 
+    file://0052-CMakeLists.txt.patch \ 
 "

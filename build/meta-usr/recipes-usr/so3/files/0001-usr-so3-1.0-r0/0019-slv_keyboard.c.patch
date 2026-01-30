@@ -1,6 +1,6 @@
 --- /home/rossierd/soo/micofe/build/tmp/work/usr-so3-1.0-r0/usr-so3-1.0/lib/slv/slv_keyboard.c	2025-10-07 20:27:00.958412672 +0200
 +++ ./lib/slv/slv_keyboard.c	1970-01-01 01:00:00.000000000 +0100
-@@ -1,69 +0,0 @@
+@@ -1,70 +0,0 @@
 -/*
 - * Copyright (C) 2025 André Costa <andre_miguel_costa@hotmail.com>
 - * Copyright (C) 2020 Nikolaos Garanis <nikolaos.garanis@heig-vd.ch>
@@ -24,6 +24,7 @@
 -#include <bits/ioctl.h>
 -#include <fcntl.h>
 -#include <stdio.h>
+-#include <sys/ioctl.h>
 -
 -#include "slv_keyboard.h"
 -

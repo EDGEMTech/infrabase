@@ -22,7 +22,7 @@
 +#ifndef CAPSULE_H
 +#define CAPSULE_H
 +
-+int inject_capsule(void *buffer, size_t size, int slotID);
++int inject_capsule(void *buffer, size_t size, int slotID, unsigned capsuleId);
 +void start_capsule(int slotID);
 +
 +void read_snapshot(uint32_t slotID, void *buffer, uint32_t *size);

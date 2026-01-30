@@ -119,4 +119,7 @@ SRC_URI:append:soo = "\
     file://0065-vdevback.h.patch \ 
     file://0015-.mailmap.patch \ 
     file://0123-strtod.c.patch \ 
+    file://0125-Makefile.patch \
+    file://0126-vlogs.c.patch \
+    file://0127-vlogs.h.patch \
 "

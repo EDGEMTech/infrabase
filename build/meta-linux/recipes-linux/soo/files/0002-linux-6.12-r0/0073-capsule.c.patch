@@ -1,6 +1,6 @@
 --- /home/rossierd/soo/git/micofe/build/tmp/work/linux-6.12-r0/linux-6.12/soo/kernel/capsule.c	1970-01-01 01:00:00.000000000 +0100
 +++ ./soo/kernel/capsule.c	2025-08-30 15:37:09.704925348 +0200
-@@ -0,0 +1,496 @@
+@@ -0,0 +1,498 @@
 +/*
 + * Copyright (C) 2017-2024 Daniel Rossier <daniel.rossier@heig-vd.ch>
 + *
@@ -80,9 +80,10 @@
 + * @param buffer       pointer to a buffer
 + * @param size         Size of the capsule to load
 + * @param slotID       if not equal to -1, try to load in the specific slot
++ * @param capsuleID    ID of the capsule
 + * @return int slotID or -1 if no slotID available or not free.
 + */
-+int inject_capsule(void *buffer, size_t size, int slotID) {
++int inject_capsule(void *buffer, size_t size, int slotID, unsigned capsuleID) {
 +        void *me = NULL;
 +        dma_addr_t dma_handle;
 +        avz_hyp_t args;
@@ -106,6 +107,7 @@
 +
 +        args.u.avz_inject_capsule_args.itb_paddr = (void *) dma_handle;
 +        args.u.avz_inject_capsule_args.slotID = slotID;
++        args.u.avz_inject_capsule_args.capsuleID = capsuleID;
 +
 +        avz_hypercall(&args);
 +
@@ -227,7 +229,7 @@
 + *
 + * @param slotID
 + * @param buffer  Adresse of a buffer of ME_info_transfert_t
-+ * @return 0 in case of success, -1 if no available slot
++ * @return slotID in case of success, -1 if no available slot
 + */
 +int write_snapshot(void *buffer) {
 +        avz_hyp_t args;
@@ -277,7 +279,7 @@
 +                /* Normal processing, start of the capsule */
 +
 +                start_capsule(slotID);
-+                return 0;
++                return slotID;
 +        }
 +
 +        BUG_ON((ME_state != ME_state_hibernate) && (ME_state != ME_state_awakened));
@@ -308,7 +310,7 @@
 +        DBG("Putting ME domid %d in state living...\n", slotID);
 +        set_ME_state(slotID, ME_state_living);
 +
-+        return 0;
++        return slotID;
 +}
 +
 +int get_ME_state(unsigned int ME_slotID)

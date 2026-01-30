@@ -21,26 +21,27 @@ python do_handle_fetch_git() {
     import shlex
 
     ovrs = (d.getVar('OVERRIDES') or '').replace(' ', '').split(':')
-    if 'lvgl' in ovrs:
+    if 'lvgl' not in ovrs:
+        return
     
-        # Now fetch the submodule to get lvgl within the usr/lib
-        bb.plain("Now, copying LVGL at the right place ...")
+    # Now fetch the submodule to get lvgl within the usr/lib
+    bb.plain("Now, copying LVGL at the right place ...")
 
-        gitdir = os.path.join(d.getVar('WORKDIR'), 'git')
+    gitdir = os.path.join(d.getVar('WORKDIR'), 'git')
 
-        # Move to the workdir of SO3
+    # Move to the workdir of SO3
 
-        target_dir = d.getVar('S')
-        dst_dir = os.path.join(target_dir, 'lib', 'lvgl')
+    target_dir = d.getVar('S')
+    dst_dir = os.path.join(target_dir, 'lib', 'lvgl')
   
-        # Fetch the submodules using full path
-        # Copy everything except .git, preserving symlinks/metadata
-        cmd = (
-            "find . -mindepth 1 -path './.git' -prune -o "
-            "-exec cp -a --parents -t {} {{}} +"
-        ).format(shlex.quote(dst_dir))
+    # Fetch the submodules using full path
+    # Copy everything except .git, preserving symlinks/metadata
+    cmd = (
+        "find . -mindepth 1 -path './.git' -prune -o "
+        "-exec cp -a --parents -t {} {{}} +"
+    ).format(shlex.quote(dst_dir))
 
-        result = subprocess.run(cmd, shell=True, check=True, cwd=gitdir)
+    result = subprocess.run(cmd, shell=True, check=True, cwd=gitdir)
 }
 
 do_clean:append () {

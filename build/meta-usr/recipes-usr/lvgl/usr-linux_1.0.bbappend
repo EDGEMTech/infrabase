@@ -26,27 +26,22 @@ python do_handle_fetch_git:prepend() {
     import os
     import subprocess
     import shlex
- 
-    # We compare against the value we expect.
-    # If it is not equal, we give a chance to other (same) functions
-    # in .bbappend to be executed.
-    
+     
     ovrs = (d.getVar('OVERRIDES') or '').replace(' ', '').split(':')
-    if 'lvgl' in ovrs:
-
-        # Now fetch the submodule to get lvgl within lv_port_linux
-        bb.plain("Now, fetching submodule for lv_port_linux ...")
-
-        gitdir = os.path.join(d.getVar('WORKDIR'), 'git')
-
-        # Fetch the submodules using full path
-        subprocess.check_call(
-            ['git', '-C', gitdir, 'submodule', 'update', '--init', '--recursive']
-        )
-
-        # Then, move the full git directory to the target directory within {S}
-        move_gitdir(d, 'src/lvgl/lv_port_linux')
+    if 'lvgl' not in ovrs:
+        return
     
+    # Now fetch the submodule to get lvgl within lv_port_linux
+    bb.plain("Now, fetching submodule for lv_port_linux ...")
+
+    gitdir = os.path.join(d.getVar('WORKDIR'), 'git')
+
+    # Fetch the submodules using full path
+    subprocess.check_call(
+        ['git', '-C', gitdir, 'submodule', 'update', '--init', '--recursive']
+    )
+  
+    move_gitdir(d, 'src/lvgl/lv_port_linux')    
 }
 
 # Install the lvglsim application into the deploy directory

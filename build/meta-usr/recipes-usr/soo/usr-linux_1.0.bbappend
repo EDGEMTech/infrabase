@@ -33,6 +33,7 @@ do_clean:append() {
 
     rm -rf ${IB_TARGET}/src/soo   
     rm -rf ${IB_TARGET}/include/soo
+    rm -rf ${IB_TARGET}/include/core
 
     rm -rf ${S}
     

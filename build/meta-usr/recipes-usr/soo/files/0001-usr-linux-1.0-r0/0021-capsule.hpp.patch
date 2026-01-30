@@ -60,7 +60,7 @@
 +
 +    private:
 +        uint64_t createdTime();
-+        int inject(string imageName);
++        int inject(string imageName, bool start_capsule, unsigned capsuleId);
 +        int saveSnapshot(int slotId, string snapshotName);
 +        int restoreSnapshot(string snapshotName);
 +        int shutdown(int slotId);

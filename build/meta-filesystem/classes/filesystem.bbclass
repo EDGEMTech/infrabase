@@ -154,6 +154,7 @@ def __do_fs_mount(d):
     with open(path, "w") as f:
         json.dump(shdata, f)
 
+    f.close()
     utils_chown_file(d, path)
 
     if devname[-1].isdigit():

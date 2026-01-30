@@ -1,9 +1,5 @@
---- /home/rossierd/soo/micofe/build/tmp/work/usr-linux-1.0-r0/usr-linux-1.0/src/CMakeLists.txt	2025-10-10 17:36:02.881677967 +0200
-+++ ./src/CMakeLists.txt	2025-10-10 17:39:42.160948348 +0200
-@@ -1,5 +1,6 @@
- 
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -1 +1,2 @@
  add_subdirectory(examples)
 +add_subdirectory(soo)
- 
- 
- 

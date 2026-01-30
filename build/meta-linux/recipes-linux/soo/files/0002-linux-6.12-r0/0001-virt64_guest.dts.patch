@@ -19,7 +19,7 @@
  	};
  
  	timer {
-@@ -403,4 +404,32 @@
+@@ -403,4 +404,36 @@
  		compatible = "fixed-clock";
  	};
  
@@ -48,6 +48,10 @@
 +            			status = "disabled";
 +        		};
 +			
++			vlogs {
++				compatible = "vlogs,backend";
++				status = "ok";
++			};
 +		};
 +	};
 +

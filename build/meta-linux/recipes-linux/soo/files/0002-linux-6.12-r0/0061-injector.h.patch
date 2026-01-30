@@ -100,7 +100,7 @@
 +
 +void injector_receive_ME(void *ME, size_t size);
 +
-+int inject_capsule(void *buffer, size_t size, int slotID);
++int inject_capsule(void *buffer, size_t size, int slotID, unsigned capsuleID);
 +void start_capsule(int slotID);
 +
 +ssize_t agency_read(struct file *fp, char *buff, size_t length, loff_t *ppos);

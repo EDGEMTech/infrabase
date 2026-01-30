@@ -4,7 +4,8 @@
 def __deploy_arm_common(d):
     import os
     import subprocess
- 
+
+    IB_UENV = d.getVar("IB_UENV")
     filesys_path = d.getVar('IB_FILESYSTEM_PATH') + "/p1"
     itb_path = d.getVar('IB_ITB_PATH') + "/" + d.getVar('IB_TARGET_ITS') + ".itb"
 

@@ -104,11 +104,11 @@
 +		break;
 +
 +	case AGENCY_IOCTL_WRITE_SNAPSHOT:
-+		ret = write_snapshot(args.buffer);
++		args.slotID = write_snapshot(args.buffer);
 +		break;
 +
 +	case AGENCY_IOCTL_INJECT_CAPSULE:
-+		args.slotID = inject_capsule(args.buffer, args.value, args.slotID);
++		args.slotID = inject_capsule(args.buffer, args.value, args.slotID, args.capsuleID);
 +		break;
 +
 +	case AGENCY_IOCTL_START_CAPSULE:
