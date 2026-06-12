@@ -1,0 +1,7 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/uio/Makefile	2026-04-08 18:20:09.499944525 +0200
++++ ./drivers/uio/Makefile	2026-04-08 16:21:09.632288795 +0200
+@@ -12,3 +12,4 @@
+ obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
+ obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
+ obj-$(CONFIG_UIO_DFL)	+= uio_dfl.o
++obj-$(CONFIG_UIO_IVSHMEM)	+= uio_ivshmem.o

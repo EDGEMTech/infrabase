@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-4.dtsi	2026-04-08 18:20:05.272889781 +0200
++++ ./arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-4.dtsi	2026-04-08 16:21:03.189303473 +0200
+@@ -35,13 +35,13 @@
+ fman@400000 {
+ 	fman0_rx_0x0c: port@8c000 {
+ 		cell-index = <0xc>;
+-		compatible = "fsl,fman-v3-port-rx";
++		compatible = "fsl,fman-v3-port-rx","fsl,fman-port-1g-rx";
+ 		reg = <0x8c000 0x1000>;
+ 	};
+ 
+ 	fman0_tx_0x2c: port@ac000 {
+ 		cell-index = <0x2c>;
+-		compatible = "fsl,fman-v3-port-tx";
++		compatible = "fsl,fman-v3-port-tx","fsl,fman-port-1g-tx";
+ 		reg = <0xac000 0x1000>;
+ 	};
+ 

@@ -1,0 +1,17 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/colibri-imx8x_ad7879_overlay.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/colibri-imx8x_ad7879_overlay.dtsi	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2021 Toradex
++ */
++
++// Enable the resistive touch controller (AD7879) on the module
++
++&ad7879_ts {
++	status = "okay";
++};
++
++&i2c1 {
++	status = "okay";
++};

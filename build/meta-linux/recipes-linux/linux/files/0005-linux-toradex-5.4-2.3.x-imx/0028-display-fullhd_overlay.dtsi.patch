@@ -1,0 +1,31 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/display-fullhd_overlay.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/display-fullhd_overlay.dtsi	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2022 Toradex
++ */
++
++// FullHD VGA monitor in mode 1920x1080p60. Standard: SMPTE 274M
++
++&panel_dpi {
++	compatible = "panel-dpi";
++	status = "okay";
++
++	/* for 0.15mm pixels */
++	width-mm = <288>;
++	height-mm = <162>;
++
++	panel-timing {
++		clock-frequency = <148500000>;
++		hactive = <1920>;
++		hback-porch = <148>;
++		hfront-porch = <88>;
++		hsync-len = <44>;
++		vactive = <1080>;
++		vback-porch = <36>;
++		vfront-porch = <4>;
++		vsync-len = <5>;
++		pixelclk-active = <0>;
++	};
++};

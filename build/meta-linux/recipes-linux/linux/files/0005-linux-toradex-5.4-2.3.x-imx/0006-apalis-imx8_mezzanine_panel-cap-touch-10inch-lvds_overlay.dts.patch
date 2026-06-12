@@ -1,0 +1,101 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/apalis-imx8_mezzanine_panel-cap-touch-10inch-lvds_overlay.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/apalis-imx8_mezzanine_panel-cap-touch-10inch-lvds_overlay.dts	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,98 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2022 Toradex
++ */
++
++/*
++ * Apalis iMX8 driving the Capacitive Touch Display 10.1" LVDS connected to
++ * the Apalis Evaluation board Mezzanine.
++ */
++#include <dt-bindings/gpio/gpio.h>
++
++/dts-v1/;
++/plugin/;
++/ {
++	compatible = "toradex,apalis-imx8", "toradex,apalis-imx8-v1.1";
++};
++
++&ldb1 {
++	status = "okay";
++
++	lvds-channel@0 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		fsl,data-mapping = "spwg";
++		fsl,data-width = <24>;
++		status = "okay";
++
++		port@1 {
++			reg = <1>;
++
++			lvds2_out: endpoint {
++				remote-endpoint = <&panel2_lvds_in>;
++			};
++		};
++	};
++};
++
++&ldb1_phy {
++	status = "okay";
++};
++
++&{/} {
++	panel2_lvds: panel2-lvds {
++		compatible = "panel-lvds";
++		data-mapping = "vesa-24";
++		height-mm = <136>;
++		width-mm = <217>;
++		status = "okay";
++
++		panel-timing {
++			clock-frequency = <68900000 71100000 73400000>;
++			de-active = <1>;
++			hactive = <1280 1280 1280>;
++			hback-porch = <23 60 71>;
++			hfront-porch = <23 60 71>;
++			hsync-len = <15 40 47>;
++			pixelclk-active = <1>; /* positive edge */
++			vactive = <800 800 800>;
++			vback-porch = <5 7 10>;
++			vfront-porch = <5 7 10>;
++			vsync-len = <6 9 12>;
++		};
++
++		port {
++			panel2_lvds_in: endpoint {
++				remote-endpoint = <&lvds2_out>;
++			};
++		};
++	};
++};
++
++/* Enable 10" LVDS backlight LVDS_0_BKL1_ON */
++&lsio_gpio1 {
++	LVDS_0_BKL1_ON {
++		gpio-hog;
++		gpios = <22 GPIO_ACTIVE_HIGH>;
++		line-name = "LVDS_0_BKL1_ON";
++		output-high;
++	};
++};
++
++/*
++ * Put LVDS_0_PWM_BKL1 (GPIO8) low. GPIO8 is shared with gpio-fan.
++ * JP20 should be set to 1-2 (automatic) instead of GPIO8 (2-3).
++ */
++&lsio_gpio3 {
++	PWM_BKL1 {
++		gpio-hog;
++		gpios = <28 GPIO_ACTIVE_HIGH>;
++		line-name = "LVDS_0_PWM_BKL1";
++		output-low;
++	};
++};
++
++&gpio_fan {
++	status = "disabled";
++};

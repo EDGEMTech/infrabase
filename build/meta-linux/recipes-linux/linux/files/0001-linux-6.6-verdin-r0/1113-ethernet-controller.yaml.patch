@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/net/ethernet-controller.yaml	2026-04-08 18:20:04.564870047 +0200
++++ ./Documentation/devicetree/bindings/net/ethernet-controller.yaml	2026-04-08 16:20:59.471705878 +0200
+@@ -101,9 +101,12 @@
+ 
+       # 10GBASE-KR, XFI, SFI
+       - 10gbase-kr
++      - 25gbase-kr
++      - 40gbase-kr4
+       - usxgmii
+       - 10gbase-r
+       - 25gbase-r
++      - 10g-qxgmii
+ 
+   phy-mode:
+     $ref: "#/properties/phy-connection-type"
+@@ -161,6 +164,7 @@
+     enum:
+       - auto
+       - in-band-status
++      - c73
+ 
+   fixed-link:
+     oneOf:

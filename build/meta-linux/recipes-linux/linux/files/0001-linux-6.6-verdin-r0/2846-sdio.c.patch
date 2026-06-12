@@ -1,0 +1,99 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/wireless/marvell/mwifiex/sdio.c	2026-04-08 18:20:08.696985197 +0200
++++ ./drivers/net/wireless/marvell/mwifiex/sdio.c	2026-04-08 16:21:08.331430979 +0200
+@@ -332,6 +332,7 @@
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = false,
+ 	.fw_ready_extra_delay = false,
++	.host_mlme = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8787 = {
+@@ -348,6 +349,7 @@
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = false,
++	.host_mlme = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8797 = {
+@@ -364,6 +366,7 @@
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = false,
++	.host_mlme = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8897 = {
+@@ -380,6 +383,7 @@
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = false,
++	.host_mlme = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8977 = {
+@@ -397,6 +401,7 @@
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = false,
++	.host_mlme = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8978 = {
+@@ -414,6 +419,7 @@
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = true,
++	.host_mlme = true,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8997 = {
+@@ -432,6 +438,7 @@
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = false,
++	.host_mlme = true,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8887 = {
+@@ -448,6 +455,7 @@
+ 	.can_auto_tdls = true,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = false,
++	.host_mlme = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8987 = {
+@@ -465,6 +473,7 @@
+ 	.can_auto_tdls = true,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = false,
++	.host_mlme = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8801 = {
+@@ -481,6 +490,7 @@
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
+ 	.fw_ready_extra_delay = false,
++	.host_mlme = false,
+ };
+ 
+ static struct memory_type_mapping generic_mem_type_map[] = {
+@@ -574,6 +584,7 @@
+ 		card->can_auto_tdls = data->can_auto_tdls;
+ 		card->can_ext_scan = data->can_ext_scan;
+ 		card->fw_ready_extra_delay = data->fw_ready_extra_delay;
++		card->host_mlme = data->host_mlme;
+ 		INIT_WORK(&card->work, mwifiex_sdio_work);
+ 	}
+ 
+@@ -2512,6 +2523,8 @@
+ 		adapter->num_mem_types = ARRAY_SIZE(mem_type_mapping_tbl);
+ 	}
+ 
++	adapter->host_mlme_enabled = card->host_mlme;
++
+ 	return 0;
+ }
+ 

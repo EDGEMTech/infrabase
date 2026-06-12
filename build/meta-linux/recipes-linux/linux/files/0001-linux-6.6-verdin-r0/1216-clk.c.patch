@@ -1,0 +1,35 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/imx/clk.c	2026-04-08 18:20:05.830905332 +0200
++++ ./drivers/clk/imx/clk.c	2026-04-08 16:21:04.573589217 +0200
+@@ -19,6 +19,7 @@
+ 
+ bool mcore_booted;
+ EXPORT_SYMBOL_GPL(mcore_booted);
++bool uart_from_osc;
+ 
+ void imx_unregister_hw_clocks(struct clk_hw *hws[], unsigned int count)
+ {
+@@ -210,6 +211,9 @@
+ 
+ static int __init imx_clk_disable_uart(void)
+ {
++	if (imx_src_is_m4_enabled())
++		return 0;
++
+ 	if (imx_keep_uart_clocks && imx_enabled_uart_clocks) {
+ 		int i;
+ 
+@@ -224,6 +228,14 @@
+ 	return 0;
+ }
+ late_initcall_sync(imx_clk_disable_uart);
++
++static int __init setup_uart_clk(char *uart_rate)
++{
++       uart_from_osc = true;
++       return 1;
++}
++__setup("uart_from_osc", setup_uart_clk);
++
+ #endif
+ 
+ MODULE_LICENSE("GPL v2");

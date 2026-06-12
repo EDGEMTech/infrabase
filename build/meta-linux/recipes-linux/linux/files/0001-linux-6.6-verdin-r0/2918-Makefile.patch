@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/power/reset/Makefile	2026-04-08 18:20:08.994917372 +0200
++++ ./drivers/power/reset/Makefile	2026-04-08 16:21:08.906702779 +0200
+@@ -23,6 +23,7 @@
+ obj-$(CONFIG_POWER_RESET_REGULATOR) += regulator-poweroff.o
+ obj-$(CONFIG_POWER_RESET_RESTART) += restart-poweroff.o
+ obj-$(CONFIG_POWER_RESET_ST) += st-poweroff.o
++obj-$(CONFIG_POWER_RESET_TORADEX_EC) += tdx-ec-poweroff.o
+ obj-$(CONFIG_POWER_RESET_TPS65086) += tps65086-restart.o
+ obj-$(CONFIG_POWER_RESET_VERSATILE) += arm-versatile-reboot.o
+ obj-$(CONFIG_POWER_RESET_VEXPRESS) += vexpress-poweroff.o

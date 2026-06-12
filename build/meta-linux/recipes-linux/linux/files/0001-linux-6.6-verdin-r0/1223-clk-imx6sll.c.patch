@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/imx/clk-imx6sll.c	2026-04-08 18:20:05.826905221 +0200
++++ ./drivers/clk/imx/clk-imx6sll.c	2026-04-08 16:21:04.570444697 +0200
+@@ -350,6 +350,10 @@
+ 	clk_set_parent(hws[IMX6SLL_CLK_PERIPH]->clk, hws[IMX6SLL_CLK_PERIPH_CLK2]->clk);
+ 	clk_set_parent(hws[IMX6SLL_CLK_PERIPH_PRE]->clk, hws[IMX6SLL_CLK_PLL2_BUS]->clk);
+ 	clk_set_parent(hws[IMX6SLL_CLK_PERIPH]->clk, hws[IMX6SLL_CLK_PERIPH_PRE]->clk);
++	/* Configure EPDC clocks */
++	clk_set_rate(hws[IMX6SLL_CLK_PLL3_PFD2]->clk, 320000000);
++	clk_set_parent(hws[IMX6SLL_CLK_EPDC_PRE_SEL]->clk,
++		hws[IMX6SLL_CLK_PLL3_PFD2]->clk);
+ 
+ 	clk_set_rate(hws[IMX6SLL_CLK_AHB]->clk, 132000000);
+ }

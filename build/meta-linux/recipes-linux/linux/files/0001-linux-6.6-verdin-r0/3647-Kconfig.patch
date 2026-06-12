@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/sof/imx/Kconfig	2026-04-08 18:20:10.943325961 +0200
++++ ./sound/soc/sof/imx/Kconfig	2026-04-08 16:21:18.488117344 +0200
+@@ -50,4 +50,11 @@
+ 	  Say Y if you have such a device.
+ 	  If unsure select "N".
+ 
++config SND_SOC_SOF_IMX95
++	tristate "SOF support for i.MX95"
++	help
++	  This adds support for Sound Open Firmware for NXP i.MX95 platforms.
++	  Say Y if you have such a device.
++	  If unsure select "N".
++
+ endif ## SND_SOC_SOF_IMX_TOPLEVEL

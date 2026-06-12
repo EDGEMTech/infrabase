@@ -1,0 +1,43 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/soc/fsl/qbman/bman_portal.c	2026-04-08 18:20:09.275825871 +0200
++++ ./drivers/soc/fsl/qbman/bman_portal.c	2026-04-08 16:21:09.320583060 +0200
+@@ -1,4 +1,5 @@
+ /* Copyright 2008 - 2016 Freescale Semiconductor, Inc.
++ * Copyright 2020 Puresoftware Ltd.
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions are met:
+@@ -29,6 +30,7 @@
+  */
+ 
+ #include "bman_priv.h"
++#include <linux/acpi.h>
+ 
+ static struct bman_portal *affine_bportals[NR_CPUS];
+ static struct cpumask portal_cpus;
+@@ -192,7 +194,8 @@
+ 		}
+ 		bman_done_cleanup();
+ 	}
+-
++	dev_dbg(dev, "Bman : Portal[%d] probed successfully [%d]\n",
++		cpu, __bman_portals_probed);
+ 	return 0;
+ 
+ err_portal_init:
+@@ -213,10 +216,16 @@
+ };
+ MODULE_DEVICE_TABLE(of, bman_portal_ids);
+ 
++static const struct acpi_device_id bman_portal_acpi_ids[] = {
++	{"NXP0023", 0}
++};
++MODULE_DEVICE_TABLE(acpi, bman_portal_acpi_ids);
++
+ static struct platform_driver bman_portal_driver = {
+ 	.driver = {
+ 		.name = KBUILD_MODNAME,
+ 		.of_match_table = bman_portal_ids,
++		.acpi_match_table = ACPI_PTR(bman_portal_acpi_ids),
+ 	},
+ 	.probe = bman_portal_probe,
+ };

@@ -1,0 +1,25 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/hwmon/lm90.c	2026-04-08 18:20:07.339947385 +0200
++++ ./drivers/hwmon/lm90.c	2026-04-08 16:21:06.390429550 +0200
+@@ -1347,6 +1347,12 @@
+ 	return ((val >> (16 - resolution)) * 1000) >> (resolution - 8);
+ }
+ 
++static int adjust_temp_diode(int temp)
++{
++	return (((((temp / 1000) - CONFIG_SERIES_DIODE_RESISTANCE_PARAM + 273) *
++				1008 / 1022) - 273) * 1000 + (temp % 1000));
++}
++
+ static int lm90_get_temp(struct lm90_data *data, int index, int channel)
+ {
+ 	int temp = lm90_temp_from_reg(data->flags, data->temp[index],
+@@ -1356,6 +1362,9 @@
+ 	if (data->kind == lm99 && channel)
+ 		temp += 16000;
+ 
++	if (index == REMOTE_TEMP)
++		temp = adjust_temp_diode(temp);
++
+ 	return temp;
+ }
+ 

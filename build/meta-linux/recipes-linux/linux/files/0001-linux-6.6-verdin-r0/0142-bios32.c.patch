@@ -1,0 +1,65 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/kernel/bios32.c	2026-04-08 18:20:04.931782877 +0200
++++ ./arch/arm/kernel/bios32.c	2026-04-08 16:21:01.148616083 +0200
+@@ -12,11 +12,14 @@
+ #include <linux/slab.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
++#include <linux/of_irq.h>
+ 
+ #include <asm/mach-types.h>
+ #include <asm/mach/map.h>
+ #include <asm/mach/pci.h>
+ 
++#include "../../../drivers/pci/pcie/portdrv.h"
++
+ static int debug_pci;
+ 
+ /*
+@@ -65,6 +68,47 @@
+ }
+ 
+ /*
++ * Check device tree if the service interrupts are there
++ */
++int pcibios_check_service_irqs(struct pci_dev *dev, int *irqs, int mask)
++{
++	int ret, count = 0;
++	struct device_node *np = NULL;
++
++	if (dev->bus->dev.of_node)
++		np = dev->bus->dev.of_node;
++
++	if (np == NULL)
++		return 0;
++
++	if (!IS_ENABLED(CONFIG_OF_IRQ))
++		return 0;
++
++	/* If root port doesn't support MSI/MSI-X/INTx in RC mode,
++	 * request irq for aer
++	 */
++	if (mask & PCIE_PORT_SERVICE_AER) {
++		ret = of_irq_get_byname(np, "aer");
++		if (ret > 0) {
++			irqs[PCIE_PORT_SERVICE_AER_SHIFT] = ret;
++			count++;
++		}
++	}
++
++	if (mask & PCIE_PORT_SERVICE_PME) {
++		ret = of_irq_get_byname(np, "pme");
++		if (ret > 0) {
++			irqs[PCIE_PORT_SERVICE_PME_SHIFT] = ret;
++			count++;
++		}
++	}
++
++	/* TODO: add more service interrupts if there it is in the device tree*/
++
++	return count;
++}
++
++/*
+  * We don't use this to fix the device, but initialisation of it.
+  * It's not the correct use for this, but it works.
+  * Note that the arbiter/ISA bridge appears to be buggy, specifically in

@@ -1,0 +1,38 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mmc/host/sdhci.c	2026-04-08 18:20:07.966964857 +0200
++++ ./drivers/mmc/host/sdhci.c	2026-04-08 16:21:07.246919365 +0200
+@@ -3780,7 +3780,7 @@
+ 		host->ier = 0;
+ 		sdhci_writel(host, 0, SDHCI_INT_ENABLE);
+ 		sdhci_writel(host, 0, SDHCI_SIGNAL_ENABLE);
+-		free_irq(host->irq, host);
++		disable_irq(host->irq);
+ 	}
+ 
+ 	return 0;
+@@ -3791,7 +3791,6 @@
+ int sdhci_resume_host(struct sdhci_host *host)
+ {
+ 	struct mmc_host *mmc = host->mmc;
+-	int ret = 0;
+ 
+ 	if (host->flags & (SDHCI_USE_SDMA | SDHCI_USE_ADMA)) {
+ 		if (host->ops->enable_dma)
+@@ -3813,16 +3812,12 @@
+ 	if (host->irq_wake_enabled) {
+ 		sdhci_disable_irq_wakeups(host);
+ 	} else {
+-		ret = request_threaded_irq(host->irq, sdhci_irq,
+-					   sdhci_thread_irq, IRQF_SHARED,
+-					   mmc_hostname(mmc), host);
+-		if (ret)
+-			return ret;
++		enable_irq(host->irq);
+ 	}
+ 
+ 	sdhci_enable_card_detection(host);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ EXPORT_SYMBOL_GPL(sdhci_resume_host);

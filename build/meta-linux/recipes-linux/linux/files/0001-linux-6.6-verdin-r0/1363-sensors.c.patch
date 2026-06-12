@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/arm_scmi/sensors.c	2026-04-08 18:20:06.037911102 +0200
++++ ./drivers/firmware/arm_scmi/sensors.c	2026-04-08 16:21:04.945768915 +0200
+@@ -644,7 +644,7 @@
+ 	if (PROTOCOL_REV_MAJOR(si->version) >= 0x3 &&
+ 	    SUPPORTS_EXTENDED_NAMES(attrl))
+ 		ph->hops->extended_name_get(ph, SENSOR_NAME_GET, s->id,
+-					    s->name, SCMI_MAX_STR_SIZE);
++					    NULL, s->name, SCMI_MAX_STR_SIZE);
+ 
+ 	if (s->extended_scalar_attrs) {
+ 		s->sensor_power = le32_to_cpu(sdesc->power);

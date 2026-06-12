@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/imx8/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/media/platform/imx8/Kconfig	2026-04-08 16:21:07.005085571 +0200
+@@ -0,0 +1,11 @@
++if VIDEO_MX8_CAPTURE
++menu "IMX8 Camera ISI/MIPI Features support"
++
++config IMX8_MIPI_CSI2_YAV
++	tristate "IMX8 MIPI CSI2 Controller Yet Another Version"
++	default y
++	select V4L2_FWNODE
++
++endmenu
++endif #VIDEO_MX8_CAPTURE
++

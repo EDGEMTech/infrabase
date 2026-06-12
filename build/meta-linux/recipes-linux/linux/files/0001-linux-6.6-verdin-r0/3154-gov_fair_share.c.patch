@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/thermal/gov_fair_share.c	2026-04-08 18:20:09.448800802 +0200
++++ ./drivers/thermal/gov_fair_share.c	2026-04-08 16:21:09.591121703 +0200
+@@ -49,7 +49,7 @@
+ /**
+  * fair_share_throttle - throttles devices associated with the given zone
+  * @tz: thermal_zone_device
+- * @trip_index: trip point index
++ * @trip: trip point
+  *
+  * Throttling Logic: This uses three parameters to calculate the new
+  * throttle state of the cooling devices associated with the given zone.
+@@ -65,9 +65,9 @@
+  *	(Heavily assumes the trip points are in ascending order)
+  * new_state of cooling device = P3 * P2 * P1
+  */
+-static int fair_share_throttle(struct thermal_zone_device *tz, int trip_index)
++static int fair_share_throttle(struct thermal_zone_device *tz,
++			       const struct thermal_trip *trip)
+ {
+-	const struct thermal_trip *trip = &tz->trips[trip_index];
+ 	struct thermal_instance *instance;
+ 	int total_weight = 0;
+ 	int total_instance = 0;

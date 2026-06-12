@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/phy/Makefile	2026-04-08 18:20:08.885157970 +0200
++++ ./drivers/phy/Makefile	2026-04-08 16:21:08.679256022 +0200
+@@ -10,6 +10,8 @@
+ obj-$(CONFIG_PHY_XGENE)			+= phy-xgene.o
+ obj-$(CONFIG_PHY_PISTACHIO_USB)		+= phy-pistachio-usb.o
+ obj-$(CONFIG_USB_LGM_PHY)		+= phy-lgm-usb.o
++obj-$(CONFIG_PHY_MIXEL_LVDS)		+= phy-mixel-lvds.o
++obj-$(CONFIG_PHY_MIXEL_LVDS_COMBO)	+= phy-mixel-lvds-combo.o
+ obj-y					+= allwinner/	\
+ 					   amlogic/	\
+ 					   broadcom/	\
+@@ -35,4 +37,5 @@
+ 					   sunplus/	\
+ 					   tegra/	\
+ 					   ti/		\
+-					   xilinx/
++					   xilinx/	\
++					   inphi/

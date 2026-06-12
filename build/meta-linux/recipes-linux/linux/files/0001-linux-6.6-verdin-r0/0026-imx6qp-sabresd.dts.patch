@@ -1,0 +1,79 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx6qp-sabresd.dts	2026-04-08 18:20:04.856878186 +0200
++++ ./arch/arm/boot/dts/nxp/imx/imx6qp-sabresd.dts	2026-04-08 16:21:00.854549620 +0200
+@@ -54,6 +54,16 @@
+ 	regulator-always-on;
+ };
+ 
++&ov564x {
++	AVDD-supply = <&vgen6_reg>; /* 2.8v */
++	DOVDD-supply = <&sw4_reg>; /* 1.8v */
++};
++
++&ov564x_mipi {
++	AVDD-supply = <&vgen6_reg>; /* 2.8v */
++	DOVDD-supply = <&sw4_reg>; /* 1.8v */
++};
++
+ &pcie {
+ 	status = "okay";
+ };
+@@ -61,3 +71,59 @@
+ &sata {
+ 	status = "okay";
+ };
++
++&pre1 {
++	status = "okay";
++};
++
++&pre2 {
++	status = "okay";
++};
++
++&pre3 {
++	status = "okay";
++};
++
++&pre4 {
++	status = "okay";
++};
++
++&prg1 {
++	memory-region = <&memory>;
++	status = "okay";
++};
++
++&prg2 {
++	memory-region = <&memory>;
++	status = "okay";
++};
++
++&mxcfb1 {
++	prefetch;
++	status = "okay";
++};
++
++&mxcfb2 {
++	prefetch;
++	status = "okay";
++};
++
++&mxcfb3 {
++	prefetch;
++	status = "okay";
++};
++
++&mxcfb4 {
++	prefetch;
++	status = "okay";
++};
++
++&ldb {
++	lvds-channel@0 {
++		crtc = "ipu2-di0";
++	};
++
++	lvds-channel@1 {
++		crtc = "ipu2-di1";
++	};
++};

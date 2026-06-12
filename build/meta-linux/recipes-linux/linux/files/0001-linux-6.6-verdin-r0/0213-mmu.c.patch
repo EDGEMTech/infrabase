@@ -1,0 +1,32 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/mm/mmu.c	2026-04-08 18:20:04.989881893 +0200
++++ ./arch/arm/mm/mmu.c	2026-04-08 16:21:01.891258580 +0200
+@@ -307,6 +307,13 @@
+ #endif
+ 		.domain    = DOMAIN_KERNEL,
+ 	},
++	[MT_MEMORY_RW_NS] = {
++		.prot_pte  = L_PTE_PRESENT | L_PTE_YOUNG | L_PTE_DIRTY |
++			     L_PTE_XN,
++		.prot_l1   = PMD_TYPE_TABLE,
++		.prot_sect = PMD_TYPE_SECT | PMD_SECT_AP_WRITE | PMD_SECT_XN,
++		.domain    = DOMAIN_KERNEL,
++	},
+ 	[MT_ROM] = {
+ 		.prot_sect = PMD_TYPE_SECT,
+ 		.domain    = DOMAIN_KERNEL,
+@@ -657,6 +664,7 @@
+ 	}
+ 	kern_pgprot |= PTE_EXT_AF;
+ 	vecs_pgprot |= PTE_EXT_AF;
++	mem_types[MT_MEMORY_RW_NS].prot_pte |= PTE_EXT_AF | cp->pte;
+ 
+ 	/*
+ 	 * Set PXN for user mappings
+@@ -682,6 +690,7 @@
+ 	mem_types[MT_MEMORY_RWX].prot_pte |= kern_pgprot;
+ 	mem_types[MT_MEMORY_RW].prot_sect |= ecc_mask | cp->pmd;
+ 	mem_types[MT_MEMORY_RW].prot_pte |= kern_pgprot;
++	mem_types[MT_MEMORY_RW_NS].prot_sect |= ecc_mask | cp->pmd;
+ 	mem_types[MT_MEMORY_RO].prot_sect |= ecc_mask | cp->pmd;
+ 	mem_types[MT_MEMORY_RO].prot_pte |= kern_pgprot;
+ 	mem_types[MT_MEMORY_DMA_READY].prot_pte |= kern_pgprot;

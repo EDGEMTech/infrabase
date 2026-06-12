@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mxc/hantro_vc8000e/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/mxc/hantro_vc8000e/Kconfig	2026-04-08 16:21:07.321400442 +0200
+@@ -0,0 +1,15 @@
++#
++# Codec configuration
++#
++
++menu "MXC HANTRO(Video Processing Unit) VC8000E encoder support"
++#	depends on ARCH_FSL_IMX8MP
++	depends on ARCH_MXC
++
++config MXC_HANTRO_VC8000E
++	tristate "Support for MXC HANTRO(Video Processing Unit) VC8000E encoder"
++	default y
++	help
++	  VPU codec device.
++
++endmenu

@@ -1,0 +1,34 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi	2026-04-08 18:20:05.023882841 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi	2026-04-08 16:21:02.077154050 +0200
+@@ -11,3 +11,31 @@
+ &jpegenc {
+ 	compatible = "nxp,imx8qxp-jpgenc";
+ };
++
++&csi1_pxl_lpcg {
++	status = "disabled";
++};
++
++&csi1_core_lpcg {
++	status = "disabled";
++};
++
++&csi1_esc_lpcg {
++	status = "disabled";
++};
++
++&irqsteer_csi1 {
++	status = "disabled";
++};
++
++&i2c_mipi_csi1 {
++	status = "disabled";
++};
++
++&gpio0_mipi_csi1 {
++	status = "disabled";
++};
++
++&mipi_csi_1 {
++	status = "disabled";
++};

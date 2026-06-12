@@ -1,0 +1,30 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/i2c/ds90ub953.c	2026-04-08 18:20:07.684956998 +0200
++++ ./drivers/media/i2c/ds90ub953.c	2026-04-08 16:21:06.903419555 +0200
+@@ -344,11 +344,13 @@
+ 	struct ub953_data *priv = gpiochip_get_data(gc);
+ 	int ret;
+ 
++	/*
++	 * Enable remote deserializer GPIO data on local GPIO by
++	 * default when user set the GPIO as output
++	 */
+ 	ret = regmap_update_bits(priv->regmap, UB953_REG_LOCAL_GPIO_DATA,
+-				 UB953_REG_LOCAL_GPIO_DATA_GPIO_OUT_SRC(offset),
+-				 value ? UB953_REG_LOCAL_GPIO_DATA_GPIO_OUT_SRC(offset) :
+-					 0);
+-
++				 UB953_REG_LOCAL_GPIO_DATA_GPIO_RMTEN(offset),
++				 UB953_REG_LOCAL_GPIO_DATA_GPIO_RMTEN(offset));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -376,7 +378,8 @@
+ 	struct ub953_data *priv = gpiochip_get_data(gc);
+ 
+ 	regmap_update_bits(priv->regmap, UB953_REG_LOCAL_GPIO_DATA,
+-			   UB953_REG_LOCAL_GPIO_DATA_GPIO_OUT_SRC(offset),
++			   UB953_REG_LOCAL_GPIO_DATA_GPIO_OUT_SRC(offset) |
++				   UB953_REG_LOCAL_GPIO_DATA_GPIO_RMTEN(offset),
+ 			   value ? UB953_REG_LOCAL_GPIO_DATA_GPIO_OUT_SRC(offset) :
+ 				   0);
+ }

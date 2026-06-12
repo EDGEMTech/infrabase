@@ -1,0 +1,41 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/soc/fsl/dpio/dpio-driver.c	2026-04-08 18:20:09.275100839 +0200
++++ ./drivers/soc/fsl/dpio/dpio-driver.c	2026-04-08 16:21:09.318404888 +0200
+@@ -26,6 +26,11 @@
+ MODULE_AUTHOR("Freescale Semiconductor, Inc");
+ MODULE_DESCRIPTION("DPIO Driver");
+ 
++#define PROT_NORMAL_NS		(PTE_TYPE_PAGE | PTE_AF | PTE_PXN | PTE_UXN | PTE_DIRTY | PTE_WRITE | PTE_ATTRINDX(MT_NORMAL))
++
++#define ioremap_cache_ns(addr, size)	ioremap_prot((addr), (size), PROT_NORMAL_NS)
++
++
+ struct dpio_priv {
+ 	struct dpaa2_io *io;
+ };
+@@ -197,13 +202,11 @@
+ 	if (dpio_dev->obj_desc.region_count < 3) {
+ 		/* No support for DDR backed portals, use classic mapping */
+ 		/*
+-		 * Set the CENA regs to be the cache inhibited area of the
+-		 * portal to avoid coherency issues if a user migrates to
+-		 * another core.
++		 * Set the CENA regs to be the cache enabled area of the portal to
++		 * achieve the best performance.
+ 		 */
+-		desc.regs_cena = devm_memremap(dev, dpio_dev->regions[1].start,
+-					resource_size(&dpio_dev->regions[1]),
+-					MEMREMAP_WC);
++		desc.regs_cena = ioremap_cache_ns(dpio_dev->regions[0].start,
++						resource_size(&dpio_dev->regions[0]));
+ 	} else {
+ 		desc.regs_cena = devm_memremap(dev, dpio_dev->regions[2].start,
+ 					resource_size(&dpio_dev->regions[2]),
+@@ -211,7 +214,7 @@
+ 	}
+ 
+ 	if (IS_ERR(desc.regs_cena)) {
+-		dev_err(dev, "devm_memremap failed\n");
++		dev_err(dev, "ioremap_cache_ns failed\n");
+ 		err = PTR_ERR(desc.regs_cena);
+ 		goto err_allocate_irqs;
+ 	}

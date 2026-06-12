@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/platforms/85xx/Makefile	2026-04-08 18:20:05.363776170 +0200
++++ ./arch/powerpc/platforms/85xx/Makefile	2026-04-08 16:21:03.437431986 +0200
+@@ -6,6 +6,8 @@
+ ifneq ($(CONFIG_FSL_CORENET_RCPM),y)
+ obj-$(CONFIG_SMP) += mpc85xx_pm_ops.o
+ endif
++obj-$(CONFIG_SUSPEND)		  += sleep.o
++obj-$(CONFIG_FSL_QORIQ_PM)	  += qoriq_pm.o deepsleep.o
+ 
+ obj-y += common.o
+ 

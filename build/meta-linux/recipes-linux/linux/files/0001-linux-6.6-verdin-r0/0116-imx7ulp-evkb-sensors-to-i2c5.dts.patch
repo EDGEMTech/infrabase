@@ -1,0 +1,24 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx7ulp-evkb-sensors-to-i2c5.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/boot/dts/nxp/imx/imx7ulp-evkb-sensors-to-i2c5.dts	2026-04-08 16:21:00.910520987 +0200
+@@ -0,0 +1,21 @@
++
++#include "imx7ulp-evkb.dts"
++
++&lpi2c5 {
++
++	fxas2100x@20 {
++		compatible = "nxp,fxas21002c";
++		reg = <0x20>;
++	};
++
++	fxos8700@1e {
++		compatible = "nxp,fxos8700";
++		reg = <0x1e>;
++	};
++
++	mpl3115@60 {
++		compatible = "fsl,mpl3115";
++		reg = <0x60>;
++	};
++
++};

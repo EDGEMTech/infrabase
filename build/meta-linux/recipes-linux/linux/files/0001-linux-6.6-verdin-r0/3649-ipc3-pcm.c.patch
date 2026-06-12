@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/sof/ipc3-pcm.c	2026-04-08 18:20:10.948047910 +0200
++++ ./sound/soc/sof/ipc3-pcm.c	2026-04-08 16:21:18.490542003 +0200
+@@ -384,6 +384,17 @@
+ 		dev_dbg(component->dev, "AMD_DMIC channels_min: %d channels_max: %d\n",
+ 			channels->min, channels->max);
+ 		break;
++	case SOF_DAI_IMX_MICFIL:
++		rate->min = private->dai_config->micfil.pdm_rate;
++		rate->max = private->dai_config->micfil.pdm_rate;
++		channels->min = private->dai_config->micfil.pdm_ch;
++		channels->max = private->dai_config->micfil.pdm_ch;
++
++		dev_dbg(component->dev,
++			"MICFIL PDM rate_min: %d rate_max: %d\n", rate->min, rate->max);
++		dev_dbg(component->dev, "MICFIL PDM channels_min: %d channels_max: %d\n",
++			channels->min, channels->max);
++		break;
+ 	default:
+ 		dev_err(component->dev, "Invalid DAI type %d\n", private->dai_config->type);
+ 		break;

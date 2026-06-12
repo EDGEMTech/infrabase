@@ -1,0 +1,35 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/freescale/fman/fman_tgec.c	2026-04-08 18:20:08.155970123 +0200
++++ ./drivers/net/ethernet/freescale/fman/fman_tgec.c	2026-04-08 16:21:07.524813286 +0200
+@@ -381,15 +381,6 @@
+ 	tgec->unicast_addr_hash = NULL;
+ }
+ 
+-static int tgec_enable(struct fman_mac *tgec)
+-{
+-	return 0;
+-}
+-
+-static void tgec_disable(struct fman_mac *tgec)
+-{
+-}
+-
+ static int tgec_set_promiscuous(struct fman_mac *tgec, bool new_val)
+ {
+ 	struct tgec_regs __iomem *regs = tgec->regs;
+@@ -757,7 +748,6 @@
+ }
+ 
+ int tgec_initialization(struct mac_device *mac_dev,
+-			struct device_node *mac_node,
+ 			struct fman_mac_params *params)
+ {
+ 	int err;
+@@ -772,8 +762,6 @@
+ 	mac_dev->set_allmulti		= tgec_set_allmulti;
+ 	mac_dev->set_tstamp		= tgec_set_tstamp;
+ 	mac_dev->set_multi		= fman_set_multi;
+-	mac_dev->enable			= tgec_enable;
+-	mac_dev->disable		= tgec_disable;
+ 
+ 	mac_dev->fman_mac = tgec_config(mac_dev, params);
+ 	if (!mac_dev->fman_mac) {

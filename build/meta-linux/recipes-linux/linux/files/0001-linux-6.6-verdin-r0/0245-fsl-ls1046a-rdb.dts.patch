@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts	2026-04-08 18:20:05.013194400 +0200
++++ ./arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts	2026-04-08 16:21:01.977780099 +0200
+@@ -104,7 +104,7 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		spi-max-frequency = <50000000>;
+-		spi-rx-bus-width = <4>;
++		spi-rx-bus-width = <1>;
+ 		spi-tx-bus-width = <1>;
+ 		reg = <0>;
+ 	};
+@@ -114,7 +114,7 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		spi-max-frequency = <50000000>;
+-		spi-rx-bus-width = <4>;
++		spi-rx-bus-width = <1>;
+ 		spi-tx-bus-width = <1>;
+ 		reg = <1>;
+ 	};

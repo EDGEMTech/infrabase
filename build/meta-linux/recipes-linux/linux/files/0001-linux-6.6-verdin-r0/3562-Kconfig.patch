@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/net/Kconfig	2026-04-08 18:20:10.421033228 +0200
++++ ./net/Kconfig	2026-04-08 16:21:17.617043015 +0200
+@@ -255,6 +255,7 @@
+ source "net/mac802154/Kconfig"
+ source "net/sched/Kconfig"
+ source "net/dcb/Kconfig"
++source "net/tsn/Kconfig"
+ source "net/dns_resolver/Kconfig"
+ source "net/batman-adv/Kconfig"
+ source "net/openvswitch/Kconfig"

@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/dt-bindings/net/nxp-netc.h	1970-01-01 01:00:00.000000000 +0100
++++ ./include/dt-bindings/net/nxp-netc.h	2026-04-08 16:21:11.225961846 +0200
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0-only OR MIT */
++/*
++ * Copyright 2024 NXP
++ */
++
++#ifndef _DT_BINDINGS_NXP_NETC_H
++#define _DT_BINDINGS_NXP_NETC_H
++
++#define  NXP_NETC_MII		0x0
++#define  NXP_NETC_RMII		0x1
++#define  NXP_NETC_RGMII		0x2
++#define  NXP_NETC_SERIAL	0x3
++
++#define  NXP_NETC_RMII_CLK_INPUT	0x0
++#define  NXP_NETC_RMII_CLK_OUTPUT	0x1
++
++#endif

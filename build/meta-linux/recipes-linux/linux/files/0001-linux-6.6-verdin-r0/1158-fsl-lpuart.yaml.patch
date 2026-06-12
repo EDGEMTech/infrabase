@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/serial/fsl-lpuart.yaml	2026-04-08 18:20:04.599044002 +0200
++++ ./Documentation/devicetree/bindings/serial/fsl-lpuart.yaml	2026-04-08 16:20:59.526081105 +0200
+@@ -30,6 +30,7 @@
+       - items:
+           - enum:
+               - fsl,imx93-lpuart
++              - fsl,imx95-lpuart
+           - const: fsl,imx8ulp-lpuart
+           - const: fsl,imx7ulp-lpuart
+       - items:

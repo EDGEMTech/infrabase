@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/v4l2-core/v4l2-mem2mem.c	2026-04-08 18:20:07.884962572 +0200
++++ ./drivers/media/v4l2-core/v4l2-mem2mem.c	2026-04-08 16:21:07.153240040 +0200
+@@ -301,9 +301,12 @@
+ 
+ 	dprintk("Trying to schedule a job for m2m_ctx: %p\n", m2m_ctx);
+ 
+-	if (!m2m_ctx->out_q_ctx.q.streaming
+-	    || !m2m_ctx->cap_q_ctx.q.streaming) {
+-		dprintk("Streaming needs to be on for both queues\n");
++	if (!m2m_ctx->out_q_ctx.q.streaming ||
++	    (!m2m_ctx->cap_q_ctx.q.streaming && !m2m_ctx->ignore_cap_streaming)) {
++		if (!m2m_ctx->ignore_cap_streaming)
++			dprintk("Streaming needs to be on for both queues\n");
++		else
++			dprintk("Streaming needs to be on for the OUTPUT queue\n");
+ 		return;
+ 	}
+ 

@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pci/controller/Makefile	2026-04-08 18:20:08.850018891 +0200
++++ ./drivers/pci/controller/Makefile	2026-04-08 16:21:08.627008260 +0200
+@@ -39,6 +39,7 @@
+ obj-$(CONFIG_PCIE_HISI_ERR) += pcie-hisi-error.o
+ obj-$(CONFIG_PCIE_APPLE) += pcie-apple.o
+ obj-$(CONFIG_PCIE_MT7621) += pcie-mt7621.o
++obj-$(CONFIG_PCI_NXP_RPMSG) += pci-nxp-rpmsg.o
+ 
+ # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
+ obj-y				+= dwc/

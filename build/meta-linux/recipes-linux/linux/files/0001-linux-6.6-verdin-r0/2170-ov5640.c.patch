@@ -1,0 +1,231 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/i2c/ov5640.c	2026-04-08 18:20:07.693957249 +0200
++++ ./drivers/media/i2c/ov5640.c	2026-04-08 16:21:06.923848285 +0200
+@@ -179,7 +179,7 @@
+ };
+ 
+ /* Link freq for default mode: UYVY 16 bpp, 2 data lanes. */
+-#define OV5640_DEFAULT_LINK_FREQ	13
++#define OV5640_DEFAULT_LINK_FREQ	19
+ 
+ enum ov5640_format_mux {
+ 	OV5640_FMT_MUX_YUV422 = 0,
+@@ -618,10 +618,12 @@
+ 	{0x583b, 0x28, 0, 0}, {0x583c, 0x42, 0, 0}, {0x583d, 0xce, 0, 0},
+ 	{0x5025, 0x00, 0, 0}, {0x3a0f, 0x30, 0, 0}, {0x3a10, 0x28, 0, 0},
+ 	{0x3a1b, 0x30, 0, 0}, {0x3a1e, 0x26, 0, 0}, {0x3a11, 0x60, 0, 0},
+-	{0x3a1f, 0x14, 0, 0}, {0x3008, 0x02, 0, 0}, {0x3c00, 0x04, 0, 300},
++	{0x3a1f, 0x14, 0, 0}, {0x3008, 0x42, 0, 0}, {0x3c00, 0x04, 0, 300},
++	{0x302c, 0xc2, 0, 0}
+ };
+ 
+ static const struct reg_value ov5640_setting_low_res[] = {
++	{0x3008, 0x42, 0, 0},
+ 	{0x3c07, 0x08, 0, 0},
+ 	{0x3c09, 0x1c, 0, 0}, {0x3c0a, 0x9c, 0, 0}, {0x3c0b, 0x40, 0, 0},
+ 	{0x3814, 0x31, 0, 0},
+@@ -631,12 +633,13 @@
+ 	{0x3a03, 0xd8, 0, 0}, {0x3a08, 0x01, 0, 0}, {0x3a09, 0x27, 0, 0},
+ 	{0x3a0a, 0x00, 0, 0}, {0x3a0b, 0xf6, 0, 0}, {0x3a0e, 0x03, 0, 0},
+ 	{0x3a0d, 0x04, 0, 0}, {0x3a14, 0x03, 0, 0}, {0x3a15, 0xd8, 0, 0},
+-	{0x4001, 0x02, 0, 0}, {0x4004, 0x02, 0, 0},
+-	{0x4407, 0x04, 0, 0}, {0x460b, 0x35, 0, 0}, {0x460c, 0x22, 0, 0},
+-	{0x3824, 0x02, 0, 0}, {0x5001, 0xa3, 0, 0},
++	{0x4001, 0x02, 0, 0}, {0x4004, 0x02, 0, 0}, {0x3824, 0x02, 0, 0},
++	{0x4407, 0x04, 0, 0}, {0x5001, 0xa3, 0, 0},
++	{0x3008, 0x02, 0, 15},
+ };
+ 
+ static const struct reg_value ov5640_setting_720P_1280_720[] = {
++	{0x3008, 0x42, 0, 0},
+ 	{0x3c07, 0x07, 0, 0},
+ 	{0x3c09, 0x1c, 0, 0}, {0x3c0a, 0x9c, 0, 0}, {0x3c0b, 0x40, 0, 0},
+ 	{0x3814, 0x31, 0, 0},
+@@ -649,9 +652,11 @@
+ 	{0x4001, 0x02, 0, 0}, {0x4004, 0x02, 0, 0},
+ 	{0x4407, 0x04, 0, 0}, {0x460b, 0x37, 0, 0}, {0x460c, 0x20, 0, 0},
+ 	{0x3824, 0x04, 0, 0}, {0x5001, 0x83, 0, 0},
++	{0x3008, 0x02, 0, 15},
+ };
+ 
+ static const struct reg_value ov5640_setting_1080P_1920_1080[] = {
++	{0x3008, 0x42, 0, 0},
+ 	{0x3c07, 0x08, 0, 0},
+ 	{0x3c09, 0x1c, 0, 0}, {0x3c0a, 0x9c, 0, 0}, {0x3c0b, 0x40, 0, 0},
+ 	{0x3814, 0x11, 0, 0},
+@@ -671,11 +676,12 @@
+ 	{0x3a09, 0x50, 0, 0}, {0x3a0a, 0x01, 0, 0}, {0x3a0b, 0x18, 0, 0},
+ 	{0x3a0e, 0x03, 0, 0}, {0x3a0d, 0x04, 0, 0}, {0x3a14, 0x04, 0, 0},
+ 	{0x3a15, 0x60, 0, 0}, {0x4407, 0x04, 0, 0},
+-	{0x460b, 0x37, 0, 0}, {0x460c, 0x20, 0, 0}, {0x3824, 0x04, 0, 0},
+-	{0x4005, 0x1a, 0, 0},
++	{0x460b, 0x37, 0, 0}, {0x460c, 0x20, 0, 0}, {0x3824, 0x02, 0, 0},
++	{0x4005, 0x1a, 0, 0}, {0x3008, 0x02, 0, 15},
+ };
+ 
+ static const struct reg_value ov5640_setting_QSXGA_2592_1944[] = {
++	{0x3008, 0x42, 0, 0},
+ 	{0x3c07, 0x08, 0, 0},
+ 	{0x3c09, 0x1c, 0, 0}, {0x3c0a, 0x9c, 0, 0}, {0x3c0b, 0x40, 0, 0},
+ 	{0x3814, 0x11, 0, 0},
+@@ -686,8 +692,9 @@
+ 	{0x3a0a, 0x00, 0, 0}, {0x3a0b, 0xf6, 0, 0}, {0x3a0e, 0x03, 0, 0},
+ 	{0x3a0d, 0x04, 0, 0}, {0x3a14, 0x03, 0, 0}, {0x3a15, 0xd8, 0, 0},
+ 	{0x4001, 0x02, 0, 0}, {0x4004, 0x06, 0, 0},
+-	{0x4407, 0x04, 0, 0}, {0x460b, 0x35, 0, 0}, {0x460c, 0x22, 0, 0},
++	{0x4407, 0x04, 0, 0}, {0x460b, 0x35, 0, 0}, {0x460c, 0x20, 0, 0},
+ 	{0x3824, 0x02, 0, 0}, {0x5001, 0x83, 0, 70},
++	{0x3008, 0x02, 0, 20},
+ };
+ 
+ static const struct ov5640_mode_info ov5640_mode_data[OV5640_NUM_MODES] = {
+@@ -869,7 +876,7 @@
+ 		},
+ 		.reg_data	= ov5640_setting_low_res,
+ 		.reg_data_size	= ARRAY_SIZE(ov5640_setting_low_res),
+-		.max_fps	= OV5640_60_FPS,
++		.max_fps	= OV5640_30_FPS,
+ 		.def_fps	= OV5640_30_FPS
+ 	}, {
+ 		/* 720x480 */
+@@ -1851,8 +1858,13 @@
+ 	if (ret)
+ 		return ret;
+ 
+-	return ov5640_write_reg(sensor, OV5640_REG_FRAME_CTRL01,
++	ret = ov5640_write_reg(sensor, OV5640_REG_FRAME_CTRL01,
+ 				on ? 0x00 : 0x0f);
++	if (ret)
++		return ret;
++
++	return ov5640_write_reg(sensor, OV5640_REG_SYS_CTRL0,
++				on ? 0x02 : 0x42);
+ }
+ 
+ static int ov5640_get_sysclk(struct ov5640_dev *sensor)
+@@ -2468,13 +2480,6 @@
+ 				 OV5640_REG_SYS_CTRL0_SW_RST);
+ 	}
+ 	usleep_range(20000, 25000);	/* t4 */
+-
+-	/*
+-	 * software standby: allows registers programming;
+-	 * exit at restore_mode() for CSI, s_stream(1) for DVP
+-	 */
+-	ov5640_write_reg(sensor, OV5640_REG_SYS_CTRL0,
+-			 OV5640_REG_SYS_CTRL0_SW_PWDN);
+ }
+ 
+ static int ov5640_set_power_on(struct ov5640_dev *sensor)
+@@ -2803,10 +2808,10 @@
+ 	else
+ 		fmt = &sensor->fmt;
+ 
++	fmt->reserved[1] = (sensor->current_fr == OV5640_30_FPS) ? 30 : 15;
+ 	format->format = *fmt;
+ 
+ 	mutex_unlock(&sensor->lock);
+-
+ 	return 0;
+ }
+ 
+@@ -2934,6 +2939,7 @@
+ 				 hblank, hblank, 1, hblank);
+ 
+ 	vblank = timings->vblank_def;
++
+ 	__v4l2_ctrl_vblank_update(sensor, vblank);
+ 
+ 	exposure_max = timings->crop.height + vblank - 4;
+@@ -3696,6 +3702,7 @@
+ static int ov5640_s_stream(struct v4l2_subdev *sd, int enable)
+ {
+ 	struct ov5640_dev *sensor = to_ov5640_dev(sd);
++	int delay;
+ 	int ret = 0;
+ 
+ 	if (enable) {
+@@ -3733,6 +3740,10 @@
+ 
+ 		if (!ret)
+ 			sensor->streaming = enable;
++
++		/* wait camera stable */
++		delay = (enable) ? 100 : 0;
++		msleep(delay);
+ 	}
+ 
+ out:
+@@ -3765,10 +3776,27 @@
+ 	return 0;
+ }
+ 
++static long ov5640_s_ioctl(struct v4l2_subdev *sd, unsigned int cmd, void *arg)
++{
++	struct ov5640_dev *sensor = to_ov5640_dev(sd);
++	int ret = -ENOIOCTLCMD;
++
++	switch (cmd) {
++	case V4L2_CID_TEST_PATTERN:
++		ret = v4l2_ctrl_s_ctrl(sensor->ctrls.test_pattern, *(s32 *)arg);
++		break;
++	default:
++		break;
++	}
++
++	return ret;
++}
++
+ static const struct v4l2_subdev_core_ops ov5640_core_ops = {
+ 	.log_status = v4l2_ctrl_subdev_log_status,
+ 	.subscribe_event = v4l2_ctrl_subdev_subscribe_event,
+ 	.unsubscribe_event = v4l2_event_subdev_unsubscribe,
++	.ioctl = ov5640_s_ioctl,
+ };
+ 
+ static const struct v4l2_subdev_video_ops ov5640_video_ops = {
+@@ -3793,6 +3821,17 @@
+ 	.pad = &ov5640_pad_ops,
+ };
+ 
++static int ov5640_link_setup(struct media_entity *entity,
++			   const struct media_pad *local,
++			   const struct media_pad *remote, u32 flags)
++{
++	return 0;
++}
++
++static const struct media_entity_operations ov5640_sd_media_ops = {
++	.link_setup = ov5640_link_setup,
++};
++
+ static int ov5640_get_regulators(struct ov5640_dev *sensor)
+ {
+ 	int i;
+@@ -3911,6 +3950,7 @@
+ 	sensor->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE |
+ 			    V4L2_SUBDEV_FL_HAS_EVENTS;
+ 	sensor->pad.flags = MEDIA_PAD_FL_SOURCE;
++	sensor->sd.entity.ops = &ov5640_sd_media_ops;
+ 	sensor->sd.entity.function = MEDIA_ENT_F_CAM_SENSOR;
+ 	ret = media_entity_pads_init(&sensor->sd.entity, 1, &sensor->pad);
+ 	if (ret)
+@@ -3929,7 +3969,7 @@
+ 	ret = ov5640_sensor_resume(dev);
+ 	if (ret) {
+ 		dev_err(dev, "failed to power on\n");
+-		goto free_ctrls;
++		goto entity_cleanup;
+ 	}
+ 
+ 	pm_runtime_set_active(dev);
+@@ -3954,9 +3994,8 @@
+ err_pm_runtime:
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+-	ov5640_sensor_suspend(dev);
+-free_ctrls:
+ 	v4l2_ctrl_handler_free(&sensor->ctrls.handler);
++	ov5640_sensor_suspend(dev);
+ entity_cleanup:
+ 	media_entity_cleanup(&sensor->sd.entity);
+ 	mutex_destroy(&sensor->lock);

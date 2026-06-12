@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/dt-bindings/i3c/i3c.h	1970-01-01 01:00:00.000000000 +0100
++++ ./include/dt-bindings/i3c/i3c.h	2026-04-08 16:21:11.206997941 +0200
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-only OR MIT */
++/*
++ * Copyright 2024 NXP
++ */
++
++#ifndef _DT_BINDINGS_I3C_I3C_H
++#define _DT_BINDINGS_I3C_I3C_H
++
++#define I2C_FM      (1 << 4)
++#define I2C_FM_PLUS (0 << 4)
++
++#define I2C_FILTER  (0 << 5)
++#define I2C_NO_FILTER_HIGH_FREQUENCY    (1 << 5)
++#define I2C_NO_FILTER_LOW_FREQUENCY     (2 << 5)
++
++#endif

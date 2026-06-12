@@ -1,0 +1,177 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/fsl/fsl_micfil.c	2026-04-08 18:20:10.899046544 +0200
++++ ./sound/soc/fsl/fsl_micfil.c	2026-04-08 16:21:18.381423267 +0200
+@@ -68,6 +68,7 @@
+ 	int vad_detected;
+ 	struct fsl_micfil_verid verid;
+ 	struct fsl_micfil_param param;
++	bool mclk_flag;  /* mclk enable flag */
+ };
+ 
+ struct fsl_micfil_soc_data {
+@@ -335,21 +336,21 @@
+ 
+ static const struct snd_kcontrol_new fsl_micfil_volume_controls[] = {
+ 	SOC_SINGLE_TLV("CH0 Volume", REG_MICFIL_OUT_CTRL,
+-		       MICFIL_OUTGAIN_CHX_SHIFT(0), 0xF, 0, gain_tlv),
++		       MICFIL_OUTGAIN_CHX_SHIFT(0), 0x7, 0, gain_tlv),
+ 	SOC_SINGLE_TLV("CH1 Volume", REG_MICFIL_OUT_CTRL,
+-		       MICFIL_OUTGAIN_CHX_SHIFT(1), 0xF, 0, gain_tlv),
++		       MICFIL_OUTGAIN_CHX_SHIFT(1), 0x7, 0, gain_tlv),
+ 	SOC_SINGLE_TLV("CH2 Volume", REG_MICFIL_OUT_CTRL,
+-		       MICFIL_OUTGAIN_CHX_SHIFT(2), 0xF, 0, gain_tlv),
++		       MICFIL_OUTGAIN_CHX_SHIFT(2), 0x7, 0, gain_tlv),
+ 	SOC_SINGLE_TLV("CH3 Volume", REG_MICFIL_OUT_CTRL,
+-		       MICFIL_OUTGAIN_CHX_SHIFT(3), 0xF, 0, gain_tlv),
++		       MICFIL_OUTGAIN_CHX_SHIFT(3), 0x7, 0, gain_tlv),
+ 	SOC_SINGLE_TLV("CH4 Volume", REG_MICFIL_OUT_CTRL,
+-		       MICFIL_OUTGAIN_CHX_SHIFT(4), 0xF, 0, gain_tlv),
++		       MICFIL_OUTGAIN_CHX_SHIFT(4), 0x7, 0, gain_tlv),
+ 	SOC_SINGLE_TLV("CH5 Volume", REG_MICFIL_OUT_CTRL,
+-		       MICFIL_OUTGAIN_CHX_SHIFT(5), 0xF, 0, gain_tlv),
++		       MICFIL_OUTGAIN_CHX_SHIFT(5), 0x7, 0, gain_tlv),
+ 	SOC_SINGLE_TLV("CH6 Volume", REG_MICFIL_OUT_CTRL,
+-		       MICFIL_OUTGAIN_CHX_SHIFT(6), 0xF, 0, gain_tlv),
++		       MICFIL_OUTGAIN_CHX_SHIFT(6), 0x7, 0, gain_tlv),
+ 	SOC_SINGLE_TLV("CH7 Volume", REG_MICFIL_OUT_CTRL,
+-		       MICFIL_OUTGAIN_CHX_SHIFT(7), 0xF, 0, gain_tlv),
++		       MICFIL_OUTGAIN_CHX_SHIFT(7), 0x7, 0, gain_tlv),
+ };
+ 
+ static const struct snd_kcontrol_new fsl_micfil_volume_sx_controls[] = {
+@@ -710,7 +711,7 @@
+ 
+ 		/* Enable the module */
+ 		ret = regmap_set_bits(micfil->regmap, REG_MICFIL_CTRL1,
+-				      MICFIL_CTRL1_PDMIEN);
++				      MICFIL_CTRL1_PDMIEN | MICFIL_CTRL1_ERREN);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -726,7 +727,7 @@
+ 
+ 		/* Disable the module */
+ 		ret = regmap_clear_bits(micfil->regmap, REG_MICFIL_CTRL1,
+-					MICFIL_CTRL1_PDMIEN);
++					MICFIL_CTRL1_PDMIEN | MICFIL_CTRL1_ERREN);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -753,7 +754,6 @@
+ 	clk = micfil->mclk;
+ 
+ 	/* Disable clock first, for it was enabled by pm_runtime */
+-	clk_disable_unprepare(clk);
+ 	fsl_asoc_reparent_pll_clocks(dev, clk, micfil->pll8k_clk,
+ 				     micfil->pll11k_clk, ratio);
+ 	ret = clk_prepare_enable(clk);
+@@ -790,6 +790,8 @@
+ 	if (ret)
+ 		return ret;
+ 
++	micfil->mclk_flag = true;
++
+ 	ret = clk_set_rate(micfil->mclk, rate * clk_div * osr * 8);
+ 	if (ret)
+ 		return ret;
+@@ -824,6 +826,17 @@
+ 	return 0;
+ }
+ 
++static int fsl_micfil_hw_free(struct snd_pcm_substream *substream,
++			      struct snd_soc_dai *dai)
++{
++	struct fsl_micfil *micfil = snd_soc_dai_get_drvdata(dai);
++
++	clk_disable_unprepare(micfil->mclk);
++	micfil->mclk_flag = false;
++
++	return 0;
++}
++
+ static int fsl_micfil_dai_probe(struct snd_soc_dai *cpu_dai)
+ {
+ 	struct fsl_micfil *micfil = dev_get_drvdata(cpu_dai->dev);
+@@ -880,6 +893,7 @@
+ 	.startup	= fsl_micfil_startup,
+ 	.trigger	= fsl_micfil_trigger,
+ 	.hw_params	= fsl_micfil_hw_params,
++	.hw_free	= fsl_micfil_hw_free,
+ };
+ 
+ static struct snd_soc_dai_driver fsl_micfil_dai = {
+@@ -906,7 +920,7 @@
+ 	{REG_MICFIL_CTRL1,		0x00000000},
+ 	{REG_MICFIL_CTRL2,		0x00000000},
+ 	{REG_MICFIL_STAT,		0x00000000},
+-	{REG_MICFIL_FIFO_CTRL,		0x00000007},
++	{REG_MICFIL_FIFO_CTRL,		0x0000001F},
+ 	{REG_MICFIL_FIFO_STAT,		0x00000000},
+ 	{REG_MICFIL_DATACH0,		0x00000000},
+ 	{REG_MICFIL_DATACH1,		0x00000000},
+@@ -991,6 +1005,7 @@
+ {
+ 	switch (reg) {
+ 	case REG_MICFIL_STAT:
++	case REG_MICFIL_FIFO_STAT:
+ 	case REG_MICFIL_DATACH0:
+ 	case REG_MICFIL_DATACH1:
+ 	case REG_MICFIL_DATACH2:
+@@ -999,6 +1014,7 @@
+ 	case REG_MICFIL_DATACH5:
+ 	case REG_MICFIL_DATACH6:
+ 	case REG_MICFIL_DATACH7:
++	case REG_MICFIL_OUT_STAT:
+ 	case REG_MICFIL_VERID:
+ 	case REG_MICFIL_PARAM:
+ 	case REG_MICFIL_VAD0_STAT:
+@@ -1075,6 +1091,8 @@
+ {
+ 	struct fsl_micfil *micfil = (struct fsl_micfil *)devid;
+ 	struct platform_device *pdev = micfil->pdev;
++	u32 fifo_stat_reg;
++	u32 out_stat_reg;
+ 	u32 stat_reg;
+ 
+ 	regmap_read(micfil->regmap, REG_MICFIL_STAT, &stat_reg);
+@@ -1091,6 +1109,14 @@
+ 				  MICFIL_STAT_LOWFREQF, MICFIL_STAT_LOWFREQF);
+ 	}
+ 
++	regmap_read(micfil->regmap, REG_MICFIL_FIFO_STAT, &fifo_stat_reg);
++	regmap_write_bits(micfil->regmap, REG_MICFIL_FIFO_STAT,
++			  fifo_stat_reg, fifo_stat_reg);
++
++	regmap_read(micfil->regmap, REG_MICFIL_OUT_STAT, &out_stat_reg);
++	regmap_write_bits(micfil->regmap, REG_MICFIL_OUT_STAT,
++			  out_stat_reg, out_stat_reg);
++
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -1350,7 +1376,8 @@
+ 
+ 	regcache_cache_only(micfil->regmap, true);
+ 
+-	clk_disable_unprepare(micfil->mclk);
++	if (micfil->mclk_flag)
++		clk_disable_unprepare(micfil->mclk);
+ 	clk_disable_unprepare(micfil->busclk);
+ 
+ 	return 0;
+@@ -1365,10 +1392,12 @@
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = clk_prepare_enable(micfil->mclk);
+-	if (ret < 0) {
+-		clk_disable_unprepare(micfil->busclk);
+-		return ret;
++	if (micfil->mclk_flag) {
++		ret = clk_prepare_enable(micfil->mclk);
++		if (ret < 0) {
++			clk_disable_unprepare(micfil->busclk);
++			return ret;
++		}
+ 	}
+ 
+ 	regcache_cache_only(micfil->regmap, false);

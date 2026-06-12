@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/configs/sdk_dpaa.config	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/powerpc/configs/sdk_dpaa.config	2026-04-08 16:21:03.239129079 +0200
+@@ -0,0 +1,7 @@
++CONFIG_STAGING=y
++CONFIG_FSL_SDK_BMAN=y
++CONFIG_FSL_SDK_QMAN=y
++CONFIG_FSL_SDK_DPA=y
++CONFIG_FSL_SDK_FMAN=y
++CONFIG_FSL_SDK_DPAA_ETH=y
++CONFIG_CORTINA_PHY=y

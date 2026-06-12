@@ -1,0 +1,259 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi	2026-04-08 18:20:05.014882590 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi	2026-04-08 16:21:01.991414205 +0200
+@@ -22,30 +22,154 @@
+ 	status = "okay";
+ };
+ 
+-/* TODO: Audio Mixer */
++&amix {
++	status = "okay";
++};
+ 
+-/* TODO: Asynchronous Sample Rate Converter (ASRC) */
++&asrc0 {
++	status = "okay";
++};
+ 
+-/* TODO: Display Controller */
++&dc0_dpr1_channel1 {
++	status = "okay";
++};
+ 
+-/* TODO: DPU */
++&dc0_dpr1_channel2 {
++	status = "okay";
++};
+ 
+-/* Apalis ETH1 */
+-&fec1 {
++&dc0_dpr1_channel3 {
++	status = "okay";
++};
++
++&dc0_dpr2_channel1 {
++	status = "okay";
++};
++
++&dc0_dpr2_channel2 {
++	status = "okay";
++};
++
++&dc0_dpr2_channel3 {
++	status = "okay";
++};
++
++&dc0_pc {
++	status = "okay";
++};
++
++&dc0_prg1 {
++	status = "okay";
++};
++
++&dc0_prg2 {
++	status = "okay";
++};
++
++&dc0_prg3 {
++	status = "okay";
++};
++
++&dc0_prg4 {
++	status = "okay";
++};
++
++&dc0_prg5 {
++	status = "okay";
++};
++
++&dc0_prg6 {
++	status = "okay";
++};
++
++&dc0_prg7 {
++	status = "okay";
++};
++
++&dc0_prg8 {
++	status = "okay";
++};
++
++&dc0_prg9 {
++	status = "okay";
++};
++
++&dc1_dpr1_channel1 {
++	status = "okay";
++};
++
++&dc1_dpr1_channel2 {
++	status = "okay";
++};
++
++&dc1_dpr1_channel3 {
++	status = "okay";
++};
++
++&dc1_dpr2_channel1 {
++	status = "okay";
++};
++
++&dc1_dpr2_channel2 {
++	status = "okay";
++};
++
++&dc1_dpr2_channel3 {
+ 	status = "okay";
+ };
+ 
+-/* Apalis CAN1 */
+-&flexcan1 {
++&dc1_pc {
+ 	status = "okay";
+ };
+ 
+-/* Apalis CAN2 */
+-&flexcan2 {
++&dc1_prg1 {
+ 	status = "okay";
+ };
+ 
+-/* TODO: GPU */
++&dc1_prg2 {
++	status = "okay";
++};
++
++&dc1_prg3 {
++	status = "okay";
++};
++
++&dc1_prg4 {
++	status = "okay";
++};
++
++&dc1_prg5 {
++	status = "okay";
++};
++
++&dc1_prg6 {
++	status = "okay";
++};
++
++&dc1_prg7 {
++	status = "okay";
++};
++
++&dc1_prg8 {
++	status = "okay";
++};
++
++&dc1_prg9 {
++	status = "okay";
++};
++
++&dpu1 {
++	status = "okay";
++};
++
++&dpu2 {
++	status = "okay";
++};
++
++/* Apalis ETH1 */
++&fec1 {
++	status = "okay";
++};
+ 
+ /* Apalis I2C1 */
+ &i2c2 {
+@@ -62,6 +186,14 @@
+ 	status = "okay";
+ };
+ 
++&irqsteer_csi0 {
++	status = "okay";
++};
++
++&irqsteer_csi1 {
++	status = "okay";
++};
++
+ /* Apalis SPI1 */
+ &lpspi0 {
+ 	status = "okay";
+@@ -112,33 +244,61 @@
+ 	status = "okay";
+ };
+ 
+-/* TODO: Apalis PCIE1 */
++/* Apalis PCIE1 */
++&pciea{
++	status = "okay";
++};
++
++/* Apalis BKL1_PWM */
++&pwm_lvds1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm_bkl>;
++	status = "okay";
++};
+ 
+-/* TODO: Apalis BKL1_PWM */
++/* Apalis DAP1 */
++&sai1 {
++	status = "okay";
++};
+ 
+-/* TODO: Apalis DAP1 */
++&sai5 {
++	status = "okay";
++};
+ 
+-/* TODO: Apalis Analogue Audio */
++&sai5_lpcg {
++	status = "okay";
++};
+ 
+-/* TODO: Apalis SATA1 */
++/* Apalis SATA1 */
++&sata {
++	status = "okay";
++};
+ 
+-/* TODO: Apalis SPDIF1 */
++/* Apalis SPDIF1 */
++&spdif0 {
++	status = "okay";
++};
+ 
+-/* TODO: Apalis USBH2, Apalis USBH3 and on-module Wi-Fi via on-module HSIC Hub */
++&spdif1 {
++	status = "okay";
++};
+ 
+-/* Apalis USBO1 */
+-&usbotg1 {
++&spdif1_lpcg {
+ 	status = "okay";
+ };
+ 
+-/* TODO: Apalis USBH4 SuperSpeed */
++/* Apalis USBH2, Apalis USBH3 and on-module Wi-Fi via on-module HSIC Hub */
++&usbh1 {
++	vbus-supply = <&reg_usb_host_vbus>;
++	status = "okay";
++};
+ 
+-/* Apalis MMC1 */
+-&usdhc2 {
++/* Apalis USBO1 */
++&usbotg1 {
+ 	status = "okay";
+ };
+ 
+-/* Apalis SD1 */
+-&usdhc3 {
++/* Apalis USBH4 SuperSpeed */
++&usbotg3_cdns3 {
+ 	status = "okay";
+ };

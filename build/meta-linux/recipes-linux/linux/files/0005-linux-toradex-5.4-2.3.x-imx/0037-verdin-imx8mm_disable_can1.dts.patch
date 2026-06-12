@@ -1,0 +1,21 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/verdin-imx8mm_disable_can1.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/verdin-imx8mm_disable_can1.dts	2023-08-10 09:55:58.419675186 +0200
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2022 Toradex
++ */
++
++// Disable CAN1 for Verdin iMX8M Mini DualLite
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	compatible = "toradex,verdin-imx8mm";
++};
++
++&can1 {
++	status = "disabled";
++};
++

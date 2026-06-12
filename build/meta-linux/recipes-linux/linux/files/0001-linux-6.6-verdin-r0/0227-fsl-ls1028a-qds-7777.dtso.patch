@@ -1,0 +1,35 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds-7777.dtso	2026-04-08 18:20:05.013194400 +0200
++++ ./arch/arm64/boot/dts/freescale/fsl-ls1028a-qds-7777.dtso	2026-04-08 16:21:01.972444153 +0200
+@@ -43,24 +43,32 @@
+ 		status = "okay";
+ 		phy-handle = <&slot1_sxgmii0>;
+ 		phy-mode = "2500base-x";
++		phys = <&serdes 0>;
++		phy-names = "serdes";
+ 	};
+ 
+ 	port@1 {
+ 		status = "okay";
+ 		phy-handle = <&slot1_sxgmii1>;
+ 		phy-mode = "2500base-x";
++		phys = <&serdes 1>;
++		phy-names = "serdes";
+ 	};
+ 
+ 	port@2 {
+ 		status = "okay";
+ 		phy-handle = <&slot1_sxgmii2>;
+ 		phy-mode = "2500base-x";
++		phys = <&serdes 2>;
++		phy-names = "serdes";
+ 	};
+ 
+ 	port@3 {
+ 		status = "okay";
+ 		phy-handle = <&slot1_sxgmii3>;
+ 		phy-mode = "2500base-x";
++		phys = <&serdes 3>;
++		phy-names = "serdes";
+ 	};
+ };
+ 

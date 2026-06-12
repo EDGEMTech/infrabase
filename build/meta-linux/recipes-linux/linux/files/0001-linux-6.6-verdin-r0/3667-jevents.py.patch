@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/tools/perf/pmu-events/jevents.py	2026-04-08 18:20:11.080377955 +0200
++++ ./tools/perf/pmu-events/jevents.py	2026-04-08 16:21:18.782304434 +0200
+@@ -284,6 +284,7 @@
+           'hisi_sccl,hha': 'hisi_sccl,hha',
+           'hisi_sccl,l3c': 'hisi_sccl,l3c',
+           'imx8_ddr': 'imx8_ddr',
++          'imx9_ddr': 'imx9_ddr',
+           'L3PMC': 'amd_l3',
+           'DFPMC': 'amd_df',
+           'cpu_core': 'cpu_core',
+@@ -764,8 +765,8 @@
+       continue
+     _args.output_file.write(f"""\t{{
+ \t\t.metric_table = {{
+-\t\t\t.entries = {tblname},
+-\t\t\t.length = ARRAY_SIZE({tblname})
++\t\t\t.pmus = {tblname},
++\t\t\t.num_pmus = ARRAY_SIZE({tblname})
+ \t\t}},
+ \t\t.name = \"{tblname}\",
+ \t}},

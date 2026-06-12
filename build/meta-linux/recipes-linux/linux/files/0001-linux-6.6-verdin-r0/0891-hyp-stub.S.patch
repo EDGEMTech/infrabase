@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/kernel/hyp-stub.S	2026-04-08 18:20:05.098884931 +0200
++++ ./arch/arm64/kernel/hyp-stub.S	2026-04-08 16:21:02.421396254 +0200
+@@ -9,6 +9,7 @@
+ #include <linux/init.h>
+ #include <linux/linkage.h>
+ 
++#include <asm-generic/export.h>
+ #include <asm/assembler.h>
+ #include <asm/el2_setup.h>
+ #include <asm/kvm_arm.h>
+@@ -42,6 +43,7 @@
+ 	ventry	el1_fiq_invalid			// FIQ 32-bit EL1
+ 	ventry	el1_error_invalid		// Error 32-bit EL1
+ SYM_CODE_END(__hyp_stub_vectors)
++EXPORT_SYMBOL_GPL(__hyp_stub_vectors)
+ 
+ 	.align 11
+ 

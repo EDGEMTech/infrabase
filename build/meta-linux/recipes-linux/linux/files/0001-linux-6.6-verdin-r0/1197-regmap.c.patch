@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/base/regmap/regmap.c	2026-04-08 18:20:05.756903270 +0200
++++ ./drivers/base/regmap/regmap.c	2026-04-08 16:21:04.459162777 +0200
+@@ -759,6 +759,9 @@
+ 		map->lock_key = lock_key;
+ 	}
+ 
++	if (config->disable_debugfs && !config->disable_locking)
++		regmap_debugfs_disable(map);
++
+ 	/*
+ 	 * When we write in fast-paths with regmap_bulk_write() don't allocate
+ 	 * scratch buffers with sleeping allocations.
+@@ -1154,8 +1157,6 @@
+ 		ret = regmap_attach_dev(dev, map, config);
+ 		if (ret != 0)
+ 			goto err_regcache;
+-	} else {
+-		regmap_debugfs_init(map);
+ 	}
+ 
+ 	return map;

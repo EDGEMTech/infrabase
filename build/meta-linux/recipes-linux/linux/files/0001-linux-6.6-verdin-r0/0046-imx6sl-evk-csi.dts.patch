@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx6sl-evk-csi.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/boot/dts/nxp/imx/imx6sl-evk-csi.dts	2026-04-08 16:21:00.858043277 +0200
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++//Copyright (C) 2013 Freescale Semiconductor, Inc.
++
++#include "imx6sl-evk.dts"
++
++&csi {
++	status = "okay";
++};
++
++&i2c3 {
++	status = "okay";
++};
++
++&epdc {
++	status = "disabled";
++};

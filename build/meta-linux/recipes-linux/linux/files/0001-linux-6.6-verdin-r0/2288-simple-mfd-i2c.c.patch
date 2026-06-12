@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mfd/simple-mfd-i2c.c	2026-04-08 18:20:07.913963380 +0200
++++ ./drivers/mfd/simple-mfd-i2c.c	2026-04-08 16:21:07.211769571 +0200
+@@ -88,6 +88,8 @@
+ 	{ .compatible = "silergy,sy7636a", .data = &silergy_sy7636a},
+ 	{ .compatible = "maxim,max5970", .data = &maxim_max5970},
+ 	{ .compatible = "maxim,max5978", .data = &maxim_max5970},
++	{ .compatible = "fsl,lx2160a-qds-qixis-cpld" },
++	{ .compatible = "fsl,lx2160a-rdb-qixis-cpld" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, simple_mfd_i2c_of_match);

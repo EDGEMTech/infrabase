@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/arm_scmi/scmi_pm_domain.c	2026-04-08 18:20:06.037911102 +0200
++++ ./drivers/firmware/arm_scmi/scmi_pm_domain.c	2026-04-08 16:21:04.945422317 +0200
+@@ -103,6 +103,10 @@
+ 		scmi_pd->genpd.power_off = scmi_pd_power_off;
+ 		scmi_pd->genpd.power_on = scmi_pd_power_on;
+ 
++		/* FIXME: temp add WAKEUP flag for NETCMIX */
++		if (!strcmp(scmi_pd->name, "netc"))
++			scmi_pd->genpd.flags =  GENPD_FLAG_ACTIVE_WAKEUP;
++
+ 		pm_genpd_init(&scmi_pd->genpd, NULL,
+ 			      state == SCMI_POWER_STATE_GENERIC_OFF);
+ 

@@ -1,0 +1,7 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/kernel/hyp-stub.S	2026-04-08 18:20:04.932880304 +0200
++++ ./arch/arm/kernel/hyp-stub.S	2026-04-08 16:21:01.152340814 +0200
+@@ -238,4 +238,3 @@
+ __hyp_stub_irq:		W(b)	.
+ __hyp_stub_fiq:		W(b)	.
+ ENDPROC(__hyp_stub_vectors)
+-

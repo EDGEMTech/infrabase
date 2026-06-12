@@ -1,0 +1,55 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/soc-core.c	2026-04-08 18:20:10.940047687 +0200
++++ ./sound/soc/soc-core.c	2026-04-08 16:21:18.485819246 +0200
+@@ -283,13 +283,13 @@
+ 
+ 	/* see snd_soc_dai_name_get() */
+ 
+-	if (strcmp(dlc->dai_name, dai->name) == 0)
+-		return 1;
+-
+ 	if (dai->driver->name &&
+ 	    strcmp(dai->driver->name, dlc->dai_name) == 0)
+ 		return 1;
+ 
++	if (strcmp(dlc->dai_name, dai->name) == 0)
++		return 1;
++
+ 	if (dai->component->name &&
+ 	    strcmp(dlc->dai_name, dai->component->name) == 0)
+ 		return 1;
+@@ -300,12 +300,12 @@
+ const char *snd_soc_dai_name_get(struct snd_soc_dai *dai)
+ {
+ 	/* see snd_soc_is_matching_dai() */
+-	if (dai->name)
+-		return dai->name;
+-
+ 	if (dai->driver->name)
+ 		return dai->driver->name;
+ 
++	if (dai->name)
++		return dai->name;
++
+ 	if (dai->component->name)
+ 		return dai->component->name;
+ 
+@@ -1859,6 +1859,19 @@
+ match:
+ 		/* machine matches, so override the rtd data */
+ 		for_each_card_prelinks(card, i, dai_link) {
++			struct snd_soc_dai_link_component *dlc;
++			struct snd_soc_dai *dai;
++
++			/*
++			 * ignore dailinks exposed by other components, with the
++			 * assumption that all cpu_dais are exposed by the same
++			 * component
++			 */
++			dlc = asoc_link_to_cpu(dai_link, 0);
++			dai = snd_soc_find_dai(dlc);
++
++			if (!dai || dai->component != component)
++				continue;
+ 
+ 			/* ignore this FE */
+ 			if (dai_link->dynamic) {

@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/staging/fsl_ppfe/pfe_perfmon.h	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/staging/fsl_ppfe/pfe_perfmon.h	2026-04-08 16:21:09.393642804 +0200
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2015-2016 Freescale Semiconductor, Inc.
++ * Copyright 2017 NXP
++ */
++
++#ifndef _PFE_PERFMON_H_
++#define _PFE_PERFMON_H_
++
++#include "pfe/pfe.h"
++
++#define	CT_CPUMON_INTERVAL	(1 * TIMER_TICKS_PER_SEC)
++
++struct pfe_cpumon {
++	u32 cpu_usage_pct[MAX_PE];
++	u32 class_usage_pct;
++};
++
++struct pfe_memmon {
++	u32 kernel_memory_allocated;
++};
++
++int pfe_perfmon_init(struct pfe *pfe);
++void pfe_perfmon_exit(struct pfe *pfe);
++
++#endif /* _PFE_PERFMON_H_ */

@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/userspace-api/ioctl/ioctl-number.rst	2026-04-08 18:20:04.738582797 +0200
++++ ./Documentation/userspace-api/ioctl/ioctl-number.rst	2026-04-08 16:21:00.371289210 +0200
+@@ -162,7 +162,8 @@
+ 'I'   all    linux/isdn.h                                            conflict!
+ 'I'   00-0F  drivers/isdn/divert/isdn_divert.h                       conflict!
+ 'I'   40-4F  linux/mISDNif.h                                         conflict!
+-'K'   all    linux/kd.h
++'K'   all    linux/kd.h                                              conflict!
++'K'   00-01  linux/caam_keygen.h                                     conflict! caam driver
+ 'L'   00-1F  linux/loop.h                                            conflict!
+ 'L'   10-1F  drivers/scsi/mpt3sas/mpt3sas_ctl.h                      conflict!
+ 'L'   E0-FF  linux/ppdd.h                                            encrypted disk device driver

@@ -1,0 +1,132 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/pm_domain.h	2026-04-08 18:20:10.114024676 +0200
++++ ./include/linux/pm_domain.h	2026-04-08 16:21:11.564456242 +0200
+@@ -18,6 +18,34 @@
+ #include <linux/spinlock.h>
+ #include <linux/cpumask.h>
+ #include <linux/time64.h>
++#include <linux/clk.h>
++
++/*
++ * Flags to control the behaviour when attaching a device to its PM domains.
++ *
++ * PD_FLAG_NO_DEV_LINK:		As the default behaviour creates a device-link
++ *				for every PM domain that gets attached, this
++ *				flag can be used to skip that.
++ *
++ * PD_FLAG_DEV_LINK_ON:		Add the DL_FLAG_RPM_ACTIVE to power-on the
++ *				supplier and its PM domain when creating the
++ *				device-links.
++ *
++ */
++#define PD_FLAG_NO_DEV_LINK		BIT(0)
++#define PD_FLAG_DEV_LINK_ON		BIT(1)
++
++struct dev_pm_domain_attach_data {
++	const char * const *pd_names;
++	const u32 num_pd_names;
++	const u32 pd_flags;
++};
++
++struct dev_pm_domain_list {
++	struct device **pd_devs;
++	struct device_link **pd_links;
++	u32 num_pds;
++};
+ 
+ /*
+  * Flags to control the behaviour of a genpd.
+@@ -61,6 +89,13 @@
+  * GENPD_FLAG_MIN_RESIDENCY:	Enable the genpd governor to consider its
+  *				components' next wakeup when determining the
+  *				optimal idle state.
++ *				powering on/off domain.
++ * GENPD_FLAG_OPP_TABLE_FW:	The genpd provider supports performance states,
++ *				but its corresponding OPP tables are not
++ *				described in DT, but are given directly by FW.
++ *
++ * GENPD_FLAG_PM_PD_CLK:	Instructs genpd to enable/disable PD clocks when
++ *				powering on/off domain.
+  */
+ #define GENPD_FLAG_PM_CLK	 (1U << 0)
+ #define GENPD_FLAG_IRQ_SAFE	 (1U << 1)
+@@ -69,6 +104,8 @@
+ #define GENPD_FLAG_CPU_DOMAIN	 (1U << 4)
+ #define GENPD_FLAG_RPM_ALWAYS_ON (1U << 5)
+ #define GENPD_FLAG_MIN_RESIDENCY (1U << 6)
++#define GENPD_FLAG_PM_PD_CLK	 (1U << 7)
++#define GENPD_FLAG_OPP_TABLE_FW	 (1U << 8)
+ 
+ enum gpd_status {
+ 	GENPD_STATE_ON = 0,	/* PM domain is on */
+@@ -167,6 +204,9 @@
+ 		};
+ 	};
+ 
++	unsigned int state_idx_saved; /* saved power state for recovery after system suspend/resume */
++	struct clk_bulk_data *clks;
++	int num_clks;
+ };
+ 
+ static inline struct generic_pm_domain *pd_to_genpd(struct dev_pm_domain *pd)
+@@ -230,6 +270,7 @@
+ 			      struct generic_pm_domain *subdomain);
+ int pm_genpd_init(struct generic_pm_domain *genpd,
+ 		  struct dev_power_governor *gov, bool is_off);
++int pm_genpd_of_add_clks(struct generic_pm_domain *genpd, struct device *dev);
+ int pm_genpd_remove(struct generic_pm_domain *genpd);
+ int dev_pm_genpd_set_performance_state(struct device *dev, unsigned int state);
+ int dev_pm_genpd_add_notifier(struct device *dev, struct notifier_block *nb);
+@@ -273,6 +314,12 @@
+ {
+ 	return -ENOSYS;
+ }
++static inline int pm_genpd_of_add_clks(struct generic_pm_domain *genpd,
++				       struct device *dev)
++{
++	return 0;
++
++}
+ static inline int pm_genpd_remove(struct generic_pm_domain *genpd)
+ {
+ 	return -EOPNOTSUPP;
+@@ -427,9 +474,14 @@
+ 					  unsigned int index);
+ struct device *dev_pm_domain_attach_by_name(struct device *dev,
+ 					    const char *name);
++int dev_pm_domain_attach_list(struct device *dev,
++			      const struct dev_pm_domain_attach_data *data,
++			      struct dev_pm_domain_list **list);
+ void dev_pm_domain_detach(struct device *dev, bool power_off);
++void dev_pm_domain_detach_list(struct dev_pm_domain_list *list);
+ int dev_pm_domain_start(struct device *dev);
+ void dev_pm_domain_set(struct device *dev, struct dev_pm_domain *pd);
++int dev_pm_domain_set_performance_state(struct device *dev, unsigned int state);
+ #else
+ static inline int dev_pm_domain_attach(struct device *dev, bool power_on)
+ {
+@@ -445,13 +497,25 @@
+ {
+ 	return NULL;
+ }
++static inline int dev_pm_domain_attach_list(struct device *dev,
++				const struct dev_pm_domain_attach_data *data,
++				struct dev_pm_domain_list **list)
++{
++	return 0;
++}
+ static inline void dev_pm_domain_detach(struct device *dev, bool power_off) {}
++static inline void dev_pm_domain_detach_list(struct dev_pm_domain_list *list) {}
+ static inline int dev_pm_domain_start(struct device *dev)
+ {
+ 	return 0;
+ }
+ static inline void dev_pm_domain_set(struct device *dev,
+ 				     struct dev_pm_domain *pd) {}
++static inline int dev_pm_domain_set_performance_state(struct device *dev,
++						      unsigned int state)
++{
++	return 0;
++}
+ #endif
+ 
+ #endif /* _LINUX_PM_DOMAIN_H */

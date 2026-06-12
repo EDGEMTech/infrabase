@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pinctrl/freescale/Kconfig	2026-04-08 18:20:08.907588225 +0200
++++ ./drivers/pinctrl/freescale/Kconfig	2026-04-08 16:21:08.736912308 +0200
+@@ -217,3 +217,16 @@
+ 	select PINCTRL_IMX
+ 	help
+ 	  Say Y here to enable the imxrt1170 pinctrl driver
++
++config PINCTRL_S32V_CORE
++	bool "Core driver for the S32V pin controller"
++	help
++	  Say Y here to enable the S32V pin controller
++
++config PINCTRL_S32V234
++	bool "Freescale S32V234 pinctrl driver"
++	depends on SOC_S32V234
++	select PINCTRL_IMX
++	select PINCTRL_S32V_CORE
++	help
++	  Say Y here to enable the Freescale S32V234 pinctrl driver

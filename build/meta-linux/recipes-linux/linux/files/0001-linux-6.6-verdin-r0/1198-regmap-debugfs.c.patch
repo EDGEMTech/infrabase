@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/base/regmap/regmap-debugfs.c	2026-04-08 18:20:05.755344230 +0200
++++ ./drivers/base/regmap/regmap-debugfs.c	2026-04-08 16:21:04.455203840 +0200
+@@ -556,9 +556,10 @@
+ 	 * a mutex or a spinlock, but if the regmap owner decided to disable
+ 	 * all locking mechanisms, this is no longer the case. For safety:
+ 	 * don't create the debugfs entries if locking is disabled.
++	 * Or disabled explicitly in driver.
+ 	 */
+ 	if (map->debugfs_disable) {
+-		dev_dbg(map->dev, "regmap locking disabled - not creating debugfs entries\n");
++		dev_dbg(map->dev, "regmap debugfs disabled - not creating debugfs entries\n");
+ 		return;
+ 	}
+ 

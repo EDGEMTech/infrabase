@@ -1,0 +1,9 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/Makefile	2026-04-08 18:20:08.007317233 +0200
++++ ./drivers/net/Makefile	2026-04-08 16:21:07.333083688 +0200
+@@ -89,3 +89,6 @@
+ obj-$(CONFIG_USB4_NET) += thunderbolt/
+ obj-$(CONFIG_NETDEVSIM) += netdevsim/
+ obj-$(CONFIG_NET_FAILOVER) += net_failover.o
++
++obj-$(CONFIG_IVSHMEM_NET) += ivshmem-net.o
++obj-$(CONFIG_IMX_SHMEM_NET) += imx-shmem-net.o

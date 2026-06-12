@@ -1,0 +1,28 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/features/can/can.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/features/can/can.cfg	2026-04-08 16:21:19.368753137 +0200
+@@ -0,0 +1,25 @@
++#
++# CAN
++#
++CONFIG_CAN=m
++CONFIG_CAN_RAW=m
++CONFIG_CAN_BCM=m
++CONFIG_CAN_GW=m
++CONFIG_CAN_ISOTP=m
++CONFIG_CAN_J1939=m
++#
++# CAN Device Drivers
++#
++CONFIG_CAN_DEV=m
++CONFIG_CAN_CALC_BITTIMING=y
++CONFIG_CAN_FLEXCAN=m
++CONFIG_CAN_VCAN=m
++CONFIG_CAN_VXCAN=m
++CONFIG_CAN_SLCAN=m
++CONFIG_CAN_MCP25XXFD=m
++CONFIG_CAN_SJA1000=m
++CONFIG_CAN_SJA1000_PLATFORM=m
++#
++# CAN SPI interfaces
++#
++CONFIG_CAN_MCP251X=m

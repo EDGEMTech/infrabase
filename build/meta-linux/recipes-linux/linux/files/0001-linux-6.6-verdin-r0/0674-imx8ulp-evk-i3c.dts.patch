@@ -1,0 +1,41 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8ulp-evk-i3c.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8ulp-evk-i3c.dts	2026-04-08 16:21:02.080304683 +0200
+@@ -0,0 +1,38 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2021 NXP
++ */
++
++#include "imx8ulp-evk.dts"
++#include <dt-bindings/i3c/i3c.h>
++
++&fec {
++	status = "disabled";
++};
++
++&lpspi5 {
++	status = "disabled";
++};
++
++&rpmsg_sensor {
++	status = "disabled";
++};
++
++&i3c2 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&pinctrl_i3c2>;
++	pinctrl-1 = <&pinctrl_i3c2>;
++	pinctrl-assert-gpios = <&pca6416_1 10 GPIO_ACTIVE_HIGH>;
++	i2c-scl-hz = <400000>;
++	status = "okay";
++};
++
++&iomuxc1 {
++	pinctrl_i3c2: i3c2grp {
++		fsl,pins = <
++			MX8ULP_PAD_PTE15__I3C2_PUR	0x3
++			MX8ULP_PAD_PTE22__I3C2_SCL	0x3
++			MX8ULP_PAD_PTE23__I3C2_SDA	0x3
++		>;
++	};
++};

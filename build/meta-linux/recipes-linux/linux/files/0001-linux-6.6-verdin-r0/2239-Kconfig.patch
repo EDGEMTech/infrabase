@@ -1,0 +1,42 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/nxp/Kconfig	2026-04-08 18:20:07.760785049 +0200
++++ ./drivers/media/platform/nxp/Kconfig	2026-04-08 16:21:07.028183727 +0200
+@@ -28,6 +28,16 @@
+ 	  Video4Linux2 driver for the MIPI CSI-2 receiver found on the i.MX8MQ
+ 	  SoC.
+ 
++config VIDEO_IMX_CSI_FORMATTER
++	tristate "NXP i.MX95 CSI Pixel Formatter Driver"
++	depends on ARCH_MXC || COMPILE_TEST
++	depends on VIDEO_DEV
++	select MEDIA_CONTROLLER
++	select V4L2_FWNODE
++	select VIDEO_V4L2_SUBDEV_API
++	help
++	  Video4Linux2 sub-device driver for iMX95 CSI pixel formatter
++
+ config VIDEO_IMX_MIPI_CSIS
+ 	tristate "NXP MIPI CSI-2 CSIS receiver found on i.MX7 and i.MX8 models"
+ 	depends on ARCH_MXC || COMPILE_TEST
+@@ -39,6 +49,17 @@
+ 	  Video4Linux2 sub-device driver for the MIPI CSI-2 CSIS receiver
+ 	  v3.3/v3.6.3 found on some i.MX7 and i.MX8 SoCs.
+ 
++config VIDEO_DWC_MIPI_CSIS
++       tristate "DesignWare Cores MIPI CSI-2 receiver found on i.MX93"
++       depends on ARCH_MXC || COMPILE_TEST
++       depends on VIDEO_DEV
++       select MEDIA_CONTROLLER
++       select V4L2_FWNODE
++       select VIDEO_V4L2_SUBDEV_API
++       help
++         Video4Linux2 sub-device driver for the DesignWare Cores MIPI
++         CSI-2 receiver used on i.MX93.
++
+ source "drivers/media/platform/nxp/imx8-isi/Kconfig"
+ 
+ # mem2mem drivers
+@@ -67,3 +88,4 @@
+ 
+ source "drivers/media/platform/nxp/dw100/Kconfig"
+ source "drivers/media/platform/nxp/imx-jpeg/Kconfig"
++source "drivers/media/platform/nxp/neoisp/Kconfig"

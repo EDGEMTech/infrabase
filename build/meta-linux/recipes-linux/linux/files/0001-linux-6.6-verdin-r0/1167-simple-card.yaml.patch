@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/sound/simple-card.yaml	2026-04-08 18:20:04.610871330 +0200
++++ ./Documentation/devicetree/bindings/sound/simple-card.yaml	2026-04-08 16:20:59.800323722 +0200
+@@ -27,6 +27,14 @@
+     description: dai-link uses bit clock inversion
+     $ref: /schemas/types.yaml#/definitions/flag
+ 
++  playback-only:
++    description: dai-link is used only for playback
++    $ref: /schemas/types.yaml#/definitions/flag
++
++  capture-only:
++    description: dai-link is used only for capture
++    $ref: /schemas/types.yaml#/definitions/flag
++
+   dai-tdm-slot-num:
+     description: see tdm-slot.txt.
+     $ref: /schemas/types.yaml#/definitions/uint32

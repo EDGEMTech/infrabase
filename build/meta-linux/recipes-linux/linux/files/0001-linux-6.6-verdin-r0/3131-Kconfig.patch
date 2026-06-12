@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/staging/neutron/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/staging/neutron/Kconfig	2026-04-08 16:21:09.496641010 +0200
+@@ -0,0 +1,15 @@
++# SPDX-License-Identifier: GPL-2.0+
++# Copyright 2023 NXP
++#
++
++config NEUTRON
++	tristate "NXP Neutron NPU support"
++	depends on ARCH_MXC
++	depends on IMX_NEUTRON_REMOTEPROC
++	help
++	  Say Y here if you want to support NXP Neutron NPU.
++
++	  The Neutron Neural Processing Unit (NPU) is a highly scalable accelerator core architecture
++	  providing machine learning (ML) acceleration.
++
++	  If unsure, say N.

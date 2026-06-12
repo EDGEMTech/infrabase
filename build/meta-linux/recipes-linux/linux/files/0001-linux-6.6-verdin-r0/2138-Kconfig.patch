@@ -1,0 +1,38 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/input/touchscreen/Kconfig	2026-04-08 18:20:07.547368774 +0200
++++ ./drivers/input/touchscreen/Kconfig	2026-04-08 16:21:06.657571066 +0200
+@@ -388,6 +388,18 @@
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called exc3000.
+ 
++config TOUCHSCREEN_ELAN_TS
++	tristate "ELAN touchscreen input driver"
++	depends on I2C
++	help
++	  Say Y here if you have an I2C ELAN touchscreen
++	  attached.
++
++	  If unsure, say N.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called elan-touch.
++
+ config TOUCHSCREEN_FUJITSU
+ 	tristate "Fujitsu serial touchscreen"
+ 	select SERIO
+@@ -1399,4 +1411,16 @@
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called himax_hx83112b.
+ 
++config TOUCHSCREEN_FTS
++	tristate "Focaltech Touchscreen"
++	depends on I2C
++	help
++	  Say Y here to enable support for Focaltech touch panel.
++
++	  If unsure, say N.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called fts_ts.
+ endif
++
++source "drivers/input/touchscreen/synaptics_dsx/Kconfig"

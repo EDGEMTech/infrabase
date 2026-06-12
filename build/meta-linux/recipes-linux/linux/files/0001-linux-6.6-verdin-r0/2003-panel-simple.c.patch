@@ -1,0 +1,136 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/panel/panel-simple.c	2026-04-08 18:20:07.204943623 +0200
++++ ./drivers/gpu/drm/panel/panel-simple.c	2026-04-08 16:21:06.203945736 +0200
+@@ -464,6 +464,7 @@
+ 	struct panel_desc *desc;
+ 	unsigned int bus_flags;
+ 	struct videomode vm;
++	const char *mapping = "";
+ 	int ret;
+ 
+ 	np = dev->of_node;
+@@ -488,6 +489,21 @@
+ 	of_property_read_u32(np, "width-mm", &desc->size.width);
+ 	of_property_read_u32(np, "height-mm", &desc->size.height);
+ 
++	of_property_read_string(np, "data-mapping", &mapping);
++	if (!strcmp(mapping, "rgb24")) {
++		desc->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++		desc->bpc = 8;
++	} else if (!strcmp(mapping, "rgb565")) {
++		desc->bus_format = MEDIA_BUS_FMT_RGB565_1X16;
++		desc->bpc = 6;
++	} else if (!strcmp(mapping, "bgr666")) {
++		desc->bus_format = MEDIA_BUS_FMT_RGB666_1X18;
++		desc->bpc = 6;
++	} else if (!strcmp(mapping, "lvds666")) {
++		desc->bus_format = MEDIA_BUS_FMT_RGB666_1X24_CPADHI;
++		desc->bpc = 6;
++	}
++
+ 	/* Extract bus_flags from display_timing */
+ 	bus_flags = 0;
+ 	vm.flags = timing->flags;
+@@ -2491,6 +2507,44 @@
+ 	},
+ };
+ 
++static const struct display_timing jdi_tx26d202vm0bwa_timing = {
++	.pixelclock = { 151820000, 156720000, 159780000 },
++	.hactive = { 1920, 1920, 1920 },
++	.hfront_porch = { 76, 100, 112 },
++	.hback_porch = { 74, 100, 112 },
++	.hsync_len = { 30, 30, 30 },
++	.vactive = { 1200, 1200, 1200},
++	.vfront_porch = { 3, 5, 10 },
++	.vback_porch = { 2, 5, 10 },
++	.vsync_len = { 5, 5, 5 },
++	.flags = DISPLAY_FLAGS_DE_HIGH,
++};
++
++static const struct panel_desc jdi_tx26d202vm0bwa = {
++	.timings = &jdi_tx26d202vm0bwa_timing,
++	.num_timings = 1,
++	.bpc = 8,
++	.size = {
++		.width = 217,
++		.height = 136,
++	},
++	.delay = {
++		/*
++		 * The panel spec recommends one second delay
++		 * to the below items.  However, it's a bit too
++		 * long in pratice.  Based on tests, it turns
++		 * out 100 milliseconds is fine.
++		 */
++		.prepare = 100,
++		.enable = 100,
++		.unprepare = 100,
++		.disable = 100,
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++};
++
+ static const struct display_timing koe_tx14d24vm1bpa_timing = {
+ 	.pixelclock = { 5580000, 5850000, 6200000 },
+ 	.hactive = { 320, 320, 320 },
+@@ -3127,6 +3181,38 @@
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ };
+ 
++static const struct drm_display_mode ontat_kd50g21_40nt_a1_mode = {
++	.clock = 30000,
++	.hdisplay = 800,
++	.hsync_start = 800 + 40,
++	.hsync_end = 800 + 40 + 48,
++	.htotal = 800 + 40 + 48 + 40,
++	.vdisplay = 480,
++	.vsync_start = 480 + 13,
++	.vsync_end = 480 + 13 + 3,
++	.vtotal = 480 + 13 + 3 + 29,
++	.flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
++};
++
++static const struct panel_desc ontat_kd50g21_40nt_a1 = {
++	.modes = &ontat_kd50g21_40nt_a1_mode,
++	.num_modes = 1,
++	.bpc = 8,
++	.size = {
++		.width = 108,
++		.height = 65,
++	},
++	.delay = {
++		.prepare = 36,
++		.enable = 163,
++		.unprepare = 17,
++		.disable = 114,
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
++	.connector_type = DRM_MODE_CONNECTOR_DPI,
++};
++
+ /*
+  * 800x480 CVT. The panel appears to be quite accepting, at least as far as
+  * pixel clocks, but this is the timing that was being used in the Adafruit
+@@ -4351,6 +4437,9 @@
+ 		.compatible = "innolux,zj070na-01p",
+ 		.data = &innolux_zj070na_01p,
+ 	}, {
++		.compatible = "jdi,tx26d202vm0bwa",
++		.data = &jdi_tx26d202vm0bwa,
++	}, {
+ 		.compatible = "koe,tx14d24vm1bpa",
+ 		.data = &koe_tx14d24vm1bpa,
+ 	}, {
+@@ -4423,6 +4512,9 @@
+ 		.compatible = "olimex,lcd-olinuxino-43-ts",
+ 		.data = &olimex_lcd_olinuxino_43ts,
+ 	}, {
++		.compatible = "ontat,kd50g21-40nt-a1",
++		.data = &ontat_kd50g21_40nt_a1,
++	}, {
+ 		.compatible = "ontat,yx700wv03",
+ 		.data = &ontat_yx700wv03,
+ 	}, {

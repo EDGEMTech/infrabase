@@ -1,0 +1,56 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi	2026-04-08 18:20:05.023882841 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi	2026-04-08 16:21:02.083675248 +0200
+@@ -3,10 +3,24 @@
+  * Copyright 2018-2021 Toradex
+  */
+ 
++/* Colibri Analogue Inputs */
++&adc0 {
++	status = "okay";
++};
++
++/* Colibri PWM_A */
++&adma_pwm {
++	status = "okay";
++};
++
+ &colibri_gpio_keys {
+ 	status = "okay";
+ };
+ 
++&extcon_usbc_det {
++	status = "okay";
++};
++
+ /* Colibri Ethernet */
+ &fec1 {
+ 	status = "okay";
+@@ -38,6 +52,28 @@
+ 	status = "okay";
+ };
+ 
++/* USB PHY for usbotg3 */
++&usb3_phy {
++	status = "okay";
++};
++
++&usbotg1 {
++	status = "okay";
++};
++
++&usbotg3 {
++	status = "okay";
++};
++
++&usbotg3_cdns3 {
++	status = "okay";
++};
++
++/* USB PHY for usbotg1 */
++&usbphy1 {
++	status = "okay";
++};
++
+ /* Colibri SDCard */
+ &usdhc2 {
+ 	status = "okay";

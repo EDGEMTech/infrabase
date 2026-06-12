@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/block/blk-map.c	2026-04-08 18:20:05.608899145 +0200
++++ ./block/blk-map.c	2026-04-08 16:21:04.159227503 +0200
+@@ -764,6 +764,12 @@
+ }
+ EXPORT_SYMBOL(blk_rq_unmap_user);
+ 
++#ifdef CONFIG_AHCI_IMX
++extern void *sg_io_buffer_hack;
++#else
++#define sg_io_buffer_hack NULL
++#endif
++
+ /**
+  * blk_rq_map_kern - map kernel data to a request, for passthrough requests
+  * @q:		request queue where request should be inserted
+@@ -790,8 +796,13 @@
+ 	if (!len || !kbuf)
+ 		return -EINVAL;
+ 
++#ifdef CONFIG_AHCI_IMX
++	if ((kbuf != sg_io_buffer_hack) && (!blk_rq_aligned(q, addr, len) ||
++	    object_is_on_stack(kbuf) || blk_queue_may_bounce(q)))
++#else
+ 	if (!blk_rq_aligned(q, addr, len) || object_is_on_stack(kbuf) ||
+ 	    blk_queue_may_bounce(q))
++#endif
+ 		bio = bio_copy_kern(q, kbuf, len, gfp_mask, reading);
+ 	else
+ 		bio = bio_map_kern(q, kbuf, len, gfp_mask);

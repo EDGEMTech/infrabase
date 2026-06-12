@@ -1,0 +1,34 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-lcdif1.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/boot/dts/nxp/imx/imx6sx-sdb-lcdif1.dts	2026-04-08 16:21:00.865747891 +0200
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2014-2015 Freescale Semiconductor, Inc.
++ * Copyright 2019 NXP
++ */
++
++#include "imx6sx-sdb.dts"
++
++/ {
++	sii902x_reset: sii902x-reset {
++		status = "okay";
++	};
++};
++
++&csi1 {
++	status = "disabled";
++};
++
++&lcdif1 {
++	status = "okay";
++};
++
++&i2c1 {
++	sii902x@39 {
++		status = "okay";
++	};
++};
++
++&ov5640 {
++	status = "disabled";
++};

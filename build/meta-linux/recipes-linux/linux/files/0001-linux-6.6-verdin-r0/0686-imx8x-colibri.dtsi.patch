@@ -1,0 +1,535 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi	2026-04-08 18:20:05.023882841 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi	2026-04-08 16:21:02.084723976 +0200
+@@ -3,7 +3,21 @@
+  * Copyright 2019 Toradex
+  */
+ 
++#include "dt-bindings/pwm/pwm.h"
++
+ / {
++	backlight: backlight {
++		compatible = "pwm-backlight";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_bl_on>;
++		brightness-levels = <0 45 63 88 119 158 203 255>;
++		default-brightness-level = <4>;
++		enable-gpios = <&lsio_gpio3 12 GPIO_ACTIVE_HIGH>; /* Colibri BL_ON */
++		power-supply = <&reg_module_3v3>;
++		pwms = <&adma_pwm 0 6666667 PWM_POLARITY_INVERTED>;
++		status = "disabled";
++	};
++
+ 	chosen {
+ 		stdout-path = &lpuart3;
+ 	};
+@@ -23,17 +37,144 @@
+ 		};
+ 	};
+ 
++	/* Colibri Parallel RGB */
++	display_lcdif: display@disp1 {
++		compatible = "fsl,imx-lcdif-mux-display";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_lcdif>;
++		clocks = <&clk IMX_SC_R_LCD_0 IMX_SC_PM_CLK_BYPASS>,
++			 <&clk IMX_SC_R_LCD_0 IMX_SC_PM_CLK_MISC0>;
++		clock-names = "bypass_div", "pixel";
++		assigned-clocks = <&clk IMX_SC_R_LCD_0 IMX_SC_PM_CLK_MISC0>;
++		assigned-clock-parents = <&clk IMX_SC_R_LCD_0 IMX_SC_PM_CLK_BYPASS>;
++		fsl,lcdif-mux-regs = <&lcdif_mux_regs>;
++		fsl,interface-pix-fmt = "rgb666";
++		power-domains = <&pd IMX_SC_R_LCD_0>;
++		status = "disabled";
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++	};
++
++	extcon_usbc_det: usbc-det {
++		compatible = "linux,extcon-usb-gpio";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_usbc_det>;
++		id-gpios = <&lsio_gpio5 9 GPIO_ACTIVE_HIGH>;
++		status = "disabled";
++	};
++
+ 	reg_module_3v3: regulator-module-3v3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "+V3.3";
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+ 	};
++
++	reg_module_3v3_avdd: regulator-module-3v3-avdd {
++		compatible = "regulator-fixed";
++		regulator-max-microvolt = <3300000>;
++		regulator-min-microvolt = <3300000>;
++		regulator-name = "+V3.3_AVDD_AUDIO";
++	};
++
++	reg_module_vref_1v8: regulator-module-vref-1v8 {
++		compatible = "regulator-fixed";
++		regulator-max-microvolt = <1800000>;
++		regulator-min-microvolt = <1800000>;
++		regulator-name = "vref-1v8";
++	};
++
++	reg_usbh_vbus: regulator-usbh-vbus {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_usbh1_reg>;
++		gpio = <&lsio_gpio4 3 GPIO_ACTIVE_LOW>;
++		regulator-always-on;
++		regulator-max-microvolt = <5000000>;
++		regulator-min-microvolt = <5000000>;
++		regulator-name = "usbh_vbus";
++	};
++
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		decoder_boot: decoder-boot@84000000 {
++			reg = <0 0x84000000 0 0x2000000>;
++			no-map;
++		};
++
++		encoder_boot: encoder-boot@86000000 {
++			reg = <0 0x86000000 0 0x200000>;
++			no-map;
++		};
++
++		decoder_rpc: decoder-rpc@92000000 {
++			reg = <0 0x92000000 0 0x100000>;
++			no-map;
++		};
++
++		encoder_rpc: encoder-rpc@94400000 {
++			reg = <0 0x94400000 0 0x700000>;
++			no-map;
++		};
++
++		linux,cma {
++			compatible = "shared-dma-pool";
++			linux,cma-default;
++			reusable;
++			size = <0 0x1A000000>;
++		};
++	};
++
++	sound-card {
++		compatible = "simple-audio-card";
++		simple-audio-card,bitclock-master = <&dailink_master>;
++		simple-audio-card,format = "i2s";
++		simple-audio-card,frame-master = <&dailink_master>;
++		simple-audio-card,name = "colibri-imx8x";
++
++		dailink_master: simple-audio-card,codec {
++			clocks = <&mclkout0_lpcg IMX_LPCG_CLK_0>;
++			sound-dai = <&sgtl5000_a>;
++		};
++
++		simple-audio-card,cpu {
++			sound-dai = <&sai0>;
++		};
++	};
++
++	reg_module_wifi: regulator-module-wifi {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = <&gpio_expander_43 6 GPIO_ACTIVE_HIGH>;
++		regulator-always-on;
++		regulator-name = "Wi-Fi_PDn";
++		startup-delay-us = <2000>;
++	};
+ };
+ 
+-/* TODO Analogue Inputs */
++/* Colibri Analogue Inputs */
++&adc0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_adc0>;
++	vref-supply = <&reg_module_vref_1v8>;
++};
+ 
+-/* TODO Cooling maps for DX */
++&adma_lcdif {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lcdif>;
++	status = "disabled";
++};
++
++/* Colibri PWM_A */
++&adma_pwm {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm_a>;
++	#pwm-cells = <3>;
++};
+ 
+ &cpu_alert0 {
+ 	hysteresis = <2000>;
+@@ -47,9 +188,92 @@
+ 	type = "critical";
+ };
+ 
+-/* TODO flexcan1 - 3 */
++&dc0_dpr1_channel1 {
++	status = "okay";
++};
++
++&dc0_dpr1_channel2 {
++	status = "okay";
++};
+ 
+-/* TODO GPU */
++&dc0_dpr1_channel3 {
++	status = "okay";
++};
++
++&dc0_dpr2_channel1 {
++	status = "okay";
++};
++
++&dc0_dpr2_channel2 {
++	status = "okay";
++};
++
++&dc0_dpr2_channel3 {
++	status = "okay";
++};
++
++&dc0_pc {
++	status = "okay";
++};
++
++&dc0_prg1 {
++	status = "okay";
++};
++
++&dc0_prg2 {
++	status = "okay";
++};
++
++&dc0_prg3 {
++	status = "okay";
++};
++
++&dc0_prg4 {
++	status = "okay";
++};
++
++&dc0_prg5 {
++	status = "okay";
++};
++
++&dc0_prg6 {
++	status = "okay";
++};
++
++&dc0_prg7 {
++	status = "okay";
++};
++
++&dc0_prg8 {
++	status = "okay";
++};
++
++&dc0_prg9 {
++	status = "okay";
++};
++
++&dpu1 {
++	status = "okay";
++};
++
++&enet0_lpcg {
++	clocks = <&clk IMX_SC_R_ENET_0 IMX_SC_PM_CLK_PER>,
++		 <&clk IMX_SC_R_ENET_0 IMX_SC_PM_CLK_PER>,
++		 <&conn_axi_clk>,
++		 <&clk IMX_SC_R_ENET_0 IMX_SC_C_DISABLE_50>,
++		 <&conn_ipg_clk>,
++		 <&conn_ipg_clk>;
++	clock-output-names = "enet0_lpcg_timer_clk",
++			     "enet0_lpcg_txc_sampling_clk",
++			     "enet0_lpcg_ahb_clk",
++			     "enet0_lpcg_ref_50mhz_clk",
++			     "enet0_lpcg_ipg_clk",
++			     "enet0_lpcg_ipg_s_clk";
++};
++
++&gpu_3d0 {
++	status = "okay";
++};
+ 
+ /* On-module I2C */
+ &i2c0 {
+@@ -60,8 +284,43 @@
+ 	pinctrl-0 = <&pinctrl_i2c0>, <&pinctrl_sgtl5000_usb_clk>;
+ 	status = "okay";
+ 
++	/* USB HUB USB3803 */
++	usb-hub@8 {
++		compatible = "smsc,usb3803";
++		reg = <0x8>;
++		assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
++				  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
++				  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
++				  <&mclkout0_lpcg IMX_LPCG_CLK_0>;
++		assigned-clock-rates = <786432000>, <49152000>, <12000000>, <12000000>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_usb3503a>;
++		bypass-gpios = <&gpio_expander_43 5 GPIO_ACTIVE_LOW>;
++		clocks = <&mclkout0_lpcg IMX_LPCG_CLK_0>;
++		clock-names = "refclk";
++		disabled-ports = <2>;
++		initial-mode = <1>;
++		intn-gpios = <&lsio_gpio3 4 GPIO_ACTIVE_LOW>;
++		reset-gpios = <&gpio_expander_43 4 GPIO_ACTIVE_LOW>;
++	};
++
++	sgtl5000_a: audio-codec@a {
++		compatible = "fsl,sgtl5000";
++		reg = <0xa>;
++		#sound-dai-cells = <0>;
++		assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
++				  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
++				  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
++				  <&mclkout0_lpcg IMX_LPCG_CLK_0>;
++		assigned-clock-rates = <786432000>, <49152000>, <12000000>, <12000000>;
++		clocks = <&mclkout0_lpcg IMX_LPCG_CLK_0>;
++		VDDA-supply = <&reg_module_3v3_avdd>;
++		VDDD-supply = <&reg_module_vref_1v8>;
++		VDDIO-supply = <&reg_module_3v3>;
++	};
++
+ 	/* Touch controller */
+-	touchscreen@2c {
++	ad7879_ts: touchscreen@2c {
+ 		compatible = "adi,ad7879-1";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_ad7879_int>;
+@@ -77,11 +336,40 @@
+ 		adi,conversion-interval = /bits/ 8 <255>;
+ 		status = "disabled";
+ 	};
++
++	gpio_expander_43: gpio@43 {
++		compatible = "fcs,fxl6408";
++		reg = <0x43>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		gpio-line-names = "Wi-Fi_W_DISABLE",
++				  "Wi-Fi_WKUP_WLAN",
++				  "PWR_EN_+V3.3_WiFi_N",
++				  "PCIe_REF_CLK_EN",
++				  "USB_RESET_N",
++				  "USB_BYPASS_N",
++				  "Wi-Fi_PDn",
++				  "Wi-Fi_WKUP_BT";
++	};
+ };
+ 
+-/* TODO i2c lvds0 accessible on FFC (X2) */
++/* MIPI DSI I2C accessible on FFC (X2) */
++&i2c0_mipi_lvds0 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c0_mipi_lvds0>;
++};
+ 
+-/* TODO i2c lvds1 accessible on FFC (X3) */
++/* MIPI CSI I2C accessible on FFC (X3) */
++&i2c0_mipi_lvds1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c0_mipi_lvds1>;
++};
+ 
+ /* Colibri I2C */
+ &i2c1 {
+@@ -92,6 +380,37 @@
+ 	pinctrl-0 = <&pinctrl_i2c1>;
+ };
+ 
++&imx8_gpu_ss {
++	status = "okay";
++};
++
++&irqsteer_csi0 {
++	status = "okay";
++};
++
++&isi_0 {
++	/**
++	 * interface = <Input MIPI_VCx Output>
++	 * Input:	0-DC0, 1-DC1, 2-MIPI CSI0, 3-MIPI CSI1, 4-HDMI, 5-MEM, INPUT: 6-PARALLEL CSI
++	 * MIPI_VCx:	0-VC0, 1-VC1, 2-VC2, 3-VC3, MIPI CSI only
++	 * Output:	0-DC0, 1-DC1, 2-MEM
++	 */
++	interface = <2 0 2>;
++
++	cap_device {
++		status = "okay";
++	};
++
++	m2m_device {
++		status = "okay";
++	};
++};
++
++&isi_1 {
++	interface = <6 0 2>;
++	parallel_csi;
++};
++
+ &jpegdec {
+ 	status = "okay";
+ };
+@@ -100,8 +419,6 @@
+ 	status = "okay";
+ };
+ 
+-/* TODO Parallel RRB */
+-
+ /* Colibri UART_B */
+ &lpuart0 {
+ 	pinctrl-names = "default";
+@@ -321,13 +638,94 @@
+ 	pinctrl-names = "default";
+ };
+ 
+-/* TODO MIPI CSI */
++/* VPU Mailboxes */
++&mu_m0 {
++	status="okay";
++};
++
++&mu1_m0 {
++	status="okay";
++};
++
++/* MIPI CSI accessible via FFC (X3) */
++&mipi_csi_0 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++};
++
++&hsio_refb_clk {
++	enable-gpios = <&gpio_expander_43 3 GPIO_ACTIVE_HIGH>;
++};
++
++&phyx1 {
++	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
++	status = "okay";
++};
++
++/* On-module PCIe for Wi-Fi */
++&pcieb {
++	compatible = "fsl,imx8qxp-pcie", "snps,dw-pcie";
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pcieb &pinctrl_wifi>;
++	fsl,max-link-speed = <1>;
++	reset-gpio = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
++	vpcie-supply = <&reg_module_wifi>;
++	status = "okay";
++};
++
++/* On-module I2S */
++&sai0 {
++	#sound-dai-cells = <0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_sai0>;
++	status = "okay";
++};
+ 
+-/* TODO MIPI DSI with DSI-to-HDMI bridge lt8912 */
++&thermal_zones {
++	pmic-thermal {
++		polling-delay-passive = <250>;
++		polling-delay = <2000>;
++		thermal-sensors = <&tsens IMX_SC_R_PMIC_0>;
++
++		trips {
++			pmic_alert0: trip0 {
++				temperature = <110000>;
++				hysteresis = <2000>;
++				type = "passive";
++			};
++
++			pmic_crit0: trip1 {
++				temperature = <125000>;
++				hysteresis = <2000>;
++				type = "critical";
++			};
++		};
+ 
+-/* TODO on-module PCIe for Wi-Fi */
++		cooling-maps {
++			pmic_cooling_map0: map0 {
++				trip = <&pmic_alert0>;
++				cooling-device = <&A35_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++						 <&A35_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++						 <&A35_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++						 <&A35_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++			};
++		};
++	};
++};
+ 
+-/* TODO On-module i2s / Audio */
++&usbotg1 {
++	adp-disable;
++	disable-over-current;
++	extcon = <&extcon_usbc_det &extcon_usbc_det>;
++	hnp-disable;
++	power-active-high;
++	srp-disable;
++	vbus-supply = <&reg_usbh_vbus>;
++};
++
++&usbotg3_cdns3 {
++	dr_mode = "host";
++};
+ 
+ /* On-module eMMC */
+ &usdhc1 {
+@@ -356,11 +754,24 @@
+ 	no-1-8-v;
+ };
+ 
+-/* TODO USB Client/Host */
++&vpu {
++	compatible = "nxp,imx8qxp-vpu";
++	status = "okay";
++};
+ 
+-/* TODO USB Host */
++/* VPU Decoder */
++&vpu_core0 {
++	reg = <0x2d040000 0x10000>;
++	memory-region = <&decoder_boot>, <&decoder_rpc>;
++	status = "okay";
++};
+ 
+-/* TODO VPU Encoder/Decoder */
++/* VPU Encoder */
++&vpu_core1 {
++	reg = <0x2d050000 0x10000>;
++	memory-region = <&encoder_boot>, <&encoder_rpc>;
++	status = "okay";
++};
+ 
+ &iomuxc {
+ 	/* On-module touch pen-down interrupt */
+@@ -776,3 +1187,6 @@
+ /delete-node/ &adc1_lpcg;
+ /delete-node/ &dsp;
+ /delete-node/ &dsp_lpcg;
++/delete-node/ &emvsim0;
++/delete-node/ &emvsim0_lpcg;
++/delete-node/ &hdmi_rx_pxl_link_lpcg;

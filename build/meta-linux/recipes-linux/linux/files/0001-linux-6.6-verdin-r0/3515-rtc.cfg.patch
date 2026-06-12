@@ -1,0 +1,46 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/features/timer/rtc.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/features/timer/rtc.cfg	2026-04-08 16:21:19.375310319 +0200
+@@ -0,0 +1,43 @@
++CONFIG_RTC_LIB=y
++CONFIG_RTC_HCTOSYS=y
++CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
++CONFIG_RTC_SYSTOHC=y
++CONFIG_RTC_SYSTOHC_DEVICE="rtc0"
++CONFIG_RTC_NVMEM=y
++#
++# RTC interfaces
++#
++CONFIG_RTC_INTF_SYSFS=y
++CONFIG_RTC_INTF_PROC=y
++CONFIG_RTC_INTF_DEV=y
++CONFIG_RTC_INTF_DEV_UIE_EMUL=y
++#
++# I2C RTC drivers
++#
++CONFIG_RTC_DRV_DS1307=y
++CONFIG_RTC_DRV_ISL1208=y
++CONFIG_RTC_DRV_PCF8523=y
++CONFIG_RTC_DRV_PCF8563=y
++CONFIG_RTC_DRV_PCF85363=y
++CONFIG_RTC_DRV_M41T80=y
++CONFIG_RTC_DRV_ABX80X=m
++CONFIG_RTC_DRV_RV8803=m
++
++#
++# SPI RTC drivers
++#
++CONFIG_RTC_I2C_AND_SPI=y
++
++#
++# SPI and I2C RTC drivers
++#
++CONFIG_RTC_DRV_PCF2127=m
++
++#
++# Platform RTC drivers
++#
++CONFIG_RTC_DRV_DA9063=y
++#
++# on-CPU RTC drivers
++#
++CONFIG_RTC_DRV_MC13XXX=y

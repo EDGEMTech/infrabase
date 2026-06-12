@@ -1,0 +1,21 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/verdin-imx8mp_nau8822-btl_overlay.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/verdin-imx8mp_nau8822-btl_overlay.dts	2023-08-10 09:55:58.419675186 +0200
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2023 Toradex
++ */
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	compatible = "toradex,verdin-imx8mp";
++};
++
++// Allow configuring the two loudspeaker outputs as a
++// single Bridge Tied Load output getting higher output power.
++
++&nau8822_1a {
++	nuvoton,spk-btl;
++};

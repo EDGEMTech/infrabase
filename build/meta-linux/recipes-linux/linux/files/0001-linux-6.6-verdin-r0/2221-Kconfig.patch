@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/mxc/output/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/media/platform/mxc/output/Kconfig	2026-04-08 16:21:07.024787645 +0200
+@@ -0,0 +1,16 @@
++config VIDEO_MXC_IPU_OUTPUT
++	tristate "IPU v4l2 output support"
++	depends on VIDEO_MXC_OUTPUT && MXC_IPU
++	help
++	This is the video4linux2 driver for IPU post processing video output.
++
++config VIDEO_MXC_PXP_V4L2
++        tristate "MXC PxP V4L2 driver"
++        depends on VIDEO_DEV
++        select VIDEOBUF_DMA_CONTIG
++        help
++          This is a video4linux driver for the Freescale PxP
++          (Pixel Pipeline). This module supports output overlay of
++          the MXC framebuffer on a video stream.
++
++          To compile this driver as a module, choose M here.

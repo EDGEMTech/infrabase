@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/usb/phy/Kconfig	2026-04-08 18:20:09.577009715 +0200
++++ ./drivers/usb/phy/Kconfig	2026-04-08 16:21:09.741274044 +0200
+@@ -140,7 +140,7 @@
+ 
+ config USB_MXS_PHY
+ 	tristate "Freescale MXS USB PHY support"
+-	depends on ARCH_MXC || ARCH_MXS
++	depends on ARCH_MXC || ARCH_MXS || ARCH_MXC_ARM64
+ 	select STMP_DEVICE
+ 	select USB_PHY
+ 	help

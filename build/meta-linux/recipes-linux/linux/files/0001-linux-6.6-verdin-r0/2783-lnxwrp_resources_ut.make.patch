@@ -1,0 +1,31 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.make	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.make	2026-04-08 16:21:07.556334425 +0200
+@@ -0,0 +1,28 @@
++CC=gcc
++
++LNXWRP_RESS_UT=lnxwrp_resources_ut
++OBJ=lnxwrp_resources
++
++INC_PATH=
++LIB_PATH=
++
++INC=$(addprefix -I,$(INC_PATH))
++LIB=$(addprefix -L,$(LIB_PATH))
++
++CFLAGS= -gdwarf-2 -g -O0 -Wall
++XFLAGS= -DFMAN_RESOURCES_UNIT_TEST
++
++all: $(LNXWRP_RESS_UT)
++
++$(LNXWRP_RESS_UT):$(addsuffix .o,$(OBJ)) $(LNXWRP_RESS_UT).o
++	$(CC) -o $(LNXWRP_RESS_UT) $(LNXWRP_RESS_UT).o $(addsuffix .o,$(OBJ))
++
++%.o: %.c
++	@(echo "        (CC)  $@")
++	@($(CC) $(INC) $(CFLAGS) $(XFLAGS) -o $(@) -c $<)
++
++.PHONY: clean
++
++clean:
++	rm -f *.o
++	rm -f $(LNXWRP_RESS_UT)

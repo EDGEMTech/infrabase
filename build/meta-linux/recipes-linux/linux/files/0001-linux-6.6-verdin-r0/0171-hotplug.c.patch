@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/mach-imx/hotplug.c	2026-04-08 18:20:04.946066302 +0200
++++ ./arch/arm/mach-imx/hotplug.c	2026-04-08 16:21:01.747222150 +0200
+@@ -11,7 +11,6 @@
+ #include <asm/proc-fns.h>
+ 
+ #include "common.h"
+-#include "hardware.h"
+ 
+ /*
+  * platform-specific code to shutdown a CPU
+@@ -41,7 +40,5 @@
+ 			return 0;
+ 	imx_enable_cpu(cpu, false);
+ 	imx_set_cpu_arg(cpu, 0);
+-	if (cpu_is_imx7d())
+-		imx_gpcv2_set_core1_pdn_pup_by_software(true);
+ 	return 1;
+ }

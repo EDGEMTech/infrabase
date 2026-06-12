@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/soc/imx/soc-imx.c	2026-04-08 18:20:09.278216793 +0200
++++ ./drivers/soc/imx/soc-imx.c	2026-04-08 16:21:09.328815244 +0200
+@@ -96,7 +96,10 @@
+ 		break;
+ 	case MXC_CPU_IMX6Q:
+ 		ocotp_compat = "fsl,imx6q-ocotp";
+-		soc_id = "i.MX6Q";
++		if (imx_get_soc_revision() >= IMX_CHIP_REVISION_2_0)
++			soc_id = "i.MX6QP";
++		else
++			soc_id = "i.MX6Q";
+ 		break;
+ 	case MXC_CPU_IMX6UL:
+ 		ocotp_compat = "fsl,imx6ul-ocotp";

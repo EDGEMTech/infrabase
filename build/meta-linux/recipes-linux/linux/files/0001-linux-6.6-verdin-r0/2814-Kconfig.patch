@@ -1,0 +1,24 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/pcs/Kconfig	2026-04-08 18:20:08.499142934 +0200
++++ ./drivers/net/pcs/Kconfig	2026-04-08 16:21:07.973734754 +0200
+@@ -5,6 +5,13 @@
+ 
+ menu "PCS device drivers"
+ 
++config MTIP_BACKPLANE_PHY
++	tristate "MoreThanIP copper backplane PHYs"
++	help
++	  Enable support for the MoreThanIP copper backplane Auto-Negotiation
++	  and Link Training blocks, as implemented on the QorIQ and Layerscape
++	  SoCs.
++
+ config PCS_XPCS
+ 	tristate
+ 	select PHYLINK
+@@ -13,6 +20,7 @@
+ 	  controllers.
+ 
+ config PCS_LYNX
++	depends on MTIP_BACKPLANE_PHY || MTIP_BACKPLANE_PHY=n
+ 	tristate
+ 	help
+ 	  This module provides helpers to phylink for managing the Lynx PCS

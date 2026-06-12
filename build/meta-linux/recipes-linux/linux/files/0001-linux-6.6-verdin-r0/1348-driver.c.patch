@@ -1,0 +1,46 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/arm_scmi/driver.c	2026-04-08 18:20:06.036911073 +0200
++++ ./drivers/firmware/arm_scmi/driver.c	2026-04-08 16:21:04.941761801 +0200
+@@ -1512,6 +1512,7 @@
+  * @ph: A protocol handle reference.
+  * @cmd_id: The specific command ID to use.
+  * @res_id: The specific resource ID to use.
++ * @flags: A pointer to specific flags to use, if any.
+  * @name: A pointer to the preallocated area where the retrieved name will be
+  *	  stored as a NULL terminated string.
+  * @len: The len in bytes of the @name char array.
+@@ -1519,8 +1520,8 @@
+  * Return: 0 on Succcess
+  */
+ static int scmi_common_extended_name_get(const struct scmi_protocol_handle *ph,
+-					 u8 cmd_id, u32 res_id, char *name,
+-					 size_t len)
++					 u8 cmd_id, u32 res_id, u32 *flags,
++					 char *name, size_t len)
+ {
+ 	int ret;
+ 	struct scmi_xfer *t;
+@@ -1532,6 +1533,8 @@
+ 		goto out;
+ 
+ 	put_unaligned_le32(res_id, t->tx.buf);
++	if (flags)
++		put_unaligned_le32(*flags, t->tx.buf + sizeof(res_id));
+ 	resp = t->rx.buf;
+ 
+ 	ret = ph->xops->do_xfer(ph, t);
+@@ -3095,6 +3098,7 @@
+ 	scmi_voltage_register();
+ 	scmi_system_register();
+ 	scmi_powercap_register();
++	scmi_pinctrl_register();
+ 
+ 	return platform_driver_register(&scmi_driver);
+ }
+@@ -3112,6 +3116,7 @@
+ 	scmi_voltage_unregister();
+ 	scmi_system_unregister();
+ 	scmi_powercap_unregister();
++	scmi_pinctrl_unregister();
+ 
+ 	scmi_transports_exit();
+ 

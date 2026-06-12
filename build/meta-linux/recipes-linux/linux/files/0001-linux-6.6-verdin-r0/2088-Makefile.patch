@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/hwmon/Makefile	2026-04-08 18:20:07.325610810 +0200
++++ ./drivers/hwmon/Makefile	2026-04-08 16:21:06.381370381 +0200
+@@ -135,11 +135,13 @@
+ obj-$(CONFIG_SENSORS_LTC4260)	+= ltc4260.o
+ obj-$(CONFIG_SENSORS_LTC4261)	+= ltc4261.o
+ obj-$(CONFIG_SENSORS_LTQ_CPUTEMP) += ltq-cputemp.o
++obj-$(CONFIG_SENSORS_FP9931)	+= fp9931-hwmon.o
+ obj-$(CONFIG_SENSORS_MAX1111)	+= max1111.o
+ obj-$(CONFIG_SENSORS_MAX127)	+= max127.o
+ obj-$(CONFIG_SENSORS_MAX16065)	+= max16065.o
+ obj-$(CONFIG_SENSORS_MAX1619)	+= max1619.o
+ obj-$(CONFIG_SENSORS_MAX1668)	+= max1668.o
++obj-$(CONFIG_SENSORS_MAX17135)  += max17135-hwmon.o
+ obj-$(CONFIG_SENSORS_MAX197)	+= max197.o
+ obj-$(CONFIG_SENSORS_MAX31722)	+= max31722.o
+ obj-$(CONFIG_SENSORS_MAX31730)	+= max31730.o

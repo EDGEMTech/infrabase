@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/sound/sof.h	2026-04-08 18:20:10.207027267 +0200
++++ ./include/sound/sof.h	2026-04-08 16:21:11.749218998 +0200
+@@ -102,6 +102,7 @@
+ 	struct platform_device *pdev_mach;
+ 	const struct snd_soc_acpi_mach *machine;
+ 	const struct snd_sof_of_mach *of_machine;
++	const char *machine_drv_name; /* machine driver name, set only for OF case */
+ 
+ 	void *hw_pdata;
+ 

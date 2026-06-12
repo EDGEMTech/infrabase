@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml	2026-04-08 18:20:04.613871413 +0200
++++ ./Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml	2026-04-08 16:20:59.827500617 +0200
+@@ -22,6 +22,7 @@
+           - enum:
+               - fsl,imx8ulp-spi
+               - fsl,imx93-spi
++              - fsl,imx95-spi
+           - const: fsl,imx7ulp-spi
+   reg:
+     maxItems: 1

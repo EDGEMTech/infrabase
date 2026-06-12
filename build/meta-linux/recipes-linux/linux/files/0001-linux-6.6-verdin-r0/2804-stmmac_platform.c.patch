@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c	2026-04-08 18:20:08.452978398 +0200
++++ ./drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c	2026-04-08 16:21:07.919028019 +0200
+@@ -707,8 +707,6 @@
+ void stmmac_remove_config_dt(struct platform_device *pdev,
+ 			     struct plat_stmmacenet_data *plat)
+ {
+-	clk_disable_unprepare(plat->stmmac_clk);
+-	clk_disable_unprepare(plat->pclk);
+ 	of_node_put(plat->phy_node);
+ 	of_node_put(plat->mdio_node);
+ }

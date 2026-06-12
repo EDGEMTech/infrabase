@@ -1,0 +1,8 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pinctrl/freescale/Makefile	2026-04-08 18:20:08.908407098 +0200
++++ ./drivers/pinctrl/freescale/Makefile	2026-04-08 16:21:08.737177700 +0200
+@@ -33,3 +33,5 @@
+ obj-$(CONFIG_PINCTRL_IMX28)	+= pinctrl-imx28.o
+ obj-$(CONFIG_PINCTRL_IMXRT1050)	+= pinctrl-imxrt1050.o
+ obj-$(CONFIG_PINCTRL_IMXRT1170)	+= pinctrl-imxrt1170.o
++obj-$(CONFIG_PINCTRL_S32V234)	+= pinctrl-s32v234.o
++obj-$(CONFIG_PINCTRL_S32V_CORE)	+= pinctrl-s32v-core.o

@@ -1,0 +1,15 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/tee/optee/call.c	2026-04-08 18:20:09.446914053 +0200
++++ ./drivers/tee/optee/call.c	2026-04-08 16:21:09.588775474 +0200
+@@ -483,8 +483,10 @@
+ static bool is_normal_memory(pgprot_t p)
+ {
+ #if defined(CONFIG_ARM)
+-	return (((pgprot_val(p) & L_PTE_MT_MASK) == L_PTE_MT_WRITEALLOC) ||
+-		((pgprot_val(p) & L_PTE_MT_MASK) == L_PTE_MT_WRITEBACK));
++	u32 attr = pgprot_val(p) & L_PTE_MT_MASK;
++
++	return (attr == L_PTE_MT_WRITEALLOC) || (attr == L_PTE_MT_WRITEBACK) ||
++		(attr == L_PTE_MT_WRITETHROUGH);
+ #elif defined(CONFIG_ARM64)
+ 	return (pgprot_val(p) & PTE_ATTRINDX_MASK) == PTE_ATTRINDX(MT_NORMAL);
+ #else

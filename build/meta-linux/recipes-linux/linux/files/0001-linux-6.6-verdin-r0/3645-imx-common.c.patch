@@ -1,0 +1,31 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/sof/imx/imx-common.c	2026-04-08 18:20:10.944549899 +0200
++++ ./sound/soc/sof/imx/imx-common.c	2026-04-08 16:21:18.488208736 +0200
+@@ -74,28 +74,4 @@
+ }
+ EXPORT_SYMBOL(imx8_dump);
+ 
+-int imx8_parse_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks)
+-{
+-	int ret;
+-
+-	ret = devm_clk_bulk_get(sdev->dev, clks->num_dsp_clks, clks->dsp_clks);
+-	if (ret)
+-		dev_err(sdev->dev, "Failed to request DSP clocks\n");
+-
+-	return ret;
+-}
+-EXPORT_SYMBOL(imx8_parse_clocks);
+-
+-int imx8_enable_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks)
+-{
+-	return clk_bulk_prepare_enable(clks->num_dsp_clks, clks->dsp_clks);
+-}
+-EXPORT_SYMBOL(imx8_enable_clocks);
+-
+-void imx8_disable_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks)
+-{
+-	clk_bulk_disable_unprepare(clks->num_dsp_clks, clks->dsp_clks);
+-}
+-EXPORT_SYMBOL(imx8_disable_clocks);
+-
+ MODULE_LICENSE("Dual BSD/GPL");

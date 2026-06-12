@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/staging/media/Makefile	2026-04-08 18:20:09.321991146 +0200
++++ ./drivers/staging/media/Makefile	2026-04-08 16:21:09.408595940 +0200
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_VIDEO_ATMEL_ISC_BASE)	+= deprecated/atmel/
+ obj-$(CONFIG_INTEL_ATOMISP)     += atomisp/
+-obj-$(CONFIG_VIDEO_IMX_MEDIA)	+= imx/
++obj-$(CONFIG_VIDEO_IMX_CAPTURE)	+= imx/
+ obj-$(CONFIG_VIDEO_MAX96712)	+= max96712/
+ obj-$(CONFIG_VIDEO_MESON_VDEC)	+= meson/vdec/
+ obj-$(CONFIG_VIDEO_OMAP4)	+= omap4iss/

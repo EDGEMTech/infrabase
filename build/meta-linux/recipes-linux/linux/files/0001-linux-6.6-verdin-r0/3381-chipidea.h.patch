@@ -1,0 +1,15 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/usb/chipidea.h	2026-04-08 18:20:10.150136665 +0200
++++ ./include/linux/usb/chipidea.h	2026-04-08 16:21:11.656734228 +0200
+@@ -64,8 +64,10 @@
+ #define CI_HDRC_PMQOS			BIT(15)
+ #define CI_HDRC_PHY_VBUS_CONTROL	BIT(16)
+ #define CI_HDRC_HAS_PORTSC_PEC_MISSED	BIT(17)
+-#define CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS	BIT(18)
+-#define	CI_HDRC_HAS_SHORT_PKT_LIMIT	BIT(19)
++/* PHY enter low power mode when bus suspend */
++#define CI_HDRC_HOST_SUSP_PHY_LPM	BIT(18)
++#define CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS	BIT(19)
++#define	CI_HDRC_HAS_SHORT_PKT_LIMIT	BIT(20)
+ 	enum usb_dr_mode	dr_mode;
+ #define CI_HDRC_CONTROLLER_RESET_EVENT		0
+ #define CI_HDRC_CONTROLLER_STOPPED_EVENT	1

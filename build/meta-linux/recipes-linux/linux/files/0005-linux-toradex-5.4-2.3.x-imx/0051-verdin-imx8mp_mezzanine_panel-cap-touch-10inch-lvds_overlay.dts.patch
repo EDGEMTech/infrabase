@@ -1,0 +1,76 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/verdin-imx8mp_mezzanine_panel-cap-touch-10inch-lvds_overlay.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/verdin-imx8mp_mezzanine_panel-cap-touch-10inch-lvds_overlay.dts	2023-08-10 09:55:58.419675186 +0200
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2021 Toradex
++ */
++
++// Verdin iMX8M Plus Mezzanine single-channel LVDS
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	compatible = "toradex,verdin-imx8mp";
++};
++
++&atmel_mxt_ts_mezzanine {
++	status = "okay";
++};
++
++&backlight_mezzanine {
++	status = "okay";
++};
++
++&gpu_2d {
++	status = "okay";
++};
++
++&gpu_3d {
++	status = "okay";
++};
++
++&lcdif2 {
++	status = "okay";
++};
++
++&ldb {
++	status = "okay";
++};
++
++&ldb_phy {
++	status = "okay";
++};
++
++&mix_gpu_ml {
++	status = "okay";
++};
++
++&ml_vipsi {
++	status = "okay";
++};
++
++&panel_lvds_mez {
++	height-mm = <136>;
++	width-mm = <217>;
++	status = "okay";
++
++	panel-timing {
++		clock-frequency = <68900000 71100000 73400000>;
++		de-active = <1>;
++		hactive = <1280 1280 1280>;
++		hback-porch = <23 60 71>;
++		hfront-porch = <23 60 71>;
++		hsync-len = <15 40 47>;
++		pixelclk-active = <1>; /* positive edge */
++		vactive = <800 800 800>;
++		vback-porch = <5 7 10>;
++		vfront-porch = <5 7 10>;
++		vsync-len = <6 9 12>;
++	};
++};
++
++&pwm2 {
++	status = "okay";
++};

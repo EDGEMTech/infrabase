@@ -1,0 +1,31 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pwm/pwm-imx-tpm.c	2026-04-08 18:20:09.014994057 +0200
++++ ./drivers/pwm/pwm-imx-tpm.c	2026-04-08 16:21:08.967621235 +0200
+@@ -33,6 +33,7 @@
+ #define PWM_IMX_TPM_CnV(n)	(0x24 + (n) * 0x8)
+ 
+ #define PWM_IMX_TPM_PARAM_CHAN			GENMASK(7, 0)
++#define PWM_IMX_TPM_GLOBAL_RST			BIT(1)
+ 
+ #define PWM_IMX_TPM_SC_PS			GENMASK(2, 0)
+ #define PWM_IMX_TPM_SC_CMOD			GENMASK(4, 3)
+@@ -339,6 +340,7 @@
+ 
+ static int pwm_imx_tpm_probe(struct platform_device *pdev)
+ {
++	struct device_node *np = pdev->dev.of_node;
+ 	struct imx_tpm_pwm_chip *tpm;
+ 	int ret;
+ 	u32 val;
+@@ -372,6 +374,12 @@
+ 	val = readl(tpm->base + PWM_IMX_TPM_PARAM);
+ 	tpm->chip.npwm = FIELD_GET(PWM_IMX_TPM_PARAM_CHAN, val);
+ 
++	if (of_property_read_bool(np, "pwm-rst")) {
++		/* Resets all internal logic and registers */
++		writel(PWM_IMX_TPM_GLOBAL_RST, tpm->base + PWM_IMX_TPM_GLOBAL);
++		writel(0, tpm->base + PWM_IMX_TPM_GLOBAL);
++	}
++
+ 	mutex_init(&tpm->lock);
+ 
+ 	ret = pwmchip_add(&tpm->chip);

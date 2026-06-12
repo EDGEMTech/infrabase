@@ -1,0 +1,47 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/reset/Kconfig	2026-04-08 18:20:09.040994781 +0200
++++ ./drivers/reset/Kconfig	2026-04-08 16:21:09.018532503 +0200
+@@ -66,6 +66,15 @@
+ 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
+ 	  BCM7216.
+ 
++config RESET_DISPMIX
++	tristate "IMX Display Mix reset support"
++	default y
++	select REGMAP_MMIO
++	depends on ARCH_MXC
++	help
++	  This driver provides support for Display Mix reset that is controlled
++	  by dispmix GPR registers.
++
+ config RESET_HSDK
+ 	bool "Synopsys HSDK Reset Driver"
+ 	depends on HAS_IOMEM
+@@ -82,6 +91,13 @@
+ 	help
+ 	  This enables the reset controller driver for i.MX7 SoCs.
+ 
++config RESET_IMX8ULP_SIM
++	tristate "i.MX8ULP SIM Reset Driver"
++	depends on ARCH_MXC
++	help
++	  This enables the SIM (System Integration Module) reset driver
++	  for i.MX8ulp SoC.
++
+ config RESET_INTEL_GW
+ 	bool "Intel Reset Controller Driver"
+ 	depends on X86 || COMPILE_TEST
+@@ -108,6 +124,14 @@
+ 	help
+ 	  This enables the reset controller driver for Lantiq / Intel XWAY SoCs.
+ 
++config RESET_GPIO
++	tristate "GPIO reset controller support"
++	default y
++	depends on GPIOLIB && OF
++	help
++	  This driver provides support for reset lines that are controlled
++	  directly by GPIOs.
++
+ config RESET_LPC18XX
+ 	bool "LPC18xx/43xx Reset Driver" if COMPILE_TEST
+ 	default ARCH_LPC18XX

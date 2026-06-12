@@ -1,0 +1,38 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/Kconfig.platforms	2026-04-08 18:20:04.999614208 +0200
++++ ./arch/arm64/Kconfig.platforms	2026-04-08 16:21:01.918466008 +0200
+@@ -208,21 +208,34 @@
+ 	bool "NXP i.MX SoC family"
+ 	select ARM64_ERRATUM_843419
+ 	select ARM64_ERRATUM_845719 if COMPAT
++	select GPIOLIB
+ 	select IMX_GPCV2
+ 	select IMX_GPCV2_PM_DOMAINS
+ 	select PM
+ 	select PM_GENERIC_DOMAINS
+ 	select SOC_BUS
+-	select TIMER_IMX_SYS_CTR
+ 	help
+ 	  This enables support for the ARMv8 based SoCs in the
+ 	  NXP i.MX family.
+ 
++config HAVE_IMX_BUSFREQ
++	bool "i.MX8 busfreq"
++	default ARCH_MXC
++
+ config ARCH_S32
+ 	bool "NXP S32 SoC Family"
++	select ARCH_S32_CLK
++	select PINCTRL
+ 	help
+ 	  This enables support for the NXP S32 family of processors.
+ 
++if ARCH_S32
++menu "S32 SOC selection"
++	config SOC_S32V234
++		bool "S32V234 SOC"
++endmenu
++endif
++
+ endif
+ 
+ config ARCH_MA35

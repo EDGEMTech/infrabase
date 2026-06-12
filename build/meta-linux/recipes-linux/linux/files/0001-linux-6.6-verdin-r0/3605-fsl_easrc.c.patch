@@ -1,0 +1,65 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/fsl/fsl_easrc.c	2026-04-08 18:20:10.899046544 +0200
++++ ./sound/soc/fsl/fsl_easrc.c	2026-04-08 16:21:18.379700554 +0200
+@@ -1751,6 +1751,8 @@
+ 	.cache_type = REGCACHE_RBTREE,
+ };
+ 
++#include "fsl_easrc_m2m.c"
++
+ #ifdef DEBUG
+ static void fsl_easrc_dump_firmware(struct fsl_asrc *easrc)
+ {
+@@ -1976,6 +1978,12 @@
+ 		goto err_pm_disable;
+ 	}
+ 
++	ret = fsl_easrc_m2m_init(easrc);
++	if (ret) {
++		dev_err(&pdev->dev, "failed to init m2m device %d\n", ret);
++		return ret;
++	}
++
+ 	return 0;
+ 
+ err_pm_disable:
+@@ -2085,12 +2093,38 @@
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_PM_SLEEP
++static int fsl_easrc_suspend(struct device *dev)
++{
++	struct fsl_asrc *easrc = dev_get_drvdata(dev);
++	int ret;
++
++	fsl_easrc_m2m_suspend(easrc);
++
++	ret = pm_runtime_force_suspend(dev);
++
++	return ret;
++}
++
++static int fsl_easrc_resume(struct device *dev)
++{
++	struct fsl_asrc *easrc = dev_get_drvdata(dev);
++	int ret;
++
++	ret = pm_runtime_force_resume(dev);
++
++	fsl_easrc_m2m_resume(easrc);
++
++	return ret;
++}
++#endif /*CONFIG_PM_SLEEP*/
++
+ static const struct dev_pm_ops fsl_easrc_pm_ops = {
+ 	SET_RUNTIME_PM_OPS(fsl_easrc_runtime_suspend,
+ 			   fsl_easrc_runtime_resume,
+ 			   NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+-				pm_runtime_force_resume)
++	SET_SYSTEM_SLEEP_PM_OPS(fsl_easrc_suspend,
++				fsl_easrc_resume)
+ };
+ 
+ static struct platform_driver fsl_easrc_driver = {

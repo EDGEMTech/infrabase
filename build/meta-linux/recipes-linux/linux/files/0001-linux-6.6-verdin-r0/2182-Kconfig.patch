@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/Kconfig	2026-04-08 18:20:07.627955410 +0200
++++ ./drivers/media/Kconfig	2026-04-08 16:21:06.827462755 +0200
+@@ -42,7 +42,7 @@
+ 	depends on HAS_IOMEM
+ 	select I2C
+ 	select I2C_MUX
+-	default y if MEDIA_SUPPORT_FILTER
++	default n
+ 	help
+ 	  By default, a media driver auto-selects all possible ancillary
+ 	  devices such as tuners, sensors, video encoders/decoders and
+@@ -224,6 +224,7 @@
+ source "drivers/media/usb/Kconfig"
+ source "drivers/media/pci/Kconfig"
+ source "drivers/media/radio/Kconfig"
++source "drivers/media/virtio/Kconfig"
+ 
+ if MEDIA_PLATFORM_SUPPORT
+ source "drivers/media/platform/Kconfig"

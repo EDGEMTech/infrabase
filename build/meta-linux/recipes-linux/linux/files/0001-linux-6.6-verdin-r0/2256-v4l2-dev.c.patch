@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/v4l2-core/v4l2-dev.c	2026-04-08 18:20:07.882962516 +0200
++++ ./drivers/media/v4l2-core/v4l2-dev.c	2026-04-08 16:21:07.154941318 +0200
+@@ -596,6 +596,7 @@
+ 	__set_bit(_IOC_NR(VIDIOC_DBG_G_REGISTER), valid_ioctls);
+ 	__set_bit(_IOC_NR(VIDIOC_DBG_S_REGISTER), valid_ioctls);
+ #endif
++	SET_VALID_IOCTL(ops, VIDIOC_DBG_G_CHIP_IDENT, vidioc_g_chip_ident);
+ 	/* yes, really vidioc_subscribe_event */
+ 	SET_VALID_IOCTL(ops, VIDIOC_DQEVENT, vidioc_subscribe_event);
+ 	SET_VALID_IOCTL(ops, VIDIOC_SUBSCRIBE_EVENT, vidioc_subscribe_event);

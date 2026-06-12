@@ -1,0 +1,24 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/amphion/vdec.c	2026-04-08 18:20:07.748982136 +0200
++++ ./drivers/media/platform/amphion/vdec.c	2026-04-08 16:21:07.002099651 +0200
+@@ -885,6 +885,8 @@
+ 		return true;
+ 	if (inst->crop.height != vdec->codec_info.height)
+ 		return true;
++	if (!vdec->codec_info.progressive)
++		return true;
+ 
+ 	return false;
+ }
+@@ -1593,9 +1595,11 @@
+ 	if (V4L2_TYPE_IS_OUTPUT(type)) {
+ 		vdec_update_state(inst, VPU_CODEC_STATE_SEEK, 0);
+ 		vdec->drain = 0;
++		vdec_abort(inst);
+ 	} else {
+ 		if (inst->state != VPU_CODEC_STATE_DYAMIC_RESOLUTION_CHANGE) {
+-			vdec_abort(inst);
++			if (vb2_is_streaming(v4l2_m2m_get_src_vq(inst->fh.m2m_ctx)))
++				vdec_abort(inst);
+ 			vdec->eos_received = 0;
+ 		}
+ 		vdec_clear_slots(inst);

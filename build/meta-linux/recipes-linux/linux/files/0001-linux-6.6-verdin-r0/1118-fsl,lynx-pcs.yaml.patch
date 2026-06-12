@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/net/pcs/fsl,lynx-pcs.yaml	2026-04-08 18:20:04.568592798 +0200
++++ ./Documentation/devicetree/bindings/net/pcs/fsl,lynx-pcs.yaml	2026-04-08 16:20:59.505563992 +0200
+@@ -16,7 +16,9 @@
+ 
+ properties:
+   compatible:
+-    const: fsl,lynx-pcs
++    enum:
++      - fsl,lx2160a-lynx-pcs
++      - fsl,lynx-pcs
+ 
+   reg:
+     maxItems: 1

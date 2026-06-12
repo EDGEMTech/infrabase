@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/fsl-ls1028a-lane-c-backplane.dtso	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/fsl-ls1028a-lane-c-backplane.dtso	2026-04-08 16:21:01.971618319 +0200
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2024 NXP
++ *
++ * Device Tree fragment for LS1028A SerDes lane C, pinmuxed to the Felix
++ * switch. Requires a SerDes protocol of 0x7777, 0x9999 or a combination
++ * thereof, as long as either SerDes PLLF or PLLS are provisioned for a
++ * clock net of 5 GHz.
++ *
++ * The lane advertises the 1000Base-KX technology ability through C73
++ * auto-negotiation, and is expected to be connected to a copper backplane.
++ */
++
++/dts-v1/;
++/plugin/;
++
++&mscc_felix {
++	status = "okay";
++};
++
++&mscc_felix_port2 {
++	status = "okay";
++	phys = <&serdes 2>; /* lane C */
++	phy-names = "serdes";
++	managed = "c73";
++};

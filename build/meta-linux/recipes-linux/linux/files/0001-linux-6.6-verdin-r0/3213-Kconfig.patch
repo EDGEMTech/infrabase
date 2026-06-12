@@ -1,0 +1,28 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/video/fbdev/Kconfig	2026-04-08 18:20:09.624191418 +0200
++++ ./drivers/video/fbdev/Kconfig	2026-04-08 16:21:09.807198102 +0200
+@@ -1897,6 +1897,18 @@
+ 	  and could also have been called by other names when coupled with
+ 	  a bridge adapter.
+ 
++config FB_MXS
++	tristate "MXS LCD framebuffer support"
++	depends on FB && (ARCH_MXS || ARCH_MXC)
++	select FB_MXC_DISP_FRAMEWORK
++	select FB_CFB_FILLRECT
++	select FB_CFB_COPYAREA
++	select FB_CFB_IMAGEBLIT
++	select FB_MODE_HELPERS
++	select VIDEOMODE_HELPERS
++	help
++	  Framebuffer support for the MXS SoC.
++
+ config FB_HYPERV
+ 	tristate "Microsoft Hyper-V Synthetic Video support"
+ 	depends on FB && HYPERV
+@@ -1953,5 +1965,6 @@
+ source "drivers/video/fbdev/omap/Kconfig"
+ source "drivers/video/fbdev/omap2/Kconfig"
+ source "drivers/video/fbdev/mmp/Kconfig"
++source "drivers/video/fbdev/mxc/Kconfig"
+ 
+ source "drivers/video/fbdev/core/Kconfig"

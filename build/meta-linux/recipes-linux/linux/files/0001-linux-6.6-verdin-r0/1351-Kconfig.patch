@@ -1,0 +1,44 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/arm_scmi/Kconfig	2026-04-08 18:20:06.036581152 +0200
++++ ./drivers/firmware/arm_scmi/Kconfig	2026-04-08 16:21:04.939715359 +0200
+@@ -195,6 +195,18 @@
+ 	  will be called scmi_pm_domain. Note this may needed early in boot
+ 	  before rootfs may be available.
+ 
++config ARM_SCMI_PERF_DOMAIN
++	tristate "SCMI performance domain driver"
++	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
++	default y
++	select PM_GENERIC_DOMAINS if PM
++	help
++	  This enables support for the SCMI performance domains which can be
++	  enabled or disabled via the SCP firmware.
++
++	  This driver can also be built as a module. If so, the module will be
++	  called scmi_perf_domain.
++
+ config ARM_SCMI_POWER_CONTROL
+ 	tristate "SCMI system power control driver"
+ 	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
+@@ -207,4 +219,22 @@
+ 	  called scmi_power_control. Note this may needed early in boot to catch
+ 	  early shutdown/reboot SCMI requests.
+ 
++config IMX_SCMI_BBM_CONTROL
++	tristate "i.MX SCMI BBM control driver"
++	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
++	help
++	  This enables i.MX System BBM control logic which supports RTC
++	  and BUTTON.
++
++	  This driver can also be built as a module.
++
++config IMX_SCMI_MISC_CONTROL
++	tristate "i.MX SCMI MISC control driver"
++	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
++	help
++	  This enables i.MX System MISC control logic which supports various
++	  misc control settings.
++
++	  This driver can also be built as a module.
++
+ endmenu

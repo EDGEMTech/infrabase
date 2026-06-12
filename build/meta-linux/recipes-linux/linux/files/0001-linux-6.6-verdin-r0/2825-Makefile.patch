@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/phy/Makefile	2026-04-08 18:20:08.500963548 +0200
++++ ./drivers/net/phy/Makefile	2026-04-08 16:21:07.975508396 +0200
+@@ -80,6 +80,7 @@
+ obj-$(CONFIG_MICROCHIP_T1_PHY)	+= microchip_t1.o
+ obj-$(CONFIG_MICROCHIP_T1S_PHY) += microchip_t1s.o
+ obj-$(CONFIG_MICROSEMI_PHY)	+= mscc/
++obj-$(CONFIG_MTIP_BACKPLANE_PHY) += mtip_backplane_phy.o
+ obj-$(CONFIG_MOTORCOMM_PHY)	+= motorcomm.o
+ obj-$(CONFIG_NATIONAL_PHY)	+= national.o
+ obj-$(CONFIG_NCN26000_PHY)	+= ncn26000.o

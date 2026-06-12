@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/regmap.h	2026-04-08 18:20:10.122024898 +0200
++++ ./include/linux/regmap.h	2026-04-08 16:21:11.593147240 +0200
+@@ -300,6 +300,7 @@
+  * @disable_locking: This regmap is either protected by external means or
+  *                   is guaranteed not to be accessed from multiple threads.
+  *                   Don't use any locking mechanisms.
++ * @disable_debugfs: Optional, don't create debugfs entries for this regmap.
+  * @lock:	  Optional lock callback (overrides regmap's default lock
+  *		  function, based on spinlock or mutex).
+  * @unlock:	  As above for unlocking.
+@@ -403,6 +404,7 @@
+ 	bool (*readable_noinc_reg)(struct device *dev, unsigned int reg);
+ 
+ 	bool disable_locking;
++	bool disable_debugfs;
+ 	regmap_lock lock;
+ 	regmap_unlock unlock;
+ 	void *lock_arg;

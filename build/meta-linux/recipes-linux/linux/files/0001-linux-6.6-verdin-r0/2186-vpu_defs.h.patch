@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/amphion/vpu_defs.h	2026-04-08 18:20:07.748982136 +0200
++++ ./drivers/media/platform/amphion/vpu_defs.h	2026-04-08 16:21:07.002903754 +0200
+@@ -114,6 +114,7 @@
+ 	u32 wptr;
+ 	u32 crc;
+ 	s64 timestamp;
++	u32 average_qp;
+ };
+ 
+ struct vpu_dec_codec_info {

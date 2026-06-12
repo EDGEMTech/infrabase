@@ -1,0 +1,36 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/drm/drm_of.h	2026-04-08 18:20:09.986021110 +0200
++++ ./include/drm/drm_of.h	2026-04-08 16:21:11.148122610 +0200
+@@ -7,6 +7,7 @@
+ #include <drm/drm_bridge.h>
+ #endif
+ 
++struct component_match;
+ struct component_master_ops;
+ struct component_match;
+ struct device;
+@@ -39,6 +40,10 @@
+ 				struct component_match **matchptr,
+ 				int (*compare)(struct device *, void *),
+ 				struct device_node *node);
++extern int drm_of_component_probe_with_match(struct device *dev,
++			   struct component_match *match,
++			   int (*compare_of)(struct device *, void *),
++			   const struct component_master_ops *m_ops);
+ int drm_of_component_probe(struct device *dev,
+ 			   int (*compare_of)(struct device *, void *),
+ 			   const struct component_master_ops *m_ops);
+@@ -79,6 +84,14 @@
+ {
+ }
+ 
++static inline int drm_of_component_probe_with_match(struct device *dev,
++			   struct component_match *match,
++			   int (*compare_of)(struct device *, void *),
++			   const struct component_master_ops *m_ops)
++{
++	return -EINVAL;
++}
++
+ static inline int
+ drm_of_component_probe(struct device *dev,
+ 		       int (*compare_of)(struct device *, void *),

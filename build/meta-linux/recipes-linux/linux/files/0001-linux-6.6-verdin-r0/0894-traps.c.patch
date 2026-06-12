@@ -1,0 +1,39 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/kernel/traps.c	2026-04-08 18:20:05.102885043 +0200
++++ ./arch/arm64/kernel/traps.c	2026-04-08 16:21:02.436618070 +0200
+@@ -586,6 +586,24 @@
+ 		uaccess_ttbr0_disable();			\
+ 	}
+ 
++#define __user_cache_maint_ivau(insn, address, res)			\
++	do {								\
++		if (address >= TASK_SIZE_MAX) {			\
++			res = -EFAULT;					\
++		} else {						\
++			uaccess_ttbr0_enable();				\
++			asm volatile (					\
++				"1:	" insn "\n"			\
++				"	mov	%w0, #0\n"		\
++				"2:\n"					\
++				_ASM_EXTABLE_UACCESS_ERR(1b, 2b, %w0)	\
++				: "=r" (res)				\
++				: "r" (address));			\
++			uaccess_ttbr0_disable();			\
++		}							\
++	} while (0)
++
++extern bool TKT340553_SW_WORKAROUND;
+ static void user_cache_maint_handler(unsigned long esr, struct pt_regs *regs)
+ {
+ 	unsigned long tagged_address, address;
+@@ -613,7 +631,10 @@
+ 		__user_cache_maint("dc civac", address, ret);
+ 		break;
+ 	case ESR_ELx_SYS64_ISS_CRM_IC_IVAU:	/* IC IVAU */
+-		__user_cache_maint("ic ivau", address, ret);
++		if (TKT340553_SW_WORKAROUND)
++			__user_cache_maint_ivau("ic ialluis", address, ret);
++		else
++			__user_cache_maint("ic ivau", address, ret);
+ 		break;
+ 	default:
+ 		force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc, 0);

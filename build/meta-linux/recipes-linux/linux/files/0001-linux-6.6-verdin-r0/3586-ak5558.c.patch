@@ -1,0 +1,27 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/codecs/ak5558.c	2026-04-08 18:20:10.818044288 +0200
++++ ./sound/soc/codecs/ak5558.c	2026-04-08 16:21:18.239272066 +0200
+@@ -424,7 +424,7 @@
+ 	struct ak5558_priv *ak5558;
+ 	int ret = 0;
+ 	int dev_id;
+-	int i;
++	int i, reg;
+ 
+ 	ak5558 = devm_kzalloc(&i2c->dev, sizeof(*ak5558), GFP_KERNEL);
+ 	if (!ak5558)
+@@ -473,6 +473,15 @@
+ 		return ret;
+ 	}
+ 
++	/* tog the reset gpio */
++	ak5558_reset(ak5558, true);
++	ak5558_reset(ak5558, false);
++
++	/* Check if first register can be read or not */
++	reg = i2c_smbus_read_byte_data(i2c, AK5558_00_POWER_MANAGEMENT1);
++	if (reg < 0)
++		return -ENODEV;
++
+ 	pm_runtime_enable(&i2c->dev);
+ 	regcache_cache_only(ak5558->regmap, true);
+ 

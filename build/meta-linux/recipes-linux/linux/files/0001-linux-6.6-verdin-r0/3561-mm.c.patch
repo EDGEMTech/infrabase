@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/net/ethtool/mm.c	2026-04-08 18:20:10.480241739 +0200
++++ ./net/ethtool/mm.c	2026-04-08 16:21:17.684810553 +0200
+@@ -155,8 +155,8 @@
+ 	[ETHTOOL_A_MM_TX_MIN_FRAG_SIZE]	= NLA_POLICY_RANGE(NLA_U32, 60, 252),
+ };
+ 
+-static void mm_state_to_cfg(const struct ethtool_mm_state *state,
+-			    struct ethtool_mm_cfg *cfg)
++void mm_state_to_cfg(const struct ethtool_mm_state *state,
++		     struct ethtool_mm_cfg *cfg)
+ {
+ 	/* We could also compare state->verify_status against
+ 	 * ETHTOOL_MM_VERIFY_STATUS_DISABLED, but state->verify_enabled
+@@ -171,6 +171,7 @@
+ 	cfg->pmac_enabled = state->pmac_enabled;
+ 	cfg->tx_min_frag_size = state->tx_min_frag_size;
+ }
++EXPORT_SYMBOL_GPL(mm_state_to_cfg);
+ 
+ static int
+ ethnl_set_mm_validate(struct ethnl_req_info *req_info, struct genl_info *info)

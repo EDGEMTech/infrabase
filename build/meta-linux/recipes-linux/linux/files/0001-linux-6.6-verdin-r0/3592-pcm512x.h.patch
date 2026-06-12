@@ -1,0 +1,15 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/codecs/pcm512x.h	2026-04-08 18:20:10.846045068 +0200
++++ ./sound/soc/codecs/pcm512x.h	2026-04-08 16:21:18.297368753 +0200
+@@ -255,6 +255,12 @@
+ #define PCM512x_AGBR_SHIFT 0
+ #define PCM512x_AGBL_SHIFT 4
+ 
++enum pcm512x_sclk_src {
++	PCM512x_SYSCLK_MCLK1,
++	PCM512x_SYSCLK_MCLK2,
++	PCM512x_SYSCLK_NOCLK,
++};
++
+ extern const struct dev_pm_ops pcm512x_pm_ops;
+ extern const struct regmap_config pcm512x_regmap;
+ 

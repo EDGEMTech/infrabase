@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/net/sched/sch_taprio.c	2026-04-08 18:20:10.602038271 +0200
++++ ./net/sched/sch_taprio.c	2026-04-08 16:21:17.852503691 +0200
+@@ -1364,7 +1364,7 @@
+ 	}
+ }
+ 
+-static struct tc_taprio_qopt_offload *taprio_offload_alloc(int num_entries)
++struct tc_taprio_qopt_offload *taprio_offload_alloc(int num_entries)
+ {
+ 	struct __tc_taprio_qopt_offload *__offload;
+ 
+@@ -1377,6 +1377,7 @@
+ 
+ 	return &__offload->offload;
+ }
++EXPORT_SYMBOL_GPL(taprio_offload_alloc);
+ 
+ struct tc_taprio_qopt_offload *taprio_offload_get(struct tc_taprio_qopt_offload
+ 						  *offload)

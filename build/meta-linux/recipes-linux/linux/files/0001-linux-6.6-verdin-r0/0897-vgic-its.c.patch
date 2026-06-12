@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/kvm/vgic/vgic-its.c	2026-04-08 18:20:05.111191542 +0200
++++ ./arch/arm64/kvm/vgic/vgic-its.c	2026-04-08 16:21:02.462006326 +0200
+@@ -248,7 +248,7 @@
+ #define GIC_LPI_OFFSET 8192
+ 
+ #define VITS_TYPER_IDBITS 16
+-#define VITS_TYPER_DEVBITS 16
++#define VITS_TYPER_DEVBITS 17
+ #define VITS_DTE_MAX_DEVID_OFFSET	(BIT(14) - 1)
+ #define VITS_ITE_MAX_EVENTID_OFFSET	(BIT(16) - 1)
+ 

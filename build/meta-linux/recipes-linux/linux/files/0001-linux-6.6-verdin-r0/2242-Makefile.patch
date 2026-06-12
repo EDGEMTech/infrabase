@@ -1,0 +1,15 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/nxp/neoisp/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/media/platform/nxp/neoisp/Makefile	2026-04-08 16:21:07.034562900 +0200
+@@ -0,0 +1,12 @@
++# SPDX-License-Identifier: GPL-2.0+
++
++obj-$(CONFIG_VIDEO_NXP_NEOISP) += neoisp.o
++
++neoisp-objs := neoisp_ctx.o \
++	neoisp_debugfs.o \
++	neoisp_fmt.o \
++	neoisp_main.o \
++	neoisp_nodes.o \
++	neoisp_params.o \
++	neoisp_regs.o
++

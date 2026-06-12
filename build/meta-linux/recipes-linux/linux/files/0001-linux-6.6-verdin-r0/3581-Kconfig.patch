@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/security/keys/trusted-keys/Kconfig	2026-04-08 18:20:10.695040861 +0200
++++ ./security/keys/trusted-keys/Kconfig	2026-04-08 16:21:18.028412559 +0200
+@@ -33,6 +33,13 @@
+ 	  Enable use of NXP's Cryptographic Accelerator and Assurance Module
+ 	  (CAAM) as trusted key backend.
+ 
+-if !TRUSTED_KEYS_TPM && !TRUSTED_KEYS_TEE && !TRUSTED_KEYS_CAAM
++config TRUSTED_KEYS_DCP
++	bool "DCP-based trusted keys"
++	depends on CRYPTO_DEV_MXS_DCP >= TRUSTED_KEYS
++	default y
++	help
++	  Enable use of DCP (Data co-processor) as trusted key backend.
++
++if !TRUSTED_KEYS_TPM && !TRUSTED_KEYS_TEE && !TRUSTED_KEYS_CAAM && !TRUSTED_KEYS_DCP
+ comment "No trust source selected!"
+ endif

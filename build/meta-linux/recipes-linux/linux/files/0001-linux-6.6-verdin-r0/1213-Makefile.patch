@@ -1,0 +1,7 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/char/Makefile	2026-04-08 18:20:05.793955790 +0200
++++ ./drivers/char/Makefile	2026-04-08 16:21:04.519568925 +0200
+@@ -44,3 +44,4 @@
+ obj-$(CONFIG_XILLYBUS_CLASS)	+= xillybus/
+ obj-$(CONFIG_POWERNV_OP_PANEL)	+= powernv-op-panel.o
+ obj-$(CONFIG_ADI)		+= adi.o
++obj-$(CONFIG_HAVE_IMX_AMP)      += imx_amp/

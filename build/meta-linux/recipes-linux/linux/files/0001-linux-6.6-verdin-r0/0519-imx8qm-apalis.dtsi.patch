@@ -1,0 +1,40 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi	2026-04-08 18:20:05.022882813 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi	2026-04-08 16:21:02.052739678 +0200
+@@ -25,7 +25,14 @@
+ 	phy-mode = "rgmii-rxid";
+ };
+ 
+-/* TODO: Apalis HDMI1 */
++/* Apalis HDMI1 */
++&hdmi {
++	ddc-i2c-bus = <&i2c0>;
++};
++
++&hsio_refa_clk {
++	enable-gpios = <&lsio_gpio4 27 GPIO_ACTIVE_HIGH>;
++};
+ 
+ /* Apalis I2C2 (DDC) */
+ &i2c0 {
+@@ -191,12 +198,6 @@
+ 			  "MXM3_291",
+ 			  "MXM3_289",
+ 			  "MXM3_287";
+-
+-	/* Enable pcie root / sata ref clock unconditionally */
+-	pcie-sata-hog {
+-		gpios = <27 GPIO_ACTIVE_HIGH>;
+-	};
+-
+ };
+ 
+ &lsio_gpio5 {
+@@ -319,8 +320,6 @@
+ 		<IMX8QM_PCIE_CTRL0_CLKREQ_B_LSIO_GPIO4_IO27			0x00000021>;
+ };
+ 
+-/* TODO: On-module Wi-Fi */
+-
+ /* Apalis MMC1 */
+ &usdhc2 {
+ 	/*

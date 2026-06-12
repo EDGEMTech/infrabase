@@ -1,0 +1,7 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/features/pwm/pwm.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/features/pwm/pwm.cfg	2026-04-08 16:21:19.373976270 +0200
+@@ -0,0 +1,4 @@
++CONFIG_PWM=y
++CONFIG_PWM_SYSFS=y
++CONFIG_PWM_PCA9685=m
++CONFIG_PWM_IMX27=y

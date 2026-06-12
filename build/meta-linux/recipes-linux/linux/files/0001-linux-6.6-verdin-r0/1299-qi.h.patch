@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/crypto/caam/qi.h	2026-04-08 18:20:05.953908761 +0200
++++ ./drivers/crypto/caam/qi.h	2026-04-08 16:21:04.747099411 +0200
+@@ -11,7 +11,7 @@
+ 
+ #include <crypto/algapi.h>
+ #include <linux/compiler_attributes.h>
+-#include <soc/fsl/qman.h>
++#include <linux/fsl_qman.h>
+ #include "compat.h"
+ #include "desc.h"
+ #include "desc_constr.h"

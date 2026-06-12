@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/imx/dcss/dcss-ctxld.c	2026-04-08 18:20:07.111866601 +0200
++++ ./drivers/gpu/drm/imx/dcss/dcss-ctxld.c	2026-04-08 16:21:05.958810471 +0200
+@@ -267,6 +267,11 @@
+ 
+ 	dcss_scaler_write_sclctrl(dcss->scaler);
+ 
++	if (dcss_dtrc_is_running(dcss->dtrc)) {
++		dcss_dtrc_switch_banks(dcss->dtrc);
++		ctxld->armed = true;
++	}
++
+ 	sb_hp_cnt = ctxld->ctx_size[curr_ctx][CTX_SB_HP];
+ 	sb_lp_cnt = ctxld->ctx_size[curr_ctx][CTX_SB_LP];
+ 	db_cnt = ctxld->ctx_size[curr_ctx][CTX_DB];

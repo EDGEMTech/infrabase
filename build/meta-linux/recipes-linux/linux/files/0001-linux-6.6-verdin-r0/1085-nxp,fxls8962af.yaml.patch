@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml	2026-04-08 18:20:04.533373882 +0200
++++ ./Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml	2026-04-08 16:20:51.348204732 +0200
+@@ -14,12 +14,18 @@
+   SPI and I2C interface.
+     https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
+     https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
++    https://www.nxp.com/docs/en/data-sheet/FXLS8967AF.pdf
++    https://www.nxp.com/docs/en/data-sheet/FXLS8974CF.pdf
+ 
+ properties:
+   compatible:
++    description:
++      These chips are compatible with each other, just have different IDs.
+     enum:
+       - nxp,fxls8962af
+       - nxp,fxls8964af
++      - nxp,fxls8967af
++      - nxp,fxls8974cf
+ 
+   reg:
+     maxItems: 1

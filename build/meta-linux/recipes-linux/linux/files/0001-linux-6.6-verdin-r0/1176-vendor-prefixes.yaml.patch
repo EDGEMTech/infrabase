@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/vendor-prefixes.yaml	2026-04-08 18:20:04.620871608 +0200
++++ ./Documentation/devicetree/bindings/vendor-prefixes.yaml	2026-04-08 16:20:59.560604955 +0200
+@@ -643,6 +643,8 @@
+     description: InnoComm Mobile Technology Corp.
+   "^innolux,.*":
+     description: Innolux Corporation
++  "^inphi,.*":
++    description: Inphi Corporation
+   "^inside-secure,.*":
+     description: INSIDE Secure
+   "^insignal,.*":
+@@ -879,6 +881,8 @@
+     description: Mixel, Inc.
+   "^miyoo,.*":
+     description: Miyoo
++  "^mixel,.*":
++    description: Mixel, Inc
+   "^mntre,.*":
+     description: MNT Research GmbH
+   "^modtronix,.*":
+@@ -1151,6 +1155,8 @@
+     description: Embest RIoT
+   "^riscv,.*":
+     description: RISC-V Foundation
++  "^riverdi,.*":
++    description: Riverdi Sp. z o.o
+   "^rockchip,.*":
+     description: Fuzhou Rockchip Electronics Co., Ltd
+   "^rocktech,.*":

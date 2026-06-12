@@ -1,0 +1,81 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/input/misc/nxp-bbnsm-pwrkey.c	2026-04-08 18:20:07.532952763 +0200
++++ ./drivers/input/misc/nxp-bbnsm-pwrkey.c	2026-04-08 16:21:06.631379074 +0200
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ //
+-// Copyright 2022 NXP.
++// Copyright 2022-2023 NXP.
+ 
+ #include <linux/device.h>
+ #include <linux/err.h>
+@@ -38,6 +38,7 @@
+ 	int irq;
+ 	int keycode;
+ 	int keystate;  /* 1:pressed */
++	bool suspended;
+ 	struct timer_list check_timer;
+ 	struct input_dev *input;
+ };
+@@ -70,6 +71,7 @@
+ {
+ 	struct platform_device *pdev = dev_id;
+ 	struct bbnsm_pwrkey *bbnsm = platform_get_drvdata(pdev);
++	struct input_dev *input = bbnsm->input;
+ 	u32 event;
+ 
+ 	regmap_read(bbnsm->regmap, BBNSM_EVENTS, &event);
+@@ -81,6 +83,16 @@
+ 	mod_timer(&bbnsm->check_timer,
+ 		   jiffies + msecs_to_jiffies(DEBOUNCE_TIME));
+ 
++	/*
++	 * Directly report key event after resume to make no key press
++	 * event is missed.
++	 */
++	if (bbnsm->suspended) {
++		bbnsm->keystate = 1;
++		input_event(input, EV_KEY, bbnsm->keycode, 1);
++		input_sync(input);
++	}
++
+ 	/* clear PWR OFF */
+ 	regmap_write(bbnsm->regmap, BBNSM_EVENTS, BBNSM_BTN_OFF);
+ 
+@@ -173,6 +185,29 @@
+ 	return 0;
+ }
+ 
++static int __maybe_unused bbnsm_pwrkey_suspend(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct bbnsm_pwrkey *bbnsm = platform_get_drvdata(pdev);
++
++	bbnsm->suspended = true;
++
++	return 0;
++}
++
++static int __maybe_unused bbnsm_pwrkey_resume(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct bbnsm_pwrkey *bbnsm = platform_get_drvdata(pdev);
++
++	bbnsm->suspended = false;
++
++	return 0;
++}
++
++static SIMPLE_DEV_PM_OPS(bbnsm_pwrkey_pm_ops, bbnsm_pwrkey_suspend,
++		bbnsm_pwrkey_resume);
++
+ static const struct of_device_id bbnsm_pwrkey_ids[] = {
+ 	{ .compatible = "nxp,imx93-bbnsm-pwrkey" },
+ 	{ /* sentinel */ }
+@@ -182,6 +217,7 @@
+ static struct platform_driver bbnsm_pwrkey_driver = {
+ 	.driver = {
+ 		.name = "bbnsm_pwrkey",
++		.pm = &bbnsm_pwrkey_pm_ops,
+ 		.of_match_table = bbnsm_pwrkey_ids,
+ 	},
+ 	.probe = bbnsm_pwrkey_probe,

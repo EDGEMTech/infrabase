@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/video/fbdev/Makefile	2026-04-08 18:20:09.624191418 +0200
++++ ./drivers/video/fbdev/Makefile	2026-04-08 16:21:09.807360095 +0200
+@@ -31,6 +31,7 @@
+ obj-$(CONFIG_FB_KYRO)             += kyro/
+ obj-$(CONFIG_FB_SAVAGE)		  += savage/
+ obj-$(CONFIG_FB_GEODE)		  += geode/
++obj-$(CONFIG_FB_MXC)              += mxc/
+ obj-$(CONFIG_FB_NEOMAGIC)         += neofb.o
+ obj-$(CONFIG_FB_3DFX)             += tdfxfb.o
+ obj-$(CONFIG_FB_CONTROL)          += controlfb.o
+@@ -123,6 +124,7 @@
+ obj-$(CONFIG_FB_VGA16)            += vga16fb.o
+ obj-$(CONFIG_FB_OF)               += offb.o
+ obj-$(CONFIG_FB_DA8XX)		  += da8xx-fb.o
++obj-$(CONFIG_FB_MXS)		  += mxsfb.o
+ obj-$(CONFIG_FB_SSD1307)	  += ssd1307fb.o
+ obj-$(CONFIG_FB_SIMPLE)           += simplefb.o
+ 

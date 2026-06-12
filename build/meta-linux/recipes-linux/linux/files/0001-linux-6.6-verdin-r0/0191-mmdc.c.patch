@@ -1,0 +1,42 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/mach-imx/mmdc.c	2026-04-08 18:20:04.946066302 +0200
++++ ./arch/arm/mach-imx/mmdc.c	2026-04-08 16:21:01.752215092 +0200
+@@ -59,6 +59,7 @@
+ #define to_mmdc_pmu(p) container_of(p, struct mmdc_pmu, pmu)
+ 
+ static int ddr_type;
++static int lpddr2_2ch_mode;
+ 
+ struct fsl_mmdc_devtype_data {
+ 	unsigned int flags;
+@@ -103,7 +104,7 @@
+ 	struct device *dev;
+ 	struct perf_event *mmdc_events[MMDC_NUM_COUNTERS];
+ 	struct hlist_node node;
+-	struct fsl_mmdc_devtype_data *devtype_data;
++	const struct fsl_mmdc_devtype_data *devtype_data;
+ 	struct clk *mmdc_ipg_clk;
+ };
+ 
+@@ -507,7 +508,9 @@
+ 	}
+ 
+ 	pmu_mmdc->mmdc_ipg_clk = mmdc_ipg_clk;
+-	pmu_mmdc->devtype_data = (struct fsl_mmdc_devtype_data *)of_id->data;
++	pmu_mmdc->devtype_data = &imx6q_data;
++	if (of_id)
++		pmu_mmdc->devtype_data = of_id->data;
+ 
+ 	hrtimer_init(&pmu_mmdc->hrtimer, CLOCK_MONOTONIC,
+ 			HRTIMER_MODE_REL);
+@@ -590,6 +593,11 @@
+ 	return ddr_type;
+ }
+ 
++int imx_mmdc_get_lpddr2_2ch_mode(void)
++{
++	return lpddr2_2ch_mode;
++}
++
+ static struct platform_driver imx_mmdc_driver = {
+ 	.driver		= {
+ 		.name	= "imx-mmdc",

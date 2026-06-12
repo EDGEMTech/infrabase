@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mxc/vpu/wave6/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/mxc/vpu/wave6/Makefile	2026-04-08 16:21:07.330407632 +0200
+@@ -0,0 +1,14 @@
++# SPDX-License-Identifier: GPL-2.0
++# Makefile for WAVE6 driver
++
++wave6-objs += wave6-vpu.o \
++	wave6-vdi.o \
++	wave6-vpuapi.o \
++	wave6-vpu-dec.o \
++	wave6-vpu-enc.o \
++	wave6-hw.o \
++	wave6-vpu-v4l2.o \
++	wave6-vpu-dbg.o
++
++obj-$(CONFIG_MXC_VIDEO_WAVE6_CTRL) += wave6-vpu-ctrl.o
++obj-$(CONFIG_MXC_VIDEO_WAVE6) += wave6.o

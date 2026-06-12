@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx95-15x15-evk-boe-wxga-lvds1-panel.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx95-15x15-evk-boe-wxga-lvds1-panel.dts	2026-04-08 16:21:02.100686413 +0200
+@@ -0,0 +1,7 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2024 NXP
++ */
++
++#include "imx95-15x15-evk.dts"
++#include "imx95-15x15-evk-boe-wxga-lvds1-panel.dtsi"

@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/features/wifi/ralink-usb.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/features/wifi/ralink-usb.cfg	2026-04-08 16:21:19.372417570 +0200
+@@ -0,0 +1,15 @@
++CONFIG_WLAN_VENDOR_RALINK=y
++
++# rt2x00
++CONFIG_RT2X00=m
++
++# usb
++CONFIG_RT2500USB=m
++CONFIG_RT73USB=m
++CONFIG_RT2800USB=m
++CONFIG_RT2800USB_RT33XX=y
++CONFIG_RT2800USB_RT35XX=y
++CONFIG_RT2800USB_RT3573=y
++CONFIG_RT2800USB_RT53XX=y
++CONFIG_RT2800USB_RT55XX=y
++CONFIG_RT2800USB_UNKNOWN=y
+\ No newline at end of file

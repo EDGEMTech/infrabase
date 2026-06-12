@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/media/v4l2-ioctl.h	2026-04-08 18:20:10.164026069 +0200
++++ ./include/media/v4l2-ioctl.h	2026-04-08 16:21:11.685264823 +0200
+@@ -554,6 +554,8 @@
+ 	int (*vidioc_g_chip_info)(struct file *file, void *fh,
+ 				  struct v4l2_dbg_chip_info *chip);
+ #endif
++	int (*vidioc_g_chip_ident)     (struct file *file, void *fh,
++					struct v4l2_dbg_chip_ident *chip);
+ 
+ 	int (*vidioc_enum_framesizes)(struct file *file, void *fh,
+ 				      struct v4l2_frmsizeenum *fsize);

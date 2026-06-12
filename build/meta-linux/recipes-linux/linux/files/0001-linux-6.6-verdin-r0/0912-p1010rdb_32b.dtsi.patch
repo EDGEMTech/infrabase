@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/boot/dts/fsl/p1010rdb_32b.dtsi	2026-04-08 18:20:05.269889697 +0200
++++ ./arch/powerpc/boot/dts/fsl/p1010rdb_32b.dtsi	2026-04-08 16:21:03.162057783 +0200
+@@ -36,7 +36,7 @@
+ 	device_type = "memory";
+ };
+ 
+-board_ifc: ifc: ifc@ffe1e000 {
++board_ifc: ifc: memory-controller@ffe1e000 {
+ 	/* NOR, NAND Flashes and CPLD on board */
+ 	ranges = <0x0 0x0 0x0 0xee000000 0x02000000
+ 		  0x1 0x0 0x0 0xff800000 0x00010000

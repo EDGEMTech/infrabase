@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx93-9x9-qsb-tianma-wvga-panel.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx93-9x9-qsb-tianma-wvga-panel.dts	2026-04-08 16:21:02.098374591 +0200
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2024 NXP
++ */
++
++#include "imx93-9x9-qsb-ontat-wvga-panel.dts"
++
++&panel {
++	compatible = "tianma,tm050rdh03";
++	standby-gpios = <&pcal6524 8 GPIO_ACTIVE_LOW>;
++	/delete-property/ enable-gpios;
++};
++
++&pcal6524 {
++	exp-sel-hog {
++		gpio-hog;
++		gpios = <22 GPIO_ACTIVE_HIGH>;
++		output-high;
++	};
++};

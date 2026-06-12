@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/usb/gadget/function/f_ncm.c	2026-04-08 18:20:09.527008322 +0200
++++ ./drivers/usb/gadget/function/f_ncm.c	2026-04-08 16:21:09.665513593 +0200
+@@ -98,7 +98,7 @@
+  * Smaller packets are not likely to be trying to maximize the
+  * throughput and will be mstly sending smaller infrequent frames.
+  */
+-#define TX_MAX_NUM_DPE		32
++#define TX_MAX_NUM_DPE		4
+ 
+ /* Delay for the transmit to wait before sending an unfilled NTB frame. */
+ #define TX_TIMEOUT_NSECS	300000

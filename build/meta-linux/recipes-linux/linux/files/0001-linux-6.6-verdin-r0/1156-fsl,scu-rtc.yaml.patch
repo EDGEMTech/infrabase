@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/rtc/fsl,scu-rtc.yaml	2026-04-08 18:20:04.597307807 +0200
++++ ./Documentation/devicetree/bindings/rtc/fsl,scu-rtc.yaml	2026-04-08 16:20:59.517057221 +0200
+@@ -18,6 +18,11 @@
+ properties:
+   compatible:
+     const: fsl,imx8qxp-sc-rtc
++  read-only:
++    description:
++      For some use cases, like cockpit, one cockpit domain owns it
++      while other domain is just a reader. Its needed to provide
++      /dev/rtc funtion for applications.
+ 
+ required:
+   - compatible

@@ -1,0 +1,22 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/vhost/Kconfig	2026-04-08 18:20:09.616010801 +0200
++++ ./drivers/vhost/Kconfig	2026-04-08 16:21:09.805477001 +0200
+@@ -13,6 +13,11 @@
+ 	  This option is selected by any driver which needs to access
+ 	  the host side of a virtio ring.
+ 
++config VHOST_XEN
++	tristate
++	help
++	  Support of Xen specific mappings for accessing descriptors in virtio rings.
++
+ config VHOST_TASK
+ 	bool
+ 	default n
+@@ -21,6 +26,7 @@
+ 	tristate
+ 	select VHOST_IOTLB
+ 	select VHOST_TASK
++	select VHOST_XEN if XEN
+ 	help
+ 	  This option is selected by any driver which needs to access
+ 	  the core of vhost.

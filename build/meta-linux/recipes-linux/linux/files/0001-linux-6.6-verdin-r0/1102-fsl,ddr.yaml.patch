@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ddr.yaml	2026-04-08 18:20:04.553805509 +0200
++++ ./Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ddr.yaml	2026-04-08 16:20:51.796785323 +0200
+@@ -40,6 +40,7 @@
+           - fsl,p1021-memory-controller
+           - fsl,p2020-memory-controller
+           - fsl,qoriq-memory-controller
++          - nxp,imx9-memory-controller
+ 
+   interrupts:
+     maxItems: 1

@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/fsl_ifc.h	2026-04-08 18:20:10.044695045 +0200
++++ ./include/linux/fsl_ifc.h	2026-04-08 16:21:11.354958651 +0200
+@@ -846,6 +846,11 @@
+ 	u32 nand_stat;
+ 	wait_queue_head_t nand_wait;
+ 	bool little_endian;
++#ifdef CONFIG_PM_SLEEP
++	/*save regs when system goes to deep sleep*/
++	struct fsl_ifc_global		*saved_gregs;
++	struct fsl_ifc_runtime		*saved_rregs;
++#endif
+ };
+ 
+ extern struct fsl_ifc_ctrl *fsl_ifc_ctrl_dev;

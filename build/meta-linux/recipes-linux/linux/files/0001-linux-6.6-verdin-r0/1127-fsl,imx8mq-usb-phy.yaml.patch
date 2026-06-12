@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml	2026-04-08 18:20:04.575218778 +0200
++++ ./Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml	2026-04-08 16:20:59.672965974 +0200
+@@ -81,6 +81,11 @@
+     minimum: 0
+     maximum: 100
+ 
++  vbus-power-supply:
++    description:
++      A phandle to the vbus power supply provider, used to to detect the
++      possible BC charger type of it.
++
+ required:
+   - compatible
+   - reg

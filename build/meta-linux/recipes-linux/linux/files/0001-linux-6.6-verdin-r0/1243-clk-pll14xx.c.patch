@@ -1,0 +1,133 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/imx/clk-pll14xx.c	2026-04-08 18:20:05.829905304 +0200
++++ ./drivers/clk/imx/clk-pll14xx.c	2026-04-08 16:21:04.573005233 +0200
+@@ -64,6 +64,17 @@
+ 	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
+ 	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
+ 	PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
++	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
++	PLL_1443X_RATE(361267200U, 361, 3, 3, 17511),
++	PLL_1443X_RATE(245760000U, 328, 4, 3, 0xae15),
++	PLL_1443X_RATE(225792000U, 226, 3, 3, 0xcac1),
++	PLL_1443X_RATE(122880000U, 328, 4, 4, 0xae15),
++	PLL_1443X_RATE(112896000U, 226, 3, 4, 0xcac1),
++	PLL_1443X_RATE(61440000U, 328, 4, 5, 0xae15),
++	PLL_1443X_RATE(56448000U, 226, 3, 5, 0xcac1),
++	PLL_1443X_RATE(49152000U, 393, 3, 6, 0x374c),
++	PLL_1443X_RATE(45158400U, 241, 2, 6, 0xd845),
++	PLL_1443X_RATE(40960000U, 109, 1, 6, 0x3a07),
+ };
+ 
+ struct imx_pll14xx_clk imx_1443x_pll = {
+@@ -104,15 +115,30 @@
+ static long pll14xx_calc_rate(struct clk_pll14xx *pll, int mdiv, int pdiv,
+ 			      int sdiv, int kdiv, unsigned long prate)
+ {
+-	u64 fvco = prate;
++	const struct imx_pll14xx_rate_table *rate_table = pll->rate_table;
++	unsigned long rate = 0;
++	u64 fout = prate;
++	int i;
++
++	/*
++	 * Sometimes, the recalculated rate has deviation due to
++	 * the frac part. So find the accurate pll rate from the table
++	 * first, if no match rate in the table, use the rate calculated
++	 * from the equation below.
++	 */
++	for (i = 0; i < pll->rate_count; i++) {
++		if (rate_table[i].pdiv == pdiv && rate_table[i].mdiv == mdiv &&
++		    rate_table[i].sdiv == sdiv && rate_table[i].kdiv == kdiv)
++			rate = rate_table[i].rate;
++	}
+ 
+-	/* fvco = (m * 65536 + k) * Fin / (p * 65536) */
+-	fvco *= (mdiv * 65536 + kdiv);
++	/* fout = (m * 65536 + k) * Fin / (p * 65536) / (1 << sdiv) */
++	fout *= ((u64)mdiv * 65536 + (u64)kdiv);
+ 	pdiv *= 65536;
+ 
+-	do_div(fvco, pdiv << sdiv);
++	do_div(fout, pdiv << sdiv);
+ 
+-	return fvco;
++	return rate ? (unsigned long) rate : (unsigned long)fout;
+ }
+ 
+ static long pll1443x_calc_kdiv(int mdiv, int pdiv, int sdiv,
+@@ -131,7 +157,7 @@
+ {
+ 	u32 pll_div_ctl0, pll_div_ctl1;
+ 	int mdiv, pdiv, sdiv, kdiv;
+-	long fvco, rate_min, rate_max, dist, best = LONG_MAX;
++	long fvco, fout, rate_min, rate_max, dist, best = LONG_MAX;
+ 	const struct imx_pll14xx_rate_table *tt;
+ 
+ 	/*
+@@ -143,6 +169,8 @@
+ 	 * d) -32768 <= k <= 32767
+ 	 *
+ 	 * fvco = (m * 65536 + k) * prate / (p * 65536)
++	 *
++	 * e) 1600MHz <= fvco <= 3200MHz
+ 	 */
+ 
+ 	/* First try if we can get the desired rate from one of the static entries */
+@@ -173,8 +201,8 @@
+ 		pr_debug("%s: in=%ld, want=%ld Only adjust kdiv %ld -> %d\n",
+ 			 clk_hw_get_name(&pll->hw), prate, rate,
+ 			 FIELD_GET(KDIV_MASK, pll_div_ctl1), kdiv);
+-		fvco = pll14xx_calc_rate(pll, mdiv, pdiv, sdiv, kdiv, prate);
+-		t->rate = (unsigned int)fvco;
++		fout = pll14xx_calc_rate(pll, mdiv, pdiv, sdiv, kdiv, prate);
++		t->rate = (unsigned int)fout;
+ 		t->mdiv = mdiv;
+ 		t->pdiv = pdiv;
+ 		t->sdiv = sdiv;
+@@ -190,13 +218,17 @@
+ 			mdiv = clamp(mdiv, 64, 1023);
+ 
+ 			kdiv = pll1443x_calc_kdiv(mdiv, pdiv, sdiv, rate, prate);
+-			fvco = pll14xx_calc_rate(pll, mdiv, pdiv, sdiv, kdiv, prate);
++			fout = pll14xx_calc_rate(pll, mdiv, pdiv, sdiv, kdiv, prate);
++
++			fvco = fout << sdiv;
+ 
++			if (fvco < 1600000000 || fvco > 3200000000)
++				continue;
+ 			/* best match */
+-			dist = abs((long)rate - (long)fvco);
++			dist = abs((long)rate - (long)fout);
+ 			if (dist < best) {
+ 				best = dist;
+-				t->rate = (unsigned int)fvco;
++				t->rate = (unsigned int)fout;
+ 				t->mdiv = mdiv;
+ 				t->pdiv = pdiv;
+ 				t->sdiv = sdiv;
+@@ -462,6 +494,26 @@
+ 	writel_relaxed(val, pll->base + GNRL_CTL);
+ }
+ 
++void clk_set_delta_k(struct clk_hw *hw, short int delta_k)
++{
++	struct clk_pll14xx *pll = to_clk_pll14xx(hw);
++	short int k;
++	u32 val;
++
++	val = readl_relaxed(pll->base + 8);
++	k = (val & KDIV_MASK) + delta_k;
++	writel_relaxed(k, pll->base + 8);
++}
++
++void clk_get_pll_setting(struct clk_hw *hw, u32 *pll_div_ctrl0,
++	u32 *pll_div_ctrl1)
++{
++	struct clk_pll14xx *pll = to_clk_pll14xx(hw);
++
++	*pll_div_ctrl0 = readl_relaxed(pll->base + 4);
++	*pll_div_ctrl1 = readl_relaxed(pll->base + 8);
++}
++
+ static const struct clk_ops clk_pll1416x_ops = {
+ 	.prepare	= clk_pll14xx_prepare,
+ 	.unprepare	= clk_pll14xx_unprepare,

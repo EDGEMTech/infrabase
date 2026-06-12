@@ -1,0 +1,26 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx95-15x15-evk-ap1302_rpi.dtso	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx95-15x15-evk-ap1302_rpi.dtso	2026-04-08 16:21:02.099911043 +0200
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2024 NXP
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/clock/fsl,imx95-clock.h>
++#include <dt-bindings/gpio/gpio.h>
++
++&pcal6524 {
++	mipi-csi-minisas-sel-hog {
++		status = "disabled";
++	};
++
++	mipi-csi-rpi-sel-hog {
++		gpio-hog;
++		gpios = <16 GPIO_ACTIVE_HIGH>;
++		output-high;
++		status = "okay";
++	};
++};

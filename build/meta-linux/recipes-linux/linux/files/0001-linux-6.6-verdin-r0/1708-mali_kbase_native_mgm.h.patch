@@ -1,0 +1,41 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/arm/midgard/mali_kbase_native_mgm.h	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/gpu/arm/midgard/mali_kbase_native_mgm.h	2026-04-08 16:21:05.066067095 +0200
+@@ -0,0 +1,38 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++/*
++ *
++ * (C) COPYRIGHT 2019-2021 ARM Limited. All rights reserved.
++ *
++ * This program is free software and is provided to you under the terms of the
++ * GNU General Public License version 2 as published by the Free Software
++ * Foundation, and any use by you of this program is subject to the terms
++ * of such GNU license.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, you can access it online at
++ * http://www.gnu.org/licenses/gpl-2.0.html.
++ *
++ */
++
++#ifndef _KBASE_NATIVE_MGM_H_
++#define _KBASE_NATIVE_MGM_H_
++
++#include <linux/memory_group_manager.h>
++
++/*
++ * kbase_native_mgm_dev - Native memory group manager device
++ *
++ * An implementation of the memory group manager interface that is intended for
++ * internal use when no platform-specific memory group manager is available.
++ *
++ * It ignores the specified group ID and delegates to the kernel's physical
++ * memory allocation and freeing functions.
++ */
++extern struct memory_group_manager_device kbase_native_mgm_dev;
++
++#endif /* _KBASE_NATIVE_MGM_H_ */

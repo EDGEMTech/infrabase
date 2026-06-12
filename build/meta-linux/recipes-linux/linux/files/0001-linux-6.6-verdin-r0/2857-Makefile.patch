@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/nvmem/Makefile	2026-04-08 18:20:08.838036492 +0200
++++ ./drivers/nvmem/Makefile	2026-04-08 16:21:08.610296246 +0200
+@@ -20,6 +20,8 @@
+ nvmem-imx-ocotp-y			:= imx-ocotp.o
+ obj-$(CONFIG_NVMEM_IMX_OCOTP_ELE)	+= nvmem-imx-ocotp-ele.o
+ nvmem-imx-ocotp-ele-y			:= imx-ocotp-ele.o
++obj-$(CONFIG_NVMEM_IMX_OCOTP_FSB_S400) += nvmem-imx-ocotp-fsb-s400.o
++nvmem-imx-ocotp-fsb-s400-y		:= imx-ocotp-fsb-s400.o
+ obj-$(CONFIG_NVMEM_IMX_OCOTP_SCU)	+= nvmem-imx-ocotp-scu.o
+ nvmem-imx-ocotp-scu-y			:= imx-ocotp-scu.o
+ obj-$(CONFIG_NVMEM_JZ4780_EFUSE)	+= nvmem_jz4780_efuse.o

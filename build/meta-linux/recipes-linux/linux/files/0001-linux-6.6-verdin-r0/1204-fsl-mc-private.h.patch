@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/bus/fsl-mc/fsl-mc-private.h	2026-04-08 18:20:05.787286457 +0200
++++ ./drivers/bus/fsl-mc/fsl-mc-private.h	2026-04-08 16:21:04.509827556 +0200
+@@ -635,8 +635,6 @@
+ 
+ void fsl_mc_init_all_resource_pools(struct fsl_mc_device *mc_bus_dev);
+ 
+-void fsl_mc_cleanup_all_resource_pools(struct fsl_mc_device *mc_bus_dev);
+-
+ int __must_check fsl_mc_resource_allocate(struct fsl_mc_bus *mc_bus,
+ 					  enum fsl_mc_pool_type pool_type,
+ 					  struct fsl_mc_resource

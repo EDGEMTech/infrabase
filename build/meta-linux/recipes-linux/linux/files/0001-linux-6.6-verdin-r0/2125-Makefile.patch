@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/input/keyboard/Makefile	2026-04-08 18:20:07.524503458 +0200
++++ ./drivers/input/keyboard/Makefile	2026-04-08 16:21:06.609190558 +0200
+@@ -57,6 +57,7 @@
+ obj-$(CONFIG_KEYBOARD_QT1050)           += qt1050.o
+ obj-$(CONFIG_KEYBOARD_QT1070)           += qt1070.o
+ obj-$(CONFIG_KEYBOARD_QT2160)		+= qt2160.o
++obj-$(CONFIG_KEYBOARD_RPMSG)		+= rpmsg-keys.o
+ obj-$(CONFIG_KEYBOARD_SAMSUNG)		+= samsung-keypad.o
+ obj-$(CONFIG_KEYBOARD_SH_KEYSC)		+= sh_keysc.o
+ obj-$(CONFIG_KEYBOARD_SNVS_PWRKEY)	+= snvs_pwrkey.o

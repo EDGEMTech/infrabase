@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/rtc/rtc-nxp-bbnsm.c	2026-04-08 18:20:09.052995116 +0200
++++ ./drivers/rtc/rtc-nxp-bbnsm.c	2026-04-08 16:21:09.042062592 +0200
+@@ -189,6 +189,9 @@
+ 	/* clear all the pending events */
+ 	regmap_write(bbnsm->regmap, BBNSM_EVENTS, 0x7A);
+ 
++	/* Enable the Real-Time counter */
++	regmap_update_bits(bbnsm->regmap, BBNSM_CTRL, RTC_EN_MSK, RTC_EN);
++
+ 	device_init_wakeup(&pdev->dev, true);
+ 	dev_pm_set_wake_irq(&pdev->dev, bbnsm->irq);
+ 

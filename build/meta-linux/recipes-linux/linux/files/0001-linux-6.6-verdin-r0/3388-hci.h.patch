@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/net/bluetooth/hci.h	2026-04-08 18:20:10.168258709 +0200
++++ ./include/net/bluetooth/hci.h	2026-04-08 16:21:11.699661583 +0200
+@@ -446,7 +446,6 @@
+ #define HCI_AUTO_OFF_TIMEOUT	msecs_to_jiffies(2000)	/* 2 seconds */
+ #define HCI_ACL_CONN_TIMEOUT	msecs_to_jiffies(20000)	/* 20 seconds */
+ #define HCI_LE_CONN_TIMEOUT	msecs_to_jiffies(20000)	/* 20 seconds */
+-#define HCI_LE_AUTOCONN_TIMEOUT	msecs_to_jiffies(4000)	/* 4 seconds */
+ 
+ /* HCI data types */
+ #define HCI_COMMAND_PKT		0x01

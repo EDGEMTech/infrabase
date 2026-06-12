@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/fsl-lx2160a-sd1-19-lane-d-c-b-a-backplane.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/fsl-lx2160a-sd1-19-lane-d-c-b-a-backplane.dtsi	2026-04-08 16:21:01.986183067 +0200
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2023 NXP
++ */
++
++&dpmac2 {
++	num-lanes = <4>;
++	phys = <&serdes_1 3>, /* lane D */
++	       <&serdes_1 2>, /* lane C */
++	       <&serdes_1 1>, /* lane B */
++	       <&serdes_1 0>; /* lane A */
++	phy-names = "serdes0", "serdes1", "serdes2", "serdes3";
++	managed = "c73";
++};
++
++&pcs_mdio2 {
++	status = "okay";
++};

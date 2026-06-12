@@ -1,0 +1,33 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/sysdev/fsl_soc.h	2026-04-08 18:20:05.387892986 +0200
++++ ./arch/powerpc/sysdev/fsl_soc.h	2026-04-08 16:21:03.502916055 +0200
+@@ -7,6 +7,7 @@
+ 
+ struct spi_device;
+ 
++extern phys_addr_t get_dcsrbase(void);
+ extern phys_addr_t get_immrbase(void);
+ #if defined(CONFIG_CPM) || defined(CONFIG_QUICC_ENGINE)
+ extern u32 get_brgfreq(void);
+@@ -44,5 +45,22 @@
+ void __noreturn fsl_hv_restart(char *cmd);
+ void __noreturn fsl_hv_halt(void);
+ 
++/*
++ * Cast the ccsrbar to 64-bit parameter so that the assembly
++ * code can be compatible with both 32-bit & 36-bit.
++ */
++extern void mpc85xx_enter_deep_sleep(u64 ccsrbar, u32 powmgtreq);
++
++#ifdef CONFIG_FSL_PMC
++int mpc85xx_pmc_set_wake(struct device *dev, bool enable);
++void mpc85xx_pmc_set_lossless_ethernet(int enable);
++#else
++static inline int mpc85xx_pmc_set_wake(struct device *dev, bool enable)
++{
++	return -ENODEV;
++}
++#define mpc85xx_pmc_set_lossless_ethernet(enable)	do { } while (0)
++#endif
++
+ #endif
+ #endif

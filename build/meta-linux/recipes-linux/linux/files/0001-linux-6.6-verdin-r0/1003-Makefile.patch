@@ -1,0 +1,34 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/Makefile	2026-04-08 18:20:05.266267685 +0200
++++ ./arch/powerpc/Makefile	2026-04-08 16:21:03.146060418 +0200
+@@ -281,6 +281,31 @@
+ 	$(call merge_into_defconfig,corenet_base.config,\
+ 		85xx-64bit 85xx-smp altivec 85xx-hw fsl-emb-nonhw dpaa)
+ 
++generated_configs += corenet32_smp_sdk_defconfig
++corenet32_smp_sdk_defconfig:
++	$(call merge_into_defconfig,corenet_base.config,\
++		85xx-32bit 85xx-smp 85xx-hw fsl-emb-nonhw sdk_dpaa)
++
++generated_configs += corenet32_fmanv3l_smp_sdk_defconfig
++corenet32_fmanv3l_smp_sdk_defconfig:
++	$(call merge_into_defconfig,corenet_base.config,\
++		85xx-32bit 85xx-smp 85xx-hw fsl-emb-nonhw sdk_dpaa fmanv3l)
++
++generated_configs += corenet64_smp_sdk_defconfig
++corenet64_smp_sdk_defconfig:
++	$(call merge_into_defconfig,corenet_base.config,\
++		85xx-64bit 85xx-smp altivec 85xx-hw fsl-emb-nonhw sdk_dpaa)
++
++generated_configs += corenet64_fmanv3l_smp_sdk_defconfig
++corenet64_fmanv3l_smp_sdk_defconfig:
++	$(call merge_into_defconfig,corenet_base.config,\
++		85xx-64bit 85xx-smp altivec 85xx-hw fsl-emb-nonhw sdk_dpaa fmanv3l)
++
++generated_configs += corenet64_fmanv3h_smp_sdk_defconfig
++corenet64_fmanv3h_smp_sdk_defconfig:
++	$(call merge_into_defconfig,corenet_base.config,\
++		85xx-64bit 85xx-smp altivec 85xx-hw fsl-emb-nonhw sdk_dpaa fmanv3h)
++
+ generated_configs += mpc86xx_defconfig
+ mpc86xx_defconfig:
+ 	$(call merge_into_defconfig,mpc86xx_base.config,\

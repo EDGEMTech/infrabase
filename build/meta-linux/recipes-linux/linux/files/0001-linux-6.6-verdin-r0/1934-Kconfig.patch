@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/imx/dpu95/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/gpu/drm/imx/dpu95/Kconfig	2026-04-08 16:21:05.960382683 +0200
+@@ -0,0 +1,8 @@
++config DRM_IMX95_DPU
++	tristate "DRM support for NXP i.MX95 DPU Graphics"
++	select DRM_KMS_HELPER
++	select VIDEOMODE_HELPERS
++	select DRM_GEM_DMA_HELPER
++	depends on DRM && OF && ARCH_MXC && COMMON_CLK
++	help
++	  enable NXP i.MX95 DPU graphics support

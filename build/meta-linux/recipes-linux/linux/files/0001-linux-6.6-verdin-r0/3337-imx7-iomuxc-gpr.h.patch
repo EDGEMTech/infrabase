@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/mfd/syscon/imx7-iomuxc-gpr.h	2026-04-08 18:20:10.080110392 +0200
++++ ./include/linux/mfd/syscon/imx7-iomuxc-gpr.h	2026-04-08 16:21:11.428928283 +0200
+@@ -31,6 +31,8 @@
+ #define IOMUXC_GPR22	0x58
+ 
+ /* For imx7d iomux gpr register field define */
++#define IMX7D_GPR0_ENET_MDIO_OPEN_DRAIN_MASK	(0x3 << 7)
++
+ #define IMX7D_GPR1_IRQ_MASK			(0x1 << 12)
+ #define IMX7D_GPR1_ENET1_TX_CLK_SEL_MASK	(0x1 << 13)
+ #define IMX7D_GPR1_ENET2_TX_CLK_SEL_MASK	(0x1 << 14)

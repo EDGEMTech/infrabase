@@ -1,0 +1,33 @@
+--- a/include/linux/avz_hvc.h
++++ b/include/linux/avz_hvc.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * AVZ hypervisor hypercall interface for Linux guest.
++ * Provides avz_hvc_printstr() for early boot logging via the AVZ console.
++ */
++
++#ifndef _LINUX_AVZ_HVC_H
++#define _LINUX_AVZ_HVC_H
++
++#define AVZ_HYPERCALL_TRAP	0x2605
++#define AVZ_PRINTLOG_OP		14
++#define PRINTLOG_MSG_MAX_LEN	256
++
++struct avz_printlog {
++	char msg[PRINTLOG_MSG_MAX_LEN];
++};
++
++struct avz_hyp {
++	int cmd;
++	union {
++		struct avz_printlog avz_printlog_args;
++	} u;
++};
++
++/* Low-level assembly: hvc #0; ret. x0=vector, x1=phys addr of avz_hyp. */
++extern long __avz_hypercall(int vector, long avz_hyp_args);
++
++void avz_hvc_printstr(const char *msg);
++
++#endif /* _LINUX_AVZ_HVC_H */

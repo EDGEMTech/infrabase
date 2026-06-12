@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/target/target_core_user.c	2026-04-08 18:20:09.444006009 +0200
++++ ./drivers/target/target_core_user.c	2026-04-08 16:21:09.586766249 +0200
+@@ -2129,8 +2129,7 @@
+ 		return ret;
+ 	}
+ 
+-	ret = genlmsg_multicast_allns(&tcmu_genl_family, skb, 0,
+-				      TCMU_MCGRP_CONFIG);
++	ret = genlmsg_multicast_allns(&tcmu_genl_family, skb, 0,TCMU_MCGRP_CONFIG);
+ 
+ 	/* Wait during an add as the listener may not be up yet */
+ 	if (ret == 0 ||

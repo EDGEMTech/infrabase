@@ -1,0 +1,25 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/syscalls.h	2026-04-08 18:20:10.143025484 +0200
++++ ./include/linux/syscalls.h	2026-04-08 16:21:11.647853183 +0200
+@@ -285,6 +285,22 @@
+ #endif
+ 
+ /*
++ * Called before coming back to user-mode. Returning to user-mode with an
++ * address limit different than USER_DS can allow to overwrite kernel memory.
++ */
++static inline void addr_limit_user_check(void)
++{
++#ifdef TIF_FSCHECK
++	if (!test_thread_flag(TIF_FSCHECK))
++		return;
++#endif
++
++#ifdef TIF_FSCHECK
++	clear_thread_flag(TIF_FSCHECK);
++#endif
++}
++
++/*
+  * These syscall function prototypes are kept in the same order as
+  * include/uapi/asm-generic/unistd.h. Architecture specific entries go below,
+  * followed by deprecated or obsolete system calls.

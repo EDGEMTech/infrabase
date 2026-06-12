@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/cfg/net/ipsec6.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/cfg/net/ipsec6.cfg	2026-04-08 16:21:19.368613580 +0200
+@@ -0,0 +1,17 @@
++#
++# IPv6 IPsec: Configuration
++#
++CONFIG_XFRM=y
++CONFIG_XFRM_USER=m
++CONFIG_XFRM_SUB_POLICY=y
++CONFIG_INET6_AH=y
++CONFIG_INET6_ESP=y
++CONFIG_INET6_IPCOMP=m
++CONFIG_INET6_XFRM_MODE_TRANSPORT=y
++CONFIG_INET6_XFRM_MODE_TUNNEL=y
++CONFIG_INET6_XFRM_MODE_BEET=y
++# crypto needed by ipsec-self of IPv6 Conformance Test
++CONFIG_CRYPTO_SEQIV=m
++CONFIG_CRYPTO_CTR=m
++CONFIG_CRYPTO_XCBC=m
++CONFIG_CRYPTO_CAMELLIA=m

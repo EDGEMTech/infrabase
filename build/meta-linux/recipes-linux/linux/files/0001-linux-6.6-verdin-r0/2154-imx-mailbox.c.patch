@@ -1,0 +1,457 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mailbox/imx-mailbox.c	2026-04-08 18:20:07.601392601 +0200
++++ ./drivers/mailbox/imx-mailbox.c	2026-04-08 16:21:06.783563028 +0200
+@@ -20,12 +20,14 @@
+ #include <linux/suspend.h>
+ #include <linux/slab.h>
+ 
+-#define IMX_MU_CHANS		17
++#include "mailbox.h"
++
++#define IMX_MU_CHANS		24
+ /* TX0/RX0/RXDB[0-3] */
+ #define IMX_MU_SCU_CHANS	6
+ /* TX0/RX0 */
+ #define IMX_MU_S4_CHANS		2
+-#define IMX_MU_CHAN_NAME_SIZE	20
++#define IMX_MU_CHAN_NAME_SIZE	32
+ 
+ #define IMX_MU_NUM_RR		4
+ 
+@@ -39,6 +41,7 @@
+ 	IMX_MU_TYPE_TXDB	= 2, /* Tx doorbell */
+ 	IMX_MU_TYPE_RXDB	= 3, /* Rx doorbell */
+ 	IMX_MU_TYPE_RST		= 4, /* Reset */
++	IMX_MU_TYPE_TXDB_V2	= 5, /* Tx doorbell with S/W ACK */
+ };
+ 
+ enum imx_mu_xcr {
+@@ -101,6 +104,8 @@
+ 	IMX_MU_V2 = BIT(1),
+ 	IMX_MU_V2_S4 = BIT(15),
+ 	IMX_MU_V2_IRQ = BIT(16),
++	IMX_MU_IMX95_ELE = BIT(17),
++	IMX_MU_V2_V2X = BIT(18),
+ };
+ 
+ struct imx_mu_dcfg {
+@@ -113,6 +118,7 @@
+ 	u32	xRR;		/* Receive Register0 */
+ 	u32	xSR[IMX_MU_xSR_MAX];	/* Status Registers */
+ 	u32	xCR[IMX_MU_xCR_MAX];	/* Control Registers */
++	u32	xBUF;		/* MU Buffer Register */
+ };
+ 
+ #define IMX_MU_xSR_GIPn(type, x) (type & IMX_MU_V2 ? BIT(x) : BIT(28 + (3 - (x))))
+@@ -137,14 +143,24 @@
+ 	return container_of(mbox, struct imx_mu_priv, mbox);
+ }
+ 
+-static void imx_mu_write(struct imx_mu_priv *priv, u32 val, u32 offs)
++static u32 imx_mu_read(struct imx_mu_priv *priv, u32 offs)
+ {
+-	iowrite32(val, priv->base + offs);
++	return ioread32(priv->base + offs);
+ }
+ 
+-static u32 imx_mu_read(struct imx_mu_priv *priv, u32 offs)
++uint8_t *get_mu_buf(struct mbox_chan *chan)
+ {
+-	return ioread32(priv->base + offs);
++	uint8_t *addr;
++	struct imx_mu_priv *priv = to_imx_mu_priv(chan->mbox);
++
++	addr = priv->base + priv->dcfg->xBUF;
++	return addr;
++}
++EXPORT_SYMBOL(get_mu_buf);
++
++static void imx_mu_write(struct imx_mu_priv *priv, u32 val, u32 offs)
++{
++	iowrite32(val, priv->base + offs);
+ }
+ 
+ static int imx_mu_tx_waiting_write(struct imx_mu_priv *priv, u32 val, u32 idx)
+@@ -216,6 +232,8 @@
+ 			     void *data)
+ {
+ 	u32 *arg = data;
++	u32 val;
++	int ret, count;
+ 
+ 	switch (cp->type) {
+ 	case IMX_MU_TYPE_TX:
+@@ -226,6 +244,24 @@
+ 		imx_mu_xcr_rmw(priv, IMX_MU_GCR, IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx), 0);
+ 		tasklet_schedule(&cp->txdb_tasklet);
+ 		break;
++	case IMX_MU_TYPE_TXDB_V2:
++		imx_mu_write(priv, IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx),
++			     priv->dcfg->xCR[IMX_MU_GCR]);
++		ret = -ETIMEDOUT;
++		count = 0;
++		while (ret) {
++			ret =
++			readl_poll_timeout(priv->base + priv->dcfg->xCR[IMX_MU_GCR], val,
++					   !(val & IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx)),
++					   0, 10000);
++
++			if (ret) {
++				dev_warn_ratelimited(priv->dev,
++						     "channel type: %d timeout, %d times, retry\n",
++						     cp->type, ++count);
++			}
++		}
++		break;
+ 	default:
+ 		dev_warn_ratelimited(priv->dev, "Send data on wrong channel type: %d\n", cp->type);
+ 		return -EINVAL;
+@@ -266,6 +302,8 @@
+ 		size = ((struct imx_s4_rpc_msg_max *)data)->hdr.size;
+ 		max_size = sizeof(struct imx_s4_rpc_msg_max);
+ 		num_tr = 8;
++		if (priv->dcfg->type & IMX_MU_V2_V2X)
++			num_tr = 4;
+ 	} else {
+ 		size = ((struct imx_sc_rpc_msg_max *)data)->hdr.size;
+ 		max_size = sizeof(struct imx_sc_rpc_msg_max);
+@@ -317,7 +355,7 @@
+ 	u32 *data;
+ 	int i, ret;
+ 	u32 xsr;
+-	u32 size, max_size;
++	u32 size, max_size, num_rr = 4;
+ 
+ 	data = (u32 *)priv->msg;
+ 
+@@ -332,20 +370,23 @@
+ 		max_size = sizeof(struct imx_sc_rpc_msg_max);
+ 	}
+ 
+-	if (size > max_size / 4) {
++	if (priv->dcfg->type & IMX_MU_IMX95_ELE)
++		num_rr = 8;
++
++	if (size > max_size / num_rr) {
+ 		dev_err(priv->dev, "Maximal message size (%u bytes) exceeded on RX; got: %i bytes\n", max_size, size << 2);
+ 		return -EINVAL;
+ 	}
+ 
+ 	for (i = 1; i < size; i++) {
+ 		ret = readl_poll_timeout(priv->base + priv->dcfg->xSR[IMX_MU_RSR], xsr,
+-					 xsr & IMX_MU_xSR_RFn(priv->dcfg->type, i % 4), 0,
++					 xsr & IMX_MU_xSR_RFn(priv->dcfg->type, i % num_rr), 0,
+ 					 5 * USEC_PER_SEC);
+ 		if (ret) {
+ 			dev_err(priv->dev, "timeout read idx %d\n", i);
+ 			return ret;
+ 		}
+-		*data++ = imx_mu_read(priv, priv->dcfg->xRR + (i % 4) * 4);
++		*data++ = imx_mu_read(priv, priv->dcfg->xRR + (i % num_rr) * 4);
+ 	}
+ 
+ 	imx_mu_xcr_rmw(priv, IMX_MU_RCR, IMX_MU_xCR_RIEn(priv->dcfg->type, 0), 0);
+@@ -354,6 +395,70 @@
+ 	return 0;
+ }
+ 
++static int imx_mu_isp_tx(struct imx_mu_priv *priv,
++			 struct imx_mu_con_priv *cp,
++			 void *data)
++{
++	u32 *arg = data;
++	int i;
++	u32 num_tr = 4;
++
++	if (cp->type != IMX_MU_TYPE_TX) {
++		dev_warn_ratelimited(priv->dev,
++				     "Send data on wrong channel type: %d\n",
++				     cp->type);
++		return -EINVAL;
++	}
++
++	for (i = 0; i < num_tr; i++) {
++		int err;
++
++		err = imx_mu_tx_waiting_write(priv, *arg++, i);
++		if (err) {
++			dev_err(priv->dev, "Timeout tx %d\n", i);
++			return err;
++		}
++	}
++
++	imx_mu_xcr_rmw(priv,
++		       IMX_MU_TCR,
++		       IMX_MU_xCR_TIEn(priv->dcfg->type, cp->idx),
++		       0);
++
++	return 0;
++}
++
++static int imx_mu_isp_rx(struct imx_mu_priv *priv, struct imx_mu_con_priv *cp)
++{
++	u32 *data;
++	int i, ret;
++	u32 rsr, xsr;
++	u32 num_tr = 4;
++
++	data = (u32 *)priv->msg;
++	rsr = priv->dcfg->xSR[IMX_MU_RSR];
++
++	for (i = 0; i < num_tr; i++) {
++		ret = readl_poll_timeout(priv->base + rsr, xsr,
++					 xsr & IMX_MU_xSR_RFn(priv->dcfg->type, i), 0,
++					 5 * USEC_PER_SEC);
++		if (ret) {
++			dev_err(priv->dev, "timeout read idx %d\n", i);
++			return ret;
++		}
++		*data++ = imx_mu_read(priv, priv->dcfg->xRR + i * 4);
++	}
++
++	imx_mu_xcr_rmw(priv,
++		       IMX_MU_RCR,
++		       IMX_MU_xCR_RIEn(priv->dcfg->type, cp->idx),
++		       0);
++	mbox_chan_received_data(cp->chan, (void *)priv->msg);
++
++	return 0;
++}
++
++
+ static int imx_mu_seco_tx(struct imx_mu_priv *priv, struct imx_mu_con_priv *cp,
+ 			  void *data)
+ {
+@@ -533,7 +638,7 @@
+ 	}
+ 
+ 	if (priv->suspend)
+-		pm_system_wakeup();
++		pm_system_irq_wakeup(priv->irq[0]);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -554,6 +659,9 @@
+ 	int ret;
+ 
+ 	pm_runtime_get_sync(priv->dev);
++	if (cp->type == IMX_MU_TYPE_TXDB_V2)
++		return 0;
++
+ 	if (cp->type == IMX_MU_TYPE_TXDB) {
+ 		/* Tx doorbell don't have ACK support */
+ 		tasklet_init(&cp->txdb_tasklet, imx_mu_txdb_tasklet,
+@@ -595,6 +703,11 @@
+ 	int ret;
+ 	u32 sr;
+ 
++	if (cp->type == IMX_MU_TYPE_TXDB_V2) {
++		pm_runtime_put_sync(priv->dev);
++		return;
++	}
++
+ 	if (cp->type == IMX_MU_TYPE_TXDB) {
+ 		tasklet_kill(&cp->txdb_tasklet);
+ 		pm_runtime_put_sync(priv->dev);
+@@ -671,6 +784,7 @@
+ static struct mbox_chan * imx_mu_xlate(struct mbox_controller *mbox,
+ 				       const struct of_phandle_args *sp)
+ {
++	struct mbox_chan *p_chan;
+ 	u32 type, idx, chan;
+ 
+ 	if (sp->args_count != 2) {
+@@ -680,14 +794,25 @@
+ 
+ 	type = sp->args[0]; /* channel type */
+ 	idx = sp->args[1]; /* index */
+-	chan = type * 4 + idx;
+ 
++	/* RST only supports 1 channel */
++	if ((type == IMX_MU_TYPE_RST) && idx) {
++		dev_err(mbox->dev, "Invalid RST channel %d\n", idx);
++		return ERR_PTR(-EINVAL);
++	}
++
++	chan = type * 4 + idx;
+ 	if (chan >= mbox->num_chans) {
+ 		dev_err(mbox->dev, "Not supported channel number: %d. (type: %d, idx: %d)\n", chan, type, idx);
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	return &mbox->chans[chan];
++	p_chan = &mbox->chans[chan];
++
++	if (type == IMX_MU_TYPE_TXDB_V2)
++		p_chan->txdone_method = TXDONE_BY_ACK;
++
++	return p_chan;
+ }
+ 
+ static struct mbox_chan *imx_mu_seco_xlate(struct mbox_controller *mbox,
+@@ -711,6 +836,36 @@
+ 	return imx_mu_xlate(mbox, sp);
+ }
+ 
++static struct mbox_chan *imx_mu_isp_xlate(struct mbox_controller *mbox,
++					  const struct of_phandle_args *sp)
++{
++	u32 type, idx, chan;
++
++	if (sp->args_count != 2) {
++		dev_err(mbox->dev, "Invalid argument count %d\n", sp->args_count);
++		return ERR_PTR(-EINVAL);
++	}
++
++	type = sp->args[0]; /* channel type */
++	idx = sp->args[1]; /* index */
++
++	switch (type) {
++	case IMX_MU_TYPE_TX:
++	case IMX_MU_TYPE_RX:
++		if (idx != IMX_MU_NUM_RR - 1) {
++			dev_err(mbox->dev, "Invalid chan idx: %d\n", idx);
++			return ERR_PTR(-EINVAL);
++		}
++		chan = type;
++		break;
++	default:
++		dev_err(mbox->dev, "Invalid chan type: %d\n", type);
++		return ERR_PTR(-EINVAL);
++	}
++
++	return &mbox->chans[chan];
++}
++
+ static void imx_mu_init_generic(struct imx_mu_priv *priv)
+ {
+ 	unsigned int i;
+@@ -724,7 +879,7 @@
+ 		cp->chan = &priv->mbox_chans[i];
+ 		priv->mbox_chans[i].con_priv = cp;
+ 		snprintf(cp->irq_desc, sizeof(cp->irq_desc),
+-			 "imx_mu_chan[%i-%i]", cp->type, cp->idx);
++			 "%s[%i-%i]", dev_name(priv->dev), cp->type, cp->idx);
+ 	}
+ 
+ 	priv->mbox.num_chans = IMX_MU_CHANS;
+@@ -759,7 +914,7 @@
+ 		cp->chan = &priv->mbox_chans[i];
+ 		priv->mbox_chans[i].con_priv = cp;
+ 		snprintf(cp->irq_desc, sizeof(cp->irq_desc),
+-			 "imx_mu_chan[%i-%i]", cp->type, cp->idx);
++			 "%s[%i-%i]", dev_name(priv->dev), cp->type, cp->idx);
+ 	}
+ 
+ 	priv->mbox.num_chans = num_chans;
+@@ -776,6 +931,30 @@
+ 	priv->mbox.of_xlate = imx_mu_seco_xlate;
+ }
+ 
++static void imx_mu_init_isp(struct imx_mu_priv *priv)
++{
++	unsigned int i;
++
++	for (i = 0; i < IMX_MU_S4_CHANS; i++) {
++		struct imx_mu_con_priv *cp = &priv->con_priv[i];
++
++		/*ISP FW uses RR3 as MSG-ID, so use this as index reference */
++		cp->idx = IMX_MU_NUM_RR - 1;
++		cp->type = i;
++		cp->chan = &priv->mbox_chans[i];
++		priv->mbox_chans[i].con_priv = cp;
++		snprintf(cp->irq_desc, sizeof(cp->irq_desc),
++			 "%s[%i-%i]", dev_name(priv->dev), cp->type, cp->idx);
++	}
++
++	priv->mbox.num_chans = IMX_MU_S4_CHANS;
++	priv->mbox.of_xlate = imx_mu_isp_xlate;
++
++	/* Set default MU configuration */
++	for (i = 0; i < IMX_MU_xCR_MAX; i++)
++		imx_mu_write(priv, 0, priv->dcfg->xCR[i]);
++}
++
+ static int imx_mu_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -942,6 +1121,40 @@
+ 	.xCR	= {0x8, 0x110, 0x114, 0x120, 0x128},
+ };
+ 
++static const struct imx_mu_dcfg imx_mu_cfg_imx95_ele = {
++	.tx	= imx_mu_specific_tx,
++	.rx	= imx_mu_specific_rx,
++	.init	= imx_mu_init_specific,
++	.type	= IMX_MU_V2 | IMX_MU_V2_S4 | IMX_MU_IMX95_ELE,
++	.xTR	= 0x200,
++	.xRR	= 0x280,
++	.xSR	= {0xC, 0x118, 0x124, 0x12C},
++	.xCR	= {0x8, 0x110, 0x114, 0x120, 0x128},
++};
++
++static const struct imx_mu_dcfg imx_mu_cfg_imx95_v2x = {
++	.tx     = imx_mu_specific_tx,
++	.rx     = imx_mu_specific_rx,
++	.init   = imx_mu_init_specific,
++	.type   = IMX_MU_V2 | IMX_MU_V2_S4 | IMX_MU_V2_V2X,
++	.xTR    = 0x200,
++	.xRR    = 0x280,
++	.xSR    = {0xC, 0x118, 0x124, 0x12C},
++	.xCR    = {0x8, 0x110, 0x114, 0x120, 0x128},
++	.xBUF   = 0x8000,
++};
++
++static const struct imx_mu_dcfg imx_mu_cfg_imx95_isp = {
++	.tx	= imx_mu_isp_tx,
++	.rx	= imx_mu_isp_rx,
++	.init	= imx_mu_init_isp,
++	.type	= IMX_MU_V2 | IMX_MU_V2_S4,
++	.xTR	= 0x200,
++	.xRR	= 0x280,
++	.xSR	= {0xC, 0x118, 0x124, 0x12C},
++	.xCR	= {0x8, 0x110, 0x114, 0x120, 0x128},
++};
++
+ static const struct imx_mu_dcfg imx_mu_cfg_imx8_scu = {
+ 	.tx	= imx_mu_specific_tx,
+ 	.rx	= imx_mu_specific_rx,
+@@ -962,6 +1175,7 @@
+ 	.xRR	= 0x10,
+ 	.xSR	= {0x20, 0x20, 0x20, 0x20},
+ 	.xCR	= {0x24, 0x24, 0x24, 0x24, 0x24},
++	.xBUF	= 0x8000,
+ };
+ 
+ static const struct of_device_id imx_mu_dt_ids[] = {
+@@ -970,6 +1184,9 @@
+ 	{ .compatible = "fsl,imx8ulp-mu", .data = &imx_mu_cfg_imx8ulp },
+ 	{ .compatible = "fsl,imx8ulp-mu-s4", .data = &imx_mu_cfg_imx8ulp_s4 },
+ 	{ .compatible = "fsl,imx93-mu-s4", .data = &imx_mu_cfg_imx93_s4 },
++	{ .compatible = "fsl,imx95-mu-ele", .data = &imx_mu_cfg_imx95_ele },
++	{ .compatible = "fsl,imx95-mu-v2x", .data = &imx_mu_cfg_imx95_v2x },
++	{ .compatible = "fsl,imx95-mu-isp", .data = &imx_mu_cfg_imx95_isp },
+ 	{ .compatible = "fsl,imx8-mu-scu", .data = &imx_mu_cfg_imx8_scu },
+ 	{ .compatible = "fsl,imx8-mu-seco", .data = &imx_mu_cfg_imx8_seco },
+ 	{ },
+@@ -1051,7 +1268,20 @@
+ 		.pm = &imx_mu_pm_ops,
+ 	},
+ };
+-module_platform_driver(imx_mu_driver);
++static int __init imx_mu_init(void)
++{
++	int ret;
++
++	ret = platform_driver_register(&imx_mu_driver);
++	if (ret)
++		pr_err("Unable to initialize mu driver\n");
++	else
++		pr_info("imx mu driver is registered.\n");
++
++	return ret;
++}
++
++arch_initcall(imx_mu_init);
+ 
+ MODULE_AUTHOR("Oleksij Rempel <o.rempel@pengutronix.de>");
+ MODULE_DESCRIPTION("Message Unit driver for i.MX");

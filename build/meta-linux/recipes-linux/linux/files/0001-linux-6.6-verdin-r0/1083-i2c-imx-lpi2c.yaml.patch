@@ -1,0 +1,28 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml	2026-04-08 18:20:04.531377712 +0200
++++ ./Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml	2026-04-08 16:20:51.341149119 +0200
+@@ -24,6 +24,7 @@
+               - fsl,imx8qm-lpi2c
+               - fsl,imx8ulp-lpi2c
+               - fsl,imx93-lpi2c
++              - fsl,imx95-lpi2c
+           - const: fsl,imx7ulp-lpi2c
+ 
+   reg:
+@@ -70,6 +71,7 @@
+   - |
+     #include <dt-bindings/clock/imx7ulp-clock.h>
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/i2c/i2c.h>
+ 
+     i2c@40a50000 {
+         compatible = "fsl,imx7ulp-lpi2c";
+@@ -78,4 +80,9 @@
+         interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
+         clocks = <&clks IMX7ULP_CLK_LPI2C7>,
+                  <&clks IMX7ULP_CLK_NIC1_BUS_DIV>;
++
++        eeprom@64 {
++		      compatible = "linux,slave-24c02";
++		      reg = <(0x64 | I2C_OWN_SLAVE_ADDRESS)>;
++          };
+     };

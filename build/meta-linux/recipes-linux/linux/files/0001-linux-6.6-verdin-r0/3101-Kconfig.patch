@@ -1,0 +1,26 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/staging/Kconfig	2026-04-08 18:20:09.310002276 +0200
++++ ./drivers/staging/Kconfig	2026-04-08 16:21:09.381567729 +0200
+@@ -68,8 +68,12 @@
+ 
+ source "drivers/staging/vc04_services/Kconfig"
+ 
++source "drivers/staging/fsl_qbman/Kconfig"
++
+ source "drivers/staging/pi433/Kconfig"
+ 
++source "drivers/staging/fsl-dpaa2/Kconfig"
++
+ source "drivers/staging/axis-fifo/Kconfig"
+ 
+ source "drivers/staging/fieldbus/Kconfig"
+@@ -78,4 +82,10 @@
+ 
+ source "drivers/staging/vme_user/Kconfig"
+ 
++source "drivers/staging/fsl_ppfe/Kconfig"
++
++source "drivers/staging/ethosu/Kconfig"
++
++source "drivers/staging/neutron/Kconfig"
++
+ endif # STAGING

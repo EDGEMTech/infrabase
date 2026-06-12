@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/remoteproc/Makefile	2026-04-08 18:20:09.037166520 +0200
++++ ./drivers/remoteproc/Makefile	2026-04-08 16:21:09.013584100 +0200
+@@ -13,6 +13,8 @@
+ obj-$(CONFIG_REMOTEPROC_CDEV)		+= remoteproc_cdev.o
+ obj-$(CONFIG_IMX_REMOTEPROC)		+= imx_rproc.o
+ obj-$(CONFIG_IMX_DSP_REMOTEPROC)	+= imx_dsp_rproc.o
++obj-$(CONFIG_IMX_NEUTRON_REMOTEPROC)	+= imx_neutron_rproc.o
++obj-$(CONFIG_IMX_ISP_REMOTEPROC)	+= imx_isp_rproc.o
+ obj-$(CONFIG_INGENIC_VPU_RPROC)		+= ingenic_rproc.o
+ obj-$(CONFIG_MTK_SCP)			+= mtk_scp.o mtk_scp_ipi.o
+ obj-$(CONFIG_OMAP_REMOTEPROC)		+= omap_remoteproc.o

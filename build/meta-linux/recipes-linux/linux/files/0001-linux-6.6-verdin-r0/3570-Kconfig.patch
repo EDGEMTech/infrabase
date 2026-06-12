@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/scripts/gcc-plugins/Kconfig	2026-04-08 18:20:10.672931833 +0200
++++ ./scripts/gcc-plugins/Kconfig	2026-04-08 16:21:17.970628624 +0200
+@@ -10,7 +10,6 @@
+ 	depends on HAVE_GCC_PLUGINS
+ 	depends on CC_IS_GCC
+ 	depends on $(success,test -e $(shell,$(CC) -print-file-name=plugin)/include/plugin-version.h)
+-	default y
+ 	help
+ 	  GCC plugins are loadable modules that provide extra features to the
+ 	  compiler. They are useful for runtime instrumentation and static analysis.

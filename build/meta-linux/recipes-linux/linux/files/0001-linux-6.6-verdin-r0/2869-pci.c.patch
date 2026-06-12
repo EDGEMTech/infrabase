@@ -1,0 +1,61 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pci/pci.c	2026-04-08 18:20:08.869990017 +0200
++++ ./drivers/pci/pci.c	2026-04-08 16:21:08.645987647 +0200
+@@ -6965,10 +6965,10 @@
+ 	}
+ }
+ 
+-static int of_pci_bus_find_domain_nr(struct device *parent)
++static int of_pci_bus_find_domain_nr(struct pci_bus *bus, struct device *parent)
+ {
+ 	static bool static_domains_reserved = false;
+-	int domain_nr;
++	int domain_nr, ret;
+ 
+ 	/* On the first call scan device tree for static allocations. */
+ 	if (!static_domains_reserved) {
+@@ -6976,6 +6976,8 @@
+ 		static_domains_reserved = true;
+ 	}
+ 
++	bus->static_nr = 0;
++
+ 	if (parent) {
+ 		/*
+ 		 * If domain is in DT, allocate it in static IDA.  This
+@@ -6983,10 +6985,14 @@
+ 		 * in DT.
+ 		 */
+ 		domain_nr = of_get_pci_domain_nr(parent->of_node);
+-		if (domain_nr >= 0)
+-			return ida_alloc_range(&pci_domain_nr_static_ida,
+-					       domain_nr, domain_nr,
+-					       GFP_KERNEL);
++		if (domain_nr >= 0) {
++			ret = ida_alloc_range(&pci_domain_nr_static_ida,
++					      domain_nr, domain_nr, GFP_KERNEL);
++			if (ret >= 0)
++				bus->static_nr = 1;
++
++			return ret;
++		}
+ 	}
+ 
+ 	/*
+@@ -7004,7 +7010,7 @@
+ 		return;
+ 
+ 	/* Release domain from IDA where it was allocated. */
+-	if (of_get_pci_domain_nr(parent->of_node) == bus->domain_nr)
++	if (bus->static_nr)
+ 		ida_free(&pci_domain_nr_static_ida, bus->domain_nr);
+ 	else
+ 		ida_free(&pci_domain_nr_dynamic_ida, bus->domain_nr);
+@@ -7012,7 +7018,7 @@
+ 
+ int pci_bus_find_domain_nr(struct pci_bus *bus, struct device *parent)
+ {
+-	return acpi_disabled ? of_pci_bus_find_domain_nr(parent) :
++	return acpi_disabled ? of_pci_bus_find_domain_nr(bus, parent) :
+ 			       acpi_pci_bus_find_domain_nr(bus);
+ }
+ 

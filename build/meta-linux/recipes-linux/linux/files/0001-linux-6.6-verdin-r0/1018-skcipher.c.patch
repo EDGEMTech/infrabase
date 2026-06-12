@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/crypto/skcipher.c	2026-04-08 18:20:05.628899702 +0200
++++ ./crypto/skcipher.c	2026-04-08 16:21:04.197547408 +0200
+@@ -616,7 +616,8 @@
+ 	unsigned long alignmask = crypto_skcipher_alignmask(tfm);
+ 	int err;
+ 
+-	if (keylen < cipher->min_keysize || keylen > cipher->max_keysize)
++	if ((!tfm->base.is_hbk)
++	    && (keylen < cipher->min_keysize || keylen > cipher->max_keysize))
+ 		return -EINVAL;
+ 
+ 	if ((unsigned long)key & alignmask)

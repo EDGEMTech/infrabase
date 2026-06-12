@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/dsa/ocelot/felix.h	2026-04-08 18:20:08.034005997 +0200
++++ ./drivers/net/dsa/ocelot/felix.h	2026-04-08 16:21:07.363576977 +0200
+@@ -12,8 +12,9 @@
+ #define OCELOT_PORT_MODE_SGMII		BIT(1)
+ #define OCELOT_PORT_MODE_QSGMII		BIT(2)
+ #define OCELOT_PORT_MODE_2500BASEX	BIT(3)
+-#define OCELOT_PORT_MODE_USXGMII	BIT(4)
++#define OCELOT_PORT_MODE_USXGMII	BIT(4) /* compatibility */
+ #define OCELOT_PORT_MODE_1000BASEX	BIT(5)
++#define OCELOT_PORT_MODE_10G_QXGMII	BIT(6)
+ 
+ struct device_node;
+ 
+@@ -101,5 +102,7 @@
+ 
+ struct net_device *felix_port_to_netdev(struct ocelot *ocelot, int port);
+ int felix_netdev_to_port(struct net_device *dev);
++void vsc9959_new_base_time(struct ocelot *ocelot, ktime_t base_time,
++			   u64 cycle_time, struct timespec64 *new_base_ts);
+ 
+ #endif

@@ -1,0 +1,27 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk-lpa.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk-lpa.dts	2026-04-08 16:21:02.078410375 +0200
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2022 NXP
++ */
++
++#include "imx8ulp-9x9-evk.dts"
++/ {
++    reserved-memory {
++        lpa_reserved: lpa_reserved@c0000000 {
++            compatible = "shared-dma-pool";
++            no-map;
++            reg = <0 0xc0000000 0 0x10000000>;
++        };
++    };
++};
++
++&audio_reserved {
++    status = "disabled";
++};
++
++&rpmsg_audio {
++    memory-region = <&lpa_reserved>;
++    fsl,enable-lpa;
++};

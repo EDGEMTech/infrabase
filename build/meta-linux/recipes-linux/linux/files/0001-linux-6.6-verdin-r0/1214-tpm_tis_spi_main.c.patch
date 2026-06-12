@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/char/tpm/tpm_tis_spi_main.c	2026-04-08 18:20:05.810904775 +0200
++++ ./drivers/char/tpm/tpm_tis_spi_main.c	2026-04-08 16:21:04.544038308 +0200
+@@ -318,6 +318,7 @@
+ }
+ 
+ static const struct spi_device_id tpm_tis_spi_id[] = {
++	{ "attpm20p", (unsigned long)tpm_tis_spi_probe },
+ 	{ "st33htpm-spi", (unsigned long)tpm_tis_spi_probe },
+ 	{ "slb9670", (unsigned long)tpm_tis_spi_probe },
+ 	{ "tpm_tis_spi", (unsigned long)tpm_tis_spi_probe },

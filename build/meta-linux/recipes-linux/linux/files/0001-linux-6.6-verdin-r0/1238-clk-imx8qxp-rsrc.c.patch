@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/imx/clk-imx8qxp-rsrc.c	2026-04-08 18:20:05.829905304 +0200
++++ ./drivers/clk/imx/clk-imx8qxp-rsrc.c	2026-04-08 16:21:04.571845886 +0200
+@@ -54,15 +54,17 @@
+ 	IMX_SC_R_SDHC_2,
+ 	IMX_SC_R_ENET_0,
+ 	IMX_SC_R_ENET_1,
+-	IMX_SC_R_MLB_0,
+ 	IMX_SC_R_USB_2,
+ 	IMX_SC_R_NAND,
+ 	IMX_SC_R_LVDS_0,
+ 	IMX_SC_R_LVDS_1,
++	IMX_SC_R_M4_0_UART,
+ 	IMX_SC_R_M4_0_I2C,
+ 	IMX_SC_R_ELCDIF_PLL,
+ 	IMX_SC_R_AUDIO_PLL_0,
+ 	IMX_SC_R_PI_0,
++	IMX_SC_R_PI_0_PWM_0,
++	IMX_SC_R_PI_0_I2C_0,
+ 	IMX_SC_R_PI_0_PLL,
+ 	IMX_SC_R_MIPI_0,
+ 	IMX_SC_R_MIPI_0_PWM_0,

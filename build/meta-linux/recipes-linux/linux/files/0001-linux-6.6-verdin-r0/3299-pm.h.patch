@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/firmware/imx/svc/pm.h	2026-04-08 18:20:10.042037814 +0200
++++ ./include/linux/firmware/imx/svc/pm.h	2026-04-08 16:21:11.343119941 +0200
+@@ -82,4 +82,13 @@
+ #define IMX_SC_PM_PARENT_PLL2	3	/* Parent in PLL2 or PLL0/4 */
+ #define IMX_SC_PM_PARENT_BYPS	4	/* Parent is a bypass clock. */
+ 
++#if IS_ENABLED(CONFIG_IMX_SCU)
++int imx_sc_pm_get_resource_power_mode(struct imx_sc_ipc *ipc, u32 resource);
++#else
++static inline int imx_sc_pm_get_resource_power_mode(struct imx_sc_ipc *ipc,
++						    u32 resource)
++{
++	return -EOPNOTSUPP;
++}
++#endif
+ #endif /* _SC_PM_API_H */

@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/mscc/ocelot.h	2026-04-08 18:20:08.326720611 +0200
++++ ./drivers/net/ethernet/mscc/ocelot.h	2026-04-08 16:21:07.760041425 +0200
+@@ -114,8 +114,6 @@
+ void ocelot_stats_deinit(struct ocelot *ocelot);
+ 
+ int ocelot_mm_init(struct ocelot *ocelot);
+-void ocelot_port_change_fp(struct ocelot *ocelot, int port,
+-			   unsigned long preemptible_tcs);
+ void ocelot_port_update_active_preemptible_tcs(struct ocelot *ocelot, int port);
+ 
+ extern struct notifier_block ocelot_netdevice_nb;

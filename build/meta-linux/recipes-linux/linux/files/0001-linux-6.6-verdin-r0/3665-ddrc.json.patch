@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/tools/perf/pmu-events/arch/arm64/freescale/imx95/sys/ddrc.json	1970-01-01 01:00:00.000000000 +0100
++++ ./tools/perf/pmu-events/arch/arm64/freescale/imx95/sys/ddrc.json	2026-04-08 16:21:18.672069031 +0200
+@@ -0,0 +1,9 @@
++[
++   {
++           "BriefDescription": "ddr cycles event",
++           "EventCode": "0x00",
++           "EventName": "imx95_ddr.cycles",
++           "Unit": "imx9_ddr",
++           "Compat": "imx95"
++   }
++]

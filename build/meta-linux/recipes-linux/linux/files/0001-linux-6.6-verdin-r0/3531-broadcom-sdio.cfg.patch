@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/features/wifi/broadcom-sdio.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/features/wifi/broadcom-sdio.cfg	2026-04-08 16:21:19.372057635 +0200
+@@ -0,0 +1,11 @@
++CONFIG_WLAN_VENDOR_BROADCOM=y
++
++# brcm80211
++CONFIG_BRCMUTIL=m
++CONFIG_BRCMFMAC=m
++CONFIG_BRCMFMAC_SDIO=y
++
++# b43
++CONFIG_B43=m
++CONFIG_B43_SDIO=y
++

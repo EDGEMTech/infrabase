@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/features/wifi/realtek-usb.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/features/wifi/realtek-usb.cfg	2026-04-08 16:21:19.372467972 +0200
+@@ -0,0 +1,13 @@
++CONFIG_WLAN_VENDOR_REALTEK=y
++
++# rtl818x
++CONFIG_RTL8187=m
++
++# rtl8xxxu
++CONFIG_RTL8XXXU=m
++
++# rtlwifi
++CONFIG_RTL_CARDS=m
++CONFIG_RTL8192CU=m
++
++CONFIG_RTL8XXXU_UNTESTED=y
+\ No newline at end of file

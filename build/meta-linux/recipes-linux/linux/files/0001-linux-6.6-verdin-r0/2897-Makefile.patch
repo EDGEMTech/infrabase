@@ -1,0 +1,7 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/phy/ti/Makefile	2026-04-08 18:20:08.901898235 +0200
++++ ./drivers/phy/ti/Makefile	2026-04-08 16:21:08.720700032 +0200
+@@ -9,3 +9,4 @@
+ obj-$(CONFIG_PHY_AM654_SERDES)		+= phy-am654-serdes.o
+ obj-$(CONFIG_PHY_TI_GMII_SEL)		+= phy-gmii-sel.o
+ obj-$(CONFIG_PHY_J721E_WIZ)		+= phy-j721e-wiz.o
++obj-$(CONFIG_PHY_TI_DS125DF111)		+= phy-ds125df111.o

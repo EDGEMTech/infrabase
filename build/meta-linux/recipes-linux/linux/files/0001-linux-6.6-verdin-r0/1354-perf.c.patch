@@ -1,0 +1,111 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/arm_scmi/perf.c	2026-04-08 18:20:06.036911073 +0200
++++ ./drivers/firmware/arm_scmi/perf.c	2026-04-08 16:21:04.943630347 +0200
+@@ -152,7 +152,7 @@
+ 	u32 opp_count;
+ 	u32 sustained_freq_khz;
+ 	u32 sustained_perf_level;
+-	unsigned long mult_factor;
++	u32 mult_factor;
+ 	struct scmi_perf_domain_info info;
+ 	struct scmi_opp opp[MAX_OPPS];
+ 	struct scmi_fc_info *fc_info;
+@@ -289,7 +289,8 @@
+ 	if (!ret && PROTOCOL_REV_MAJOR(version) >= 0x3 &&
+ 	    SUPPORTS_EXTENDED_NAMES(flags))
+ 		ph->hops->extended_name_get(ph, PERF_DOMAIN_NAME_GET,
+-					    dom_info->id, dom_info->info.name,
++					    dom_info->id, NULL,
++					    dom_info->info.name,
+ 					    SCMI_MAX_STR_SIZE);
+ 
+ 	if (dom_info->level_indexing_mode) {
+@@ -796,29 +797,14 @@
+ 	*p_fc = fc;
+ }
+ 
+-/* Device specific ops */
+-static int scmi_dev_domain_id(struct device *dev)
+-{
+-	struct of_phandle_args clkspec;
+-
+-	if (of_parse_phandle_with_args(dev->of_node, "clocks", "#clock-cells",
+-				       0, &clkspec))
+-		return -EINVAL;
+-
+-	return clkspec.args[0];
+-}
+-
+ static int scmi_dvfs_device_opps_add(const struct scmi_protocol_handle *ph,
+-				     struct device *dev)
++				     struct device *dev, u32 domain)
+ {
+-	int idx, ret, domain;
++	int idx, ret;
+ 	unsigned long freq;
++	struct dev_pm_opp_data data = {};
+ 	struct perf_dom_info *dom;
+ 
+-	domain = scmi_dev_domain_id(dev);
+-	if (domain < 0)
+-		return -EINVAL;
+-
+ 	dom = scmi_perf_domain_lookup(ph, domain);
+ 	if (IS_ERR(dom))
+ 		return PTR_ERR(dom);
+@@ -827,9 +813,12 @@
+ 		if (!dom->level_indexing_mode)
+ 			freq = dom->opp[idx].perf * dom->mult_factor;
+ 		else
+-			freq = dom->opp[idx].indicative_freq * dom->mult_factor;
++			freq = dom->opp[idx].indicative_freq * 1000;
+ 
+-		ret = dev_pm_opp_add(dev, freq, 0);
++		data.level = dom->opp[idx].perf;
++		data.freq = freq;
++
++		ret = dev_pm_opp_add_dynamic(dev, &data);
+ 		if (ret) {
+ 			dev_warn(dev, "failed to add opp %luHz\n", freq);
+ 			dev_pm_opp_remove_all_dynamic(dev);
+@@ -844,15 +833,10 @@
+ 
+ static int
+ scmi_dvfs_transition_latency_get(const struct scmi_protocol_handle *ph,
+-				 struct device *dev)
++				 u32 domain)
+ {
+-	int domain;
+ 	struct perf_dom_info *dom;
+ 
+-	domain = scmi_dev_domain_id(dev);
+-	if (domain < 0)
+-		return -EINVAL;
+-
+ 	dom = scmi_perf_domain_lookup(ph, domain);
+ 	if (IS_ERR(dom))
+ 		return PTR_ERR(dom);
+@@ -949,15 +933,10 @@
+ }
+ 
+ static bool scmi_fast_switch_possible(const struct scmi_protocol_handle *ph,
+-				      struct device *dev)
++				      u32 domain)
+ {
+-	int domain;
+ 	struct perf_dom_info *dom;
+ 
+-	domain = scmi_dev_domain_id(dev);
+-	if (domain < 0)
+-		return false;
+-
+ 	dom = scmi_perf_domain_lookup(ph, domain);
+ 	if (IS_ERR(dom))
+ 		return false;
+@@ -980,7 +959,6 @@
+ 	.limits_get = scmi_perf_limits_get,
+ 	.level_set = scmi_perf_level_set,
+ 	.level_get = scmi_perf_level_get,
+-	.device_domain_id = scmi_dev_domain_id,
+ 	.transition_latency_get = scmi_dvfs_transition_latency_get,
+ 	.device_opps_add = scmi_dvfs_device_opps_add,
+ 	.freq_set = scmi_dvfs_freq_set,

@@ -1,0 +1,60 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/imx/clk-scu.c	2026-04-08 18:20:05.829905304 +0200
++++ ./drivers/clk/imx/clk-scu.c	2026-04-08 16:21:04.573346873 +0200
+@@ -10,10 +10,12 @@
+ #include <linux/clk-provider.h>
+ #include <linux/err.h>
+ #include <linux/of.h>
++#include <linux/firmware/imx/svc/rm.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_domain.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/slab.h>
++#include <xen/xen.h>
+ 
+ #include "clk-scu.h"
+ 
+@@ -667,9 +669,34 @@
+ 	    rsrc_id == IMX_SC_R_A72)
+ 		return 0;
+ 
++	/*
++	 * Temp fix to avoid the uart clk attached pd power off uart_0
++	 */
++	if (rsrc_id == IMX_SC_R_UART_0 && xen_initial_domain())
++			return 0;
++
+ 	return of_genpd_add_device(&genpdspec, dev);
+ }
+ 
++static bool imx_clk_is_resource_owned(u32 rsrc)
++{
++	/*
++	 * A-core resources are special. SCFW reports they are not "owned" by
++	 * current partition but linux can still adjust them for cpufreq.
++	 *
++	 * So force this to return false when running as a VM guest and always
++	 * true otherwise.
++	 */
++	if (rsrc == IMX_SC_R_A53 || rsrc == IMX_SC_R_A72 ||
++	    rsrc == IMX_SC_R_A35) {
++		if (xen_domain() && !xen_initial_domain())
++			return false;
++		return true;
++	}
++
++	return imx_sc_rm_is_resource_owned(ccm_ipc_handle, rsrc);
++}
++
+ struct clk_hw *imx_clk_scu_alloc_dev(const char *name,
+ 				     const char * const *parents,
+ 				     int num_parents, u32 rsrc_id, u8 clk_type)
+@@ -687,6 +714,9 @@
+ 	if (!imx_scu_clk_is_valid(rsrc_id))
+ 		return ERR_PTR(-EINVAL);
+ 
++	if (!imx_clk_is_resource_owned(rsrc_id))
++		return NULL;
++
+ 	pdev = platform_device_alloc(name, PLATFORM_DEVID_NONE);
+ 	if (!pdev) {
+ 		pr_err("%s: failed to allocate scu clk dev rsrc %d type %d\n",

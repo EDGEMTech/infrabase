@@ -1,0 +1,40 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/verdin-imx8_mipi-dsi-to-sn65dsi84.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/verdin-imx8_mipi-dsi-to-sn65dsi84.dtsi	2023-08-10 09:55:58.419675186 +0200
+@@ -0,0 +1,37 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2022 Toradex
++ */
++
++// Common Code to setup MIPI DSI to SN65DSI84
++
++&lvds_ti_sn65dsi84 {
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@0 {
++			reg = <0>;
++
++			dsi84_in: endpoint {
++				remote-endpoint = <&mipi_dsi_bridge1_out>;
++				data-lanes = <1 2 3 4>;
++			};
++		};
++	};
++};
++
++&mipi_dsi {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	port@1 {
++		mipi_dsi_bridge1_out: endpoint {
++			attach-bridge;
++			remote-endpoint = <&dsi84_in>;
++		};
++	};
++};

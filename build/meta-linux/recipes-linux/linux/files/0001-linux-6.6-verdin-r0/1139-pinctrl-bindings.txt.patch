@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/pinctrl/pinctrl-bindings.txt	2026-04-08 18:20:04.581870521 +0200
++++ ./Documentation/devicetree/bindings/pinctrl/pinctrl-bindings.txt	2026-04-08 16:20:59.700691912 +0200
+@@ -71,6 +71,13 @@
+ 		name for integer state ID 0, list entry 1 for state ID 1, and
+ 		so on.
+ 
++pinctrl-assert-gpios:
++		List of phandles, each pointing at a GPIO which is used by some
++		board design to steer pins between two peripherals on the board.
++		It plays like a board level pin multiplexer to choose different
++		functions for given pins by pulling up/down the GPIOs.  See
++		bindings/gpio/gpio.txt for details of how to specify GPIO.
++
+ For example:
+ 
+ 	/* For a client device requiring named states */

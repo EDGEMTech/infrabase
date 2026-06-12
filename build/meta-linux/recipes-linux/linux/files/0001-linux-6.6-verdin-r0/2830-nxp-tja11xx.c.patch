@@ -1,0 +1,24 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/phy/nxp-tja11xx.c	2026-04-08 18:20:08.506979903 +0200
++++ ./drivers/net/phy/nxp-tja11xx.c	2026-04-08 16:21:07.989373586 +0200
+@@ -194,6 +194,8 @@
+ 	if (ret)
+ 		return ret;
+ 
++	genphy_resume(phydev);
++
+ 	return genphy_soft_reset(phydev);
+ }
+ 
+@@ -311,10 +313,12 @@
+ 		if (ret < 0)
+ 			return ret;
+ 
++		phy_set_bits(phydev, MII_BMCR, BMCR_PDOWN);
+ 		reg_val |= (ret & 0xffff);
+ 		ret = phy_modify(phydev, MII_CFG1, reg_mask, reg_val);
+ 		if (ret)
+ 			return ret;
++		phy_clear_bits(phydev, MII_BMCR, BMCR_PDOWN);
+ 		break;
+ 	case PHY_ID_TJA1101:
+ 		reg_mask = MII_CFG1_INTERFACE_MODE_MASK;

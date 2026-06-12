@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/kernel/signal.c	2026-04-08 18:20:04.934880360 +0200
++++ ./arch/arm/kernel/signal.c	2026-04-08 16:21:01.158201274 +0200
+@@ -669,6 +669,14 @@
+ 	return page;
+ }
+ 
++/* Defer to generic check */
++asmlinkage void addr_limit_check_failed(void)
++{
++#ifdef CONFIG_MMU
++	addr_limit_user_check();
++#endif
++}
++
+ #ifdef CONFIG_DEBUG_RSEQ
+ asmlinkage void do_rseq_syscall(struct pt_regs *regs)
+ {

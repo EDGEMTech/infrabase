@@ -1,0 +1,83 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/bus/fsl-mc/fsl-mc-bus.c	2026-04-08 18:20:05.787286457 +0200
++++ ./drivers/bus/fsl-mc/fsl-mc-bus.c	2026-04-08 16:21:04.509430402 +0200
+@@ -456,17 +456,24 @@
+ 	struct fsl_mc_driver *mc_drv = to_fsl_mc_driver(dev->driver);
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
+ 
+-	mc_drv->remove(mc_dev);
++	if (mc_drv->remove)
++		mc_drv->remove(mc_dev);
+ 
+ 	return 0;
+ }
+ 
+ static void fsl_mc_driver_shutdown(struct device *dev)
+ {
+-	struct fsl_mc_driver *mc_drv = to_fsl_mc_driver(dev->driver);
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
++	struct fsl_mc_driver *mc_drv;
++
++	if (!dev->driver)
++		return;
+ 
+-	mc_drv->shutdown(mc_dev);
++	mc_drv = to_fsl_mc_driver(dev->driver);
++
++	if (mc_drv->shutdown)
++		mc_drv->shutdown(mc_dev);
+ }
+ 
+ /*
+@@ -1166,19 +1173,18 @@
+ }
+ 
+ /*
+- * fsl_mc_bus_remove - callback invoked when the root MC bus is being
+- * removed
++ * fsl_mc_bus_shutdown - callback invoked when the root MC bus is being
++ * shutdown
+  */
+-static int fsl_mc_bus_remove(struct platform_device *pdev)
++static void fsl_mc_bus_shutdown(struct platform_device *pdev)
+ {
+ 	struct fsl_mc *mc = platform_get_drvdata(pdev);
+ 	struct fsl_mc_io *mc_io;
+ 
+ 	if (!fsl_mc_is_root_dprc(&mc->root_mc_bus_dev->dev))
+-		return -EINVAL;
++		return;
+ 
+ 	mc_io = mc->root_mc_bus_dev->mc_io;
+-	fsl_mc_device_remove(mc->root_mc_bus_dev);
+ 	fsl_destroy_mc_io(mc_io);
+ 
+ 	bus_unregister_notifier(&fsl_mc_bus_type, &fsl_mc_nb);
+@@ -1192,13 +1198,24 @@
+ 		       (GCR1_P1_STOP | GCR1_P2_STOP),
+ 		       mc->fsl_mc_regs + FSL_MC_GCR1);
+ 	}
+-
+-	return 0;
+ }
+ 
+-static void fsl_mc_bus_shutdown(struct platform_device *pdev)
++/*
++ * fsl_mc_bus_remove - callback invoked when the root MC bus is being
++ * removed
++ */
++static int fsl_mc_bus_remove(struct platform_device *pdev)
+ {
+-	fsl_mc_bus_remove(pdev);
++	struct fsl_mc *mc = platform_get_drvdata(pdev);
++
++	if (!fsl_mc_is_root_dprc(&mc->root_mc_bus_dev->dev))
++		return -EINVAL;
++
++	fsl_mc_device_remove(mc->root_mc_bus_dev);
++
++	fsl_mc_bus_shutdown(pdev);
++
++	return 0;
+ }
+ 
+ static const struct of_device_id fsl_mc_bus_match_table[] = {

@@ -1,0 +1,60 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml	2026-04-08 18:20:04.572529702 +0200
++++ ./Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml	2026-04-08 16:20:59.649273989 +0200
+@@ -29,6 +29,9 @@
+       - fsl,imx8mq-pcie
+       - fsl,imx8mm-pcie
+       - fsl,imx8mp-pcie
++      - fsl,imx8qm-pcie
++      - fsl,imx8qxp-pcie
++      - fsl,imx95-pcie
+ 
+   reg:
+     items:
+@@ -48,10 +51,11 @@
+       - description: PCIe PHY clock.
+       - description: Additional required clock entry for imx6sx-pcie,
+            imx6sx-pcie-ep, imx8mq-pcie, imx8mq-pcie-ep.
++      - description: PCIe reference clock.
+ 
+   clock-names:
+     minItems: 3
+-    maxItems: 4
++    maxItems: 5
+ 
+   interrupts:
+     items:
+@@ -72,6 +76,10 @@
+       L=operation state) (optional required).
+     type: boolean
+ 
++  host-wake-gpio:
++    description: Should specify the GPIO for controlling the PCI bus device
++      wake signal, used to wakeup the host processor. Default to active-low.
++
+ required:
+   - compatible
+   - reg
+@@ -155,6 +163,23 @@
+             - const: pcie_bus
+             - const: pcie_aux
+ 
++  - if:
++      properties:
++        compatible:
++          enum:
++            - fsl,imx95-pcie
++    then:
++      properties:
++        clocks:
++          maxItems: 5
++        clock-names:
++          items:
++            - const: pcie
++            - const: pcie_bus
++            - const: pcie_phy
++            - const: pcie_aux
++            - const: ref
++
+ unevaluatedProperties: false
+ 
+ examples:

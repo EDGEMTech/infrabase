@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/include/asm/io.h	2026-04-08 18:20:05.090884708 +0200
++++ ./arch/arm64/include/asm/io.h	2026-04-08 16:21:02.379811479 +0200
+@@ -147,6 +147,8 @@
+ 	ioremap_prot((addr), (size), PROT_NORMAL_NC)
+ #define ioremap_np(addr, size)	\
+ 	ioremap_prot((addr), (size), PROT_DEVICE_nGnRnE)
++#define ioremap_cache_ns(addr, size)  \
++	ioremap_prot((addr), (size), PROT_NORMAL_NS)
+ 
+ /*
+  * io{read,write}{16,32,64}be() macros

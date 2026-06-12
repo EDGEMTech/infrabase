@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/sof/topology.c	2026-04-08 18:20:10.952048021 +0200
++++ ./sound/soc/sof/topology.c	2026-04-08 16:21:18.493959011 +0200
+@@ -296,6 +296,7 @@
+ 	{"AFE", SOF_DAI_MEDIATEK_AFE},
+ 	{"ACPSP_VIRTUAL", SOF_DAI_AMD_SP_VIRTUAL},
+ 	{"ACPHS_VIRTUAL", SOF_DAI_AMD_HS_VIRTUAL},
++	{"MICFIL", SOF_DAI_IMX_MICFIL},
+ 
+ };
+ 
+@@ -1972,6 +1973,10 @@
+ 		token_id = SOF_ACPI2S_TOKENS;
+ 		num_tuples += token_list[SOF_ACPI2S_TOKENS].count;
+ 		break;
++	case SOF_DAI_IMX_MICFIL:
++		token_id = SOF_MICFIL_TOKENS;
++		num_tuples += token_list[SOF_MICFIL_TOKENS].count;
++		break;
+ 	default:
+ 		break;
+ 	}

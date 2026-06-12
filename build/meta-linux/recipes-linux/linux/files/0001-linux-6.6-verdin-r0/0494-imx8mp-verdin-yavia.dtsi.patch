@@ -1,0 +1,38 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi	2026-04-08 18:20:05.020882757 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi	2026-04-08 16:21:02.039539355 +0200
+@@ -73,6 +73,11 @@
+ 	};
+ };
+ 
++/* Verdin HDMI_1 Audio */
++&aud2htx {
++	status = "okay";
++};
++
+ &backlight {
+ 	power-supply = <&reg_3p3v>;
+ };
+@@ -100,6 +105,11 @@
+ 	status = "okay";
+ };
+ 
++&gpio4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
++};
++
+ &hwmon_temp {
+ 	status = "okay";
+ };
+@@ -145,6 +155,11 @@
+ 	vin-supply = <&reg_3p3v>;
+ };
+ 
++/* Verdin HDMI_1 Audio */
++&sound_hdmi {
++	status = "okay";
++};
++
+ /* Verdin UART_1 */
+ &uart1 {
+ 	status = "okay";

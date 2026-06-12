@@ -1,0 +1,32 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/features/leds/leds.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/features/leds/leds.cfg	2026-04-08 16:21:19.373734477 +0200
+@@ -0,0 +1,29 @@
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_LEDS_PWM=y
++CONFIG_LEDS_REGULATOR=y
++CONFIG_LEDS_TRIGGER_TIMER=y
++CONFIG_LEDS_TRIGGER_ONESHOT=y
++CONFIG_LEDS_TRIGGER_HEARTBEAT=y
++CONFIG_LEDS_TRIGGER_BACKLIGHT=y
++CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
++CONFIG_LEDS_TRIGGER_ACTIVITY=y
++
++# GPIO features requires GPIOLIB
++# Include them here, but they won't be enabled unless GPIO is explicitly
++# enabled as well.
++CONFIG_LEDS_GPIO=y
++CONFIG_LEDS_TRIGGER_GPIO=y
++CONFIG_LEDS_TRIGGER_NETDEV=y
++CONFIG_LEDS_TRIGGER_DISK=y
++CONFIG_LEDS_TRIGGER_MTD=y
++CONFIG_LEDS_TRIGGER_CPU=y
++
++CONFIG_LEDS_LP55XX_COMMON=m
++CONFIG_LEDS_LP5521=m
++CONFIG_LEDS_LP5523=m
++
++CONFIG_LEDS_PCA963X=m
++
++CONFIG_LEDS_CLASS_MULTICOLOR=m

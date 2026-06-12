@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx6q-sabresd-enetirq.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/boot/dts/nxp/imx/imx6q-sabresd-enetirq.dts	2026-04-08 16:21:00.820746771 +0200
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Copyright (C) 2014 Freescale Semiconductor, Inc.
++// Copyright 2019 NXP
++
++#include "imx6q-sabresd.dts"
++
++&fec {
++	pinctrl-0 = <&pinctrl_enet &pinctrl_enet_irq>;
++	interrupts-extended = <&gpio1 6 0x4>, <&gpc 0 119 0x4>;
++	fsl,err006687-workaround-present;
++};
++
++&i2c3 {
++	status = "disabled";
++};

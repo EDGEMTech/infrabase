@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/kernel/asm-offsets.c	2026-04-08 18:20:04.931782877 +0200
++++ ./arch/arm/kernel/asm-offsets.c	2026-04-08 16:21:01.148213897 +0200
+@@ -43,6 +43,7 @@
+   BLANK();
+   DEFINE(TI_FLAGS,		offsetof(struct thread_info, flags));
+   DEFINE(TI_PREEMPT,		offsetof(struct thread_info, preempt_count));
++  DEFINE(TI_ADDR_LIMIT,		offsetof(struct thread_info, addr_limit));
+   DEFINE(TI_CPU,		offsetof(struct thread_info, cpu));
+   DEFINE(TI_CPU_DOMAIN,		offsetof(struct thread_info, cpu_domain));
+   DEFINE(TI_CPU_SAVE,		offsetof(struct thread_info, cpu_context));
+@@ -83,6 +84,7 @@
+   DEFINE(S_OLD_R0,		offsetof(struct pt_regs, ARM_ORIG_r0));
+   DEFINE(PT_REGS_SIZE,		sizeof(struct pt_regs));
+   DEFINE(SVC_DACR,		offsetof(struct svc_pt_regs, dacr));
++  DEFINE(SVC_ADDR_LIMIT,	offsetof(struct svc_pt_regs, addr_limit));
+   DEFINE(SVC_REGS_SIZE,		sizeof(struct svc_pt_regs));
+   BLANK();
+   DEFINE(SIGFRAME_RC3_OFFSET,	offsetof(struct sigframe, retcode[3]));

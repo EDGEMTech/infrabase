@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/ata/libata-sata.c	2026-04-08 18:20:05.722902322 +0200
++++ ./drivers/ata/libata-sata.c	2026-04-08 16:21:04.410548422 +0200
+@@ -1276,6 +1276,9 @@
+ 		 * downstream ports has changed, schedule EH.
+ 		 */
+ 		if (sntf & (1 << SATA_PMP_CTRL_PORT)) {
++#ifdef CONFIG_AHCI_IMX_PMP
++			ap->flags |= (1 << 31);
++#endif
+ 			ata_port_schedule_eh(ap);
+ 			return 1;
+ 		}

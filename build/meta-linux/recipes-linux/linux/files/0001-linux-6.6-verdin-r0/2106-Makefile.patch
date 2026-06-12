@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/iio/adc/Makefile	2026-04-08 18:20:07.391908151 +0200
++++ ./drivers/iio/adc/Makefile	2026-04-08 16:21:06.446798419 +0200
+@@ -111,6 +111,7 @@
+ obj-$(CONFIG_TI_ADC161S626) += ti-adc161s626.o
+ obj-$(CONFIG_TI_ADS1015) += ti-ads1015.o
+ obj-$(CONFIG_TI_ADS1100) += ti-ads1100.o
++obj-$(CONFIG_TI_ADS1119) += ti-ads1119.o
+ obj-$(CONFIG_TI_ADS7924) += ti-ads7924.o
+ obj-$(CONFIG_TI_ADS7950) += ti-ads7950.o
+ obj-$(CONFIG_TI_ADS8344) += ti-ads8344.o

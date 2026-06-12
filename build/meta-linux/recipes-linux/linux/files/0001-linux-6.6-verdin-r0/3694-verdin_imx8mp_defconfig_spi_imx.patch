@@ -1,0 +1,47 @@
+Enable SPI_IMX + IMX_SDMA on iMX8MP (base drivers, no firmware bake-in).
+
+CONFIG_SPI_IMX is required for /dev/spidev<bus>.<cs> to materialise when
+the Toradex DT overlay verdin-imx8mp_spidev_overlay.dtbo is pre-applied
+to the guest DTB at capsule build time. The overlay attaches a spidev@0
+child (compatible "rohm,dh2228fv") under ecspi1, but without
+CONFIG_SPI_IMX no driver claims the controller and the spidev child
+is never bound.
+
+CONFIG_IMX_SDMA is also required because the ecspi1 DT node references
+`dmas = <&sdma1 ...>` (rx/tx channels). Without the SDMA driver, sdma1
+never probes and ecspi1 stays in deferred-probe forever:
+
+    platform 30820000.spi: deferred probe pending
+
+CONFIG_EXTRA_FIRMWARE is NOT touched here. The SDMA firmware bake-in
+into vmlinux is only needed by the dev-lvgl capsule on Torizon (where
+imx-sdma requests its firmware at ~2.3 s, before the OSTree rootfs
+pivot at ~4.7 s — the minimal initramfs does not carry it). Capsules
+that ship a full rootfs from t=0 (e.g. bsp-linux / e1c-fc) can load
+sdma-imx7d.bin from /usr/lib/firmware/ normally, so the bake-in is
+scoped via a defconfig fragment in meta-e1c-dev-lvgl/recipes-linux/
+linux/files/e1c-dev-lvgl-verdin.cfg rather than forced into every
+verdin kernel.
+
+Signed-off-by: EDGEMTech <info@edgemtech.ch>
+
+--- a/arch/arm64/configs/verdin_imx8mp_defconfig
++++ b/arch/arm64/configs/verdin_imx8mp_defconfig
+@@ -2820,7 +2820,7 @@
+ # CONFIG_SPI_FSL_QUADSPI is not set
+ # CONFIG_SPI_NXP_FLEXSPI is not set
+ CONFIG_SPI_GPIO=y
+-# CONFIG_SPI_IMX is not set
++CONFIG_SPI_IMX=y
+ # CONFIG_SPI_FSL_SPI is not set
+ # CONFIG_SPI_MICROCHIP_CORE is not set
+ # CONFIG_SPI_MICROCHIP_CORE_QSPI is not set
+@@ -5384,7 +5384,7 @@
+ # CONFIG_FSL_QDMA is not set
+ CONFIG_FSL_EDMA_V3=y
+ # CONFIG_IMX_DMA is not set
+-# CONFIG_IMX_SDMA is not set
++CONFIG_IMX_SDMA=y
+ # CONFIG_INTEL_IDMA64 is not set
+ # CONFIG_MV_XOR_V2 is not set
+ CONFIG_MXS_DMA=y

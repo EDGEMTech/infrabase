@@ -1,0 +1,15 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/include/asm/barrier.h	2026-04-08 18:20:05.089042817 +0200
++++ ./arch/arm64/include/asm/barrier.h	2026-04-08 16:21:02.369340816 +0200
+@@ -61,9 +61,9 @@
+ #define __rmb()		dsb(ld)
+ #define __wmb()		dsb(st)
+ 
+-#define __dma_mb()	dmb(osh)
+-#define __dma_rmb()	dmb(oshld)
+-#define __dma_wmb()	dmb(oshst)
++#define __dma_mb()	dmb(sy)
++#define __dma_rmb()	dmb(ld)
++#define __dma_wmb()	dmb(st)
+ 
+ #define io_stop_wc()	dgh()
+ 

@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/firmware/imx/ipc.h	2026-04-08 18:20:10.041950694 +0200
++++ ./include/linux/firmware/imx/ipc.h	2026-04-08 16:21:11.341191543 +0200
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0+ */
+ /*
+- * Copyright 2018 NXP
++ * Copyright 2018,2020 NXP
+  *
+  * Header file for the IPC implementation.
+  */
+@@ -25,6 +25,8 @@
+ 	IMX_SC_RPC_SVC_PAD = 6,
+ 	IMX_SC_RPC_SVC_MISC = 7,
+ 	IMX_SC_RPC_SVC_IRQ = 8,
++	IMX_SC_RPC_SVC_SECO = 9,
++	IMX_SC_RPC_SVC_ABORT = 10,
+ };
+ 
+ struct imx_sc_rpc_msg {

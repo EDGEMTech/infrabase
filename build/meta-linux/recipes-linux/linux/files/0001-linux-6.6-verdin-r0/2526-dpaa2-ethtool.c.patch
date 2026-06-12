@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c	2026-04-08 18:20:08.150292422 +0200
++++ ./drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c	2026-04-08 16:21:07.516034686 +0200
+@@ -280,7 +280,7 @@
+ 		if (j == 4 || j == 5)
+ 			continue;
+ 		err = dpni_get_statistics(priv->mc_io, 0, priv->mc_token,
+-					  j, &dpni_stats);
++					  j, 0, &dpni_stats);
+ 		if (err == -EINVAL)
+ 			/* Older firmware versions don't support all pages */
+ 			memset(&dpni_stats, 0, sizeof(dpni_stats));
+@@ -641,7 +641,7 @@
+ 		else
+ 			fs_act.flow_id = fs->ring_cookie;
+ 	}
+-	for (i = 0; i < dpaa2_eth_tc_count(priv); i++) {
++	for (i = 0; i < dpaa2_eth_rx_tc_count(priv); i++) {
+ 		if (add)
+ 			err = dpni_add_fs_entry(priv->mc_io, 0, priv->mc_token,
+ 						i, fs->location, &rule_cfg,

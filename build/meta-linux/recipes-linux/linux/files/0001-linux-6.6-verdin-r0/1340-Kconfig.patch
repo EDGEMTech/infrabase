@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/dma-buf/heaps/Kconfig	2026-04-08 18:20:05.992215690 +0200
++++ ./drivers/dma-buf/heaps/Kconfig	2026-04-08 16:21:04.846239807 +0200
+@@ -12,3 +12,11 @@
+ 	  Choose this option to enable dma-buf CMA heap. This heap is backed
+ 	  by the Contiguous Memory Allocator (CMA). If your system has these
+ 	  regions, you should say Y here.
++
++config DMABUF_HEAPS_DSP
++        tristate "DMA-BUF DSP Heap"
++        depends on DMABUF_HEAPS
++        help
++          Choose this option to enable the dsp dmabuf heap. The dsp heap
++          is allocated by gen allocater. it's allocated according the dts.
++          If in doubt, say Y.

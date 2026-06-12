@@ -1,0 +1,421 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/meta-series	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/meta-series	2026-04-08 16:21:19.365904003 +0200
+@@ -0,0 +1,418 @@
++#
++# scc v0.8
++# processed: Wed Apr  1 06:44:01 PM UTC 2026
++#
++# This is a scc output file, do not edit
++#
++# _reloc_dir /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git
++# _reloc_dir /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git
++# _reloc_dir /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/layers/meta-toradex-nxp/recipes-kernel/linux
++# _reloc_dir /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/layers/meta-virtualization/recipes-kernel/linux
++# _reloc_dir /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/layers/meta-edgem1/recipes-kernel/linux
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/layers/meta-edgem1/recipes-kernel/linux/files/defconfig # non-hardware
++# _mark verdin-imx8mp-standard.scc start
++# _define KMACHINE 'verdin-imx8mp'
++# _define KARCH 'arm'
++# _define KTYPE 'standard'
++# _mark base.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/kernel-meta-toradex-bsp/cfg/base/base.cfg # hardware
++# _mark base.scc end
++# _mark arm64.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/kernel-meta-toradex-bsp/cfg/arm64/arm64.cfg # hardware
++# _mark arm64.scc end
++# _mark verdin-imx8mp-standard.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/conf/../../layers/meta-toradex-nxp/recipes-kernel/linux/linux-toradex-6.6-2.2.x/nxp-imx.cfg # non-hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/conf/../../layers/meta-virtualization/recipes-kernel/linux/linux-yocto/extra-configs.cfg # non-hardware
++patch patches//./0001-ili9881c_c.patch
++# _mark verdin-imx8mp-standard-torizon.scc start
++# _mark verdin-imx8mp.scc start
++# _mark imx8.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/bsp/imx/imx8.cfg # hardware
++# _mark imx8.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/bsp/verdin-imx8mp.cfg # hardware
++# _mark verdin-imx8mp.scc end
++# _mark standard.scc start
++# _mark base.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/ktypes/base/base.cfg # non-hardware
++# _mark base.scc end
++branch: standard
++# _mark rtc.scc start
++# _define KFEATURE_DESCRIPTION 'RTC class/drivers Support'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/cfg/timer/rtc.cfg # hardware
++# _mark rtc.scc end
++# _mark virtio.scc start
++# _define KFEATURE_DESCRIPTION 'virtio support (core,pci,balloon,ring,net,blk,mmio)'
++# _define KFEATURE_COMPATIBILITY 'arch'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/cfg/virtio.cfg # non-hardware
++# _mark virtio.scc end
++# _mark dmaengine.scc start
++# _define KFEATURE_DESCRIPTION 'Enable dma engine core functionality'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/cfg/dmaengine.cfg # non-hardware
++# _mark dmaengine.scc end
++# _mark sound.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/cfg/sound.cfg # hardware
++# _mark sound.scc end
++# _mark ipv6.scc start
++# _define KFEATURE_DESCRIPTION 'Enable IPv6 options'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/cfg/net/ipv6.cfg # non-hardware
++# _mark ipsec6.scc start
++# _define KFEATURE_DESCRIPTION 'Enable IPv6 IPsec options'
++# _define KFEATURE_COMPATIBILITY 'all'
++# _mark ipsec.scc start
++# _define KFEATURE_DESCRIPTION 'Enable IPsec options'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/cfg/net/ipsec.cfg # non-hardware
++# _mark ipsec.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/cfg/net/ipsec6.cfg # non-hardware
++# _mark ipsec6.scc end
++# _mark ipv6.scc end
++# _mark can.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Controller Area Network (CAN bus) support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/can/can.cfg # hardware
++# _mark can.scc end
++# _mark rfkill.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/rfkill/rfkill.cfg # hardware
++# _mark rfkill.scc end
++# _mark bluetooth.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/bluetooth/bluetooth.cfg # hardware
++# _mark bluetooth.scc end
++# _mark bluetooth-usb.scc start
++# _define KFEATURE_DESCRIPTION 'Enable USB-based Bluetooth hardware modules'
++# _define KFEATURE_COMPATIBILITY 'board'
++# _mark bluetooth.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/bluetooth/bluetooth.cfg # hardware
++# _mark bluetooth.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/bluetooth/bluetooth-usb.cfg # hardware
++# _mark bluetooth-usb.scc end
++# _mark usb-base.scc start
++# _define KFEATURE_DESCRIPTION 'Enable core options for USB support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb/usb-base.cfg # hardware
++# _mark usb-base.scc end
++# _mark usb-pci.scc start
++# _define KFEATURE_DESCRIPTION 'Enable PCI based USB host interface'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb/usb-pci.cfg # hardware
++# _mark usb-pci.scc end
++# _mark usb-net.scc start
++# _define KFEATURE_DESCRIPTION 'Enable all options required for USB networking'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb-net/usb-net.cfg # hardware
++# _mark usb-net.scc end
++# _mark wifi-common.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Common WiFi Kernel Features'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/wifi-common.cfg # hardware
++# _mark mac80211.scc start
++# _define KFEATURE_DESCRIPTION 'Enable mac 80211 + WLAN support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/mac80211/mac80211.cfg # hardware
++# _mark mac80211.scc end
++# _mark wifi-common.scc end
++# _mark wifi-pci.scc start
++# _define KFEATURE_DESCRIPTION 'Enable PCI(e) WiFi Drivers'
++# _define KFEATURE_COMPATIBILITY 'board'
++# _mark wifi-common.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Common WiFi Kernel Features'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/wifi-common.cfg # hardware
++# _mark mac80211.scc start
++# _define KFEATURE_DESCRIPTION 'Enable mac 80211 + WLAN support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/mac80211/mac80211.cfg # hardware
++# _mark mac80211.scc end
++# _mark wifi-common.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/atheros-pci.cfg # hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/broadcom-pci.cfg # hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/mediatek-pci.cfg # hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/ralink-pci.cfg # hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/realtek-pci.cfg # hardware
++# _mark iwlwifi.scc start
++# _define KFEATURE_DESCRIPTION 'Enable iwlwifi support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/iwlwifi/iwlwifi.cfg # hardware
++# _mark mac80211.scc start
++# _define KFEATURE_DESCRIPTION 'Enable mac 80211 + WLAN support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/mac80211/mac80211.cfg # hardware
++# _mark mac80211.scc end
++# _mark iwlwifi.scc end
++# _mark wifi-pci.scc end
++# _mark wifi-sdio.scc start
++# _define KFEATURE_DESCRIPTION 'Enable SDIO WiFi Drivers'
++# _define KFEATURE_COMPATIBILITY 'board'
++# _mark wifi-common.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Common WiFi Kernel Features'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/wifi-common.cfg # hardware
++# _mark mac80211.scc start
++# _define KFEATURE_DESCRIPTION 'Enable mac 80211 + WLAN support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/mac80211/mac80211.cfg # hardware
++# _mark mac80211.scc end
++# _mark wifi-common.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/broadcom-sdio.cfg # hardware
++# _mark wifi-sdio.scc end
++# _mark wifi-usb.scc start
++# _define KFEATURE_DESCRIPTION 'Enable USB WiFi Drivers'
++# _define KFEATURE_COMPATIBILITY 'board'
++# _mark wifi-common.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Common WiFi Kernel Features'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/wifi-common.cfg # hardware
++# _mark mac80211.scc start
++# _define KFEATURE_DESCRIPTION 'Enable mac 80211 + WLAN support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/mac80211/mac80211.cfg # hardware
++# _mark mac80211.scc end
++# _mark wifi-common.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/atheros-usb.cfg # hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/broadcom-usb.cfg # hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/mediatek-usb.cfg # hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/ralink-usb.cfg # hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/wifi/realtek-usb.cfg # hardware
++# _mark wifi-usb.scc end
++# _mark net.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/net/net.cfg # hardware
++# _mark net.scc end
++# _mark lxc-enable.scc start
++# _define KFEATURE_DESCRIPTION 'Enable LXC support'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/lxc/lxc.cfg # non-hardware
++# _mark lxc-enable.scc end
++# _mark leds.scc start
++# _define KFEATURE_DESCRIPTION 'Enable LED class and triggers'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/leds/leds.cfg # hardware
++# _mark leds.scc end
++# _mark pwm.scc start
++# _define KFEATURE_DESCRIPTION 'Enable PWM class and drivers'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/pwm/pwm.cfg # hardware
++# _mark pwm.scc end
++# _mark hwmon.scc start
++# _define KFEATURE_DESCRIPTION 'Enable support for HWMON Sensors'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/hwmon/hwmon.cfg # hardware
++# _mark hwmon.scc end
++# _mark i2c.scc start
++# _define KFEATURE_DESCRIPTION 'Enable I2C Support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/i2c/i2c.cfg # hardware
++# _mark i2c.scc end
++# _mark i2c-dev.scc start
++# _define KFEATURE_DESCRIPTION 'Enable some I2C devices'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/i2c/i2c-dev.cfg # hardware
++# _mark i2c-dev.scc end
++# _mark iio.scc start
++# _define KFEATURE_DESCRIPTION 'Enable support for Industrial IO'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/iio/iio.cfg # hardware
++# _mark iio.scc end
++# _mark media.scc start
++# _define KFEATURE_DESCRIPTION 'Enable support for multimedia devices such as webcams and Video grabber devices'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/media/media.cfg # non-hardware
++# _mark media.scc end
++# _mark media-platform.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Configuration For Platform Media devices'
++# _define KFEATURE_COMPATIBILITY 'all'
++# _mark media.scc start
++# _define KFEATURE_DESCRIPTION 'Enable support for multimedia devices such as webcams and Video grabber devices'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/media/media.cfg # non-hardware
++# _mark media.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/media/media-platform.cfg # hardware
++# _mark media-platform.scc end
++# _mark media-usb-webcams.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Various USB Webcam Drivers'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb/usb-base.cfg # non-hardware
++# _mark media.scc start
++# _define KFEATURE_DESCRIPTION 'Enable support for multimedia devices such as webcams and Video grabber devices'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/media/media.cfg # non-hardware
++# _mark media.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/media/media-usb-webcams.cfg # hardware
++# _mark media-usb-webcams.scc end
++# _mark rtc.scc start
++# _define KFEATURE_DESCRIPTION 'RTC class/drivers Support'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/timer/rtc.cfg # hardware
++# _mark rtc.scc end
++# _mark spi.scc start
++# _define KFEATURE_DESCRIPTION 'Enable SPI Master'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/spi/spi.cfg # hardware
++# _mark spi.scc end
++# _mark spidev.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Userspace SPI device interface'
++# _define KFEATURE_COMPATIBILITY 'board'
++# _mark spi.scc start
++# _define KFEATURE_DESCRIPTION 'Enable SPI Master'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/spi/spi.cfg # hardware
++# _mark spi.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/spi/spidev.cfg # hardware
++# _mark spidev.scc end
++# _mark mmc-sdhci.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Secure Digital Host Controller Interface support'
++# _define KFEATURE_COMPATIBILITY 'board'
++# _mark mmc-base.scc start
++# _define KFEATURE_DESCRIPTION 'Enable core options for MMC support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/mmc/mmc-base.cfg # hardware
++# _mark mmc-base.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/mmc/mmc-sdhci.cfg # hardware
++# _mark mmc-sdhci.scc end
++# _mark thermal.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/thermal/thermal.cfg # hardware
++# _mark thermal.scc end
++# _mark serial.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/serial/serial.cfg # hardware
++# _mark serial.scc end
++# _mark port.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/char/port.cfg # hardware
++# _mark port.scc end
++# _mark scsi.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/scsi/scsi.cfg # hardware
++# _mark scsi.scc end
++# _mark pci.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/pci/pci.cfg # hardware
++# _mark pci.scc end
++# _mark usb-gpio.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Extcon USB GPIO driver'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/extcon/usb-gpio.cfg # hardware
++# _mark usb-gpio.scc end
++# _mark tpm.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Trust Platform Module (TPM) support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/tpm/tpm.cfg # hardware
++# _mark tpm.scc end
++# _mark uio.scc start
++# _define KFEATURE_DESCRIPTION 'Enable User-space I/O (UIO) support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/uio/uio.cfg # hardware
++# _mark uio.scc end
++# _mark w1.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Dallas' 1-wire bus support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/w1/w1.cfg # hardware
++# _mark w1.scc end
++# _mark pinctrl.scc start
++# _define KFEATURE_DESCRIPTION 'Enable PINCTRL infrastructure and drivers'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/pinctrl/pinctrl.cfg # hardware
++# _mark pinctrl.scc end
++# _mark clock.scc start
++# _define KFEATURE_DESCRIPTION 'Enable clock support'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/clock/clock.cfg # hardware
++# _mark clock.scc end
++# _mark power.scc start
++# _define KFEATURE_DESCRIPTION 'Enable power supply and power/reset drivers'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/power/power.cfg # hardware
++# _mark power.scc end
++# _mark fs.scc start
++# _define KFEATURE_DESCRIPTION 'Enable filesystem configurations'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/fs/fs.cfg # non-hardware
++# _mark fs.scc end
++# _mark md.scc start
++# _define KFEATURE_DESCRIPTION 'Enable multiple devices driver support (RAID and LVM)'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/md/md.cfg # non-hardware
++# _mark md.scc end
++# _mark gpu.scc start
++# _define KFEATURE_DESCRIPTION 'Enable support for GPU'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/gpu/gpu.cfg # hardware
++# _mark gpu.scc end
++# _mark ip_vs.scc start
++# _define KFEATURE_DESCRIPTION 'Enable IP virtual server'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/net/ip_vs.cfg # non-hardware
++# _mark ip_vs.scc end
++# _mark ipsec.scc start
++# _define KFEATURE_DESCRIPTION 'Enable IPsec options'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/net/ipsec.cfg # non-hardware
++# _mark ipsec.scc end
++# _mark bridge.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Bridge Netfilter options'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/net/bridge.cfg # non-hardware
++# _mark bridge.scc end
++# _mark network.scc start
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/net/network.cfg # hardware
++# _mark network.scc end
++# _mark netfilter.scc start
++# _define KFEATURE_DESCRIPTION 'Enable netfilter + conn tracking'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/netfilter/netfilter.cfg # non-hardware
++# _mark netfilter.scc end
++# _mark nf_tables.scc start
++# _define KFEATURE_DESCRIPTION 'netfilter nf_tables'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/nf_tables/nf_tables.cfg # non-hardware
++# _mark nf_tables.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/media/i2c/camera.cfg # non-hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/mii-phy.cfg # non-hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb/touchscreen.cfg # non-hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb/webcam.cfg # non-hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb/hid.cfg # non-hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb/host.cfg # non-hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb/storage.cfg # non-hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/usb/usb.cfg # non-hardware
++# _mark patches.scc start
++# _mark drivers.scc start
++# _mark drivers.scc end
++# _mark net.scc start
++# _mark net.scc end
++# _mark patches.scc end
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/features/input/uinput.cfg # non-hardware
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/torizon-kernel-meta/ktypes/standard/standard.cfg # non-hardware
++# _mark standard.scc end
++# _mark verdin-imx8mp-standard-torizon.scc end
++# _mark virtio.scc start
++# _define KFEATURE_DESCRIPTION 'virtio support (core,pci,balloon,ring,net,blk,mmio)'
++# _define KFEATURE_COMPATIBILITY 'arch'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/recipe-sysroot-native/kcfg/cfg/virtio.cfg # non-hardware
++# _mark virtio.scc end
++# _mark xt-checksum.scc start
++# _define KFEATURE_DESCRIPTION 'Add extra iptables modules'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/recipe-sysroot-native/kcfg/cfg/xt-checksum.cfg # non-hardware
++# _mark xt-checksum.scc end
++# _mark vswitch.scc start
++# _define KFEATURE_DESCRIPTION 'Enable in kernel OpenvSwitch module'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/recipe-sysroot-native/kcfg/cfg/vswitch.cfg # non-hardware
++# _mark vswitch.scc end
++# _mark lxc.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Features needed by LxC, namespaces, cgroups et.c.'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/recipe-sysroot-native/kcfg/cfg/lxc.cfg # non-hardware
++# _mark lxc.scc end
++# _mark docker.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Features needed by docker in addition to LXC features'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/recipe-sysroot-native/kcfg/cfg/docker.cfg # non-hardware
++# _mark docker.scc end
++# _mark cgroup-hugetlb.scc start
++# _define KFEATURE_DESCRIPTION 'Enable hugetlb cgroup'
++# _define KFEATURE_COMPATIBILITY 'all'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/recipe-sysroot-native/kcfg/cfg/cgroup-hugetlb.cfg # non-hardware
++# _mark cgroup-hugetlb.scc end
++# _mark criu.scc start
++# _define KFEATURE_DESCRIPTION 'Enable Networking Features needed by criu.'
++# _define KFEATURE_COMPATIBILITY 'board'
++kconf /home/rossierd/edgemtech/products/edgem1/30.torizon/torizon/build/tmp/work/verdin_imx8mp-tdx-linux/linux-toradex/6.6.94+git/recipe-sysroot-native/kcfg/cfg/criu.cfg # non-hardware
++# _mark criu.scc end

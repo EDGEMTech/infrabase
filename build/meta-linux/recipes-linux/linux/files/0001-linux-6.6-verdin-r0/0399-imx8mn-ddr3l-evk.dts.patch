@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mn-ddr3l-evk.dts	2026-04-08 18:20:05.018882702 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8mn-ddr3l-evk.dts	2026-04-08 16:21:02.021609756 +0200
+@@ -112,3 +112,16 @@
+ 		};
+ 	};
+ };
++
++/delete-node/ &{/display-subsystem};
++&{/thermal-zones/cpu-thermal/cooling-maps/map0} {
++	cooling-device =
++			<&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++			<&A53_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++			<&A53_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++			<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++};
++/delete-node/ &adv_bridge;
++/delete-node/ &gpu;
++/delete-node/ &lcdif;
++/delete-node/ &mipi_dsi;

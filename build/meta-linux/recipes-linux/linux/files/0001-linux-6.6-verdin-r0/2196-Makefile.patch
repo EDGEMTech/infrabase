@@ -1,0 +1,9 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/Makefile	2026-04-08 18:20:07.747408360 +0200
++++ ./drivers/media/platform/Makefile	2026-04-08 16:21:06.999104053 +0200
+@@ -34,3 +34,6 @@
+ # (e. g. LC_ALL=C sort Makefile)
+ obj-$(CONFIG_VIDEO_MEM2MEM_DEINTERLACE)	+= m2m-deinterlace.o
+ obj-$(CONFIG_VIDEO_MUX)			+= video-mux.o
++obj-$(CONFIG_VIDEO_MX8_CAPTURE)		+= imx8/
++obj-$(CONFIG_VIDEO_MXC_CAPTURE)		+= mxc/capture/
++obj-$(CONFIG_VIDEO_MXC_OUTPUT)		+= mxc/output/

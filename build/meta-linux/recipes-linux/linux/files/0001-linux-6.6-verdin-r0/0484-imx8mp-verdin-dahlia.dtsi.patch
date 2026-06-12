@@ -1,0 +1,112 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi	2026-04-08 18:20:05.020882757 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi	2026-04-08 16:21:02.035288321 +0200
+@@ -10,7 +10,7 @@
+ 		simple-audio-card,format = "i2s";
+ 		simple-audio-card,frame-master = <&codec_dai>;
+ 		simple-audio-card,mclk-fs = <256>;
+-		simple-audio-card,name = "imx8mp-wm8904";
++		simple-audio-card,name = "verdin-wm8904";
+ 		simple-audio-card,routing =
+ 			"Headphone Jack", "HPOUTL",
+ 			"Headphone Jack", "HPOUTR",
+@@ -32,6 +32,30 @@
+ 			sound-dai = <&sai1>;
+ 		};
+ 	};
++
++	reg_usb_hub: regulator-usb-hub {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
++		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
++		regulator-boot-on;
++		regulator-name = "HUB_PWR_EN";
++	};
++
++	reg_pcie: regulator-pcie {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
++		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
++		regulator-boot-on;
++		regulator-name = "PCIE_1_PWR_EN";
++		startup-delay-us = <100000>;
++	};
++};
++
++/* Verdin HDMI_1 Audio */
++&aud2htx {
++	status = "okay";
+ };
+ 
+ &backlight {
+@@ -70,6 +94,11 @@
+ 	status = "okay";
+ };
+ 
++&gpio4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
++};
++
+ /* Current measurement into module VCC */
+ &hwmon {
+ 	status = "okay";
+@@ -112,6 +141,7 @@
+ 
+ /* Verdin PCIE_1 */
+ &pcie {
++	vpcie-supply = <&reg_pcie>;
+ 	status = "okay";
+ };
+ 
+@@ -138,6 +168,11 @@
+ 	vin-supply = <&reg_3p3v>;
+ };
+ 
++/* We support turning off sleep moci on Dahlia */
++&reg_force_sleep_moci {
++	status = "disabled";
++};
++
+ /* Verdin I2S_1 */
+ &sai1 {
+ 	assigned-clocks = <&clk IMX8MP_CLK_SAI1>;
+@@ -147,6 +182,11 @@
+ 	status = "okay";
+ };
+ 
++/* Verdin HDMI_1 Audio */
++&sound_hdmi {
++	status = "okay";
++};
++
+ /* Verdin UART_1 */
+ &uart1 {
+ 	status = "okay";
+@@ -181,6 +221,25 @@
+ 	status = "okay";
+ };
+ 
++&usb_dwc3_1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	usb_hub_3_0: usb-hub@1 {
++		compatible = "usb424,5744";
++		reg = <1>;
++		peer-hub = <&usb_hub_2_0>;
++		vdd-supply = <&reg_usb_hub>;
++	};
++
++	usb_hub_2_0: usb-hub@2 {
++		compatible = "usb424,2744";
++		reg = <2>;
++		peer-hub = <&usb_hub_3_0>;
++		vdd-supply = <&reg_usb_hub>;
++	};
++};
++
+ /* Verdin SD_1 */
+ &usdhc2 {
+ 	status = "okay";

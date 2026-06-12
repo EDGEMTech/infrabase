@@ -1,0 +1,78 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pmdomain/imx/gpc.c	2026-04-08 18:20:08.990056267 +0200
++++ ./drivers/pmdomain/imx/gpc.c	2026-04-08 16:21:08.891597332 +0200
+@@ -39,6 +39,11 @@
+ 
+ #define PGC_DOMAIN_FLAG_NO_PD		BIT(0)
+ 
++#define GPC_PGC_DOMAIN_ARM	0
++#define GPC_PGC_DOMAIN_PU	1
++#define GPC_PGC_DOMAIN_DISPLAY	2
++#define GPC_PGC_DOMAIN_PCI	3
++
+ struct imx_pm_domain {
+ 	struct generic_pm_domain base;
+ 	struct regmap *regmap;
+@@ -176,6 +181,8 @@
+ 	return imx_pgc_get_clocks(dev, domain);
+ }
+ 
++static void imx_gpc_handle_ldobypass(struct platform_device *pdev);
++
+ static int imx_pgc_power_domain_probe(struct platform_device *pdev)
+ {
+ 	struct imx_pm_domain *domain = pdev->dev.platform_data;
+@@ -202,6 +209,10 @@
+ 
+ 	device_link_add(dev, dev->parent, DL_FLAG_AUTOREMOVE_CONSUMER);
+ 
++	/* Mark PU regulator as bypass */
++	if (pdev->id == GPC_PGC_DOMAIN_PU)
++		imx_gpc_handle_ldobypass(pdev);
++
+ 	return 0;
+ 
+ genpd_err:
+@@ -239,11 +250,6 @@
+ };
+ builtin_platform_driver(imx_pgc_power_domain_driver)
+ 
+-#define GPC_PGC_DOMAIN_ARM	0
+-#define GPC_PGC_DOMAIN_PU	1
+-#define GPC_PGC_DOMAIN_DISPLAY	2
+-#define GPC_PGC_DOMAIN_PCI	3
+-
+ static struct genpd_power_state imx6_pm_domain_pu_state = {
+ 	.power_off_latency_ns = 25000,
+ 	.power_on_latency_ns = 2000000,
+@@ -401,6 +407,22 @@
+ 	return ret;
+ }
+ 
++static void imx_gpc_handle_ldobypass(struct platform_device *pdev)
++{
++	struct imx_pm_domain *domain = pdev->dev.platform_data;
++	struct regulator *pu_reg = domain->supply;
++	u32 bypass = 0;
++	int ret;
++
++	ret = of_property_read_u32(pdev->dev.parent->of_node, "fsl,ldo-bypass", &bypass);
++	if (ret && ret != -EINVAL)
++		dev_warn(pdev->dev.parent, "failed to read fsl,ldo-bypass property: %d\n", ret);
++
++	/* We only bypass pu since arm and soc has been set in u-boot */
++	if (pu_reg && bypass)
++		regulator_allow_bypass(pu_reg, true);
++}
++
+ static int imx_gpc_probe(struct platform_device *pdev)
+ {
+ 	const struct of_device_id *of_id =
+@@ -455,6 +477,8 @@
+ 					  of_id_data->num_domains);
+ 		if (ret)
+ 			return ret;
++
++		imx_gpc_handle_ldobypass(pdev);
+ 	} else {
+ 		struct imx_pm_domain *domain;
+ 		struct platform_device *pd_pdev;

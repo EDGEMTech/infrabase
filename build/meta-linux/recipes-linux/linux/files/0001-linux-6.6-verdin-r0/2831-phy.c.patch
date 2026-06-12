@@ -1,0 +1,35 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/phy/phy.c	2026-04-08 18:20:08.506979903 +0200
++++ ./drivers/net/phy/phy.c	2026-04-08 16:21:07.990040222 +0200
+@@ -972,6 +972,32 @@
+ 	return 0;
+ }
+ 
++int phy_validate_inband_aneg(struct phy_device *phydev,
++			     phy_interface_t interface)
++{
++	/* We may be called before phy_attach_direct() force-binds the
++	 * generic PHY driver to this device. In that case, report an unknown
++	 * setting rather than -EIO as most other functions do.
++	 */
++	if (!phydev->drv || !phydev->drv->validate_inband_aneg)
++		return PHY_INBAND_ANEG_UNKNOWN;
++
++	return phydev->drv->validate_inband_aneg(phydev, interface);
++}
++EXPORT_SYMBOL_GPL(phy_validate_inband_aneg);
++
++int phy_config_inband_aneg(struct phy_device *phydev, bool enabled)
++{
++	if (!phydev->drv)
++		return -EIO;
++
++	if (!phydev->drv->config_inband_aneg)
++		return -EOPNOTSUPP;
++
++	return phydev->drv->config_inband_aneg(phydev, enabled);
++}
++EXPORT_SYMBOL_GPL(phy_config_inband_aneg);
++
+ /**
+  * _phy_start_aneg - start auto-negotiation for this PHY device
+  * @phydev: the phy_device struct

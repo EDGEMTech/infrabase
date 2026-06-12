@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/include/asm/ptrace.h	2026-04-08 18:20:04.927880165 +0200
++++ ./arch/arm/include/asm/ptrace.h	2026-04-08 16:21:01.133614237 +0200
+@@ -19,6 +19,7 @@
+ struct svc_pt_regs {
+ 	struct pt_regs regs;
+ 	u32 dacr;
++	u32 addr_limit;
+ };
+ 
+ #define to_svc_pt_regs(r) container_of(r, struct svc_pt_regs, regs)

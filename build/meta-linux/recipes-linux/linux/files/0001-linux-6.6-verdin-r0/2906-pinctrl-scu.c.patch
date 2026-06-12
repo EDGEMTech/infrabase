@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pinctrl/freescale/pinctrl-scu.c	2026-04-08 18:20:08.909991132 +0200
++++ ./drivers/pinctrl/freescale/pinctrl-scu.c	2026-04-08 16:21:08.742606704 +0200
+@@ -17,8 +17,6 @@
+ 
+ #define IMX_SC_PAD_FUNC_GET_WAKEUP	9
+ #define IMX_SC_PAD_FUNC_SET_WAKEUP	4
+-#define IMX_SC_IRQ_GROUP_WAKE           3   /* Wakeup interrupts */
+-#define IMX_SC_IRQ_PAD			2   /* Pad wakeup */
+ 
+ enum pad_func_e {
+ 	IMX_SC_PAD_FUNC_SET = 15,

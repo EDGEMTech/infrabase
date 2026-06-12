@@ -1,0 +1,60 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/apalis-imx8_panel-cap-touch-10inch-lvds_overlay.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/apalis-imx8_panel-cap-touch-10inch-lvds_overlay.dts	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2022 Toradex
++ */
++
++/* Apalis iMX8 driving the Capacitive Touch Display 10.1" LVDS. */
++
++/dts-v1/;
++/plugin/;
++/ {
++	compatible = "toradex,apalis-imx8", "toradex,apalis-imx8-v1.1";
++};
++
++&atmel_mxt_ts {
++	status = "okay";
++};
++
++&backlight {
++	status = "okay";
++};
++
++&ldb2 {
++	status = "okay";
++
++	lvds-channel@0 {
++		status = "okay";
++	};
++};
++
++&ldb2_phy {
++	status = "okay";
++};
++
++&panel_lvds {
++	data-mapping = "vesa-24";
++	height-mm = <136>;
++	width-mm = <217>;
++	status = "okay";
++
++	panel-timing {
++		clock-frequency = <68900000 71100000 73400000>;
++		de-active = <1>;
++		hactive = <1280 1280 1280>;
++		hback-porch = <23 60 71>;
++		hfront-porch = <23 60 71>;
++		hsync-len = <15 40 47>;
++		pixelclk-active = <1>; /* positive edge */
++		vactive = <800 800 800>;
++		vback-porch = <5 7 10>;
++		vfront-porch = <5 7 10>;
++		vsync-len = <6 9 12>;
++	};
++};
++
++&pwm_lvds1 {
++	status = "okay";
++};

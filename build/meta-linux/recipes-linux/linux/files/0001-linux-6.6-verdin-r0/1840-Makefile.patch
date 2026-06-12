@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/bridge/cadence/Makefile	2026-04-08 18:20:07.004441869 +0200
++++ ./drivers/gpu/drm/bridge/cadence/Makefile	2026-04-08 16:21:05.795181734 +0200
+@@ -5,3 +5,13 @@
+ obj-$(CONFIG_DRM_CDNS_MHDP8546) += cdns-mhdp8546.o
+ cdns-mhdp8546-y := cdns-mhdp8546-core.o cdns-mhdp8546-hdcp.o
+ cdns-mhdp8546-$(CONFIG_DRM_CDNS_MHDP8546_J721E) += cdns-mhdp8546-j721e.o
++
++cdns_mhdp_drmcore-y := cdns-mhdp-common.o cdns-mhdp-dp.o cdns-mhdp-hdmi.o
++
++cdns_mhdp_drmcore-$(CONFIG_DRM_CDNS_HDMI) += cdns-hdmi-core.o
++cdns_mhdp_drmcore-$(CONFIG_DRM_CDNS_DP) += cdns-dp-core.o
++cdns_mhdp_drmcore-$(CONFIG_DRM_CDNS_AUDIO) += cdns-mhdp-audio.o
++cdns_mhdp_drmcore-$(CONFIG_DRM_CDNS_HDCP) += cdns-mhdp-hdcp.o cdns-hdcp-common.o
++cdns_mhdp_drmcore-$(CONFIG_DRM_CDNS_HDMI_CEC) += cdns-mhdp-cec.o
++
++obj-$(CONFIG_DRM_CDNS_MHDP)		+= cdns_mhdp_drmcore.o

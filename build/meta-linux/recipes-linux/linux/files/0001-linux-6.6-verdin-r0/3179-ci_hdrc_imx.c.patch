@@ -1,0 +1,210 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/usb/chipidea/ci_hdrc_imx.c	2026-04-08 18:20:09.505419596 +0200
++++ ./drivers/usb/chipidea/ci_hdrc_imx.c	2026-04-08 16:21:09.636160875 +0200
+@@ -15,6 +15,7 @@
+ #include <linux/clk.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/pm_qos.h>
++#include <linux/busfreq-imx.h>
+ 
+ #include "ci.h"
+ #include "ci_hdrc_imx.h"
+@@ -96,10 +97,14 @@
+ 	struct usb_phy *phy;
+ 	struct platform_device *ci_pdev;
+ 	struct clk *clk;
++	struct clk *clk_wakeup;
+ 	struct imx_usbmisc_data *usbmisc_data;
++	/* wakeup interrupt*/
++	int irq;
+ 	bool supports_runtime_pm;
+ 	bool override_phy_control;
+ 	bool in_lpm;
++	bool wakeup_int;
+ 	struct pinctrl *pinctrl;
+ 	struct pinctrl_state *pinctrl_hsic_active;
+ 	struct regulator *hsic_pad_regulator;
+@@ -199,7 +204,7 @@
+ 
+ 	data->clk_ipg = devm_clk_get(dev, "ipg");
+ 	if (IS_ERR(data->clk_ipg)) {
+-		/* If the platform only needs one clocks */
++		/* If the platform only needs one primary clock */
+ 		data->clk = devm_clk_get(dev, NULL);
+ 		if (IS_ERR(data->clk)) {
+ 			ret = PTR_ERR(data->clk);
+@@ -208,6 +213,18 @@
+ 				PTR_ERR(data->clk), PTR_ERR(data->clk_ipg));
+ 			return ret;
+ 		}
++		/* Get wakeup clock. Not all of the platforms need to
++		 * handle this clock. So make it optional.
++		 */
++		data->clk_wakeup = devm_clk_get_optional(dev,
++							 "usb_wakeup_clk");
++		if (IS_ERR(data->clk_wakeup)) {
++			ret = PTR_ERR(data->clk_wakeup);
++			dev_err(dev,
++				"Failed to get wakeup clk, err=%ld\n",
++				PTR_ERR(data->clk_wakeup));
++			return ret;
++		}
+ 		return ret;
+ 	}
+ 
+@@ -328,6 +345,25 @@
+ 	return ret;
+ }
+ 
++static irqreturn_t ci_wakeup_irq_handler(int irq, void *data)
++{
++	struct platform_device *pdev = data;
++	struct ci_hdrc_imx_data *imx_data = platform_get_drvdata(pdev);
++
++	if (imx_data->in_lpm) {
++		if (imx_data->wakeup_int)
++			return IRQ_HANDLED;
++
++		disable_irq_nosync(irq);
++		imx_data->wakeup_int = true;
++		pm_runtime_resume(&imx_data->ci_pdev->dev);
++
++		return IRQ_HANDLED;
++	}
++
++	return IRQ_NONE;
++}
++
+ static void ci_hdrc_imx_disable_regulator(void *arg)
+ {
+ 	struct ci_hdrc_imx_data *data = arg;
+@@ -436,6 +472,7 @@
+ 	if (pdata.flags & CI_HDRC_PMQOS)
+ 		cpu_latency_qos_add_request(&data->pm_qos_req, 0);
+ 
++	request_bus_freq(BUS_FREQ_HIGH);
+ 	ret = imx_get_clks(dev);
+ 	if (ret)
+ 		goto qos_remove_request;
+@@ -444,6 +481,10 @@
+ 	if (ret)
+ 		goto qos_remove_request;
+ 
++	ret = clk_prepare_enable(data->clk_wakeup);
++	if (ret)
++		goto err_wakeup_clk;
++
+ 	data->phy = devm_usb_get_phy_by_phandle(dev, "fsl,usbphy", 0);
+ 	if (IS_ERR(data->phy)) {
+ 		ret = PTR_ERR(data->phy);
+@@ -482,6 +523,20 @@
+ 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
+ 		data->supports_runtime_pm = true;
+ 
++	if (of_find_property(np, "ci-disable-lpm", NULL)) {
++		data->supports_runtime_pm = false;
++		pdata.flags &= ~CI_HDRC_SUPPORTS_RUNTIME_PM;
++	}
++
++	data->irq = platform_get_irq_optional(pdev, 1);
++	if (data->irq > 0) {
++		ret = devm_request_threaded_irq(dev, data->irq,
++				NULL, ci_wakeup_irq_handler,
++				IRQF_ONESHOT, "ci_imx_wakeup", pdev);
++		if (ret)
++			goto err_clk;
++	}
++
+ 	ret = imx_usbmisc_init(data->usbmisc_data);
+ 	if (ret) {
+ 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
+@@ -532,8 +587,11 @@
+ 	if (data->override_phy_control)
+ 		usb_phy_shutdown(data->phy);
+ err_clk:
++	clk_disable_unprepare(data->clk_wakeup);
++err_wakeup_clk:
+ 	imx_disable_unprepare_clks(dev);
+ qos_remove_request:
++	release_bus_freq(BUS_FREQ_HIGH);
+ 	if (pdata.flags & CI_HDRC_PMQOS)
+ 		cpu_latency_qos_remove_request(&data->pm_qos_req);
+ 	data->ci_pdev = NULL;
+@@ -558,6 +616,8 @@
+ 		usb_phy_shutdown(data->phy);
+ 	if (data->ci_pdev) {
+ 		imx_disable_unprepare_clks(&pdev->dev);
++		clk_disable_unprepare(data->clk_wakeup);
++		release_bus_freq(BUS_FREQ_HIGH);
+ 		if (data->plat_data->flags & CI_HDRC_PMQOS)
+ 			cpu_latency_qos_remove_request(&data->pm_qos_req);
+ 	}
+@@ -587,6 +647,7 @@
+ 	}
+ 
+ 	imx_disable_unprepare_clks(dev);
++	release_bus_freq(BUS_FREQ_HIGH);
+ 	if (data->plat_data->flags & CI_HDRC_PMQOS)
+ 		cpu_latency_qos_remove_request(&data->pm_qos_req);
+ 
+@@ -603,14 +664,13 @@
+ 
+ 	dev_dbg(dev, "at %s\n", __func__);
+ 
+-	if (!data->in_lpm) {
+-		WARN_ON(1);
++	if (!data->in_lpm)
+ 		return 0;
+-	}
+ 
+ 	if (data->plat_data->flags & CI_HDRC_PMQOS)
+ 		cpu_latency_qos_add_request(&data->pm_qos_req, 0);
+ 
++	request_bus_freq(BUS_FREQ_HIGH);
+ 	ret = imx_prepare_enable_clks(dev);
+ 	if (ret)
+ 		return ret;
+@@ -624,6 +684,11 @@
+ 		goto clk_disable;
+ 	}
+ 
++	if (data->wakeup_int) {
++		data->wakeup_int = false;
++		enable_irq(data->irq);
++	}
++
+ 	return 0;
+ 
+ clk_disable:
+@@ -646,6 +711,10 @@
+ 		return ret;
+ 
+ 	pinctrl_pm_select_sleep_state(dev);
++
++	if (device_may_wakeup(dev))
++		enable_irq_wake(data->irq);
++
+ 	return ret;
+ }
+ 
+@@ -654,6 +723,9 @@
+ 	struct ci_hdrc_imx_data *data = dev_get_drvdata(dev);
+ 	int ret;
+ 
++	if (device_may_wakeup(dev))
++		disable_irq_wake(data->irq);
++
+ 	pinctrl_pm_select_default_state(dev);
+ 	ret = imx_controller_resume(dev, PMSG_RESUME);
+ 	if (!ret && data->supports_runtime_pm) {
+@@ -669,10 +741,8 @@
+ {
+ 	struct ci_hdrc_imx_data *data = dev_get_drvdata(dev);
+ 
+-	if (data->in_lpm) {
+-		WARN_ON(1);
++	if (data->in_lpm)
+ 		return 0;
+-	}
+ 
+ 	return imx_controller_suspend(dev, PMSG_AUTO_SUSPEND);
+ }

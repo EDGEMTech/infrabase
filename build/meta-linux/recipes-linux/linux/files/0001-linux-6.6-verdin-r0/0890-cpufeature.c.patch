@@ -1,0 +1,25 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/kernel/cpufeature.c	2026-04-08 18:20:05.097335970 +0200
++++ ./arch/arm64/kernel/cpufeature.c	2026-04-08 16:21:02.415994250 +0200
+@@ -980,9 +980,22 @@
+ 	}
+ }
+ 
++bool TKT340553_SW_WORKAROUND;
+ static void __init init_cpucap_indirect_list(void)
+ {
+ 	init_cpucap_indirect_list_from_array(arm64_features);
++#ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
++#if	defined(CONFIG_ARM64_ERRATUM_826319) || \
++	defined(CONFIG_ARM64_ERRATUM_827319) || \
++	defined(CONFIG_ARM64_ERRATUM_824069)
++	if (TKT340553_SW_WORKAROUND) {
++		struct midr_range *midr_range_list =
++			(struct midr_range *)(arm64_errata[0].midr_range_list);
++
++		midr_range_list[0].rv_max = MIDR_CPU_VAR_REV(0, 4);
++	}
++#endif
++#endif
+ 	init_cpucap_indirect_list_from_array(arm64_errata);
+ }
+ 

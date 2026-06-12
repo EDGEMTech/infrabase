@@ -1,0 +1,49 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/fsl/fsl_ssi.c	2026-04-08 18:20:10.901046600 +0200
++++ ./sound/soc/fsl/fsl_ssi.c	2026-04-08 16:21:18.384010039 +0200
+@@ -41,6 +41,8 @@
+ #include <linux/of_irq.h>
+ #include <linux/of_platform.h>
+ #include <linux/dma/imx-dma.h>
++#include <linux/pm_runtime.h>
++#include <linux/busfreq-imx.h>
+ 
+ #include <sound/core.h>
+ #include <sound/pcm.h>
+@@ -1594,6 +1596,7 @@
+ 	}
+ 
+ 	dev_set_drvdata(dev, ssi);
++	pm_runtime_enable(&pdev->dev);
+ 
+ 	if (ssi->soc->imx) {
+ 		ret = fsl_ssi_imx_probe(pdev, ssi, iomem);
+@@ -1691,6 +1694,20 @@
+ 	}
+ }
+ 
++#ifdef CONFIG_PM
++static int fsl_ssi_runtime_resume(struct device *dev)
++{
++	request_bus_freq(BUS_FREQ_AUDIO);
++	return 0;
++}
++
++static int fsl_ssi_runtime_suspend(struct device *dev)
++{
++	release_bus_freq(BUS_FREQ_AUDIO);
++	return 0;
++}
++#endif
++
+ #ifdef CONFIG_PM_SLEEP
+ static int fsl_ssi_suspend(struct device *dev)
+ {
+@@ -1725,6 +1742,8 @@
+ 
+ static const struct dev_pm_ops fsl_ssi_pm = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(fsl_ssi_suspend, fsl_ssi_resume)
++	SET_RUNTIME_PM_OPS(fsl_ssi_runtime_suspend, fsl_ssi_runtime_resume,
++			   NULL)
+ };
+ 
+ static struct platform_driver fsl_ssi_driver = {

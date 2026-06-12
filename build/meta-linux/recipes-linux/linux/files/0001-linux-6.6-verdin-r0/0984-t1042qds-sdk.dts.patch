@@ -1,0 +1,9 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/boot/dts/fsl/t1042qds-sdk.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/powerpc/boot/dts/fsl/t1042qds-sdk.dts	2026-04-08 16:21:03.193107226 +0200
+@@ -0,0 +1,6 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright 2017-2018 NXP
++ */
++
++#include "t1042qds.dts"

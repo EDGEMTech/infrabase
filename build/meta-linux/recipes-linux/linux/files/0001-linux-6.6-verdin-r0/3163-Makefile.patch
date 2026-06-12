@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/thermal/Makefile	2026-04-08 18:20:09.448526764 +0200
++++ ./drivers/thermal/Makefile	2026-04-08 16:21:09.589948926 +0200
+@@ -48,6 +48,7 @@
+ obj-$(CONFIG_IMX_THERMAL)	+= imx_thermal.o
+ obj-$(CONFIG_IMX_SC_THERMAL)	+= imx_sc_thermal.o
+ obj-$(CONFIG_IMX8MM_THERMAL)	+= imx8mm_thermal.o
++obj-$(CONFIG_IMX91_THERMAL)	+= imx91_thermal.o
+ obj-$(CONFIG_MAX77620_THERMAL)	+= max77620_thermal.o
+ obj-$(CONFIG_QORIQ_THERMAL)	+= qoriq_thermal.o
+ obj-$(CONFIG_DA9062_THERMAL)	+= da9062-thermal.o

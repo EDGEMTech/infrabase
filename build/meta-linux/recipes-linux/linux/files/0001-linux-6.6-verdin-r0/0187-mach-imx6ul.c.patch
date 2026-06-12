@@ -1,0 +1,38 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/mach-imx/mach-imx6ul.c	2026-04-08 18:20:04.946066302 +0200
++++ ./arch/arm/mach-imx/mach-imx6ul.c	2026-04-08 16:21:01.750591986 +0200
+@@ -16,6 +16,7 @@
+ 		imx_get_soc_revision());
+ 
+ 	of_platform_default_populate(NULL, NULL, NULL);
++	imx6_enet_mac_init("fsl,imx6ul-fec", "fsl,imx6ul-ocotp");
+ 	imx_anatop_init();
+ 	imx6ul_pm_init();
+ }
+@@ -30,12 +31,18 @@
+ 
+ static void __init imx6ul_init_late(void)
+ {
+-	imx6sx_cpuidle_init();
++	imx6ul_cpuidle_init();
+ 
+ 	if (IS_ENABLED(CONFIG_ARM_IMX6Q_CPUFREQ))
+ 		platform_device_register_simple("imx6q-cpufreq", -1, NULL, 0);
+ }
+ 
++static void __init imx6ul_map_io(void)
++{
++	imx6_pm_map_io();
++	imx_busfreq_map_io();
++}
++
+ static const char * const imx6ul_dt_compat[] __initconst = {
+ 	"fsl,imx6ul",
+ 	"fsl,imx6ull",
+@@ -44,6 +51,7 @@
+ };
+ 
+ DT_MACHINE_START(IMX6UL, "Freescale i.MX6 Ultralite (Device Tree)")
++	.map_io		= imx6ul_map_io,
+ 	.init_irq	= imx6ul_init_irq,
+ 	.init_machine	= imx6ul_init_machine,
+ 	.init_late	= imx6ul_init_late,

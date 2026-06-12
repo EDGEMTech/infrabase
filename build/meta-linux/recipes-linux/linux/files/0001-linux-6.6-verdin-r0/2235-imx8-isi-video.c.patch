@@ -1,0 +1,157 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c	2026-04-08 18:20:07.762838159 +0200
++++ ./drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c	2026-04-08 16:21:07.033981746 +0200
+@@ -151,7 +151,7 @@
+ 		.fourcc		= V4L2_PIX_FMT_XBGR32,
+ 		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_OUT
+ 				| MXC_ISI_VIDEO_M2M_CAP,
+-		.isi_in_format	= CHNL_MEM_RD_CTRL_IMG_TYPE_XBGR8,
++		.isi_in_format	= CHNL_MEM_RD_CTRL_IMG_TYPE_XRGB8,
+ 		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_XRGB888,
+ 		.mem_planes	= 1,
+ 		.color_planes	= 1,
+@@ -166,6 +166,51 @@
+ 		.color_planes	= 1,
+ 		.depth		= { 32 },
+ 		.encoding	= MXC_ISI_ENC_RGB,
++	}, {
++		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
++		.fourcc		= V4L2_PIX_FMT_BGRA32,
++		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_CAP,
++		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RGBA8888,
++		.mem_planes	= 1,
++		.color_planes	= 1,
++		.depth		= { 32 },
++		.encoding	= MXC_ISI_ENC_RGB,
++	}, {
++		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
++		.fourcc		= V4L2_PIX_FMT_RGBA32,
++		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_CAP,
++		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_ABGR8888,
++		.mem_planes	= 1,
++		.color_planes	= 1,
++		.depth		= { 32 },
++		.encoding	= MXC_ISI_ENC_RGB,
++	}, {
++		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
++		.fourcc		= V4L2_PIX_FMT_BGRX32,
++		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_CAP,
++		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RGBX888,
++		.mem_planes	= 1,
++		.color_planes	= 1,
++		.depth		= { 32 },
++		.encoding	= MXC_ISI_ENC_RGB,
++	}, {
++		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
++		.fourcc		= V4L2_PIX_FMT_RGBX32,
++		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_CAP,
++		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_XBGR888,
++		.mem_planes	= 1,
++		.color_planes	= 1,
++		.depth		= { 32 },
++		.encoding	= MXC_ISI_ENC_RGB,
++	}, {
++		.mbus_code	= MEDIA_BUS_FMT_RGB888_1X24,
++		.fourcc		= V4L2_PIX_FMT_ARGB2101010,
++		.type		= MXC_ISI_VIDEO_CAP | MXC_ISI_VIDEO_M2M_CAP,
++		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_A2RGB10,
++		.mem_planes	= 1,
++		.color_planes	= 1,
++		.depth		= { 32 },
++		.encoding	= MXC_ISI_ENC_RGB,
+ 	},
+ 	/*
+ 	 * RAW formats
+@@ -356,6 +401,42 @@
+ 		.color_planes	= 1,
+ 		.depth		= { 16 },
+ 		.encoding	= MXC_ISI_ENC_RAW,
++	}, {
++		.mbus_code	= MEDIA_BUS_FMT_SBGGR16_1X16,
++		.fourcc		= V4L2_PIX_FMT_SBGGR16,
++		.type		= MXC_ISI_VIDEO_CAP,
++		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
++		.mem_planes	= 1,
++		.color_planes	= 1,
++		.depth		= { 16 },
++		.encoding	= MXC_ISI_ENC_RAW,
++	}, {
++		.mbus_code	= MEDIA_BUS_FMT_SGBRG16_1X16,
++		.fourcc		= V4L2_PIX_FMT_SGBRG16,
++		.type		= MXC_ISI_VIDEO_CAP,
++		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
++		.mem_planes	= 1,
++		.color_planes	= 1,
++		.depth		= { 16 },
++		.encoding	= MXC_ISI_ENC_RAW,
++	}, {
++		.mbus_code	= MEDIA_BUS_FMT_SGRBG16_1X16,
++		.fourcc		= V4L2_PIX_FMT_SGRBG16,
++		.type		= MXC_ISI_VIDEO_CAP,
++		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
++		.mem_planes	= 1,
++		.color_planes	= 1,
++		.depth		= { 16 },
++		.encoding	= MXC_ISI_ENC_RAW,
++	}, {
++		.mbus_code	= MEDIA_BUS_FMT_SRGGB16_1X16,
++		.fourcc		= V4L2_PIX_FMT_SRGGB16,
++		.type		= MXC_ISI_VIDEO_CAP,
++		.isi_out_format	= CHNL_IMG_CTRL_FORMAT_RAW16,
++		.mem_planes	= 1,
++		.color_planes	= 1,
++		.depth		= { 16 },
++		.encoding	= MXC_ISI_ENC_RAW,
+ 	},
+ 	/* JPEG */
+ 	{
+@@ -492,6 +573,7 @@
+ 					   u32 status)
+ {
+ 	struct mxc_isi_video *video = &pipe->video;
++	const struct mxc_isi_plat_data *pdata = pipe->isi->pdata;
+ 	struct device *dev = pipe->isi->dev;
+ 	struct mxc_isi_buffer *next_buf;
+ 	struct mxc_isi_buffer *buf;
+@@ -553,7 +635,7 @@
+ 	 */
+ 
+ 	/* Check which buffer has just completed. */
+-	buf_id = pipe->isi->pdata->buf_active_reverse
++	buf_id = pdata->buf_active_reverse
+ 	       ? (status & CHNL_STS_BUF1_ACTIVE ? MXC_ISI_BUF2 : MXC_ISI_BUF1)
+ 	       : (status & CHNL_STS_BUF1_ACTIVE ? MXC_ISI_BUF1 : MXC_ISI_BUF2);
+ 
+@@ -607,6 +689,7 @@
+ 	}
+ 
+ 	mxc_isi_channel_set_outbuf(pipe, next_buf->dma_addrs, buf_id);
++	mxc_isi_channel_set_max_size(pipe, &next_buf->v4l2_buf, pdata->buf_max_size);
+ 	next_buf->id = buf_id;
+ 
+ 	/*
+@@ -769,6 +852,7 @@
+ 
+ static void mxc_isi_video_queue_first_buffers(struct mxc_isi_video *video)
+ {
++	const struct mxc_isi_plat_data *pdata = video->pipe->isi->pdata;
+ 	unsigned int discard;
+ 	unsigned int i;
+ 
+@@ -796,6 +880,7 @@
+ 		buf = list_first_entry(list, struct mxc_isi_buffer, list);
+ 
+ 		mxc_isi_channel_set_outbuf(video->pipe, buf->dma_addrs, buf_id);
++		mxc_isi_channel_set_max_size(video->pipe, &buf->v4l2_buf, pdata->buf_max_size);
+ 		buf->id = buf_id;
+ 		list_move_tail(&buf->list, &video->out_active);
+ 	}
+@@ -1335,7 +1420,8 @@
+ 		dev_err(video->pipe->isi->dev, "%s fail\n", __func__);
+ 
+ 	mutex_lock(&video->lock);
+-	mxc_isi_video_cleanup_streaming(video);
++	if (!video->vdev.queue->owner)
++		mxc_isi_video_cleanup_streaming(video);
+ 	mutex_unlock(&video->lock);
+ 
+ 	pm_runtime_put(video->pipe->isi->dev);

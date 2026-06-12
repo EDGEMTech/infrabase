@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/dsa/ocelot/Kconfig	2026-04-08 18:20:08.032966696 +0200
++++ ./drivers/net/dsa/ocelot/Kconfig	2026-04-08 16:21:07.363397525 +0200
+@@ -37,6 +37,7 @@
+ 	depends on HAS_IOMEM
+ 	depends on PTP_1588_CLOCK_OPTIONAL
+ 	depends on NET_SCH_TAPRIO || NET_SCH_TAPRIO=n
++	depends on TSN || TSN=n
+ 	select MSCC_OCELOT_SWITCH_LIB
+ 	select NET_DSA_MSCC_FELIX_DSA_LIB
+ 	select NET_DSA_TAG_OCELOT_8021Q

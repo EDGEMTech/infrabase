@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml	2026-04-08 18:20:04.571331571 +0200
++++ ./Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml	2026-04-08 16:20:59.636717295 +0200
+@@ -33,6 +33,7 @@
+               - fsl,imx8mq-ocotp
+               - fsl,imx8mm-ocotp
+               - fsl,imx93-ocotp
++              - fsl,imx8ulp-ocotp
+           - const: syscon
+       - items:
+           - enum:

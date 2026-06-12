@@ -1,0 +1,15 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/ethtool.h	2026-04-08 18:20:10.039022586 +0200
++++ ./include/linux/ethtool.h	2026-04-08 16:21:11.331502819 +0200
+@@ -989,6 +989,12 @@
+ 			      enum ethtool_link_mode_bit_indices link_mode);
+ 
+ /**
++ * ethtool_link_mode_str - Get name of a given link mode, in string format
++ * @link_mode: the link mode represented in integer format
++ */
++const char *ethtool_link_mode_str(enum ethtool_link_mode_bit_indices link_mode);
++
++/**
+  * ethtool_get_phc_vclocks - Derive phc vclocks information, and caller
+  *                           is responsible to free memory of vclock_index
+  * @dev: pointer to net_device structure

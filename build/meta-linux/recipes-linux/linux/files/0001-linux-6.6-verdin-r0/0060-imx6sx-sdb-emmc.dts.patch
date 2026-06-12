@@ -1,0 +1,36 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-emmc.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/boot/dts/nxp/imx/imx6sx-sdb-emmc.dts	2026-04-08 16:21:00.865618889 +0200
+@@ -0,0 +1,33 @@
++/*
++ * Copyright 2019 NXP
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ */
++
++#include "imx6sx-sdb.dts"
++
++/*
++ * The eMMC chip on imx6sx sdb board is DNP by default.
++ * Need do hw rework to burn the eMMC4.5 chip on the eMMC socket on uSDHC4
++ * and connect eMMC signals as well as disconnect BOOT SD CARD slot signals
++ */
++&usdhc4 {
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc4_1>;
++	pinctrl-1 = <&pinctrl_usdhc4_1_100mhz>;
++	pinctrl-2 = <&pinctrl_usdhc4_1_200mhz>;
++	bus-width = <8>;
++	auto-cmd23-broken;
++	/*
++	 * overwrite cd-gpios and wp-gpios since they are reused as eMMC DATA
++	 * signals after rework
++	 */
++	cd-gpios = <>;
++	wp-gpios = <>;
++	non-removable;
++	status = "okay";
++};
++

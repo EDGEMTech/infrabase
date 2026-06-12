@@ -1,0 +1,30 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/dma/fsl,imx-sdma.yaml	2026-04-08 18:20:04.523117675 +0200
++++ ./Documentation/devicetree/bindings/dma/fsl,imx-sdma.yaml	2026-04-08 16:20:51.312154162 +0200
+@@ -92,13 +92,21 @@
+               description: needs firmware more than ver 2
+           - Shared ASRC: 23
+           - SAI: 24
+-          - HDMI Audio: 25
++          - Multi SAI: 25
++          - HDMI Audio: 26
++          - I2C: 27
+ 
+-       The third cell: transfer priority ID
+-         enum:
+-           - High: 0
+-           - Medium: 1
+-           - Low: 2
++       The third cell: transfer priority ID and software done
++         - items:
++           description: bit[31] sw_done
++         - items:
++           description: bits[8:15] selector
++         - items:
++           description: bits[0:7] priority id
++           enum:
++             - High: 0
++             - Medium: 1
++             - Low: 2
+ 
+   gpr:
+     $ref: /schemas/types.yaml#/definitions/phandle

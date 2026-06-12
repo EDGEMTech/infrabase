@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/usb/typec/mux/Kconfig	2026-04-08 18:20:09.602260009 +0200
++++ ./drivers/usb/typec/mux/Kconfig	2026-04-08 16:21:09.774702136 +0200
+@@ -46,4 +46,10 @@
+ 	  Say Y or M if your system has a On Semiconductor NB7VPQ904M Type-C
+ 	  redriver chip found on some devices with a Type-C port.
+ 
++config TYPEC_SWITCH_GPIO
++	tristate "Simple Super Speed Active Switch via GPIO"
++	help
++	  Say Y or M if your system has a typec super speed channel
++	  switch via a simple GPIO control.
++
+ endmenu

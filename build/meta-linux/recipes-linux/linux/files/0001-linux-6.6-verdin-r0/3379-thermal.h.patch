@@ -1,0 +1,27 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/thermal.h	2026-04-08 18:20:10.144025512 +0200
++++ ./include/linux/thermal.h	2026-04-08 16:21:11.649530267 +0200
+@@ -57,12 +57,14 @@
+  * struct thermal_trip - representation of a point in temperature domain
+  * @temperature: temperature value in miliCelsius
+  * @hysteresis: relative hysteresis in miliCelsius
++ * @threshold: trip crossing notification threshold miliCelsius
+  * @type: trip point type
+  * @priv: pointer to driver data associated with this trip
+  */
+ struct thermal_trip {
+ 	int temperature;
+ 	int hysteresis;
++	int threshold;
+ 	enum thermal_trip_type type;
+ 	void *priv;
+ };
+@@ -205,7 +207,8 @@
+ 	char name[THERMAL_NAME_LENGTH];
+ 	int (*bind_to_tz)(struct thermal_zone_device *tz);
+ 	void (*unbind_from_tz)(struct thermal_zone_device *tz);
+-	int (*throttle)(struct thermal_zone_device *tz, int trip);
++	int (*throttle)(struct thermal_zone_device *tz,
++			const struct thermal_trip *trip);
+ 	struct list_head	governor_list;
+ };
+ 

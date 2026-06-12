@@ -1,0 +1,74 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c	2026-04-08 18:20:07.761521268 +0200
++++ ./drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c	2026-04-08 16:21:07.030561542 +0200
+@@ -275,6 +275,14 @@
+ 		.compatible = "nxp,imx8qxp-jpgenc",
+ 		.data       = &mxc_encode_mode,
+ 	},
++	{
++		.compatible = "fsl,imx9-jpgdec",
++		.data       = &mxc_decode_mode,
++	},
++	{
++		.compatible = "fsl,imx9-jpgenc",
++		.data       = &mxc_encode_mode,
++	},
+ 	{ },
+ };
+ 
+@@ -575,6 +583,10 @@
+ module_param(debug, int, 0644);
+ MODULE_PARM_DESC(debug, "Debug level (0-3)");
+ 
++static unsigned int sw_reset = 1;
++module_param(sw_reset, int, 0644);
++MODULE_PARM_DESC(sw_reset, "SW reset every frame (0=no reset, 1=do reset)");
++
+ static unsigned int hw_timeout = 2000;
+ module_param(hw_timeout, int, 0644);
+ MODULE_PARM_DESC(hw_timeout, "MXC JPEG hw timeout, the number of milliseconds");
+@@ -979,7 +991,7 @@
+ 	buf_state = VB2_BUF_STATE_DONE;
+ 
+ buffers_done:
+-	mxc_jpeg_job_finish(ctx, buf_state, false);
++	mxc_jpeg_job_finish(ctx, buf_state, sw_reset);
+ 	spin_unlock(&jpeg->hw_lock);
+ 	cancel_delayed_work(&ctx->task_timer);
+ 	v4l2_m2m_job_finish(jpeg->m2m_dev, ctx->fh.m2m_ctx);
+@@ -1373,6 +1385,8 @@
+ 		q_data_cap->crop.top = 0;
+ 		q_data_cap->crop.width = jpeg_src_buf->w;
+ 		q_data_cap->crop.height = jpeg_src_buf->h;
++		q_data_cap->bytesperline[0] = 0;
++		q_data_cap->bytesperline[1] = 0;
+ 
+ 		/*
+ 		 * align up the resolution for CAST IP,
+@@ -1755,6 +1769,14 @@
+ 
+ static void mxc_jpeg_bytesperline(struct mxc_jpeg_q_data *q, u32 precision)
+ {
++	u32 bytesperline[2];
++
++	bytesperline[0] = q->bytesperline[0];
++	bytesperline[1] = q->bytesperline[0];	/*imx-jpeg only support the same line pitch*/
++	v4l_bound_align_image(&bytesperline[0], 0, MXC_JPEG_MAX_LINE, 2,
++			      &bytesperline[1], 0, MXC_JPEG_MAX_LINE, 2,
++			      0);
++
+ 	/* Bytes distance between the leftmost pixels in two adjacent lines */
+ 	if (q->fmt->fourcc == V4L2_PIX_FMT_JPEG) {
+ 		/* bytesperline unused for compressed formats */
+@@ -1778,6 +1800,12 @@
+ 		q->bytesperline[0] = q->w_adjusted * DIV_ROUND_UP(precision, 8);
+ 		q->bytesperline[1] = 0;
+ 	}
++
++	if (q->fmt->fourcc != V4L2_PIX_FMT_JPEG) {
++		q->bytesperline[0] = max(q->bytesperline[0], bytesperline[0]);
++		if (q->fmt->mem_planes > 1)
++			q->bytesperline[1] = max(q->bytesperline[1], bytesperline[1]);
++	}
+ }
+ 
+ static void mxc_jpeg_sizeimage(struct mxc_jpeg_q_data *q)

@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/sound/sof/dai.h	2026-04-08 18:20:10.208557837 +0200
++++ ./include/sound/sof/dai.h	2026-04-08 16:21:11.749496188 +0200
+@@ -88,6 +88,7 @@
+ 	SOF_DAI_AMD_HS,			/**< Amd HS */
+ 	SOF_DAI_AMD_SP_VIRTUAL,		/**< AMD ACP SP VIRTUAL */
+ 	SOF_DAI_AMD_HS_VIRTUAL,		/**< AMD ACP HS VIRTUAL */
++	SOF_DAI_IMX_MICFIL,		/** < i.MX MICFIL PDM */
+ };
+ 
+ /* general purpose DAI configuration */
+@@ -117,6 +118,7 @@
+ 		struct sof_ipc_dai_acpdmic_params acpdmic;
+ 		struct sof_ipc_dai_acp_params acphs;
+ 		struct sof_ipc_dai_mtk_afe_params afe;
++		struct sof_ipc_dai_micfil_params micfil;
+ 	};
+ } __packed;
+ 

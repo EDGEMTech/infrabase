@@ -1,0 +1,41 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx6q-sabresd.dts	2026-04-08 18:20:04.849877991 +0200
++++ ./arch/arm/boot/dts/nxp/imx/imx6q-sabresd.dts	2026-04-08 16:21:00.822318092 +0200
+@@ -13,6 +13,38 @@
+ 	compatible = "fsl,imx6q-sabresd", "fsl,imx6q";
+ };
+ 
++&battery {
++	offset-charger = <1900>;
++	offset-discharger = <1694>;
++	offset-usb-charger = <1685>;
++};
++
++&ldb {
++	lvds-channel@0 {
++		crtc = "ipu2-di0";
++	};
++
++	lvds-channel@1 {
++		crtc = "ipu2-di1";
++	};
++};
++
++&mxcfb1 {
++	status = "okay";
++};
++
++&mxcfb2 {
++	status = "okay";
++};
++
++&mxcfb3 {
++	status = "okay";
++};
++
++&mxcfb4 {
++	status = "okay";
++};
++
+ &sata {
+ 	status = "okay";
+ };

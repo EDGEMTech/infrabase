@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/net/Makefile	2026-04-08 18:20:10.421033228 +0200
++++ ./net/Makefile	2026-04-08 16:21:17.617175878 +0200
+@@ -56,6 +56,7 @@
+ obj-$(CONFIG_NET_9P)		+= 9p/
+ obj-$(CONFIG_CAIF)		+= caif/
+ obj-$(CONFIG_DCB)		+= dcb/
++obj-$(CONFIG_TSN)		+= tsn/
+ obj-$(CONFIG_6LOWPAN)		+= 6lowpan/
+ obj-$(CONFIG_IEEE802154)	+= ieee802154/
+ obj-$(CONFIG_MAC802154)		+= mac802154/

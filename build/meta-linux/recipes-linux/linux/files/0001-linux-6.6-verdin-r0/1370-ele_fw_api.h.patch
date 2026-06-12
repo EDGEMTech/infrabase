@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/imx/ele_fw_api.h	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/firmware/imx/ele_fw_api.h	2026-04-08 16:21:04.961548335 +0200
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2023 NXP
++ */
++
++#ifndef ELE_FW_API_H
++#define ELE_FW_API_H
++
++#include <linux/hw_random.h>
++
++#define MESSAGING_VERSION_7		0x7
++
++#define ELE_INIT_FW_REQ                 0x17
++#define ELE_INIT_FW_REQ_SZ              0x04
++#define ELE_INIT_FW_RSP_SZ              0x08
++
++#define ELE_GET_RANDOM_REQ		0xCD
++#define ELE_GET_RANDOM_REQ_SZ		0x10
++#define ELE_GET_RANDOM_RSP_SZ		0x08
++#define ELE_RNG_MAX_SIZE		16
++
++int ele_init_fw(struct device *dev);
++int ele_get_random(struct device *dev, void *data, size_t len);
++int ele_get_hwrng(struct hwrng *rng, void *data, size_t len, bool wait);
++
++#endif /* ELE_FW_API_H */

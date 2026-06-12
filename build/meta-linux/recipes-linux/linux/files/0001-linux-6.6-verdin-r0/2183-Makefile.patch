@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/Makefile	2026-04-08 18:20:07.628749829 +0200
++++ ./drivers/media/Makefile	2026-04-08 16:21:06.827515637 +0200
+@@ -25,6 +25,8 @@
+ 
+ obj-$(CONFIG_CEC_CORE) += cec/
+ 
++obj-$(CONFIG_VIRTIO_VIDEO)  += virtio/
++
+ #
+ # Finally, merge the drivers that require the core
+ #

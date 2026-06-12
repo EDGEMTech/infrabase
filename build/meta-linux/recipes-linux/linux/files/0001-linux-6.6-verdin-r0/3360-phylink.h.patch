@@ -1,0 +1,267 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/phylink.h	2026-04-08 18:20:10.106590176 +0200
++++ ./include/linux/phylink.h	2026-04-08 16:21:11.529900127 +0200
+@@ -21,6 +21,7 @@
+ 	MLO_AN_PHY = 0,	/* Conventional PHY */
+ 	MLO_AN_FIXED,	/* Fixed-link mode */
+ 	MLO_AN_INBAND,	/* In-band protocol */
++	MLO_AN_C73,	/* Clause 73 autoneg selects technology-dependent PCS */
+ 
+ 	/* PCS "negotiation" mode.
+ 	 *  PHYLINK_PCS_NEG_NONE - protocol has no inband capability
+@@ -28,8 +29,12 @@
+ 	 *  PHYLINK_PCS_NEG_INBAND_DISABLED - inband mode disabled, e.g.
+ 	 *				      1000base-X with autoneg off
+ 	 *  PHYLINK_PCS_NEG_INBAND_ENABLED - inband mode enabled
++	 *  PHYLINK_PCS_NEG_C73_DISABLED - forced backplane speed
++	 *				   (clause 73 autoneg off)
++	 *  PHYLINK_PCS_NEG_C73_ENABLED - clause 73 autoneg enabled
+ 	 * Additionally, this can be tested using bitmasks:
+ 	 *  PHYLINK_PCS_NEG_INBAND - inband mode selected
++	 *  PHYLINK_PCS_NEG_C73 - clause 73 autoneg mode selected
+ 	 *  PHYLINK_PCS_NEG_ENABLED - negotiation mode enabled
+ 	 */
+ 	PHYLINK_PCS_NEG_NONE = 0,
+@@ -39,6 +44,10 @@
+ 	PHYLINK_PCS_NEG_INBAND_DISABLED = PHYLINK_PCS_NEG_INBAND,
+ 	PHYLINK_PCS_NEG_INBAND_ENABLED = PHYLINK_PCS_NEG_INBAND |
+ 					 PHYLINK_PCS_NEG_ENABLED,
++	PHYLINK_PCS_NEG_C73 = BIT(7),
++	PHYLINK_PCS_NEG_C73_DISABLED = PHYLINK_PCS_NEG_C73,
++	PHYLINK_PCS_NEG_C73_ENABLED = PHYLINK_PCS_NEG_C73 |
++				      PHYLINK_PCS_NEG_ENABLED,
+ 
+ 	/* MAC_SYM_PAUSE and MAC_ASYM_PAUSE are used when configuring our
+ 	 * autonegotiation advertisement. They correspond to the PAUSE and
+@@ -98,70 +107,14 @@
+ 	return mode == MLO_AN_INBAND;
+ }
+ 
+-/**
+- * phylink_pcs_neg_mode() - helper to determine PCS inband mode
+- * @mode: one of %MLO_AN_FIXED, %MLO_AN_PHY, %MLO_AN_INBAND.
+- * @interface: interface mode to be used
+- * @advertising: adertisement ethtool link mode mask
+- *
+- * Determines the negotiation mode to be used by the PCS, and returns
+- * one of:
+- *
+- * - %PHYLINK_PCS_NEG_NONE: interface mode does not support inband
+- * - %PHYLINK_PCS_NEG_OUTBAND: an out of band mode (e.g. reading the PHY)
+- *   will be used.
+- * - %PHYLINK_PCS_NEG_INBAND_DISABLED: inband mode selected but autoneg
+- *   disabled
+- * - %PHYLINK_PCS_NEG_INBAND_ENABLED: inband mode selected and autoneg enabled
+- *
+- * Note: this is for cases where the PCS itself is involved in negotiation
+- * (e.g. Clause 37, SGMII and similar) not Clause 73.
+- */
+-static inline unsigned int phylink_pcs_neg_mode(unsigned int mode,
+-						phy_interface_t interface,
+-						const unsigned long *advertising)
++static inline bool phylink_autoneg_c73(unsigned int mode)
+ {
+-	unsigned int neg_mode;
+-
+-	switch (interface) {
+-	case PHY_INTERFACE_MODE_SGMII:
+-	case PHY_INTERFACE_MODE_QSGMII:
+-	case PHY_INTERFACE_MODE_QUSGMII:
+-	case PHY_INTERFACE_MODE_USXGMII:
+-		/* These protocols are designed for use with a PHY which
+-		 * communicates its negotiation result back to the MAC via
+-		 * inband communication. Note: there exist PHYs that run
+-		 * with SGMII but do not send the inband data.
+-		 */
+-		if (!phylink_autoneg_inband(mode))
+-			neg_mode = PHYLINK_PCS_NEG_OUTBAND;
+-		else
+-			neg_mode = PHYLINK_PCS_NEG_INBAND_ENABLED;
+-		break;
+-
+-	case PHY_INTERFACE_MODE_1000BASEX:
+-	case PHY_INTERFACE_MODE_2500BASEX:
+-		/* 1000base-X is designed for use media-side for Fibre
+-		 * connections, and thus the Autoneg bit needs to be
+-		 * taken into account. We also do this for 2500base-X
+-		 * as well, but drivers may not support this, so may
+-		 * need to override this.
+-		 */
+-		if (!phylink_autoneg_inband(mode))
+-			neg_mode = PHYLINK_PCS_NEG_OUTBAND;
+-		else if (linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
+-					   advertising))
+-			neg_mode = PHYLINK_PCS_NEG_INBAND_ENABLED;
+-		else
+-			neg_mode = PHYLINK_PCS_NEG_INBAND_DISABLED;
+-		break;
+-
+-	default:
+-		neg_mode = PHYLINK_PCS_NEG_NONE;
+-		break;
+-	}
++	return mode == MLO_AN_C73;
++}
+ 
+-	return neg_mode;
++static inline bool phylink_autoneg_any(unsigned int mode)
++{
++	return phylink_autoneg_inband(mode) || phylink_autoneg_c73(mode);
+ }
+ 
+ /**
+@@ -210,6 +163,7 @@
+  * @supported_interfaces: bitmap describing which PHY_INTERFACE_MODE_xxx
+  *                        are supported by the MAC/PCS.
+  * @mac_capabilities: MAC pause/speed/duplex capabilities.
++ * @cfg_link_an_mode: see %phylink_pcs. Necessary for %mac_select_pcs.
+  */
+ struct phylink_config {
+ 	struct device *dev;
+@@ -221,6 +175,7 @@
+ 				struct phylink_link_state *state);
+ 	DECLARE_PHY_INTERFACE_MASK(supported_interfaces);
+ 	unsigned long mac_capabilities;
++	unsigned int cfg_link_an_mode;
+ };
+ 
+ void phylink_limit_mac_speed(struct phylink_config *config, u32 max_speed);
+@@ -399,6 +354,11 @@
+  *
+  *   Valid state members: interface, an_enabled, pause, advertising.
+  *
++ * %MLO_AN_C73:
++ *   The link uses IEEE 802.3 clause 73 auto-negotiation to select a
++ *   PCS according to the common technology resolved with the far end.
++ *   In this mode, state->interface is also not valid.
++ *
+  * Implementations are expected to update the MAC to reflect the
+  * requested settings - i.o.w., if nothing has changed between two
+  * calls, no action is expected.  If only flow control settings have
+@@ -412,7 +372,7 @@
+ /**
+  * mac_finish() - finish a to change the PHY interface mode
+  * @config: a pointer to a &struct phylink_config.
+- * @mode: one of %MLO_AN_FIXED, %MLO_AN_PHY, %MLO_AN_INBAND.
++ * @mode: one of %MLO_AN_FIXED, %MLO_AN_PHY, %MLO_AN_INBAND, %MLO_AN_C73.
+  * @iface: interface mode to switch to
+  *
+  * phylink will call this if it called mac_prepare() to allow the MAC to
+@@ -481,6 +441,10 @@
+  * @phylink: pointer to &struct phylink_config
+  * @neg_mode: provide PCS neg mode via "mode" argument
+  * @poll: poll the PCS for link changes
++ * @cfg_link_an_mode: phylink sets this to the statically configured link
++ *		      autoneg mode (%MLO_AN_FIXED, %MLO_AN_PHY, %MLO_AN_INBAND,
++ *		      %MLO_AN_C73). Note that in some cases, this may change at
++ *		      runtime (from %MLO_AN_INBAND to %MLO_AN_PHY).
+  *
+  * This structure is designed to be embedded within the PCS private data,
+  * and will be passed between phylink and the PCS.
+@@ -493,6 +457,7 @@
+ 	struct phylink *phylink;
+ 	bool neg_mode;
+ 	bool poll;
++	unsigned int cfg_link_an_mode;
+ };
+ 
+ /**
+@@ -598,6 +563,10 @@
+  *
+  * For most 10GBASE-R, there is no advertisement.
+  *
++ * For %MLO_AN_C73, the "interface" argument should be ignored, since clause 73
++ * autonegotiation has not started, and thus, it has not resolved a link mode
++ * yet, either.
++ *
+  * The %neg_mode argument should be tested via the phylink_mode_*() family of
+  * functions, or for PCS that set pcs->neg_mode true, should be tested
+  * against the PHYLINK_PCS_NEG_* definitions.
+@@ -636,6 +605,80 @@
+ 		 phy_interface_t interface, int speed, int duplex);
+ #endif
+ 
++/**
++ * phylink_interface_max_speed() - get the maximum speed of a phy interface
++ * @interface: phy interface mode defined by &typedef phy_interface_t
++ *
++ * Determine the maximum speed of a phy interface. This is intended to help
++ * determine the correct speed to pass to the MAC when the phy is performing
++ * rate matching.
++ *
++ * Return: The maximum speed of @interface
++ */
++static inline int phylink_interface_max_speed(phy_interface_t interface)
++{
++	switch (interface) {
++	case PHY_INTERFACE_MODE_100BASEX:
++	case PHY_INTERFACE_MODE_REVRMII:
++	case PHY_INTERFACE_MODE_RMII:
++	case PHY_INTERFACE_MODE_SMII:
++	case PHY_INTERFACE_MODE_REVMII:
++	case PHY_INTERFACE_MODE_MII:
++		return SPEED_100;
++
++	case PHY_INTERFACE_MODE_TBI:
++	case PHY_INTERFACE_MODE_MOCA:
++	case PHY_INTERFACE_MODE_RTBI:
++	case PHY_INTERFACE_MODE_1000BASEX:
++	case PHY_INTERFACE_MODE_1000BASEKX:
++	case PHY_INTERFACE_MODE_TRGMII:
++	case PHY_INTERFACE_MODE_RGMII_TXID:
++	case PHY_INTERFACE_MODE_RGMII_RXID:
++	case PHY_INTERFACE_MODE_RGMII_ID:
++	case PHY_INTERFACE_MODE_RGMII:
++	case PHY_INTERFACE_MODE_PSGMII:
++	case PHY_INTERFACE_MODE_QSGMII:
++	case PHY_INTERFACE_MODE_QUSGMII:
++	case PHY_INTERFACE_MODE_SGMII:
++	case PHY_INTERFACE_MODE_GMII:
++		return SPEED_1000;
++
++	case PHY_INTERFACE_MODE_2500BASEX:
++	case PHY_INTERFACE_MODE_2500SGMII:
++	case PHY_INTERFACE_MODE_10G_QXGMII:
++		return SPEED_2500;
++
++	case PHY_INTERFACE_MODE_5GBASER:
++		return SPEED_5000;
++
++	case PHY_INTERFACE_MODE_XGMII:
++	case PHY_INTERFACE_MODE_RXAUI:
++	case PHY_INTERFACE_MODE_XAUI:
++	case PHY_INTERFACE_MODE_10GBASER:
++	case PHY_INTERFACE_MODE_10GKR:
++	case PHY_INTERFACE_MODE_USXGMII:
++		return SPEED_10000;
++
++	case PHY_INTERFACE_MODE_25GBASER:
++	case PHY_INTERFACE_MODE_25GKR:
++		return SPEED_25000;
++
++	case PHY_INTERFACE_MODE_XLGMII:
++	case PHY_INTERFACE_MODE_40GKR4:
++		return SPEED_40000;
++
++	case PHY_INTERFACE_MODE_INTERNAL:
++	case PHY_INTERFACE_MODE_NA:
++	case PHY_INTERFACE_MODE_MAX:
++		/* No idea! Garbage in, unknown out */
++		return SPEED_UNKNOWN;
++	}
++
++	/* If we get here, someone forgot to add an interface mode above */
++	WARN_ON_ONCE(1);
++	return SPEED_UNKNOWN;
++}
++
+ void phylink_caps_to_linkmodes(unsigned long *linkmodes, unsigned long caps);
+ unsigned long phylink_get_capabilities(phy_interface_t interface,
+ 				       unsigned long mac_capabilities,
+@@ -714,6 +757,7 @@
+ 	case PHY_INTERFACE_MODE_SGMII:
+ 	case PHY_INTERFACE_MODE_QSGMII:
+ 	case PHY_INTERFACE_MODE_USXGMII:
++	case PHY_INTERFACE_MODE_10G_QXGMII:
+ 		return 1600000;
+ 
+ 	case PHY_INTERFACE_MODE_1000BASEX:
