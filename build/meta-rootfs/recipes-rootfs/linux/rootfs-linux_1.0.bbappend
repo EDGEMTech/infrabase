@@ -1,8 +1,9 @@
 # Copyright (c) 2025-2026 EDGEMTech SA
 
-SUMMARY = "EDGE-M1 Factory Capsule Root filesystem"
-DESCRIPTION = "EDGE-M1 Factory Capsule has a lightweight buildroot rootfs \
-               for the primary execution environment of the board"
+SUMMARY = "Linux root filesystem (initrd) packaging"
+DESCRIPTION = "Overrides rootfs-linux do_deploy to package the buildroot \
+               rootfs.cpio as a compressed initrd (initrd.cpio.gz) for the \
+               platform, instead of copying files onto a partition."
 LICENSE = "GPLv2"
 
 inherit rootfs
