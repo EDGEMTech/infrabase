@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/dma-heap.h	2026-04-08 18:20:10.034022447 +0200
++++ ./include/linux/dma-heap.h	2026-04-08 16:21:11.314241358 +0200
+@@ -60,6 +60,15 @@
+ const char *dma_heap_get_name(struct dma_heap *heap);
+ 
+ /**
++ * dma_heap_get_dev() - get device struct for the heap
++ * @heap: DMA-Heap to retrieve device struct from
++ *
++ * Returns:
++ * The device struct for the heap.
++ */
++struct device *dma_heap_get_dev(struct dma_heap *heap);
++
++/**
+  * dma_heap_add - adds a heap to dmabuf heaps
+  * @exp_info:		information needed to register this heap
+  */

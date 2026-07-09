@@ -1,0 +1,12 @@
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -1097,3 +1097,9 @@
+ SYM_CODE_END(__sdei_handler_abort)
+ NOKPROBE(__sdei_handler_abort)
+ #endif /* CONFIG_ARM_SDE_INTERFACE */
++
++.align 5
++SYM_CODE_START(__avz_hypercall)
++	hvc	#0
++	ret
++SYM_CODE_END(__avz_hypercall)

@@ -1,0 +1,15 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/Kconfig	2026-04-08 18:20:04.999614208 +0200
++++ ./arch/arm64/Kconfig	2026-04-08 16:21:01.918005976 +0200
+@@ -1583,9 +1583,11 @@
+ # 16K |       27          |      14      |       13        |         11         |
+ # 64K |       29          |      16      |       13        |         13         |
+ config ARCH_FORCE_MAX_ORDER
+-	int
++	int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
+ 	default "13" if ARM64_64K_PAGES
++	range 11 13 if ARM64_16K_PAGES
+ 	default "11" if ARM64_16K_PAGES
++	range 10 15 if ARM64_4K_PAGES
+ 	default "10"
+ 	help
+ 	  The kernel page allocator limits the size of maximal physically

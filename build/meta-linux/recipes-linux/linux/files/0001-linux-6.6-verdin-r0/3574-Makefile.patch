@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/security/keys/encrypted-keys/Makefile	2026-04-08 18:20:10.693982823 +0200
++++ ./security/keys/encrypted-keys/Makefile	2026-04-08 16:21:18.027380405 +0200
+@@ -7,5 +7,7 @@
+ 
+ encrypted-keys-y := encrypted.o ecryptfs_format.o
+ masterkey-$(CONFIG_TRUSTED_KEYS) := masterkey_trusted.o
++masterkey-$(CONFIG_SECURE_KEYS) := masterkey_secure.o
+ masterkey-$(CONFIG_TRUSTED_KEYS)-$(CONFIG_ENCRYPTED_KEYS) := masterkey_trusted.o
++masterkey-$(CONFIG_SECURE_KEYS)-$(CONFIG_ENCRYPTED_KEYS) := masterkey_secure.o
+ encrypted-keys-y += $(masterkey-y) $(masterkey-m-m)

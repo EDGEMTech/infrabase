@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/kernel/armksyms.c	2026-04-08 18:20:04.931782877 +0200
++++ ./arch/arm/kernel/armksyms.c	2026-04-08 16:21:01.148152531 +0200
+@@ -16,6 +16,7 @@
+ 
+ #include <asm/checksum.h>
+ #include <asm/ftrace.h>
++#include <asm/virt.h>
+ 
+ /*
+  * libgcc functions - functions that are used internally by the
+@@ -175,3 +176,7 @@
+ EXPORT_SYMBOL(__arm_smccc_smc);
+ EXPORT_SYMBOL(__arm_smccc_hvc);
+ #endif
++
++#ifdef CONFIG_ARM_VIRT_EXT
++EXPORT_SYMBOL_GPL(__boot_cpu_mode);
++#endif

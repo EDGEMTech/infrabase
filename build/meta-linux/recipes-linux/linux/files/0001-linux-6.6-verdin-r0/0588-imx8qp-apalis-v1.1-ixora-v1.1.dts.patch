@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8qp-apalis-v1.1-ixora-v1.1.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8qp-apalis-v1.1-ixora-v1.1.dts	2026-04-08 16:21:02.066389927 +0200
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2022 Toradex
++ */
++
++/dts-v1/;
++
++#include "imx8qp-apalis-v1.1.dtsi"
++#include "imx8-apalis-ixora-v1.1.dtsi"
++
++/ {
++	model = "Toradex Apalis iMX8QP V1.1 on Apalis Ixora V1.1 Carrier Board";
++	compatible = "toradex,apalis-imx8-v1.1-ixora-v1.1",
++		     "toradex,apalis-imx8-v1.1",
++		     "fsl,imx8qp",
++		     "fsl,imx8qm";
++};

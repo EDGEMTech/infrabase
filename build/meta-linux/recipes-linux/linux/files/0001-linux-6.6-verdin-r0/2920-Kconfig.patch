@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/power/supply/Kconfig	2026-04-08 18:20:08.996399934 +0200
++++ ./drivers/power/supply/Kconfig	2026-04-08 16:21:08.914817319 +0200
+@@ -458,6 +458,14 @@
+ 	  Say Y to enable support for USB Charger Detection with
+ 	  ISP1707/ISP1704 USB transceivers.
+ 
++config SABRESD_MAX8903
++       tristate "Sabresd Board Battery DC-DC Charger for USB and Adapter Power"
++       depends on TOUCHSCREEN_MAX11801
++       help
++         Say Y to enable support for the MAX8903 DC-DC charger and sysfs on
++         sabresd board.The driver supports controlling charger and battery
++         based on the status of charger connections with interrupt handlers.
++
+ config CHARGER_MAX8903
+ 	tristate "MAX8903 Battery DC-DC Charger for USB and Adapter Power"
+ 	help

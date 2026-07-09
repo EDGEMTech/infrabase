@@ -1,0 +1,45 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/mach-imx/mxc.h	2026-04-08 18:20:04.946880695 +0200
++++ ./arch/arm/mach-imx/mxc.h	2026-04-08 16:21:01.754083766 +0200
+@@ -14,7 +14,13 @@
+ #error "Do not include directly."
+ #endif
+ 
++#define IMX_DDR_TYPE_DDR3		0
+ #define IMX_DDR_TYPE_LPDDR2		1
++#define IMX_DDR_TYPE_LPDDR3		2
++#define IMX_MMDC_DDR_TYPE_LPDDR3	3
++
++#define IMX_LPDDR2_1CH_MODE            0
++#define IMX_LPDDR2_2CH_MODE            1
+ 
+ #ifndef __ASSEMBLY__
+ 
+@@ -65,11 +71,28 @@
+ 	return __mxc_cpu_type == MXC_CPU_IMX6Q;
+ }
+ 
++static inline bool cpu_is_imx6(void)
++{
++	return __mxc_cpu_type == MXC_CPU_IMX6Q ||
++		__mxc_cpu_type == MXC_CPU_IMX6DL ||
++		__mxc_cpu_type == MXC_CPU_IMX6SL ||
++		__mxc_cpu_type == MXC_CPU_IMX6SX ||
++		__mxc_cpu_type == MXC_CPU_IMX6UL ||
++		__mxc_cpu_type == MXC_CPU_IMX6ULL ||
++		__mxc_cpu_type == MXC_CPU_IMX6SLL ||
++		__mxc_cpu_type == MXC_CPU_IMX6ULZ;
++}
++
+ static inline bool cpu_is_imx7d(void)
+ {
+ 	return __mxc_cpu_type == MXC_CPU_IMX7D;
+ }
+ 
++static inline bool cpu_is_imx7ulp(void)
++{
++	return __mxc_cpu_type == MXC_CPU_IMX7ULP;
++}
++
+ struct cpu_op {
+ 	u32 cpu_rate;
+ };

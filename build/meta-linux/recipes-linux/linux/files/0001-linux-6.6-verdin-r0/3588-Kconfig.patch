@@ -1,0 +1,28 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/codecs/Kconfig	2026-04-08 18:20:10.814460590 +0200
++++ ./sound/soc/codecs/Kconfig	2026-04-08 16:21:18.224681676 +0200
+@@ -335,6 +335,9 @@
+ 	imply SND_SOC_WSA883X
+ 	imply SND_SOC_WSA884X
+ 	imply SND_SOC_ZL38060
++	imply SND_SOC_RPMSG_WM8960
++	imply SND_SOC_RPMSG_WM8960_I2C
++	imply SND_SOC_RPMSG_AK4497
+ 	help
+ 	  Normally ASoC codec drivers are only built if a machine driver which
+ 	  uses them is also built since they are only usable with a machine
+@@ -2290,6 +2293,15 @@
+ 	  which consists of a Digital Signal Processor (DSP), several Digital
+ 	  Audio Interfaces (DAIs), analog outputs, and a block of 14 GPIOs.
+ 
++config SND_SOC_RPMSG_WM8960
++	tristate "RPMSG WM8960 Platform Driver"
++	select SND_SOC_RPMSG_WM8960_I2C
++
++config SND_SOC_RPMSG_WM8960_I2C
++	tristate "RPMSG WM8960 I2C Driver"
++
++config SND_SOC_RPMSG_AK4497
++	tristate "RPMSG AK4497 Platform Driver"
+ # Amp
+ config SND_SOC_LM4857
+ 	tristate

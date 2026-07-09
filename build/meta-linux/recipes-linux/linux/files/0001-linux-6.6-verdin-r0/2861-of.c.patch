@@ -1,0 +1,22 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/opp/of.c	2026-04-08 18:20:08.843687350 +0200
++++ ./drivers/opp/of.c	2026-04-08 16:21:08.618234815 +0200
+@@ -1079,13 +1079,15 @@
+ 
+ 	val = prop->value;
+ 	while (nr) {
+-		unsigned long freq = be32_to_cpup(val++) * 1000;
+-		unsigned long volt = be32_to_cpup(val++);
++		struct dev_pm_opp_data data = {
++			.freq = be32_to_cpup(val++) * 1000,
++			.u_volt = be32_to_cpup(val++),
++		};
+ 
+-		ret = _opp_add_v1(opp_table, dev, freq, volt, false);
++		ret = _opp_add_v1(opp_table, dev, &data, false);
+ 		if (ret) {
+ 			dev_err(dev, "%s: Failed to add OPP %ld (%d)\n",
+-				__func__, freq, ret);
++				__func__, data.freq, ret);
+ 			goto remove_static_opp;
+ 		}
+ 		nr -= 2;

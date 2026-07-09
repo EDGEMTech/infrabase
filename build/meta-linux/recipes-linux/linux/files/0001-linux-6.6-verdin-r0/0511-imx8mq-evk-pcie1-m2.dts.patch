@@ -1,0 +1,32 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mq-evk-pcie1-m2.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8mq-evk-pcie1-m2.dts	2026-04-08 16:21:02.043552682 +0200
+@@ -0,0 +1,29 @@
++/*
++ * Copyright 2017-2019 NXP
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include "imx8mq-evk.dts"
++
++/ {
++	modem_reset: modem-reset {
++		reset-gpios = <&gpio3 5 GPIO_ACTIVE_HIGH>;
++	};
++};
++
++&pcie0{
++	status = "disabled";
++};
++
++&gpio5 {
++	/delete-node/ wl-reg-on-hog; /* disable the on-board wifi */
++};

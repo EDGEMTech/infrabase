@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/include/asm/virt.h	2026-04-08 18:20:05.096303197 +0200
++++ ./arch/arm64/include/asm/virt.h	2026-04-08 16:21:02.407979129 +0200
+@@ -76,6 +76,7 @@
+ 
+ #define ARM64_VECTOR_TABLE_LEN	SZ_2K
+ 
++extern char __hyp_stub_vectors[];
+ void __hyp_set_vectors(phys_addr_t phys_vector_base);
+ void __hyp_reset_vectors(void);
+ bool is_kvm_arm_initialised(void);

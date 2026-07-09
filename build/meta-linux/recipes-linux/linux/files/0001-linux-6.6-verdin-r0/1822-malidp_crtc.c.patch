@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/arm/malidp_crtc.c	2026-04-08 18:20:06.996937827 +0200
++++ ./drivers/gpu/drm/arm/malidp_crtc.c	2026-04-08 16:21:05.786082568 +0200
+@@ -32,7 +32,7 @@
+ 	 * check that the hardware can drive the required clock rate,
+ 	 * but skip the check if the clock is meant to be disabled (req_rate = 0)
+ 	 */
+-	long rate, req_rate = mode->crtc_clock * 1000;
++	long rate, req_rate = mode->clock * 1000;
+ 
+ 	if (req_rate) {
+ 		rate = clk_round_rate(hwdev->pxlclk, req_rate);

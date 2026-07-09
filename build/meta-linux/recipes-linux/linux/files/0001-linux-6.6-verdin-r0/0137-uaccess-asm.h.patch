@@ -1,0 +1,25 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/include/asm/uaccess-asm.h	2026-04-08 18:20:04.928880193 +0200
++++ ./arch/arm/include/asm/uaccess-asm.h	2026-04-08 16:21:01.138414856 +0200
+@@ -84,8 +84,12 @@
+ 	 * if \disable is set.
+ 	 */
+ 	.macro	uaccess_entry, tsk, tmp0, tmp1, tmp2, disable
++	ldr	\tmp1, [\tsk, #TI_ADDR_LIMIT]
++	ldr	\tmp2, =TASK_SIZE
++	str	\tmp2, [\tsk, #TI_ADDR_LIMIT]
+  DACR(	mrc	p15, 0, \tmp0, c3, c0, 0)
+  DACR(	str	\tmp0, [sp, #SVC_DACR])
++	str	\tmp1, [sp, #SVC_ADDR_LIMIT]
+ 	.if \disable && IS_ENABLED(CONFIG_CPU_SW_DOMAIN_PAN)
+ 	/* kernel=client, user=no access */
+ 	mov	\tmp2, #DACR_UACCESS_DISABLE
+@@ -102,7 +106,9 @@
+ 
+ 	/* Restore the user access state previously saved by uaccess_entry */
+ 	.macro	uaccess_exit, tsk, tmp0, tmp1
++	ldr	\tmp1, [sp, #SVC_ADDR_LIMIT]
+  DACR(	ldr	\tmp0, [sp, #SVC_DACR])
++	str	\tmp1, [\tsk, #TI_ADDR_LIMIT]
+  DACR(	mcr	p15, 0, \tmp0, c3, c0, 0)
+ 	.endm
+ 

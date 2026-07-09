@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/fsl-ls1046a-sd1-1133-lane-d-backplane-phylib.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/fsl-ls1046a-sd1-1133-lane-d-backplane-phylib.dtsi	2026-04-08 16:21:01.978430402 +0200
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2023 NXP
++ *
++ * Enables the phylib wrapper over the mtip_backplane phylink_pcs layer. To be
++ * used if the network driver (e.g. sdk_dpaa) is not integrated with phylink.
++ */
++
++&mac9 { /* DTSEC9/10GEC1 */
++	phy-connection-type = "10gbase-kr";
++	phy-handle = <&pcsphy6>;
++	/delete-property/ pcsphy-handle;
++	/delete-property/ pcs-handle-names;
++};
++
++&pcsphy6 {
++	compatible = "ethernet-phy-ieee802.3-c45";
++	phys = <&serdes1 3>;
++	phy-names = "serdes";
++};

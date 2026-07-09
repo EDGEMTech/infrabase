@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/imx/clk-imx6sl.c	2026-04-08 18:20:05.826905221 +0200
++++ ./drivers/clk/imx/clk-imx6sl.c	2026-04-08 16:21:04.570378277 +0200
+@@ -433,10 +433,20 @@
+ 	/* Audio-related clocks configuration */
+ 	clk_set_parent(hws[IMX6SL_CLK_SPDIF0_SEL]->clk, hws[IMX6SL_CLK_PLL3_PFD3]->clk);
+ 
++	/* Initialize Video PLLs to valid frequency (650MHz). */
++	clk_set_rate(hws[IMX6SL_CLK_PLL5_VIDEO_DIV]->clk, 650000000);
++
+ 	/* set PLL5 video as lcdif pix parent clock */
+ 	clk_set_parent(hws[IMX6SL_CLK_LCDIF_PIX_SEL]->clk,
+ 			hws[IMX6SL_CLK_PLL5_VIDEO_DIV]->clk);
+ 
++	/* Configure EPDC clocks */
++	clk_set_parent(hws[IMX6SL_CLK_EPDC_PIX_SEL]->clk,
++		hws[IMX6SL_CLK_PLL5_VIDEO_DIV]->clk);
++	clk_set_parent(hws[IMX6SL_CLK_EPDC_AXI_SEL]->clk,
++		hws[IMX6SL_CLK_PLL2_PFD2]->clk);
++	clk_set_rate(hws[IMX6SL_CLK_EPDC_AXI]->clk, 200000000);
++
+ 	clk_set_parent(hws[IMX6SL_CLK_LCDIF_AXI_SEL]->clk,
+ 		       hws[IMX6SL_CLK_PLL2_PFD2]->clk);
+ 

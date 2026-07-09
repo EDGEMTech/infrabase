@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mmc/core/host.c	2026-04-08 18:20:07.946964299 +0200
++++ ./drivers/mmc/core/host.c	2026-04-08 16:21:07.234143338 +0200
+@@ -564,7 +564,7 @@
+ 	spin_lock_init(&host->lock);
+ 	init_waitqueue_head(&host->wq);
+ 	INIT_DELAYED_WORK(&host->detect, mmc_rescan);
+-	INIT_WORK(&host->sdio_irq_work, sdio_irq_work);
++	INIT_DELAYED_WORK(&host->sdio_irq_work, sdio_irq_work);
+ 	timer_setup(&host->retune_timer, mmc_retune_timer, 0);
+ 
+ 	/*

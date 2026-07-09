@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/fsl/fsl_rpmsg.h	2026-04-08 18:20:10.900046572 +0200
++++ ./sound/soc/fsl/fsl_rpmsg.h	2026-04-08 16:21:18.382229286 +0200
+@@ -42,6 +42,6 @@
+ 	unsigned int mclk_streams;
+ 	int force_lpa;
+ 	int enable_lpa;
+-	int buffer_size;
++	int buffer_size[2];
+ };
+ #endif /* __FSL_RPMSG_H */

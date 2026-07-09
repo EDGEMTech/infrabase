@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/boot/dts/fsl/bsc9131rdb.dts	2026-04-08 18:20:05.268640167 +0200
++++ ./arch/powerpc/boot/dts/fsl/bsc9131rdb.dts	2026-04-08 16:21:03.151686309 +0200
+@@ -15,7 +15,7 @@
+ 		device_type = "memory";
+ 	};
+ 
+-	board_ifc: ifc: ifc@ff71e000 {
++	board_ifc: ifc: memory-controller@ff71e000 {
+ 		/* NAND Flash on board */
+ 		ranges = <0x0 0x0 0x0 0xff800000 0x00004000>;
+ 		reg = <0x0 0xff71e000 0x0 0x2000>;

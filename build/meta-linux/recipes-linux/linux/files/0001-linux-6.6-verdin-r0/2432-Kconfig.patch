@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mxc/hantro_845_h1/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/mxc/hantro_845_h1/Kconfig	2026-04-08 16:21:07.319917742 +0200
+@@ -0,0 +1,14 @@
++#
++# Codec configuration
++#
++
++menu "MXC HANTRO(Video Processing Unit) encoder support"
++	depends on ARCH_MXC
++
++config MXC_HANTRO_845_H1
++	tristate "Support for MXC HANTRO(Video Processing Unit) encoder"
++	default y
++	help
++	  VPU codec device.
++
++endmenu

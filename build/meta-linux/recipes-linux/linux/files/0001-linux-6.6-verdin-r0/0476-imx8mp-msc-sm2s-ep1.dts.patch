@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dts	2026-04-08 18:20:05.019882729 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dts	2026-04-08 16:21:02.030080820 +0200
+@@ -68,6 +68,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sai2>;
+ 
++	#sound-dai-cells = <0>;
+ 	assigned-clocks = <&clk IMX8MP_CLK_SAI2>;
+ 	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
+ 	assigned-clock-rates = <12288000>;

@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/Makefile	2026-04-08 18:20:05.813707546 +0200
++++ ./drivers/clk/Makefile	2026-04-08 16:21:04.547050712 +0200
+@@ -114,6 +114,7 @@
+ obj-y					+= ralink/
+ obj-y					+= renesas/
+ obj-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip/
++obj-$(CONFIG_ARCH_S32)			+= s32/
+ obj-$(CONFIG_COMMON_CLK_SAMSUNG)	+= samsung/
+ obj-$(CONFIG_CLK_SIFIVE)		+= sifive/
+ obj-y					+= socfpga/

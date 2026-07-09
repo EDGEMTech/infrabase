@@ -1,0 +1,41 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/imx/imx-scu-soc.c	2026-04-08 18:20:06.046098244 +0200
++++ ./drivers/firmware/imx/imx-scu-soc.c	2026-04-08 16:21:04.961762911 +0200
+@@ -12,6 +12,8 @@
+ 
+ static struct imx_sc_ipc *imx_sc_soc_ipc_handle;
+ 
++extern bool TKT340553_SW_WORKAROUND;
++
+ struct imx_sc_msg_misc_get_soc_id {
+ 	struct imx_sc_rpc_msg hdr;
+ 	union {
+@@ -35,18 +37,15 @@
+ {
+ 	struct imx_sc_msg_misc_get_soc_uid msg;
+ 	struct imx_sc_rpc_msg *hdr = &msg.hdr;
+-	int ret;
++
++	memset(&msg, 0, sizeof(msg));
+ 
+ 	hdr->ver = IMX_SC_RPC_VERSION;
+ 	hdr->svc = IMX_SC_RPC_SVC_MISC;
+ 	hdr->func = IMX_SC_MISC_FUNC_UNIQUE_ID;
+ 	hdr->size = 1;
+ 
+-	ret = imx_scu_call_rpc(imx_sc_soc_ipc_handle, &msg, true);
+-	if (ret) {
+-		pr_err("%s: get soc uid failed, ret %d\n", __func__, ret);
+-		return ret;
+-	}
++	imx_scu_call_rpc(imx_sc_soc_ipc_handle, &msg, true);
+ 
+ 	*soc_uid = msg.uid_high;
+ 	*soc_uid <<= 32;
+@@ -82,6 +81,7 @@
+ {
+ 	switch (id) {
+ 	case 0x1:
++		TKT340553_SW_WORKAROUND = true;
+ 		return "i.MX8QM";
+ 	case 0x2:
+ 		return "i.MX8QXP";

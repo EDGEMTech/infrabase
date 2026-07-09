@@ -1,0 +1,24 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/soc/fsl/dcp-blob.h	1970-01-01 01:00:00.000000000 +0100
++++ ./include/soc/fsl/dcp-blob.h	2026-04-08 16:21:11.733348861 +0200
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2022 NXP
++ */
++
++#ifndef __DCP_BLOB_H__
++#define __DCP_BLOB_H__
++
++#define MAX_KEY_SIZE                    128
++#define MAX_BLOB_SIZE                   512
++
++struct dcp_key_payload {
++	unsigned int key_len;
++	unsigned int blob_len;
++	unsigned char *key;
++	unsigned char *blob;
++ };
++
++int mxs_dcp_blob_to_key(struct dcp_key_payload *p);
++
++#endif

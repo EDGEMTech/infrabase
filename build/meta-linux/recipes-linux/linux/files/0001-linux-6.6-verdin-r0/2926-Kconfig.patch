@@ -1,0 +1,36 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pwm/Kconfig	2026-04-08 18:20:09.012994002 +0200
++++ ./drivers/pwm/Kconfig	2026-04-08 16:21:08.961534826 +0200
+@@ -42,6 +42,14 @@
+ 	  It is expected to introduce some runtime overhead and diagnostic
+ 	  output to the kernel log, so only enable while working on a driver.
+ 
++config PWM_ADP5585
++	tristate "ADP5585 PWM support"
++	depends on MFD_ADP5585
++	help
++	  This option enables support for on-chip PWM found
++	  on Analog Devices ADP5585.
++
++
+ config PWM_AB8500
+ 	tristate "AB8500 PWM support"
+ 	depends on AB8500_CORE && ARCH_U8500
+@@ -514,6 +522,18 @@
+ 	  To compile this driver as a module, choose M here: the module
+ 	  will be called pwm-rz-mtu3.
+ 
++config PWM_RPCHIP
++	tristate "PWM proxy chip over RPMSG"
++	depends on (ARCH_MXC || COMPILE_TEST) && RPMSG
++	help
++	  This driver can support virtual pwm-rpmsg function. So that
++	  Acore can use some TPM resources of Mcore on some SoC platforms.
++	  This driver provide a protocal to send pwm request through RPMSG to
++	  Mcore and control the TPM modules on Mcore.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called pwm-rpmsg-imx.
++
+ config PWM_SAMSUNG
+ 	tristate "Samsung PWM support"
+ 	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST

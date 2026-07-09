@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/mach-imx/headsmp.S	2026-04-08 18:20:04.946066302 +0200
++++ ./arch/arm/mach-imx/headsmp.S	2026-04-08 16:21:01.747031522 +0200
+@@ -24,11 +24,13 @@
+ ENTRY(v7_secondary_startup)
+ ARM_BE8(setend be)			@ go BE8 if entered LE
+ 	mrc	p15, 0, r0, c0, c0, 0
+-	lsl	r0, r0, #16
+-	lsr	r0, r0, #20
++	ldr	r1, =0xf00
++	orr	r1, r1, #0xff
++	mov	r0, r0, lsr #4
++	and	r0, r0, r1
+ 	/* 0xc07 is cortex A7's ID */
+-	mov	r1, #0xc00
+-	orr	r1, #0x7
++	ldr	r1, =0xc00
++	orr	r1, r1, #0x7
+ 	cmp	r0, r1
+ 	beq	secondary_startup
+ 

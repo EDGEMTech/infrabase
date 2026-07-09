@@ -1,0 +1,98 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/arm/fsl.yaml	2026-04-08 18:20:04.497370953 +0200
++++ ./Documentation/devicetree/bindings/arm/fsl.yaml	2026-04-08 16:20:51.176671065 +0200
+@@ -898,6 +898,12 @@
+               - fsl,imx7ulp-evk           # i.MX7ULP Evaluation Kit
+           - const: fsl,imx7ulp
+ 
++      - description: i.MX8DXL based Boards
++        items:
++          - enum:
++              - fsl,imx8dxl-evk           # i.MX8DXL EVK Board
++          - const: fsl,imx8dxl
++
+       - description: i.MX8MM based Boards
+         items:
+           - enum:
+@@ -1032,6 +1038,7 @@
+               - beacon,imx8mp-beacon-kit  # i.MX8MP Beacon Development Kit
+               - dmo,imx8mp-data-modul-edm-sbc # i.MX8MP eDM SBC
+               - fsl,imx8mp-evk            # i.MX8MP EVK Board
++              - fsl,imx8mp-navq           # i.MX8MP NAVQ+ Board
+               - gateworks,imx8mp-gw71xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw72xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw73xx-2x # i.MX8MP Gateworks Board
+@@ -1084,6 +1091,12 @@
+           - const: polyhex,imx8mp-debix-som-a       # Polyhex Debix SOM A
+           - const: fsl,imx8mp
+ 
++      - description: Toradex Boards with SMARC iMX8M Plus Modules
++        items:
++          - const: toradex,smarc-imx8mp-dev # Toradex SMARC iMX8M Plus on Toradex SMARC Development Board
++          - const: toradex,smarc-imx8mp     # Toradex SMARC iMX8M Plus Module
++          - const: fsl,imx8mp
++
+       - description: Toradex Boards with Verdin iMX8M Plus Modules
+         items:
+           - enum:
+@@ -1104,6 +1117,42 @@
+           - const: toradex,verdin-imx8mp          # Verdin iMX8M Plus Module
+           - const: fsl,imx8mp
+ 
++      - description: Toradex Boards with Aquila iMX95 Modules
++        items:
++          - const: toradex,aquila-imx95-dev # Aquila iMX95 Module on Aquila Development Board
++          - const: toradex,aquila-imx95     # Aquila iMX95 Module
++          - const: fsl,imx95
++
++      - description: Toradex Boards with Verdin iMX95 Modules
++        items:
++          - enum:
++              - toradex,verdin-imx95-nonwifi-dahlia # Verdin iMX95 Module on Dahlia
++              - toradex,verdin-imx95-nonwifi-dev    # Verdin iMX95 Module on Verdin Development Board
++              - toradex,verdin-imx95-nonwifi-ivy    # Verdin iMX95 Module on Ivy
++              - toradex,verdin-imx95-nonwifi-mallow # Verdin iMX95 Module on Mallow
++              - toradex,verdin-imx95-nonwifi-yavia  # Verdin iMX95 Module on Yavia
++          - const: toradex,verdin-imx95-nonwifi     # Verdin iMX95 Module without Wi-Fi / BT
++          - const: toradex,verdin-imx95             # Verdin iMX95 Module
++          - const: fsl,imx95
++
++      - description: Toradex Boards with Verdin iMX95 Wi-Fi / BT Modules
++        items:
++          - enum:
++              - toradex,verdin-imx95-wifi-dahlia  # Verdin iMX95 Wi-Fi / BT Module on Dahlia
++              - toradex,verdin-imx95-wifi-dev     # Verdin iMX95 Wi-Fi / BT Module on Verdin Development B.
++              - toradex,verdin-imx95-wifi-ivy     # Verdin iMX95 Wi-Fi / BT Module on Ivy
++              - toradex,verdin-imx95-wifi-mallow  # Verdin iMX95 Wi-Fi / BT Module on Mallow
++              - toradex,verdin-imx95-wifi-yavia   # Verdin iMX95 Wi-Fi / BT Module on Yavia
++          - const: toradex,verdin-imx95-wifi      # Verdin iMX95 Wi-Fi / BT Module
++          - const: toradex,verdin-imx95           # Verdin iMX95 Module
++          - const: fsl,imx95
++
++      - description: Toradex Boards with SMARC iMX95 Modules
++        items:
++          - const: toradex,smarc-imx95-dev # Toradex SMARC iMX95 Module on Toradex SMARC Development Board
++          - const: toradex,smarc-imx95     # Toradex SMARC iMX95 Module
++          - const: fsl,imx95
++
+       - description:
+           TQMa8MPxL is a series of LGA SOM featuring NXP i.MX8MP system-on-chip
+           variants. It is designed to be soldered on different carrier boards.
+@@ -1223,6 +1272,18 @@
+               - fsl,imx93-11x11-evk       # i.MX93 11x11 EVK Board
+           - const: fsl,imx93
+ 
++      - description: i.MX91 Quick Start Boards
++        items:
++          - enum:
++              - fsl,imx91-9x9-qsb       # i.MX91 9x9 QSB Board
++          - const: fsl,imx91
++
++      - description: i.MX95 based Boards
++        items:
++          - enum:
++              - fsl,imx95-15x15-evk       # i.MX95 15x15 EVK Board
++          - const: fsl,imx95
++
+       - description: i.MXRT1050 based Boards
+         items:
+           - enum:

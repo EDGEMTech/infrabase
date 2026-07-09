@@ -1,0 +1,7 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/mm/dma-mapping.c	2026-04-08 18:20:05.113976984 +0200
++++ ./arch/arm64/mm/dma-mapping.c	2026-04-08 16:21:02.470739632 +0200
+@@ -63,3 +63,4 @@
+ 
+ 	xen_setup_dma_ops(dev);
+ }
++EXPORT_SYMBOL(arch_setup_dma_ops);

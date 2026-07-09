@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpio/gpio-74x164.c	2026-04-08 18:20:06.054752982 +0200
++++ ./drivers/gpio/gpio-74x164.c	2026-04-08 16:21:04.984577027 +0200
+@@ -139,6 +139,9 @@
+ 	chip->registers = nregs;
+ 	chip->gpio_chip.ngpio = GEN_74X164_NUMBER_GPIOS * chip->registers;
+ 
++	of_property_read_u8_array(spi->dev.of_node, "registers-default",
++				 chip->buffer, chip->registers);
++
+ 	chip->gpio_chip.can_sleep = true;
+ 	chip->gpio_chip.parent = &spi->dev;
+ 	chip->gpio_chip.owner = THIS_MODULE;

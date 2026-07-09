@@ -1,0 +1,62 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/input/touchscreen/goodix.c	2026-04-08 18:20:07.550953264 +0200
++++ ./drivers/input/touchscreen/goodix.c	2026-04-08 16:21:06.661330618 +0200
+@@ -508,6 +508,16 @@
+ 	struct goodix_ts_data *ts = dev_id;
+ 
+ 	goodix_process_events(ts);
++
++	/*
++	 * according to debug, for 911 chip, when touch over 3 fingers
++	 * in the meantime, this 911 chip need wait a bit time to let
++	 * internal logic retrun back to normal to handle the i2c operation
++	 * otherwise the following i2c command may meet timeout fail.
++	 */
++	if (!strcmp(ts->id, "911"))
++		usleep_range(50, 100);
++
+ 	goodix_i2c_write_u8(ts->client, GOODIX_READ_COOR_ADDR, 0);
+ 
+ 	return IRQ_HANDLED;
+@@ -1020,7 +1030,7 @@
+ 	default:
+ 		if (ts->gpiod_int && ts->gpiod_rst) {
+ 			ts->reset_controller_at_probe = true;
+-			ts->load_cfg_from_disk = true;
++			ts->load_cfg_from_disk = false;
+ 			ts->irq_pin_access_method = IRQ_PIN_ACCESS_GPIO;
+ 		}
+ 	}
+@@ -1047,7 +1057,7 @@
+ 	 */
+ 	if (!ts->firmware_name) {
+ 		error = goodix_i2c_read(ts->client, ts->chip->config_addr,
+-					ts->config, ts->chip->config_len);
++					ts->config, 9);
+ 		if (error) {
+ 			ts->int_trigger_type = GOODIX_INT_TRIGGER;
+ 			ts->max_touch_num = GOODIX_MAX_CONTACTS;
+@@ -1237,6 +1247,9 @@
+ 	if (error)
+ 		return error;
+ 
++	if (device_property_read_bool(ts->input_dev->dev.parent, "edge-failling-trigger"))
++		ts->int_trigger_type = GOODIX_INT_TRIGGER;
++
+ 	ts->irq_flags = goodix_irq_flags[ts->int_trigger_type] | IRQF_ONESHOT;
+ 	error = goodix_request_irq(ts);
+ 	if (error) {
+@@ -1495,9 +1508,11 @@
+ 		if (error)
+ 			return error;
+ 
+-		error = goodix_send_cfg(ts, ts->config, ts->chip->config_len);
+-		if (error)
+-			return error;
++		if (ts->load_cfg_from_disk) {
++			error = goodix_send_cfg(ts, ts->config, ts->chip->config_len);
++			if (error)
++				return error;
++		}
+ 	}
+ 
+ 	error = goodix_request_irq(ts);

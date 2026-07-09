@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/arm_scmi/voltage.c	2026-04-08 18:20:06.037911102 +0200
++++ ./drivers/firmware/arm_scmi/voltage.c	2026-04-08 16:21:04.946731495 +0200
+@@ -242,7 +242,7 @@
+ 			if (SUPPORTS_EXTENDED_NAMES(attributes))
+ 				ph->hops->extended_name_get(ph,
+ 							VOLTAGE_DOMAIN_NAME_GET,
+-							v->id, v->name,
++							v->id, NULL, v->name,
+ 							SCMI_MAX_STR_SIZE);
+ 			if (SUPPORTS_ASYNC_LEVEL_SET(attributes))
+ 				v->async_level_set = true;

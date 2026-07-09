@@ -1,0 +1,116 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c	2026-04-08 18:20:07.762838159 +0200
++++ ./drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c	2026-04-08 16:21:07.033489269 +0200
+@@ -43,6 +43,7 @@
+ 	struct v4l2_pix_format_mplane format;
+ 	const struct mxc_isi_format_info *info;
+ 	u32 sequence;
++	bool streaming;
+ };
+ 
+ struct mxc_isi_m2m_ctx {
+@@ -486,6 +487,7 @@
+ 				enum v4l2_buf_type type)
+ {
+ 	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
++	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+ 	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
+ 	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
+ 	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
+@@ -495,6 +497,9 @@
+ 
+ 	int ret;
+ 
++	if (q->streaming)
++		return 0;
++
+ 	mutex_lock(&m2m->lock);
+ 
+ 	if (m2m->usage_count == INT_MAX) {
+@@ -547,6 +552,8 @@
+ 		goto unchain;
+ 	}
+ 
++	q->streaming = true;
++
+ 	return 0;
+ 
+ unchain:
+@@ -569,10 +576,14 @@
+ 				 enum v4l2_buf_type type)
+ {
+ 	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
++	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+ 	struct mxc_isi_m2m *m2m = ctx->m2m;
+ 
+ 	v4l2_m2m_ioctl_streamoff(file, fh, type);
+ 
++	if (!q->streaming)
++		return 0;
++
+ 	mutex_lock(&m2m->lock);
+ 
+ 	/*
+@@ -598,6 +609,8 @@
+ 
+ 	mutex_unlock(&m2m->lock);
+ 
++	q->streaming = false;
++
+ 	return 0;
+ }
+ 
+@@ -723,6 +736,54 @@
+ };
+ 
+ /* -----------------------------------------------------------------------------
++ * Suspend & resume
++ */
++
++void mxc_isi_m2m_suspend(struct mxc_isi_pipe *pipe)
++{
++	struct mxc_isi_m2m *m2m = &pipe->isi->m2m;
++	struct mxc_isi_m2m_ctx *ctx = m2m->last_ctx;
++
++	/*
++	 * Check pipe for ISI memory to memory since only
++	 * channel 0 support this feature.
++	 */
++	if (m2m->pipe != pipe || m2m->usage_count == 0)
++		return;
++
++	v4l2_m2m_suspend(m2m->m2m_dev);
++
++	if (ctx->chained)
++		mxc_isi_channel_unchain(pipe);
++
++	mxc_isi_channel_disable(pipe);
++	mxc_isi_channel_put(pipe);
++}
++
++int mxc_isi_m2m_resume(struct mxc_isi_pipe *pipe)
++{
++	struct mxc_isi_m2m *m2m = &pipe->isi->m2m;
++	struct mxc_isi_m2m_ctx *ctx = m2m->last_ctx;
++
++	/*
++	 * Check pipe for ISI memory to memory since only
++	 * channel 0 support this feature.
++	 */
++	if (m2m->pipe != pipe || m2m->usage_count == 0)
++		return 0;
++
++	mxc_isi_channel_get(pipe);
++
++	if (ctx->chained)
++		mxc_isi_channel_chain(pipe, false);
++
++	m2m->last_ctx = NULL;
++	v4l2_m2m_resume(m2m->m2m_dev);
++
++	return 0;
++}
++
++/* -----------------------------------------------------------------------------
+  * Registration
+  */
+ 

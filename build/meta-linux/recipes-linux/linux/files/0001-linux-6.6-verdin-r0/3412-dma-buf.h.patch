@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/uapi/linux/dma-buf.h	2026-04-08 18:20:10.231027935 +0200
++++ ./include/uapi/linux/dma-buf.h	2026-04-08 16:21:17.335028473 +0200
+@@ -75,6 +75,10 @@
+ 	__u64 flags;
+ };
+ 
++struct dma_buf_phys {
++	unsigned long phys;
++};
++
+ #define DMA_BUF_SYNC_READ      (1 << 0)
+ #define DMA_BUF_SYNC_WRITE     (2 << 0)
+ #define DMA_BUF_SYNC_RW        (DMA_BUF_SYNC_READ | DMA_BUF_SYNC_WRITE)
+@@ -178,5 +182,6 @@
+ #define DMA_BUF_SET_NAME_B	_IOW(DMA_BUF_BASE, 1, __u64)
+ #define DMA_BUF_IOCTL_EXPORT_SYNC_FILE	_IOWR(DMA_BUF_BASE, 2, struct dma_buf_export_sync_file)
+ #define DMA_BUF_IOCTL_IMPORT_SYNC_FILE	_IOW(DMA_BUF_BASE, 3, struct dma_buf_import_sync_file)
++#define DMA_BUF_IOCTL_PHYS	_IOW(DMA_BUF_BASE, 10, struct dma_buf_phys)
+ 
+ #endif

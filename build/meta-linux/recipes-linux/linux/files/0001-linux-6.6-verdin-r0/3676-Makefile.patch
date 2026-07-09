@@ -1,0 +1,37 @@
+Add the AVZ guest DTB to the verdin-imx8mp DTB build set, with `-@` so
+dtc emits the `__symbols__` node.
+
+The AVZ hypervisor needs a guest DTB with reduced memory (0x48000000+)
+to leave room for AVZ heap/stack/frame table at the lower end. The line
+addition pulls `imx8mp-verdin-avz-guest.dtb` (source committed alongside
+the other verdin DTSes) into the kernel build.
+
+The DTC_FLAGS_imx8mp-verdin-avz-guest := -@ instructs dtc to emit the
+`__symbols__` node in the resulting DTB. The dev-lvgl capsule applies
+Toradex DT overlays (HDMI, SPIDEV, dsi-to-hdmi, …) at build time via
+`fdtoverlay` inside `__merge_guest_dtb_with_overlays`. fdtoverlay
+resolves overlay phandle references through `__symbols__` / `__fixups__`;
+without `-@` the base DTB has no symbols table and every overlay fails
+with FDT_ERR_NOTFOUND, leading to the build-time fallback that drops
+ALL overlays.
+
+`-@` is harmless for capsules that do NOT apply overlays (e.g. the fc
+capsule references the raw `imx8mp-verdin-avz-guest.dtb` directly in
+its ITS): the only effect is a ~10 KB `__symbols__` blob added to the
+binary. Activating overlays remains an ITS-level choice (raw vs merged
+DTB) — `-@` is just the enabler that makes overlays possible at all.
+
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -164,8 +164,11 @@
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dahlia.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-dev.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-ivy.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-avz-guest.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-mallow.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-wifi-yavia.dtb
++
++DTC_FLAGS_imx8mp-verdin-avz-guest := -@
+
+ imx8mp-evk-revb4-dtbs := imx8mp-evk.dtb imx8mp-evk-revb4.dtbo
+ imx8mp-evk-revb4-rm67191-dtbs := imx8mp-evk-rm67191.dtb imx8mp-evk-revb4.dtbo

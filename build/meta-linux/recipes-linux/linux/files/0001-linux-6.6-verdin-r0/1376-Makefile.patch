@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/imx/Makefile	2026-04-08 18:20:06.046098244 +0200
++++ ./drivers/firmware/imx/Makefile	2026-04-08 16:21:04.961281619 +0200
+@@ -1,3 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_IMX_DSP)		+= imx-dsp.o
+-obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o
++obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o seco.o power.o
++obj-${CONFIG_IMX_SCMI_MISC_CONTROL}	+= sm-misc.o
++obj-${CONFIG_IMX_SECO_MU}	+= seco_mu.o
++sec_enclave-objs		= se_fw.o ele_common.o ele_base_msg.o ele_fw_api.o v2x_base_msg.o
++obj-${CONFIG_IMX_SEC_ENCLAVE}	+= sec_enclave.o
++sec_enclave-${CONFIG_IMX_ELE_TRNG} += ele_trng.o
++obj-$(CONFIG_IMX_SCMI_BBM_CONTROL) += sm-bbm.o
++obj-$(CONFIG_IMX_ISPMU)		+= isp-mu.o

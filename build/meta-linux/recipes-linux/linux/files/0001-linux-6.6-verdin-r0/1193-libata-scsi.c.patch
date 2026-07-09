@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/ata/libata-scsi.c	2026-04-08 18:20:05.722902322 +0200
++++ ./drivers/ata/libata-scsi.c	2026-04-08 16:21:04.411094012 +0200
+@@ -4724,6 +4724,9 @@
+ 	ata_scsi_scan_host(ap, 0);
+ 
+ 	mutex_unlock(&ap->scsi_scan_mutex);
++#ifdef CONFIG_AHCI_IMX_PMP
++	ap->flags &= ~(0x7 << 29);
++#endif
+ }
+ 
+ /**

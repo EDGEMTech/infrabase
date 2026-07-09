@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/soc/imx/Makefile	2026-04-08 18:20:09.278216793 +0200
++++ ./drivers/soc/imx/Makefile	2026-04-08 16:21:09.328209170 +0200
+@@ -3,4 +3,9 @@
+ obj-$(CONFIG_ARCH_MXC) += soc-imx.o
+ endif
+ obj-$(CONFIG_SOC_IMX8M) += soc-imx8m.o
+-obj-$(CONFIG_SOC_IMX9) += imx93-src.o
++obj-$(CONFIG_IMX8M_BUSFREQ) += busfreq-imx8mq.o
++obj-$(CONFIG_SOC_IMX9) += imx93-src.o imx93_lpm.o soc-imx9.o
++obj-${CONFIG_SECVIO_SC} += secvio/
++obj-$(CONFIG_RPMSG_LIFE_CYCLE) += rpmsg_life_cycle.o
++obj-$(CONFIG_IMX8M_PM_DOMAINS) += imx8m_pm_domains.o
++obj-$(CONFIG_IMX8ULP_LPM_CTRL) += imx8ulp_lpm.o

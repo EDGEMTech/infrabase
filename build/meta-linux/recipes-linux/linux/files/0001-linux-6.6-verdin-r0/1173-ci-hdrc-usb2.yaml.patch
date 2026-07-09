@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/usb/ci-hdrc-usb2.yaml	2026-04-08 18:20:04.619559686 +0200
++++ ./Documentation/devicetree/bindings/usb/ci-hdrc-usb2.yaml	2026-04-08 16:20:59.866448851 +0200
+@@ -273,6 +273,10 @@
+     type: boolean
+     description: enables off-chip resistor divider for Vbus
+ 
++  ci-disable-lpm:
++    type: boolean
++    description: Some chipidea hardware need to disable low power mode
++
+   samsung,picophy-pre-emp-curr-control:
+     description:
+       HS Transmitter Pre-Emphasis Current Control. This signal controls

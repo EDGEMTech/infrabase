@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mxc/hantro_v4l2/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/mxc/hantro_v4l2/Kconfig	2026-04-08 16:21:07.320194810 +0200
+@@ -0,0 +1,17 @@
++#
++# Codec configuration
++#
++
++menu "MXC HANTRO(Video Processing Unit) V4L2 support"
++#	depends on ARCH_FSL_IMX8MP
++	depends on ARCH_MXC
++
++config MXC_HANTRO_V4L2
++	tristate "Support for MXC HANTRO(Video Processing Unit) V4L2 driver"
++	depends on VIDEO_DEV
++	depends on VIDEOBUF2_V4L2 || VIDEOBUF2_V4L2=n
++	default y
++	help
++		VPU hantro v4l2 device.
++
++endmenu

@@ -1,0 +1,27 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/keys/trusted-type.h	2026-04-08 18:20:10.013801634 +0200
++++ ./include/keys/trusted-type.h	2026-04-08 16:21:11.277124363 +0200
+@@ -7,6 +7,7 @@
+ #ifndef _KEYS_TRUSTED_TYPE_H
+ #define _KEYS_TRUSTED_TYPE_H
+ 
++#include <linux/hw_bound_key.h>
+ #include <linux/key.h>
+ #include <linux/rcupdate.h>
+ #include <linux/tpm.h>
+@@ -22,6 +23,7 @@
+ #define MAX_BLOB_SIZE			512
+ #define MAX_PCRINFO_SIZE		64
+ #define MAX_DIGEST_SIZE			64
++#define HW_BOUND_KEY                    1
+ 
+ struct trusted_key_payload {
+ 	struct rcu_head rcu;
+@@ -29,6 +31,8 @@
+ 	unsigned int blob_len;
+ 	unsigned char migratable;
+ 	unsigned char old_format;
++	unsigned char is_hw_bound;
++	struct hw_bound_key_info hbk_info;
+ 	unsigned char key[MAX_KEY_SIZE + 1];
+ 	unsigned char blob[MAX_BLOB_SIZE];
+ };

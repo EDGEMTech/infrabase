@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clocksource/Kconfig	2026-04-08 18:20:05.900473660 +0200
++++ ./drivers/clocksource/Kconfig	2026-04-08 16:21:04.674716340 +0200
+@@ -591,8 +591,9 @@
+ 	select CLKSRC_MMIO
+ 
+ config CLKSRC_IMX_TPM
+-	bool "Clocksource using i.MX TPM" if COMPILE_TEST
++	tristate "Clocksource using i.MX TPM"
+ 	depends on (ARM || ARM64) && HAVE_CLK
++	default ARCH_MXC
+ 	select CLKSRC_MMIO
+ 	select TIMER_OF
+ 	help
+@@ -600,7 +601,8 @@
+ 	  clocksource.
+ 
+ config TIMER_IMX_SYS_CTR
+-	bool "i.MX system counter timer" if COMPILE_TEST
++	tristate "i.MX system counter timer"
++	default ARCH_MXC
+ 	select TIMER_OF
+ 	help
+ 	  Enable this option to use i.MX system counter timer as a

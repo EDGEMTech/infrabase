@@ -1,0 +1,67 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mp-evk-revb4.dtso	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8mp-evk-revb4.dtso	2026-04-08 16:21:02.027926020 +0200
+@@ -0,0 +1,64 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2023 NXP
++ */
++
++#include <dt-bindings/clock/imx8mp-clock.h>
++
++/dts-v1/;
++/plugin/;
++
++&{/} {
++
++	sound-wm8960 {
++		status = "disabled";
++	};
++
++	sound-wm8962 {
++		compatible = "fsl,imx-audio-wm8962";
++		model = "wm8962-audio";
++		audio-cpu = <&sai3>;
++		audio-codec = <&wm8962>;
++		audio-asrc = <&easrc>;
++		hp-det-gpio = <&gpio4 28 0>;
++		audio-routing =
++			"Headphone Jack", "HPOUTL",
++			"Headphone Jack", "HPOUTR",
++			"Ext Spk", "SPKOUTL",
++			"Ext Spk", "SPKOUTR",
++			"AMIC", "MICBIAS",
++			"IN1R", "AMIC",
++			"IN1L", "AMIC";
++	};
++};
++
++&codec {
++	status = "disabled";
++};
++
++&i2c3 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	wm8962: wm8962@1a {
++		compatible = "wlf,wm8962";
++		reg = <0x1a>;
++		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_MCLK1>;
++		DCVDD-supply = <&reg_audio_pwr>;
++		DBVDD-supply = <&reg_audio_pwr>;
++		AVDD-supply = <&reg_audio_pwr>;
++		CPVDD-supply = <&reg_audio_pwr>;
++		MICVDD-supply = <&reg_audio_pwr>;
++		PLLVDD-supply = <&reg_audio_pwr>;
++		SPKVDD1-supply = <&reg_audio_pwr>;
++		SPKVDD2-supply = <&reg_audio_pwr>;
++		gpio-cfg = <
++			0x0000 /* 0:Default */
++			0x0000 /* 1:Default */
++			0x0000 /* 2:FN_DMICCLK */
++			0x0000 /* 3:Default */
++			0x0000 /* 4:FN_DMICCDAT */
++			0x0000 /* 5:Default */
++		>;
++	};
++};

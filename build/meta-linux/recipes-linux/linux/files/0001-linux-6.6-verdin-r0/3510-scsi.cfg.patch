@@ -1,0 +1,32 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/features/scsi/scsi.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/features/scsi/scsi.cfg	2026-04-08 16:21:19.376174858 +0200
+@@ -0,0 +1,29 @@
++#
++# SCSI device support
++#
++CONFIG_SCSI_MOD=y
++#
++# SCSI support type (disk, tape, CD-ROM)
++#
++CONFIG_BLK_DEV_SD=y
++CONFIG_SCSI_CONSTANTS=y
++CONFIG_SCSI_LOGGING=y
++CONFIG_SCSI_SCAN_ASYNC=y
++
++#
++# SCSI Transports
++#
++CONFIG_ATA=y
++CONFIG_ATA_VERBOSE_ERROR=y
++CONFIG_SATA_PMP=y
++
++#
++# Controllers with non-SFF native interface
++#
++CONFIG_SATA_AHCI_PLATFORM=y
++CONFIG_ATA_SFF=y
++
++#
++# SFF controllers with custom DMA interface
++#
++CONFIG_ATA_BMDMA=y

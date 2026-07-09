@@ -1,0 +1,8 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/iio/temperature/p3t/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/iio/temperature/p3t/Makefile	2026-04-08 16:21:06.508248173 +0200
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++obj-$(CONFIG_IIO_P3T1085) += p3t1085_core.o
++obj-$(CONFIG_IIO_P3T1085_I2C) += p3t1085_i2c.o
++obj-$(CONFIG_IIO_P3T1085_I3C) += p3t1085_i3c.o

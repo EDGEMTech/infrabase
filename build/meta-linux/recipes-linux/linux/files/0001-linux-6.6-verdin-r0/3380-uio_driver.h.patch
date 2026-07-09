@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/uio_driver.h	2026-04-08 18:20:10.148025623 +0200
++++ ./include/linux/uio_driver.h	2026-04-08 16:21:11.653789521 +0200
+@@ -31,6 +31,7 @@
+  * @offs:               offset of device memory within the page
+  * @size:		size of IO (multiple of page size)
+  * @memtype:		type of memory addr points to
++ * @readonly:		true of region is read-only
+  * @internal_addr:	ioremap-ped version of addr, for driver internal use
+  * @map:		for use by the UIO core only.
+  */
+@@ -40,6 +41,7 @@
+ 	unsigned long		offs;
+ 	resource_size_t		size;
+ 	int			memtype;
++	bool			readonly;
+ 	void __iomem		*internal_addr;
+ 	struct uio_map		*map;
+ };

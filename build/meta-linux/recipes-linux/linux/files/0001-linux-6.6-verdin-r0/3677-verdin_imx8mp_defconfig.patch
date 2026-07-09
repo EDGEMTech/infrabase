@@ -1,0 +1,50 @@
+--- a/arch/arm64/configs/verdin_imx8mp_defconfig
++++ b/arch/arm64/configs/verdin_imx8mp_defconfig
+@@ -512,8 +512,8 @@
+ CONFIG_CMDLINE=" "
+ CONFIG_CMDLINE_FROM_BOOTLOADER=y
+ # CONFIG_CMDLINE_FORCE is not set
+-CONFIG_EFI_STUB=y
+-CONFIG_EFI=y
++# CONFIG_EFI_STUB is not set
++# CONFIG_EFI is not set
+ # CONFIG_DMI is not set
+ # end of Boot options
+ 
+@@ -1454,20 +1454,19 @@
+ #
+ # EFI (Extensible Firmware Interface) Support
+ #
+-CONFIG_EFI_ESRT=y
+-CONFIG_EFI_VARS_PSTORE=y
+-# CONFIG_EFI_VARS_PSTORE_DEFAULT_DISABLE is not set
+-CONFIG_EFI_PARAMS_FROM_FDT=y
+-CONFIG_EFI_RUNTIME_WRAPPERS=y
+-CONFIG_EFI_GENERIC_STUB=y
++# CONFIG_EFI_ESRT is not set
++# CONFIG_EFI_VARS_PSTORE is not set
++# CONFIG_EFI_PARAMS_FROM_FDT is not set
++# CONFIG_EFI_RUNTIME_WRAPPERS is not set
++# CONFIG_EFI_GENERIC_STUB is not set
+ # CONFIG_EFI_ZBOOT is not set
+-CONFIG_EFI_ARMSTUB_DTB_LOADER=y
++# CONFIG_EFI_ARMSTUB_DTB_LOADER is not set
+ # CONFIG_EFI_BOOTLOADER_CONTROL is not set
+ # CONFIG_EFI_CAPSULE_LOADER is not set
+ # CONFIG_EFI_TEST is not set
+ # CONFIG_RESET_ATTACK_MITIGATION is not set
+ # CONFIG_EFI_DISABLE_PCI_DMA is not set
+-CONFIG_EFI_EARLYCON=y
++# CONFIG_EFI_EARLYCON is not set
+ # CONFIG_EFI_DISABLE_RUNTIME is not set
+ # CONFIG_EFI_COCO_SECRET is not set
+ # end of EFI (Extensible Firmware Interface) Support
+@@ -6079,7 +6078,7 @@
+ CONFIG_HUGETLB_PAGE=y
+ CONFIG_ARCH_HAS_GIGANTIC_PAGE=y
+ CONFIG_CONFIGFS_FS=y
+-CONFIG_EFIVAR_FS=m
++# CONFIG_EFIVAR_FS is not set
+ # end of Pseudo filesystems
+ 
+ CONFIG_MISC_FILESYSTEMS=y

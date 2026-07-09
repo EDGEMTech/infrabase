@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/mm/mmu_decl.h	2026-04-08 18:20:05.353485409 +0200
++++ ./arch/powerpc/mm/mmu_decl.h	2026-04-08 16:21:03.418571899 +0200
+@@ -86,6 +86,11 @@
+ 
+ #endif /* CONFIG_PPC_MMU_NOHASH */
+ 
++void settlbcam(int index, unsigned long virt, phys_addr_t phys,
++		unsigned long size, unsigned long flags, unsigned int pid);
++
++void cleartlbcam(unsigned long virt, unsigned int pid);
++
+ #ifdef CONFIG_PPC32
+ 
+ extern void mapin_ram(void);

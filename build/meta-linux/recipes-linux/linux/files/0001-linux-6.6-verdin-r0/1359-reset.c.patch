@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/arm_scmi/reset.c	2026-04-08 18:20:06.037911102 +0200
++++ ./drivers/firmware/arm_scmi/reset.c	2026-04-08 16:21:04.945277546 +0200
+@@ -128,7 +128,8 @@
+ 	if (!ret && PROTOCOL_REV_MAJOR(version) >= 0x3 &&
+ 	    SUPPORTS_EXTENDED_NAMES(attributes))
+ 		ph->hops->extended_name_get(ph, RESET_DOMAIN_NAME_GET, domain,
+-					    dom_info->name, SCMI_MAX_STR_SIZE);
++					    NULL, dom_info->name,
++					    SCMI_MAX_STR_SIZE);
+ 
+ 	return ret;
+ }

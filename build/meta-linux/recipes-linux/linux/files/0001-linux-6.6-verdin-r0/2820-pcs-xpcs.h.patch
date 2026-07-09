@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/pcs/pcs-xpcs.h	2026-04-08 18:20:08.500472369 +0200
++++ ./drivers/net/pcs/pcs-xpcs.h	2026-04-08 16:21:07.975001397 +0200
+@@ -120,9 +120,15 @@
+ 
+ int xpcs_read(struct dw_xpcs *xpcs, int dev, u32 reg);
+ int xpcs_write(struct dw_xpcs *xpcs, int dev, u32 reg, u16 val);
++int xpcs_phy_read(struct dw_xpcs *xpcs, int dev, u32 reg);
++int xpcs_phy_write(struct dw_xpcs *xpcs, int dev, u32 reg, u16 val);
+ int xpcs_read_vpcs(struct dw_xpcs *xpcs, int reg);
+ int xpcs_write_vpcs(struct dw_xpcs *xpcs, int reg, u16 val);
+ int nxp_sja1105_sgmii_pma_config(struct dw_xpcs *xpcs);
+ int nxp_sja1110_sgmii_pma_config(struct dw_xpcs *xpcs);
+ int nxp_sja1110_2500basex_pma_config(struct dw_xpcs *xpcs);
+ int txgbe_xpcs_switch_mode(struct dw_xpcs *xpcs, phy_interface_t interface);
++void xpcs_phy_reg_lock(struct dw_xpcs *xpcs);
++int xpcs_phy_usxgmii_pma_config(struct dw_xpcs *xpcs);
++u32 xpcs_phy_get_id(struct dw_xpcs *xpcs);
++int xpcs_phy_check_id(u32 id);

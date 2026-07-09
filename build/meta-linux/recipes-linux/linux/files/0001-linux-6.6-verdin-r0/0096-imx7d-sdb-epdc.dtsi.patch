@@ -1,0 +1,63 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx7d-sdb-epdc.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/boot/dts/nxp/imx/imx7d-sdb-epdc.dtsi	2026-04-08 16:21:00.902748812 +0200
+@@ -0,0 +1,60 @@
++// SPDX-License-Identifier: GPL-2.0+ OR MIT
++/*
++ * Copyright (C) 2015 Freescale Semiconductor, Inc.
++ * Copyright 2019 NXP
++ */
++
++&epdc {
++	status = "okay";
++};
++
++&fec1 {
++	status = "okay";
++};
++
++&fec2 {
++	status = "disabled";
++};
++
++&reg_can2_3v3 {
++	status = "disabled";
++};
++
++&reg_fec2_3v3 {
++	status = "disabled";
++};
++
++&flexcan2 {
++	status = "disabled";
++};
++
++&max17135 {
++	status = "okay";
++};
++
++&sii902x {
++	status = "disabled";
++};
++
++&sim1 {
++	status = "disabled";
++};
++
++&uart5 {
++	status = "disabled";
++};
++
++&i2c3 {
++	elan@10 {
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_epdc_elan_touch>;
++		compatible = "elan,elan-touch";
++		reg = <0x10>;
++		interrupt-parent = <&gpio6>;
++		interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
++		gpio_elan_cs = <&gpio6 13 0>;
++		gpio_elan_rst = <&gpio6 15 0>;
++		gpio_intr = <&gpio6 12 0>;
++		status = "okay";
++	};
++};

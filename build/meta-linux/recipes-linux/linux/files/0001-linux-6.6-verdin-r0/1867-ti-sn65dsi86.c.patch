@@ -1,0 +1,183 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/bridge/ti-sn65dsi86.c	2026-04-08 18:20:07.008938161 +0200
++++ ./drivers/gpu/drm/bridge/ti-sn65dsi86.c	2026-04-08 16:21:05.810684302 +0200
+@@ -331,12 +331,18 @@
+ 	 * 200 ms.  We'll assume that the panel driver will have the hardcoded
+ 	 * delay in its prepare and always disable HPD.
+ 	 *
+-	 * If HPD somehow makes sense on some future panel we'll have to
+-	 * change this to be conditional on someone specifying that HPD should
+-	 * be used.
++	 * For DisplayPort bridge type, we need HPD. So we use the bridge type
++	 * to conditionally disable HPD.
++	 * NOTE: The bridge type is set in ti_sn_bridge_probe() but enable_comms()
++	 * can be called before. So for DisplayPort, HPD will be enabled once
++	 * bridge type is set. We are using bridge type instead of "no-hpd"
++	 * property because it is not used properly in devicetree description
++	 * and hence is unreliable.
+ 	 */
+-	regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG, HPD_DISABLE,
+-			   HPD_DISABLE);
++
++	if (pdata->bridge.type != DRM_MODE_CONNECTOR_DisplayPort)
++		regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG, HPD_DISABLE,
++				   HPD_DISABLE);
+ 
+ 	pdata->comms_enabled = true;
+ 
+@@ -696,22 +702,31 @@
+ 	return container_of(bridge, struct ti_sn65dsi86, bridge);
+ }
+ 
+-static int ti_sn_attach_host(struct auxiliary_device *adev, struct ti_sn65dsi86 *pdata)
++static int ti_sn_bridge_attach(struct drm_bridge *bridge,
++			       enum drm_bridge_attach_flags flags)
+ {
+-	int val;
++	int ret, val;
++	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
+ 	struct mipi_dsi_host *host;
+ 	struct mipi_dsi_device *dsi;
+-	struct device *dev = pdata->dev;
++	struct device *dev = bridge->dev->dev;
+ 	const struct mipi_dsi_device_info info = { .type = "ti_sn_bridge",
+ 						   .channel = 0,
+ 						   .node = NULL,
+ 	};
+ 
++	pdata->aux.drm_dev = bridge->dev;
++	ret = drm_dp_aux_register(&pdata->aux);
++	if (ret < 0) {
++		drm_err(bridge->dev, "Failed to register DP AUX channel: %d\n", ret);
++		return ret;
++	}
++
+ 	host = of_find_mipi_dsi_host_by_node(pdata->host_node);
+ 	if (!host)
+ 		return -EPROBE_DEFER;
+ 
+-	dsi = devm_mipi_dsi_device_register_full(&adev->dev, host, &info);
++	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi))
+ 		return PTR_ERR(dsi);
+ 
+@@ -729,21 +744,9 @@
+ 
+ 	pdata->dsi = dsi;
+ 
+-	return devm_mipi_dsi_attach(&adev->dev, dsi);
+-}
+-
+-static int ti_sn_bridge_attach(struct drm_bridge *bridge,
+-			       enum drm_bridge_attach_flags flags)
+-{
+-	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
+-	int ret;
+-
+-	pdata->aux.drm_dev = bridge->dev;
+-	ret = drm_dp_aux_register(&pdata->aux);
+-	if (ret < 0) {
+-		drm_err(bridge->dev, "Failed to register DP AUX channel: %d\n", ret);
+-		return ret;
+-	}
++	ret = devm_mipi_dsi_attach(dev, dsi);
++	if (ret < 0)
++		goto err_initted_aux;
+ 
+ 	/*
+ 	 * Attach the next bridge.
+@@ -1201,9 +1204,14 @@
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
+ 	int val = 0;
+ 
+-	pm_runtime_get_sync(pdata->dev);
++	/*
++	 * Runtime reference is grabbed in ti_sn_bridge_hpd_enable()
++	 * as the chip won't report HPD just after being powered on.
++	 * HPD_DEBOUNCED_STATE reflects correct state only after the
++	 * debounce time (~100-400 ms).
++	 */
++
+ 	regmap_read(pdata->regmap, SN_HPD_DISABLE_REG, &val);
+-	pm_runtime_put_autosuspend(pdata->dev);
+ 
+ 	return val & HPD_DEBOUNCED_STATE ? connector_status_connected
+ 					 : connector_status_disconnected;
+@@ -1217,6 +1225,26 @@
+ 	return drm_get_edid(connector, &pdata->aux.ddc);
+ }
+ 
++static void ti_sn_bridge_hpd_enable(struct drm_bridge *bridge)
++{
++	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++
++	/*
++	 * Device needs to be powered on before reading the HPD state
++	 * for reliable hpd detection in ti_sn_bridge_detect() due to
++	 * the high debounce time.
++	 */
++
++	pm_runtime_get_sync(pdata->dev);
++}
++
++static void ti_sn_bridge_hpd_disable(struct drm_bridge *bridge)
++{
++	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++
++	pm_runtime_put_autosuspend(pdata->dev);
++}
++
+ static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
+ 	.attach = ti_sn_bridge_attach,
+ 	.detach = ti_sn_bridge_detach,
+@@ -1230,6 +1258,8 @@
+ 	.atomic_reset = drm_atomic_helper_bridge_reset,
+ 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
+ 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
++	.hpd_enable = ti_sn_bridge_hpd_enable,
++	.hpd_disable = ti_sn_bridge_hpd_disable,
+ };
+ 
+ static void ti_sn_bridge_parse_lanes(struct ti_sn65dsi86 *pdata,
+@@ -1318,22 +1348,30 @@
+ 	pdata->bridge.type = pdata->next_bridge->type == DRM_MODE_CONNECTOR_DisplayPort
+ 			   ? DRM_MODE_CONNECTOR_DisplayPort : DRM_MODE_CONNECTOR_eDP;
+ 
+-	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort)
+-		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
++	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort) {
++		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT |
++				    DRM_BRIDGE_OP_HPD;
++		/*
++		 * If comms were already enabled they would have been enabled
++		 * with the wrong value of HPD_DISABLE. Update it now. Comms
++		 * could be enabled if anyone is holding a pm_runtime reference
++		 * (like if a GPIO is in use). Note that in most cases nobody
++		 * is doing AUX channel xfers before the bridge is added so
++		 * HPD doesn't _really_ matter then. The only exception is in
++		 * the eDP case where the panel wants to read the EDID before
++		 * the bridge is added. We always consistently have HPD disabled
++		 * for eDP.
++		 */
++		mutex_lock(&pdata->comms_mutex);
++		if (pdata->comms_enabled)
++			regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG,
++					   HPD_DISABLE, 0);
++		mutex_unlock(&pdata->comms_mutex);
++	};
+ 
+ 	drm_bridge_add(&pdata->bridge);
+ 
+-	ret = ti_sn_attach_host(adev, pdata);
+-	if (ret) {
+-		dev_err_probe(&adev->dev, ret, "failed to attach dsi host\n");
+-		goto err_remove_bridge;
+-	}
+-
+ 	return 0;
+-
+-err_remove_bridge:
+-	drm_bridge_remove(&pdata->bridge);
+-	return ret;
+ }
+ 
+ static void ti_sn_bridge_remove(struct auxiliary_device *adev)

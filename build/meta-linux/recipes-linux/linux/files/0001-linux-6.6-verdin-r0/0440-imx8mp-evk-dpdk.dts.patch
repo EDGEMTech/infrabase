@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mp-evk-dpdk.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8mp-evk-dpdk.dts	2026-04-08 16:21:02.025537988 +0200
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2021-2023 NXP
++ */
++
++#include "imx8mp-evk.dts"
++
++&ethphy1 {
++	/delete-property/ reset-gpios;
++	/delete-property/ reset-assert-us;
++	/delete-property/ reset-deassert-us;
++};
++
++&fec {
++	compatible = "fsl,imx8mm-fec-uio";
++};
++
++&eqos {
++	compatible = "fsl,imx-enet-qos", "snps,dwmac-5.10a";
++};

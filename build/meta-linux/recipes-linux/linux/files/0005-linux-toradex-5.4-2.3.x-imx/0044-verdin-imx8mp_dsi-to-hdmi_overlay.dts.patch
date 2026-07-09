@@ -1,0 +1,112 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/verdin-imx8mp_dsi-to-hdmi_overlay.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/verdin-imx8mp_dsi-to-hdmi_overlay.dts	2023-08-10 09:55:58.419675186 +0200
+@@ -0,0 +1,109 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2022 Toradex
++ */
++
++// Verdin DSI to HDMI Adapter orderable at Toradex.
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	compatible = "toradex,verdin-imx8mp";
++};
++
++&gpu_2d {
++	status = "okay";
++};
++
++&gpu_3d {
++	status = "okay";
++};
++
++&hdmi_connector {
++	status = "okay";
++
++	port {
++		hdmi_connector_in: endpoint {
++			remote-endpoint = <&lt8912_out>;
++		};
++	};
++};
++
++&hdmi_lontium_lt8912 {
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@0 {
++			reg = <0>;
++
++			lt8912_1_in: endpoint {
++				data-lanes = <1 2 3 4>;
++				remote-endpoint = <&mipi_dsi_bridge1_out>;
++			};
++		};
++
++		port@1 {
++			reg = <1>;
++
++			lt8912_out: endpoint {
++				remote-endpoint = <&hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++/* Verdin I2C_2_DSI */
++&i2c2 {
++	status = "okay";
++};
++
++/* LCDIF to MIPI-DSI */
++&lcdif1 {
++	status = "okay";
++};
++
++&mipi_dsi {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	port@1 {
++		mipi_dsi_bridge1_out: endpoint {
++			attach-bridge;
++			remote-endpoint = <&lt8912_1_in>;
++		};
++	};
++};
++
++&mix_gpu_ml {
++	status = "okay";
++};
++
++&ml_vipsi {
++	status = "okay";
++};
++
++&pwm3 {
++	/* PWM 3 conflicts with the HPD signal from the adapter */
++	status = "disabled";
++};
++
++&vpu_g1 {
++	status = "okay";
++};
++
++&vpu_g2 {
++	status = "okay";
++};
++
++&vpu_vc8000e {
++	status = "okay";
++};
++
++&vpu_v4l2 {
++	status = "okay";
++};

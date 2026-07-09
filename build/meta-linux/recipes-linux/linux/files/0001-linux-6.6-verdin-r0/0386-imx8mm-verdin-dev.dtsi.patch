@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mm-verdin-dev.dtsi	2026-04-08 18:20:05.017882674 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8mm-verdin-dev.dtsi	2026-04-08 16:21:02.018544285 +0200
+@@ -10,7 +10,7 @@
+ 		simple-audio-card,format = "i2s";
+ 		simple-audio-card,frame-master = <&dailink_master>;
+ 		simple-audio-card,mclk-fs = <256>;
+-		simple-audio-card,name = "imx8mm-nau8822";
++		simple-audio-card,name = "verdin-nau8822";
+ 		simple-audio-card,routing =
+ 			"Headphones", "LHP",
+ 			"Headphones", "RHP",
+@@ -78,6 +78,11 @@
+ 	status = "okay";
+ };
+ 
++&gpio5 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
++};
++
+ &gpio_expander_21 {
+ 	status = "okay";
+ };

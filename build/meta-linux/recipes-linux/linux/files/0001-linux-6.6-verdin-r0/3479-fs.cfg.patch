@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/features/fs/fs.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/features/fs/fs.cfg	2026-04-08 16:21:19.377313239 +0200
+@@ -0,0 +1,14 @@
++CONFIG_FS_ENCRYPTION=y
++CONFIG_FS_ENCRYPTION_ALGS=y
++CONFIG_FS_VERITY=y
++CONFIG_FS_VERITY_BUILTIN_SIGNATURES=y
++
++CONFIG_ECRYPT_FS=m
++#
++# SquashFS
++#
++CONFIG_SQUASHFS=m
++CONFIG_SQUASHFS_FILE_DIRECT=y
++CONFIG_SQUASHFS_CHOICE_DECOMP_BY_MOUNT=y
++CONFIG_SQUASHFS_MOUNT_DECOMP_THREADS=y
++CONFIG_SQUASHFS_XATTR=y

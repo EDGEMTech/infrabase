@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h	2026-04-08 18:20:07.418080498 +0200
++++ ./drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h	2026-04-08 16:21:06.481538342 +0200
+@@ -85,6 +85,7 @@
+ 	INV_ICM20602,
+ 	INV_ICM20690,
+ 	INV_IAM20680,
++	INV_IAM20380,
+ 	INV_NUM_PARTS
+ };
+ 
+@@ -401,6 +402,7 @@
+ #define INV_ICM20602_WHOAMI_VALUE		0x12
+ #define INV_ICM20690_WHOAMI_VALUE		0x20
+ #define INV_IAM20680_WHOAMI_VALUE		0xA9
++#define INV_IAM20380_WHOAMI_VALUE		0xB5
+ 
+ /* scan element definition for generic MPU6xxx devices */
+ enum inv_mpu6050_scan {

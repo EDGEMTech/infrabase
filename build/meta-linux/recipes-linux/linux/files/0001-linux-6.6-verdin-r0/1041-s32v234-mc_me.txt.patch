@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/clock/s32v234-mc_me.txt	1970-01-01 01:00:00.000000000 +0100
++++ ./Documentation/devicetree/bindings/clock/s32v234-mc_me.txt	2026-04-08 16:20:51.252559361 +0200
+@@ -0,0 +1,16 @@
++* NXP S32V234 Mode Entry Module (MC_ME)
++
++See chapters 22 ("Clocking") and 69 ("Mode Entry Module (MC_ME)") in the
++reference manual[1].
++
++Required properties:
++- compatible: Should be "fsl,s32v234-mc_me"
++- reg: Location and length of the register set
++
++Example:
++mc_me: mc_me@4004a000 {
++	compatible = "fsl,s32v234-mc_me";
++	reg = <0x0 0x4004A000 0x0 0x1000>;
++};
++
++[1] https://www.nxp.com/webapp/Download?colCode=S32V234RM

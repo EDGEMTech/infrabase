@@ -1,0 +1,39 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/fsl/fsl_asrc_common.h	2026-04-08 18:20:10.898428244 +0200
++++ ./sound/soc/fsl/fsl_asrc_common.h	2026-04-08 16:21:18.377941815 +0200
+@@ -7,18 +7,12 @@
+ #ifndef _FSL_ASRC_COMMON_H
+ #define _FSL_ASRC_COMMON_H
+ 
++#include <linux/miscdevice.h>
++#include <uapi/linux/mxc_asrc.h>
+ /* directions */
+ #define IN	0
+ #define OUT	1
+ 
+-enum asrc_pair_index {
+-	ASRC_INVALID_PAIR = -1,
+-	ASRC_PAIR_A = 0,
+-	ASRC_PAIR_B = 1,
+-	ASRC_PAIR_C = 2,
+-	ASRC_PAIR_D = 3,
+-};
+-
+ #define PAIR_CTX_NUM  0x4
+ 
+ /**
+@@ -49,6 +43,7 @@
+ 	bool req_dma_chan;
+ 
+ 	void *private;
++	void *private_m2m;
+ };
+ 
+ /**
+@@ -86,6 +81,7 @@
+ 	struct clk *spba_clk;
+ 	spinlock_t lock;      /* spin lock for resource protection */
+ 
++	struct miscdevice asrc_miscdev;
+ 	struct fsl_asrc_pair *pair[PAIR_CTX_NUM];
+ 	unsigned int channel_avail;
+ 

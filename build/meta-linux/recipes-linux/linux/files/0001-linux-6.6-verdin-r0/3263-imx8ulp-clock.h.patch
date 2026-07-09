@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/dt-bindings/clock/imx8ulp-clock.h	2026-04-08 18:20:09.992021277 +0200
++++ ./include/dt-bindings/clock/imx8ulp-clock.h	2026-04-08 16:21:11.167357986 +0200
+@@ -7,6 +7,10 @@
+ #define __DT_BINDINGS_CLOCK_IMX8ULP_H
+ 
+ #define IMX8ULP_CLK_DUMMY			0
++#define IMX8ULP_CLK_ROSC			1
++#define IMX8ULP_CLK_FROSC			2
++#define IMX8ULP_CLK_LPOSC			3
++#define IMX8ULP_CLK_SOSC			4
+ 
+ /* CGC1 */
+ #define IMX8ULP_CLK_SPLL2			5

@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml	2026-04-08 18:20:04.572529702 +0200
++++ ./Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml	2026-04-08 16:20:59.649111975 +0200
+@@ -22,6 +22,13 @@
+       - fsl,imx8mm-pcie-ep
+       - fsl,imx8mq-pcie-ep
+       - fsl,imx8mp-pcie-ep
++      - fsl,imx6q-pcie-ep
++      - fsl,imx6sx-pcie-ep
++      - fsl,imx6qp-pcie-ep
++      - fsl,imx7d-pcie-ep
++      - fsl,imx8qm-pcie-ep
++      - fsl,imx8qxp-pcie-ep
++      - fsl,imx95-pcie-ep
+ 
+   reg:
+     minItems: 2

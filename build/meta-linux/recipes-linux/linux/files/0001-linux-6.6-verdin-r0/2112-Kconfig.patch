@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/iio/imu/Kconfig	2026-04-08 18:20:07.415251964 +0200
++++ ./drivers/iio/imu/Kconfig	2026-04-08 16:21:06.479073121 +0200
+@@ -82,6 +82,18 @@
+ 	  This driver can also be built as a module. If so, the module will be
+ 	  called fxos8700_spi.
+ 
++config RPMSG_IIO_PEDOMETER
++	tristate "NXP RPMSG IIO PEDOMETER"
++	depends on RPMSG
++	depends on OF
++	default n
++	help
++	  This is the rpmsg virtual sensor driver on imx8ulp, because some
++	  sensors connect with M4 core.
++
++	  This driver can also be build as module. If so, the module will be
++	  called rpmsg_iio_pedometer
++
+ config KMX61
+ 	tristate "Kionix KMX61 6-axis accelerometer and magnetometer"
+ 	depends on I2C

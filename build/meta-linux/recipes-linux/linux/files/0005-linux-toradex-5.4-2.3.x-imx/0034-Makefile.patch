@@ -1,0 +1,77 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/Makefile	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,74 @@
++# your kernel sources
++STAGING_KERNEL_DIR ?= ../../../../../../
++
++# kernel output (if building out-of-tree)
++KBUILD_OUTPUT ?= $(STAGING_KERNEL_DIR)
++
++DTC_FLAGS := -@
++
++# we have dtbos in arm and arm64 architecture, set the include paths
++# to include both architectures.
++KERNEL_INCLUDE = " \
++    ${STAGING_KERNEL_DIR}/arch/arm/boot/dts/ \
++    ${STAGING_KERNEL_DIR}/arch/arm64/boot/dts/*/ \
++"
++
++DTS_INCLUDES := $(patsubst %,-I%,$(dir $(wildcard $(KERNEL_INCLUDE))))
++
++HOSTCC := gcc $(DTS_INCLUDES)
++
++PWD := $(shell pwd)
++
++dtb-y += apalis-imx8_ar0521_overlay.dtbo
++dtb-y += apalis-imx8_hdmi_overlay.dtbo
++dtb-y += apalis-imx8_mezzanine_can_overlay.dtbo
++dtb-y += apalis-imx8_mezzanine_ov5640_overlay.dtbo
++dtb-y += apalis-imx8_mezzanine_panel-cap-touch-10inch-lvds_overlay.dtbo
++dtb-y += apalis-imx8_ov5640_overlay.dtbo
++dtb-y += apalis-imx8_panel-cap-touch-10inch-lvds_overlay.dtbo
++dtb-y += apalis-imx8_panel-lvds-dual-channel-1080p_overlay.dtbo
++dtb-y += apalis-imx8_resistive-touch_overlay.dtbo
++dtb-y += apalis-imx8_spi1_spidev_overlay.dtbo
++dtb-y += apalis-imx8_spi2_spidev_overlay.dtbo
++dtb-y += colibri-imx8x_disable-cm40-uart_overlay.dtbo
++dtb-y += colibri-imx8x_dsihdmi_overlay.dtbo
++dtb-y += colibri-imx8x_ov5640_overlay.dtbo
++dtb-y += colibri-imx8x_panel-cap-touch-7inch_overlay.dtbo
++dtb-y += colibri-imx8x_panel-cap-touch-7inch_adapter_overlay.dtbo
++dtb-y += colibri-imx8x_panel-res-touch-7inch_overlay.dtbo
++dtb-y += colibri-imx8x_panel-cap-touch-10inch-lvds_overlay.dtbo
++dtb-y += colibri-imx8x_vga-640x480_overlay.dtbo
++dtb-y += colibri-imx8x_spidev_overlay.dtbo
++dtb-y += verdin-imx8mm_20mhz_can1.dtbo
++dtb-y += verdin-imx8mm_disable_can1.dtbo
++dtb-y += verdin-imx8mm_dsi-to-hdmi_overlay.dtbo
++dtb-y += verdin-imx8mm_dsi-to-lvds_panel-cap-touch-10inch-lvds_overlay.dtbo
++dtb-y += verdin-imx8mm_hmp_overlay.dtbo
++dtb-y += verdin-imx8mm_nau8822-btl_overlay.dtbo
++dtb-y += verdin-imx8mm_ov5640_overlay.dtbo
++dtb-y += verdin-imx8mm_spidev_overlay.dtbo
++dtb-y += verdin-imx8mp_dsi-to-hdmi_overlay.dtbo
++dtb-y += verdin-imx8mp_dsi-to-lvds_panel-cap-touch-10inch-lvds_overlay.dtbo
++dtb-y += verdin-imx8mp_dsi-to-lvds_panel-lvds-dual-channel-1080p_overlay.dtbo
++dtb-y += verdin-imx8mp_hdmi_overlay.dtbo
++dtb-y += verdin-imx8mp_hmp_overlay.dtbo
++dtb-y += verdin-imx8mp_mezzanine_ov5640-alt-jumpers_overlay.dtbo
++dtb-y += verdin-imx8mp_mezzanine_ov5640-default-jumpers_overlay.dtbo
++dtb-y += verdin-imx8mp_mezzanine_panel-cap-touch-10inch-lvds_overlay.dtbo
++dtb-y += verdin-imx8mp_mezzanine_panel-lvds-dual-channel-1080p_overlay.dtbo
++dtb-y += verdin-imx8mp_nau8822-btl_overlay.dtbo
++dtb-y += verdin-imx8mp_ov5640_overlay.dtbo
++dtb-y += verdin-imx8mp_spidev_overlay.dtbo
++
++targets += $(dtb-y)
++always  := $(dtb-y)
++
++# adopted to dtbo from scripts/Makefile.lib
++$(obj)/%.dtbo: $(src)/%.dts $(DTC) FORCE
++	$(call if_changed_dep,dtc,dtb)
++
++all:
++	make -C $(KBUILD_OUTPUT) M=$(PWD)
++
++clean:
++	make -C $(KBUILD_OUTPUT) M=$(PWD) clean

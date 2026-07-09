@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml	2026-04-08 18:20:04.613683279 +0200
++++ ./Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml	2026-04-08 16:20:59.815945921 +0200
+@@ -25,9 +25,14 @@
+       - items:
+           - enum:
+               - fsl,ls1043a-qspi
++              - fsl,ls1012a-qspi
+           - const: fsl,ls1021a-qspi
+       - items:
+           - enum:
++              - fsl,ls1088a-qspi
++          - const: fsl,ls2080a-qspi
++      - items:
++          - enum:
+               - fsl,imx8mq-qspi
+           - const: fsl,imx7d-qspi
+ 

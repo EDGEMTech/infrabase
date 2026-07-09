@@ -1,0 +1,43 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/net/ethtool/common.c	2026-04-08 18:20:10.480241739 +0200
++++ ./net/ethtool/common.c	2026-04-08 16:21:17.684181735 +0200
+@@ -211,10 +211,13 @@
+ 	__DEFINE_LINK_MODE_NAME(10, T1S, Full),
+ 	__DEFINE_LINK_MODE_NAME(10, T1S, Half),
+ 	__DEFINE_LINK_MODE_NAME(10, T1S_P2MP, Half),
++	__DEFINE_LINK_MODE_NAME(25000, CR_S, Full),
++	__DEFINE_LINK_MODE_NAME(25000, KR_S, Full),
+ };
+ static_assert(ARRAY_SIZE(link_mode_names) == __ETHTOOL_LINK_MODE_MASK_NBITS);
+ 
+ #define __LINK_MODE_LANES_CR		1
++#define __LINK_MODE_LANES_CR_S		1
+ #define __LINK_MODE_LANES_CR2		2
+ #define __LINK_MODE_LANES_CR4		4
+ #define __LINK_MODE_LANES_CR8		8
+@@ -223,6 +226,7 @@
+ #define __LINK_MODE_LANES_DR4		4
+ #define __LINK_MODE_LANES_DR8		8
+ #define __LINK_MODE_LANES_KR		1
++#define __LINK_MODE_LANES_KR_S		1
+ #define __LINK_MODE_LANES_KR2		2
+ #define __LINK_MODE_LANES_KR4		4
+ #define __LINK_MODE_LANES_KR8		8
+@@ -374,6 +378,8 @@
+ 	__DEFINE_LINK_MODE_PARAMS(10, T1S, Full),
+ 	__DEFINE_LINK_MODE_PARAMS(10, T1S, Half),
+ 	__DEFINE_LINK_MODE_PARAMS(10, T1S_P2MP, Half),
++	__DEFINE_LINK_MODE_PARAMS(25000, CR_S, Full),
++	__DEFINE_LINK_MODE_PARAMS(25000, KR_S, Full),
+ };
+ static_assert(ARRAY_SIZE(link_mode_params) == __ETHTOOL_LINK_MODE_MASK_NBITS);
+ 
+@@ -685,3 +691,9 @@
+ 	link_ksettings->base.duplex = link_info->duplex;
+ }
+ EXPORT_SYMBOL_GPL(ethtool_params_from_link_mode);
++
++const char *ethtool_link_mode_str(enum ethtool_link_mode_bit_indices link_mode)
++{
++	return link_mode_names[link_mode];
++}
++EXPORT_SYMBOL(ethtool_link_mode_str);

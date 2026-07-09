@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/include/asm/io.h	2026-04-08 18:20:04.926440001 +0200
++++ ./arch/arm/include/asm/io.h	2026-04-08 16:21:01.123754314 +0200
+@@ -123,6 +123,7 @@
+ #define MT_DEVICE_NONSHARED	1
+ #define MT_DEVICE_CACHED	2
+ #define MT_DEVICE_WC		3
++#define MT_MEMORY_RW_NS		4
+ /*
+  * types 4 onwards can be found in asm/mach/map.h and are undefined
+  * for ioremap
+@@ -378,6 +379,8 @@
+ #define ioremap_wc ioremap_wc
+ #define ioremap_wt ioremap_wc
+ 
++void __iomem *ioremap_cache_ns(resource_size_t res_cookie, size_t size);
++
+ void iounmap(volatile void __iomem *io_addr);
+ #define iounmap iounmap
+ 

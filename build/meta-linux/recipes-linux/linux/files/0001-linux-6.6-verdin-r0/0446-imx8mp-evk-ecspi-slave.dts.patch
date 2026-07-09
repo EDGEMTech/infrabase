@@ -1,0 +1,22 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mp-evk-ecspi-slave.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8mp-evk-ecspi-slave.dts	2026-04-08 16:21:02.025951360 +0200
+@@ -0,0 +1,19 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Copyright 2020 NXP
++
++#include "imx8mp-evk.dts"
++
++/delete-node/&spidev1;
++
++&ecspi2 {
++	#address-cells = <0>;
++	/delete-property/cs-gpios;
++	spi-slave;
++};
++
++&pinctrl_ecspi2_cs {
++	fsl,pins = <
++		MX8MP_IOMUXC_ECSPI2_SS0__ECSPI2_SS0		0x82
++	>;
++};

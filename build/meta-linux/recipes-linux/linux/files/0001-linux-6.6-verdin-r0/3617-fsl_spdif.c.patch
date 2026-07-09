@@ -1,0 +1,28 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/fsl/fsl_spdif.c	2026-04-08 18:20:10.900046572 +0200
++++ ./sound/soc/fsl/fsl_spdif.c	2026-04-08 16:21:18.383451989 +0200
+@@ -17,6 +17,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/regmap.h>
+ #include <linux/pm_runtime.h>
++#include <linux/busfreq-imx.h>
+ 
+ #include <sound/asoundef.h>
+ #include <sound/dmaengine_pcm.h>
+@@ -1682,6 +1683,8 @@
+ 			&spdif_priv->regcache_srpc);
+ 	regcache_cache_only(spdif_priv->regmap, true);
+ 
++	release_bus_freq(BUS_FREQ_HIGH);
++
+ 	for (i = 0; i < STC_TXCLK_SRC_MAX; i++)
+ 		clk_disable_unprepare(spdif_priv->txclk[i]);
+ 
+@@ -1718,6 +1721,8 @@
+ 			goto disable_tx_clk;
+ 	}
+ 
++	request_bus_freq(BUS_FREQ_HIGH);
++
+ 	regcache_cache_only(spdif_priv->regmap, false);
+ 	regcache_mark_dirty(spdif_priv->regmap);
+ 

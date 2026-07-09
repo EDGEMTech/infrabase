@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/soc/fsl/qman.h	2026-04-08 18:20:10.198473218 +0200
++++ ./include/soc/fsl/qman.h	2026-04-08 16:21:11.736124035 +0200
+@@ -242,7 +242,7 @@
+ 
+ static inline int qm_sg_entry_get_off(const struct qm_sg_entry *sg)
+ {
+-	return be32_to_cpu(sg->offset) & QM_SG_OFF_MASK;
++	return be16_to_cpu(sg->offset) & QM_SG_OFF_MASK;
+ }
+ 
+ /* "Frame Dequeue Response" */

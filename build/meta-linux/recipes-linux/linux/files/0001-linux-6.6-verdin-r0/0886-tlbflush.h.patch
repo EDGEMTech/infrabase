@@ -1,0 +1,87 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/include/asm/tlbflush.h	2026-04-08 18:20:05.095115293 +0200
++++ ./arch/arm64/include/asm/tlbflush.h	2026-04-08 16:21:02.403920437 +0200
+@@ -17,6 +17,8 @@
+ #include <asm/cputype.h>
+ #include <asm/mmu.h>
+ 
++extern bool TKT340553_SW_WORKAROUND;
++
+ /*
+  * Raw TLBI operations.
+  *
+@@ -256,9 +258,16 @@
+ 
+ 	dsb(ishst);
+ 	asid = __TLBI_VADDR(0, ASID(mm));
+-	__tlbi(aside1is, asid);
+-	__tlbi_user(aside1is, asid);
+-	dsb(ish);
++	if (TKT340553_SW_WORKAROUND) {
++		/* Flush the entire TLB */
++		__tlbi(vmalle1is);
++		dsb(ish);
++		isb();
++	} else {
++		__tlbi(aside1is, asid);
++		__tlbi_user(aside1is, asid);
++		dsb(ish);
++	}
+ 	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
+ }
+ 
+@@ -269,8 +278,15 @@
+ 
+ 	dsb(ishst);
+ 	addr = __TLBI_VADDR(uaddr, ASID(mm));
+-	__tlbi(vale1is, addr);
+-	__tlbi_user(vale1is, addr);
++	if (TKT340553_SW_WORKAROUND) {
++		/* Flush the entire TLB */
++		__tlbi(vmalle1is);
++		dsb(ish);
++		isb();
++	} else {
++		__tlbi(vale1is, addr);
++		__tlbi_user(vale1is, addr);
++	}
+ 	mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MASK,
+ 						(uaddr & PAGE_MASK) + PAGE_SIZE);
+ }
+@@ -431,6 +447,14 @@
+ 	dsb(ishst);
+ 	asid = ASID(vma->vm_mm);
+ 
++	if (TKT340553_SW_WORKAROUND) {
++		/* Flush the entire TLB and exit */
++		__tlbi(vmalle1is);
++		dsb(ish);
++		isb();
++		return;
++	}
++
+ 	if (last_level)
+ 		__flush_tlb_range_op(vale1is, start, pages, stride, asid, tlb_level, true);
+ 	else
+@@ -455,7 +479,8 @@
+ {
+ 	unsigned long addr;
+ 
+-	if ((end - start) > (MAX_TLBI_OPS * PAGE_SIZE)) {
++	if (((end - start) > (MAX_TLBI_OPS * PAGE_SIZE))
++	    || (TKT340553_SW_WORKAROUND)) {
+ 		flush_tlb_all();
+ 		return;
+ 	}
+@@ -479,7 +504,11 @@
+ 	unsigned long addr = __TLBI_VADDR(kaddr, 0);
+ 
+ 	dsb(ishst);
+-	__tlbi(vaae1is, addr);
++	if (TKT340553_SW_WORKAROUND)
++		/* Flush the entire TLB */
++		__tlbi(vmalle1is);
++	else
++		__tlbi(vaae1is, addr);
+ 	dsb(ish);
+ 	isb();
+ }

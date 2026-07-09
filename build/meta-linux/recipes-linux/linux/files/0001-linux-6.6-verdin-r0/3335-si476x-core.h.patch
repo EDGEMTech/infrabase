@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/mfd/si476x-core.h	2026-04-08 18:20:10.079243609 +0200
++++ ./include/linux/mfd/si476x-core.h	2026-04-08 16:21:11.427896405 +0200
+@@ -484,6 +484,8 @@
+ 	SI476X_PROP_DIGITAL_IO_OUTPUT_SAMPLE_RATE	= 0x0202,
+ 	SI476X_PROP_DIGITAL_IO_OUTPUT_FORMAT		= 0x0203,
+ 
++	SI476X_PROP_AUDIO_MUTE				= 0x0301,
++
+ 	SI476X_PROP_SEEK_BAND_BOTTOM			= 0x1100,
+ 	SI476X_PROP_SEEK_BAND_TOP			= 0x1101,
+ 	SI476X_PROP_SEEK_FREQUENCY_SPACING		= 0x1102,

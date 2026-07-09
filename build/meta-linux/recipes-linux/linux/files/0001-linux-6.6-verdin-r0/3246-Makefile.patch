@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/virt/Makefile	2026-04-08 18:20:09.667365036 +0200
++++ ./drivers/virt/Makefile	2026-04-08 16:21:09.894724214 +0200
+@@ -5,6 +5,7 @@
+ 
+ obj-$(CONFIG_FSL_HV_MANAGER)	+= fsl_hypervisor.o
+ obj-$(CONFIG_VMGENID)		+= vmgenid.o
++obj-$(CONFIG_JAILHOUSE_DBGCON)	+= jailhouse_dbgcon.o
+ obj-y				+= vboxguest/
+ 
+ obj-$(CONFIG_NITRO_ENCLAVES)	+= nitro_enclaves/

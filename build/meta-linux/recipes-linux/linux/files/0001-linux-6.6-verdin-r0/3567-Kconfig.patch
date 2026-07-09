@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/net/tsn/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./net/tsn/Kconfig	2026-04-08 16:21:17.901321608 +0200
+@@ -0,0 +1,16 @@
++config TSN
++	tristate "802.1 Time-Sensitive Networking support using tsntool"
++	depends on NET_SCH_TAPRIO || NET_SCH_TAPRIO=n
++	depends on VLAN_8021Q && PTP_1588_CLOCK
++	help
++	  This enables support for the configuration of TSN (Time Sensitive
++	  Networking) hardware features through the NXP tsntool genetlink
++	  interface. TSN features include:
++	    - IEEE 802.1Qav: Forwarding and Queuing Enhancements for Time
++	      Sensitive Streams
++	    - IEEE 802.1Qbv: Enhancements for Scheduled Traffic
++	    - IEEE 802.1Qci: Per-Stream Filtering and Policing
++	    - IEEE 802.1Qbu: Frame Preemption
++	    - IEEE 802.1CB: Frame Replication and Elimination for Reliability
++
++	  If unsure, say N.

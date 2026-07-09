@@ -1,0 +1,31 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c	2026-04-08 18:20:08.149261516 +0200
++++ ./drivers/net/ethernet/freescale/dpaa/dpaa_eth.c	2026-04-08 16:21:07.512209669 +0200
+@@ -313,7 +313,6 @@
+ 	msleep(200);
+ 
+ 	phylink_stop(mac_dev->phylink);
+-	mac_dev->disable(mac_dev->fman_mac);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(mac_dev->port); i++) {
+ 		error = fman_port_disable(mac_dev->port[i]);
+@@ -2762,7 +2761,7 @@
+ 	if (net_dev->features & NETIF_F_RXHASH && priv->keygen_in_use &&
+ 	    !fman_port_get_hash_result_offset(priv->mac_dev->port[RX],
+ 					      &hash_offset)) {
+-		hash = be32_to_cpu(*(u32 *)(vaddr + hash_offset));
++		hash = be32_to_cpu(*(__be32 *)(vaddr + hash_offset));
+ 		hash_valid = true;
+ 	}
+ 
+@@ -2951,11 +2950,6 @@
+ 			goto mac_start_failed;
+ 	}
+ 
+-	err = priv->mac_dev->enable(mac_dev->fman_mac);
+-	if (err < 0) {
+-		netif_err(priv, ifup, net_dev, "mac_dev->enable() = %d\n", err);
+-		goto mac_start_failed;
+-	}
+ 	phylink_start(mac_dev->phylink);
+ 
+ 	netif_tx_start_all_queues(net_dev);

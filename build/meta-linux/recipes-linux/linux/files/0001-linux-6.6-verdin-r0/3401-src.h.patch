@@ -1,0 +1,9 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/soc/imx/src.h	1970-01-01 01:00:00.000000000 +0100
++++ ./include/soc/imx/src.h	2026-04-08 16:21:11.738634613 +0200
+@@ -0,0 +1,6 @@
++#ifndef __SOC_IMX_SRC_H
++#define __SOC_IMX_SRC_H
++
++bool imx_src_is_m4_enabled(void);
++
++#endif /* __SOC_IMX_SRC_H */

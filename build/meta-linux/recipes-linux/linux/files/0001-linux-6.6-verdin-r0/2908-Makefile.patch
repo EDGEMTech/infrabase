@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pinctrl/Makefile	2026-04-08 18:20:08.903367665 +0200
++++ ./drivers/pinctrl/Makefile	2026-04-08 16:21:08.725011887 +0200
+@@ -43,6 +43,7 @@
+ obj-$(CONFIG_PINCTRL_PISTACHIO)	+= pinctrl-pistachio.o
+ obj-$(CONFIG_PINCTRL_RK805)	+= pinctrl-rk805.o
+ obj-$(CONFIG_PINCTRL_ROCKCHIP)	+= pinctrl-rockchip.o
++obj-$(CONFIG_PINCTRL_SCMI)	+= pinctrl-scmi.o
+ obj-$(CONFIG_PINCTRL_SINGLE)	+= pinctrl-single.o
+ obj-$(CONFIG_PINCTRL_ST) 	+= pinctrl-st.o
+ obj-$(CONFIG_PINCTRL_STMFX) 	+= pinctrl-stmfx.o

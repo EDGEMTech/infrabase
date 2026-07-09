@@ -1,0 +1,41 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/imx/misc.c	2026-04-08 18:20:06.046098244 +0200
++++ ./drivers/firmware/imx/misc.c	2026-04-08 16:21:04.961939952 +0200
+@@ -18,6 +18,13 @@
+ 	u16 resource;
+ } __packed __aligned(4);
+ 
++
++struct imx_sc_msg_req_misc_set_dma_group {
++	struct imx_sc_rpc_msg hdr;
++	u16 resource;
++	u8 val;
++} __packed __aligned(4);
++
+ struct imx_sc_msg_req_cpu_start {
+ 	struct imx_sc_rpc_msg hdr;
+ 	u32 address_hi;
+@@ -67,6 +74,24 @@
+ }
+ EXPORT_SYMBOL(imx_sc_misc_set_control);
+ 
++int imx_sc_misc_set_dma_group(struct imx_sc_ipc *ipc, u32 resource,
++			    u32 val)
++{
++	struct imx_sc_msg_req_misc_set_dma_group msg;
++	struct imx_sc_rpc_msg *hdr = &msg.hdr;
++
++	hdr->ver = IMX_SC_RPC_VERSION;
++	hdr->svc = (uint8_t)IMX_SC_RPC_SVC_MISC;
++	hdr->func = (uint8_t)IMX_SC_MISC_FUNC_SET_DMA_GROUP;
++	hdr->size = 2;
++
++	msg.val = val;
++	msg.resource = resource;
++
++	return imx_scu_call_rpc(ipc, &msg, true);
++}
++EXPORT_SYMBOL(imx_sc_misc_set_dma_group);
++
+ /*
+  * This function gets a miscellaneous control value.
+  *

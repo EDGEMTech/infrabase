@@ -1,0 +1,41 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/boot/dts/fsl/t1042rdb-sdk.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/powerpc/boot/dts/fsl/t1042rdb-sdk.dts	2026-04-08 16:21:03.193209903 +0200
+@@ -0,0 +1,38 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright 2017-2018 NXP
++ */
++
++#include "t1042rdb.dts"
++
++
++/include/ "qoriq-fman3-0-sdk.dtsi"
++/include/ "qoriq-bman-portals-sdk.dtsi"
++/include/ "qoriq-qman3-portals-sdk.dtsi"
++/include/ "qoriq-qman3-ceetm0-8-sdk.dtsi"
++
++&soc {
++	fsldpaa: fsl,dpaa {
++		compatible = "simple-bus", "fsl,dpaa";
++		ethernet@0 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet0>;
++		};
++		ethernet@1 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet1>;
++		};
++		ethernet@2 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet2>;
++		};
++		ethernet@3 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet3>;
++		};
++		ethernet@4 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet4>;
++		};
++	};
++};

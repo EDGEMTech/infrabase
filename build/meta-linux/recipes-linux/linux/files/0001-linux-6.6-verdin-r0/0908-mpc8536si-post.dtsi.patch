@@ -1,0 +1,36 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/boot/dts/fsl/mpc8536si-post.dtsi	2026-04-08 18:20:05.268889669 +0200
++++ ./arch/powerpc/boot/dts/fsl/mpc8536si-post.dtsi	2026-04-08 16:21:03.155074620 +0200
+@@ -199,6 +199,10 @@
+ 
+ /include/ "pq3-dma-0.dtsi"
+ /include/ "pq3-etsec1-0.dtsi"
++	enet0: ethernet@24000 {
++		fsl,wake-on-filer;
++		fsl,pmc-handle = <&etsec1_clk>;
++	};
+ /include/ "pq3-etsec1-timer-0.dtsi"
+ 
+ 	usb@22000 {
+@@ -222,9 +226,10 @@
+ 	};
+ 
+ /include/ "pq3-etsec1-2.dtsi"
+-
+-	ethernet@26000 {
++	enet2: ethernet@26000 {
+ 		cell-index = <1>;
++		fsl,wake-on-filer;
++		fsl,pmc-handle = <&etsec3_clk>;
+ 	};
+ 
+ 	usb@2b000 {
+@@ -249,4 +254,9 @@
+ 		reg = <0xe0000 0x1000>;
+ 		fsl,has-rstcr;
+ 	};
++
++/include/ "pq3-power.dtsi"
++	power@e0070 {
++		compatible = "fsl,mpc8536-pmc", "fsl,mpc8548-pmc";
++	};
+ };

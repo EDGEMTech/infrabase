@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/soc/imx/imx_sip.h	1970-01-01 01:00:00.000000000 +0100
++++ ./include/soc/imx/imx_sip.h	2026-04-08 16:21:11.737938477 +0200
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright 2019 NXP
++ */
++
++#ifndef __IMX_SIP_H__
++#define __IMX_SIP_H__
++
++#define IMX_SIP_GPC			0xC2000000
++#define IMX_SIP_CONFIG_GPC_PM_DOMAIN	0x03
++
++#define IMX_SIP_SRC			0xc2000005
++#define IMX_SIP_SRC_M4_START		0x00
++#define IMX_SIP_SRC_M4_STARTED		0x01
++#define IMX_SIP_SRC_M4_STOP		0x02
++
++#endif /* __IMX_SIP_H__ */

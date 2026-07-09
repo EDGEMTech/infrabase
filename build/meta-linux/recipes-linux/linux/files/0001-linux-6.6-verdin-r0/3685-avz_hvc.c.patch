@@ -1,0 +1,29 @@
+--- a/kernel/avz_hvc.c
++++ b/kernel/avz_hvc.c
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * AVZ hypervisor print-log hypercall (AVZ_PRINTLOG_OP).
++ * Sends a string to the AVZ console via hvc, usable from early boot.
++ */
++
++#include <linux/string.h>
++#include <linux/mm.h>
++#include <asm/cacheflush.h>
++#include <linux/avz_hvc.h>
++
++static struct avz_hyp __avz_hyp_buf;
++
++void avz_hvc_printstr(const char *msg)
++{
++	struct avz_hyp *p = &__avz_hyp_buf;
++
++	p->cmd = AVZ_PRINTLOG_OP;
++	strncpy(p->u.avz_printlog_args.msg, msg, PRINTLOG_MSG_MAX_LEN - 1);
++	p->u.avz_printlog_args.msg[PRINTLOG_MSG_MAX_LEN - 1] = '\0';
++
++	dcache_clean_inval_poc((unsigned long)p,
++			       (unsigned long)p + sizeof(*p));
++	__avz_hypercall(AVZ_HYPERCALL_TRAP, virt_to_phys(p));
++}
++EXPORT_SYMBOL(avz_hvc_printstr);

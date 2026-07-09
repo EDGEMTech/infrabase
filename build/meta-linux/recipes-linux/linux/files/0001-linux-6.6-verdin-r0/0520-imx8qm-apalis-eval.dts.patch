@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8qm-apalis-eval.dts	2026-04-08 18:20:05.022882813 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8qm-apalis-eval.dts	2026-04-08 16:21:02.051012765 +0200
+@@ -6,7 +6,7 @@
+ /dts-v1/;
+ 
+ #include "imx8qm-apalis.dtsi"
+-#include "imx8-apalis-eval.dtsi"
++#include "imx8-apalis-eval-v1.1.dtsi"
+ 
+ / {
+ 	model = "Toradex Apalis iMX8QM/QP on Apalis Evaluation Board";

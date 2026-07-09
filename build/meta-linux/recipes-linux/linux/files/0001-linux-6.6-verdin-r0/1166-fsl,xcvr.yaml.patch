@@ -1,0 +1,40 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml	2026-04-08 18:20:04.604871162 +0200
++++ ./Documentation/devicetree/bindings/sound/fsl,xcvr.yaml	2026-04-08 16:20:59.765712916 +0200
+@@ -19,9 +19,16 @@
+     pattern: "^xcvr@.*"
+ 
+   compatible:
+-    enum:
+-      - fsl,imx8mp-xcvr
+-      - fsl,imx93-xcvr
++    oneOf:
++      - items:
++          - enum:
++              - fsl,imx95-xcvr
++          - const: fsl,imx93-xcvr
++
++      - items:
++          - enum:
++              - fsl,imx8mp-xcvr
++              - fsl,imx93-xcvr
+ 
+   reg:
+     items:
+@@ -67,6 +74,11 @@
+   resets:
+     maxItems: 1
+ 
++  hdmi-phandle:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      Phandle to the HDMI controller.
++
+ required:
+   - compatible
+   - reg
+@@ -102,4 +114,5 @@
+            dmas = <&sdma2 30 2 0>, <&sdma2 31 2 0>;
+            dma-names = "rx", "tx";
+            resets = <&audiomix_reset 0>;
++           hdmi-phandle = <&hdmi>;
+     };

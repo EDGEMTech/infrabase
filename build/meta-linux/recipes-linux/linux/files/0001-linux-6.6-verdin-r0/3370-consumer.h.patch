@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/regulator/consumer.h	2026-04-08 18:20:10.123758659 +0200
++++ ./include/linux/regulator/consumer.h	2026-04-08 16:21:11.594604803 +0200
+@@ -209,6 +209,7 @@
+ 							   const char *id);
+ int devm_regulator_get_enable(struct device *dev, const char *id);
+ int devm_regulator_get_enable_optional(struct device *dev, const char *id);
++int devm_regulator_get_enable_read_voltage(struct device *dev, const char *id);
+ void regulator_put(struct regulator *regulator);
+ void devm_regulator_put(struct regulator *regulator);
+ 
+@@ -374,6 +375,12 @@
+ 	return 0;
+ }
+ 
++static inline int devm_regulator_get_enable_read_voltage(struct device *dev,
++							 const char *id)
++{
++	return -ENODEV;
++}
++
+ static inline struct regulator *__must_check
+ regulator_get_optional(struct device *dev, const char *id)
+ {

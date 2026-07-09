@@ -1,0 +1,22 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/power/reset/Kconfig	2026-04-08 18:20:08.994852457 +0200
++++ ./drivers/power/reset/Kconfig	2026-04-08 16:21:08.906540333 +0200
+@@ -205,6 +205,19 @@
+ 	help
+ 	  Reset support for STMicroelectronics boards.
+ 
++config POWER_RESET_TORADEX_EC
++	tristate "Toradex Embedded Controller power-off and reset driver"
++	depends on I2C
++	select REGMAP_I2C
++	help
++	  This driver supports power-off and reset for SMARC Toradex SoMs,
++	  for example the SMARC iMX8MP and SMARC iMX95, using Toradex
++	  Embedded Controller (EC).
++
++	  Say Y here if you have a Toradex SMARC SoM.
++
++	  If unsure, say N.
++
+ config POWER_RESET_TPS65086
+ 	bool "TPS65086 restart driver"
+ 	depends on MFD_TPS65086

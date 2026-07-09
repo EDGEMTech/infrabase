@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/arm_scmi/common.h	2026-04-08 18:20:06.036820628 +0200
++++ ./drivers/firmware/arm_scmi/common.h	2026-04-08 16:21:04.941419301 +0200
+@@ -352,6 +352,7 @@
+ bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
+ 		     struct scmi_xfer *xfer);
+ bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem);
++bool shmem_channel_intr_enabled(struct scmi_shared_mem __iomem *shmem);
+ 
+ /* declarations for message passing transports */
+ struct scmi_msg_payld;

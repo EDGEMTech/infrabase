@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/imx/dcnano/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/gpu/drm/imx/dcnano/Kconfig	2026-04-08 16:21:05.958350071 +0200
+@@ -0,0 +1,9 @@
++config DRM_IMX_DCNANO
++	tristate "DRM support for NXP i.MX DCNANO Graphics"
++	select DRM_KMS_HELPER
++	select VIDEOMODE_HELPERS
++	select DRM_GEM_DMA_HELPER
++	depends on DRM && OF && ARCH_MXC
++	depends on COMMON_CLK
++	help
++	  enable NXP i.MX DCNANO graphics support

@@ -1,0 +1,18 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/colibri-imx8x_atmel-mxt-connector_overlay.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/colibri-imx8x_atmel-mxt-connector_overlay.dtsi	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2021 Toradex
++ */
++
++// Atmel MXT capacitive touch controller for the 7" and 10.1" displays
++// orderable at Toradex. Compatible with a Capacitive Touch Connector.
++
++&atmel_mxt_ts {
++	status = "okay";
++};
++
++&i2c1 {
++	status = "okay";
++};

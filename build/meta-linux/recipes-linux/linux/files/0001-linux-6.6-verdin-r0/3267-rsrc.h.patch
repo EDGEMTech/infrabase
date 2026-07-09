@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/dt-bindings/firmware/imx/rsrc.h	2026-04-08 18:20:10.002455928 +0200
++++ ./include/dt-bindings/firmware/imx/rsrc.h	2026-04-08 16:21:11.203199371 +0200
+@@ -267,7 +267,6 @@
+ #define IMX_SC_R_SDHC_2			250
+ #define IMX_SC_R_ENET_0			251
+ #define IMX_SC_R_ENET_1			252
+-#define IMX_SC_R_MLB_0			253
+ #define IMX_SC_R_DMA_2_CH0		254
+ #define IMX_SC_R_DMA_2_CH1		255
+ #define IMX_SC_R_DMA_2_CH2		256

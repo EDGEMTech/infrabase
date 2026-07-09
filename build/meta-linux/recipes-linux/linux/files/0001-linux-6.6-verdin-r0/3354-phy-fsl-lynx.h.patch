@@ -1,0 +1,23 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/phy/phy-fsl-lynx.h	1970-01-01 01:00:00.000000000 +0100
++++ ./include/linux/phy/phy-fsl-lynx.h	2026-04-08 16:21:11.528337139 +0200
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/* Copyright 2023-2024 NXP */
++
++#ifndef __PHY_FSL_LYNX_H_
++#define __PHY_FSL_LYNX_H_
++
++enum lynx_lane_mode {
++	LANE_MODE_UNKNOWN,
++	LANE_MODE_1000BASEX_SGMII,
++	LANE_MODE_1000BASEKX,
++	LANE_MODE_2500BASEX,
++	LANE_MODE_QSGMII,
++	LANE_MODE_10G_QXGMII,
++	LANE_MODE_USXGMII,
++	LANE_MODE_10GBASER,
++	LANE_MODE_10GBASEKR,
++	LANE_MODE_MAX,
++};
++
++#endif /* __PHY_FSL_LYNX_H_ */

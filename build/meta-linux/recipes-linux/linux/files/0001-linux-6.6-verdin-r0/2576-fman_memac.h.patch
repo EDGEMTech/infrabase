@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/freescale/fman/fman_memac.h	2026-04-08 18:20:08.155970123 +0200
++++ ./drivers/net/ethernet/freescale/fman/fman_memac.h	2026-04-08 16:21:07.524521417 +0200
+@@ -14,7 +14,6 @@
+ struct mac_device;
+ 
+ int memac_initialization(struct mac_device *mac_dev,
+-			 struct device_node *mac_node,
+ 			 struct fman_mac_params *params);
+ 
+ #endif /* __MEMAC_H */

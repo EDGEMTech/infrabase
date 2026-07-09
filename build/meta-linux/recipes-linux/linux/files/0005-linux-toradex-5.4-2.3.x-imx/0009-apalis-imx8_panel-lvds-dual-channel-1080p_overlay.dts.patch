@@ -1,0 +1,61 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/apalis-imx8_panel-lvds-dual-channel-1080p_overlay.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/apalis-imx8_panel-lvds-dual-channel-1080p_overlay.dts	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2022 Toradex
++ */
++
++/* Apalis iMX8 driving a LP156WF1 display (15 inch) with a resolution
++ * of 1920x1080 pixel.
++ * This serves as an example how to specify a dual link LVDS display.
++ */
++
++/dts-v1/;
++/plugin/;
++/ {
++	compatible = "toradex,apalis-imx8", "toradex,apalis-imx8-v1.1";
++};
++
++&backlight {
++	status = "okay";
++};
++
++&ldb2 {
++	fsl,dual-channel;
++	status = "okay";
++
++	lvds-channel@0 {
++		fsl,data-mapping = "spwg";
++		fsl,data-width = <18>;
++		status = "okay";
++	};
++};
++
++&ldb2_phy {
++	status = "okay";
++};
++
++&panel_lvds {
++	data-mapping = "jeida-18";
++	height-mm = <194>;
++	width-mm = <345>;
++	status = "okay";
++
++	panel-timing {
++		clock-frequency = <138500000>;
++		hactive = <1920>;
++		hback-porch = <40>;
++		hfront-porch = <24>;
++		hsync-len = <16>;
++		pixelclk-active = <0>;
++		vactive = <1080>;
++		vback-porch = <23>;
++		vfront-porch = <3>;
++		vsync-len = <5>;
++	};
++};
++
++&pwm_lvds1 {
++	status = "okay";
++};

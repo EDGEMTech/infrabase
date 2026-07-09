@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/platforms/85xx/Kconfig	2026-04-08 18:20:05.362997285 +0200
++++ ./arch/powerpc/platforms/85xx/Kconfig	2026-04-08 16:21:03.437323554 +0200
+@@ -10,6 +10,8 @@
+ 	select SERIAL_8250_EXTENDED if SERIAL_8250
+ 	select SERIAL_8250_SHARE_IRQ if SERIAL_8250
+ 	select FSL_CORENET_RCPM if PPC_E500MC
++	select FSL_QORIQ_PM if SUSPEND && PPC_E500MC
++	select FSL_PMC if SUSPEND && !PPC_E500MC
+ 	default y
+ 
+ if FSL_SOC_BOOKE
+@@ -289,3 +291,7 @@
+ 
+ config TQM85xx
+ 	bool
++
++config FSL_QORIQ_PM
++	bool
++	select FSL_SLEEP_FSM

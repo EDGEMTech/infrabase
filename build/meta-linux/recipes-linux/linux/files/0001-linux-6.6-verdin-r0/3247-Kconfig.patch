@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/virtio/Kconfig	2026-04-08 18:20:09.668691676 +0200
++++ ./drivers/virtio/Kconfig	2026-04-08 16:21:09.901355344 +0200
+@@ -173,4 +173,14 @@
+ 	 This option adds a flavor of dma buffers that are backed by
+ 	 virtio resources.
+ 
++config VIRTIO_IVSHMEM
++	tristate "Driver for ivshmem-based virtio front-end devices"
++	depends on PCI && !HIGHMEM
++	select VIRTIO
++	help
++	  This provides virtio front-end devices via ivshmem shared memory
++	  devices.
++
++	  If unsure, say 'N'.
++
+ endif # VIRTIO_MENU

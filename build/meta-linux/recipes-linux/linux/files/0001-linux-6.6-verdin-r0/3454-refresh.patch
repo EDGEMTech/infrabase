@@ -1,0 +1,4 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/cfg/scratch/refresh	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/cfg/scratch/refresh	2026-04-08 16:21:19.364176836 +0200
+@@ -0,0 +1 @@
++.kernel-meta//patches//./0001-ili9881c_c.patch 068a9c0e867a0e1d8ac04284c1c309a57f7326b6

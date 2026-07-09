@@ -1,0 +1,25 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/thermal/gov_bang_bang.c	2026-04-08 18:20:09.448800802 +0200
++++ ./drivers/thermal/gov_bang_bang.c	2026-04-08 16:21:09.591075765 +0200
+@@ -13,9 +13,10 @@
+ 
+ #include "thermal_core.h"
+ 
+-static int thermal_zone_trip_update(struct thermal_zone_device *tz, int trip_index)
++static int thermal_zone_trip_update(struct thermal_zone_device *tz,
++				    const struct thermal_trip *trip)
+ {
+-	const struct thermal_trip *trip = &tz->trips[trip_index];
++	int trip_index = thermal_zone_trip_id(tz, trip);
+ 	struct thermal_instance *instance;
+ 
+ 	if (!trip->hysteresis)
+@@ -89,7 +90,8 @@
+  *     (trip_temp - hyst) so that the fan gets turned off again.
+  *
+  */
+-static int bang_bang_control(struct thermal_zone_device *tz, int trip)
++static int bang_bang_control(struct thermal_zone_device *tz,
++			     const struct thermal_trip *trip)
+ {
+ 	struct thermal_instance *instance;
+ 	int ret;

@@ -1,0 +1,27 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/soc/fsl/dpio/qbman-portal.h	2026-04-08 18:20:09.275100839 +0200
++++ ./drivers/soc/fsl/dpio/qbman-portal.h	2026-04-08 16:21:09.318736841 +0200
+@@ -222,11 +222,15 @@
+ 
+ void qbman_eq_desc_clear(struct qbman_eq_desc *d);
+ void qbman_eq_desc_set_no_orp(struct qbman_eq_desc *d, int respond_success);
++void qbman_eq_desc_set_orp(struct qbman_eq_desc *d, int respond_success,
++			   u16 oprid, u16 seqnum, int incomplete);
++void qbman_eq_desc_set_orp_hole(struct qbman_eq_desc *d, u16 oprid, u16 seqnum);
+ void qbman_eq_desc_set_token(struct qbman_eq_desc *d, u8 token);
+ void qbman_eq_desc_set_fq(struct qbman_eq_desc *d, u32 fqid);
+ void qbman_eq_desc_set_qd(struct qbman_eq_desc *d, u32 qdid,
+ 			  u32 qd_bin, u32 qd_prio);
+ 
++int qbman_orp_drop(struct qbman_swp *s, u16 orpid, u16 seqnum);
+ 
+ void qbman_release_desc_clear(struct qbman_release_desc *d);
+ void qbman_release_desc_set_bpid(struct qbman_release_desc *d, u16 bpid);
+@@ -539,7 +543,7 @@
+ static inline void *qbman_swp_mc_complete(struct qbman_swp *swp, void *cmd,
+ 					  u8 cmd_verb)
+ {
+-	int loopvar = 2000;
++	int loopvar = 10000;
+ 
+ 	qbman_swp_mc_submit(swp, cmd, cmd_verb);
+ 

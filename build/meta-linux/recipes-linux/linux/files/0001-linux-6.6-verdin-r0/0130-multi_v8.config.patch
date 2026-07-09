@@ -1,0 +1,26 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/configs/multi_v8.config	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/configs/multi_v8.config	2026-04-08 16:21:01.096664713 +0200
+@@ -0,0 +1,23 @@
++# ppfe
++CONFIG_FSL_PPFE=y
++CONFIG_FSL_PPFE_UTIL_DISABLED=y
++# DPAA 1
++CONFIG_HAS_FSL_QBMAN=y
++# network
++CONFIG_BRIDGE=m
++CONFIG_MACVLAN=y
++CONFIG_FSL_SDK_FMAN=y
++CONFIG_FMAN_ARM=y
++CONFIG_FSL_SDK_DPAA_ETH=y
++# mdio
++CONFIG_FSL_XGMAC_MDIO=y
++CONFIG_MDIO_BUS_MUX_MMIOREG=y
++# phy
++CONFIG_AQUANTIA_PHY=y
++CONFIG_VITESSE_PHY=y
++# NVMe
++CONFIG_BLK_DEV_NVME=y
++# vfio
++CONFIG_VFIO=y
++CONFIG_VFIO_PCI=y
++CONFIG_VFIO_FSL_MC=y

@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/thermal/thermal_helpers.c	2026-04-08 18:20:09.455513187 +0200
++++ ./drivers/thermal/thermal_helpers.c	2026-04-08 16:21:09.597957157 +0200
+@@ -22,9 +22,8 @@
+ #include "thermal_core.h"
+ #include "thermal_trace.h"
+ 
+-int get_tz_trend(struct thermal_zone_device *tz, int trip_index)
++int get_tz_trend(struct thermal_zone_device *tz, const struct thermal_trip *trip)
+ {
+-	struct thermal_trip *trip = tz->trips ? &tz->trips[trip_index] : NULL;
+ 	enum thermal_trend trend;
+ 
+ 	if (tz->emul_temperature || !tz->ops->get_trend ||

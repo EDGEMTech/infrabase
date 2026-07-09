@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c	2026-04-08 18:20:08.448978287 +0200
++++ ./drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c	2026-04-08 16:21:07.909127859 +0200
+@@ -483,7 +483,8 @@
+ 			goto err_dvr_remove;
+ 		}
+ 
+-		stpriv->hw->lynx_pcs = lynx_pcs_create_mdiodev(pcs_bus, 0);
++		stpriv->hw->lynx_pcs = lynx_pcs_create_mdiodev(pcs_bus, 0,
++							       NULL, 0);
+ 		if (IS_ERR(stpriv->hw->lynx_pcs)) {
+ 			ret = PTR_ERR(stpriv->hw->lynx_pcs);
+ 			goto err_dvr_remove;

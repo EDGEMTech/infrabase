@@ -1,0 +1,52 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/wireless/marvell/mwifiex/cmdevt.c	2026-04-08 18:20:08.692985085 +0200
++++ ./drivers/net/wireless/marvell/mwifiex/cmdevt.c	2026-04-08 16:21:08.326659867 +0200
+@@ -635,6 +635,8 @@
+ 		case HostCmd_CMD_UAP_STA_DEAUTH:
+ 		case HOST_CMD_APCMD_SYS_RESET:
+ 		case HOST_CMD_APCMD_STA_LIST:
++		case HostCmd_CMD_CHAN_REPORT_REQUEST:
++		case HostCmd_CMD_ADD_NEW_STATION:
+ 			ret = mwifiex_uap_prepare_cmd(priv, cmd_no, cmd_action,
+ 						      cmd_oid, data_buf,
+ 						      cmd_ptr);
+@@ -924,6 +926,26 @@
+ 	return ret;
+ }
+ 
++void mwifiex_process_assoc_resp(struct mwifiex_adapter *adapter)
++{
++	struct cfg80211_rx_assoc_resp assoc_resp = {
++		.uapsd_queues = -1,
++	};
++	struct mwifiex_private *priv =
++		mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_STA);
++
++	if (priv->assoc_rsp_size) {
++		assoc_resp.links[0].bss = priv->req_bss;
++		assoc_resp.buf = priv->assoc_rsp_buf;
++		assoc_resp.len = priv->assoc_rsp_size;
++		wiphy_lock(priv->wdev.wiphy);
++		cfg80211_rx_assoc_resp(priv->netdev,
++				       &assoc_resp);
++		wiphy_unlock(priv->wdev.wiphy);
++		priv->assoc_rsp_size = 0;
++	}
++}
++
+ /*
+  * This function handles the timeout of command sending.
+  *
+@@ -1680,6 +1702,13 @@
+ 	if (adapter->fw_api_ver == MWIFIEX_FW_V15)
+ 		adapter->scan_chan_gap_enabled = true;
+ 
++	if (adapter->key_api_major_ver != KEY_API_VER_MAJOR_V2)
++		adapter->host_mlme_enabled = false;
++
++	mwifiex_dbg(adapter, MSG, "host_mlme: %s, key_api: %d\n",
++		    adapter->host_mlme_enabled ? "enable" : "disable",
++		    adapter->key_api_major_ver);
++
+ 	return 0;
+ }
+ 

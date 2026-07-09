@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx91-11x11-evk-flexspi-nand-m2.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx91-11x11-evk-flexspi-nand-m2.dts	2026-04-08 16:21:02.086616818 +0200
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2024 NXP
++ */
++
++#include "imx91-11x11-evk-flexspi-m2.dts"
++
++&flexspi1 {
++	/delete-node/ mt25qu512abb8e12;
++
++	/*
++	 * This M.2 card contain two spi-nand chip
++	 * and a switch S1.
++	 * S1 = OFF, select Winbond W25N02KWZEIR
++	 * S1 = ON, select GigaDevice winbond
++	 */
++	spinand: flash@0 {
++		reg = <0>;
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "spi-nand";
++		spi-max-frequency = <104000000>;
++		spi-tx-bus-width = <4>;
++		spi-rx-bus-width = <4>;
++	};
++};

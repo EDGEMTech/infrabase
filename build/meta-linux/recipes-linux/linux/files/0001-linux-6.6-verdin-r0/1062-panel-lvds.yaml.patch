@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/display/panel/panel-lvds.yaml	2026-04-08 18:20:04.518929702 +0200
++++ ./Documentation/devicetree/bindings/display/panel/panel-lvds.yaml	2026-04-08 16:20:51.300852580 +0200
+@@ -46,6 +46,8 @@
+           - hannstar,hsd101pww2
+           # Hydis Technologies 7" WXGA (800x1280) TFT LCD LVDS panel
+           - hydis,hv070wx2-1e0
++          # Riverdi 10.1" 1280x800 capacitive touch DSI panel
++          - riverdi,rvt101hvdnwc00-b
+           - tbs,a711-panel
+ 
+       - const: panel-lvds

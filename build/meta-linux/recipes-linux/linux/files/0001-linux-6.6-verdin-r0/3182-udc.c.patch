@@ -1,0 +1,74 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/usb/chipidea/udc.c	2026-04-08 18:20:09.506007737 +0200
++++ ./drivers/usb/chipidea/udc.c	2026-04-08 16:21:09.638725653 +0200
+@@ -20,6 +20,7 @@
+ #include <linux/usb/gadget.h>
+ #include <linux/usb/otg-fsm.h>
+ #include <linux/usb/chipidea.h>
++#include <linux/usb/composite.h>
+ 
+ #include "ci.h"
+ #include "udc.h"
+@@ -517,7 +518,8 @@
+ 	}
+ 
+ 	while (i++ < req->num_mapped_sgs) {
+-		if (sg_dma_address(s) % PAGE_SIZE) {
++		/* The first buffer could be not page size aligned. */
++		if ((sg_dma_address(s) % PAGE_SIZE) && (i > 1)) {
+ 			dev_err(hwep->ci->dev, "not page aligned sg buffer\n");
+ 			return -EINVAL;
+ 		}
+@@ -1931,6 +1933,26 @@
+ 	}
+ }
+ 
++/*
++ * ChipIdea HW doesn't support scatterlist well for uvc, so we disable
++ * sg_support for uvc and enable it for others.
++ */
++static bool ci_udc_enable_sg_support(struct usb_gadget *gadget)
++{
++	struct usb_composite_dev *cdev = get_gadget_data(gadget);
++	struct usb_configuration *c;
++	struct usb_function *f;
++
++	list_for_each_entry(c, &cdev->configs, list) {
++		list_for_each_entry(f, &c->functions, list) {
++			if (!strcmp(f->name, "uvc"))
++				return false;
++		}
++	}
++
++	return true;
++}
++
+ /**
+  * ci_udc_start: register a gadget driver
+  * @gadget: our gadget
+@@ -1959,6 +1981,9 @@
+ 
+ 	ci->driver = driver;
+ 
++	if (ci_udc_enable_sg_support(gadget))
++		ci->gadget.sg_supported = 1;
++
+ 	/* Start otg fsm for B-device */
+ 	if (ci_otg_is_fsm_mode(ci) && ci->fsm.id) {
+ 		ci_hdrc_otg_fsm_start(ci);
+@@ -1999,6 +2024,7 @@
+ 
+ 	spin_lock_irqsave(&ci->lock, flags);
+ 	ci->driver = NULL;
++	ci->gadget.sg_supported = 0;
+ 
+ 	if (ci->vbus_active) {
+ 		hw_device_state(ci, 0);
+@@ -2107,7 +2133,7 @@
+ 	ci->gadget.max_speed    = USB_SPEED_HIGH;
+ 	ci->gadget.name         = ci->platdata->name;
+ 	ci->gadget.otg_caps	= otg_caps;
+-	ci->gadget.sg_supported = 1;
++	ci->gadget.sg_supported = 0;
+ 	ci->gadget.irq		= ci->irq;
+ 
+ 	if (ci->platdata->flags & CI_HDRC_REQUIRES_ALIGNED_DMA)

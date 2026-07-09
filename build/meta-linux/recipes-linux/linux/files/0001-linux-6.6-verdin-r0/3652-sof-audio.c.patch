@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/sof/sof-audio.c	2026-04-08 18:20:10.951047993 +0200
++++ ./sound/soc/sof/sof-audio.c	2026-04-08 16:21:18.492888769 +0200
+@@ -1047,7 +1047,7 @@
+ 
+ 		/* find machine */
+ 		mach = snd_sof_machine_select(sdev);
+-		if (mach) {
++		if (mach || sof_pdata->machine_drv_name) {
+ 			sof_pdata->machine = mach;
+ 
+ 			if (sof_pdata->subsystem_id_set) {

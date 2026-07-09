@@ -1,0 +1,24 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/soc-pcm.c	2026-04-08 18:20:10.942047742 +0200
++++ ./sound/soc/soc-pcm.c	2026-04-08 16:21:18.486712670 +0200
+@@ -291,6 +291,7 @@
+ void snd_soc_runtime_action(struct snd_soc_pcm_runtime *rtd,
+ 			    int stream, int action)
+ {
++	struct snd_soc_component *component;
+ 	struct snd_soc_dai *dai;
+ 	int i;
+ 
+@@ -298,6 +299,13 @@
+ 
+ 	for_each_rtd_dais(rtd, i, dai)
+ 		snd_soc_dai_action(dai, stream, action);
++
++	/* Increments/Decrements the active count for components without DAIs */
++	for_each_rtd_components(rtd, i, component) {
++		if (component->num_dai)
++			continue;
++		component->active += action;
++	}
+ }
+ EXPORT_SYMBOL_GPL(snd_soc_runtime_action);
+ 

@@ -1,0 +1,122 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-mallow.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-mallow.dts	2026-04-08 16:21:02.038670367 +0200
+@@ -0,0 +1,118 @@
++/dts-v1/;
++
++#include "imx8mp-verdin.dtsi"
++#include "imx8mp-verdin-wifi.dtsi"
++#include "imx8mp-verdin-mallow.dtsi"
++
++/ {
++        model = "Toradex Verdin iMX8M Plus WB on Mallow Board";
++        compatible = "toradex,verdin-imx8mp-wifi-mallow",
++                     "toradex,verdin-imx8mp-wifi",
++                     "toradex,verdin-imx8mp",
++                     "fsl,imx8mp";
++};
++
++&pwm3 {
++    status = "okay";
++};
++
++// Needed to have a pull-up
++&iomuxc {
++    pinctrl_i2s_2_bclk_touch_reset: i2s2bclktouchresetgrp {
++            fsl,pins =
++                <MX8MP_IOMUXC_SAI3_TXC__GPIO5_IO00        0x1C4>;    /* SODIMM 42 */
++        };
++};
++
++&backlight {
++    status = "okay";
++
++    pinctrl-names = "default";
++    pinctrl-0 = <&pinctrl_gpio_10_dsi>;
++
++    enable-gpios = <&gpio4 28 GPIO_ACTIVE_HIGH>;
++};
++
++&lcdif1 {
++    status = "okay";
++};
++
++&mipi_dsi {
++    #address-cells = <1>;
++    #size-cells = <0>;
++    status = "okay";
++
++    port@1 {
++        mipi_dsi_panel1_out: endpoint {
++            remote-endpoint = <&panel1_in>;
++        };
++    };
++
++    panel {
++        compatible = "dmb,kd070wxfid093a-c107a";
++        reg = <0>;
++        status = "okay";
++
++        power-supply = <&reg_vdd_3v3>;
++        backlight = <&backlight>;
++
++        port {
++            panel1_in: endpoint {
++                remote-endpoint = <&mipi_dsi_panel1_out>;
++            };
++        };
++    };
++};
++
++&i2c2 {
++
++    status = "okay";
++
++    gt9271@5d {
++        compatible = "goodix,gt9271";
++        reg = <0x5d>;
++        status = "okay";
++
++        irq-gpios = <&gpio4 25 GPIO_ACTIVE_HIGH>;
++        interrupt-parent = <&gpio4>;
++        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
++        pinctrl-names = "default";
++        pinctrl-0 = <&pinctrl_gpio_9_dsi>, <&pinctrl_i2s_2_bclk_touch_reset>;
++
++        touchscreen-size-y = <1280>;
++        touchscreen-size-x = <800>;
++        reset-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
++    };
++};
++
++&mix_gpu_ml {
++    status = "okay";
++};
++
++&ml_vipsi {
++    status = "okay";
++};
++
++&vpu_g1 {
++    status = "okay";
++};
++
++&vpu_g2 {
++    status = "okay";
++};
++
++&vpu_vc8000e {
++    status = "okay";
++};
++
++&vpu_v4l2 {
++    status = "okay";
++};
++
++&gpu_2d {
++    status = "okay";
++};
++
++&gpu_3d {
++    status = "okay";
++};
+\ No newline at end of file

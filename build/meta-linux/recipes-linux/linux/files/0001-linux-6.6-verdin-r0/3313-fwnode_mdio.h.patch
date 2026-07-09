@@ -1,0 +1,33 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/fwnode_mdio.h	2026-04-08 18:20:10.045022753 +0200
++++ ./include/linux/fwnode_mdio.h	2026-04-08 16:21:11.358221043 +0200
+@@ -16,6 +16,11 @@
+ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
+ 				struct fwnode_handle *child, u32 addr);
+ 
++int fwnode_mdiobus_register_device(struct mii_bus *bus,
++				   struct fwnode_handle *child, u32 addr);
++
++bool fwnode_mdiobus_child_is_phy(struct fwnode_handle *child);
++
+ #else /* CONFIG_FWNODE_MDIO */
+ int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
+ 				       struct phy_device *phy,
+@@ -30,6 +35,18 @@
+ {
+ 	return -EINVAL;
+ }
++
++static inline int fwnode_mdiobus_register_device(struct mii_bus *bus,
++						 struct fwnode_handle *child,
++						 u32 addr)
++{
++	return -EINVAL;
++}
++
++bool fwnode_mdiobus_child_is_phy(struct fwnode_handle *child)
++{
++	return false;
++}
+ #endif
+ 
+ #endif /* __LINUX_FWNODE_MDIO_H */

@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/edac/layerscape_edac.c	2026-04-08 18:20:06.025910767 +0200
++++ ./drivers/edac/layerscape_edac.c	2026-04-08 16:21:04.919492764 +0200
+@@ -21,6 +21,7 @@
+ 
+ static const struct of_device_id fsl_ddr_mc_err_of_match[] = {
+ 	{ .compatible = "fsl,qoriq-memory-controller", },
++	{ .compatible = "nxp,imx9-memory-controller", .data = (void *)TYPE_IMX9, },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, fsl_ddr_mc_err_of_match);

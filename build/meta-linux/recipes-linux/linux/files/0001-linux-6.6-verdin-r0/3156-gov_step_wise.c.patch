@@ -1,0 +1,59 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/thermal/gov_step_wise.c	2026-04-08 18:20:09.449006149 +0200
++++ ./drivers/thermal/gov_step_wise.c	2026-04-08 16:21:09.591236090 +0200
+@@ -79,23 +79,25 @@
+ 		tz->passive += value;
+ }
+ 
+-static void thermal_zone_trip_update(struct thermal_zone_device *tz, int trip_id)
++static void thermal_zone_trip_update(struct thermal_zone_device *tz,
++				     const struct thermal_trip *trip,
++				     int trip_threshold)
+ {
+-	const struct thermal_trip *trip = &tz->trips[trip_id];
++	int trip_id = thermal_zone_trip_id(tz, trip);
+ 	enum thermal_trend trend;
+ 	struct thermal_instance *instance;
+ 	bool throttle = false;
+ 	int old_target;
+ 
+-	trend = get_tz_trend(tz, trip_id);
++	trend = get_tz_trend(tz, trip);
+ 
+-	if (tz->temperature >= trip->temperature) {
++	if (tz->temperature >= trip_threshold) {
+ 		throttle = true;
+ 		trace_thermal_zone_trip(tz, trip_id, trip->type);
+ 	}
+ 
+ 	dev_dbg(&tz->device, "Trip%d[type=%d,temp=%d]:trend=%d,throttle=%d\n",
+-		trip_id, trip->type, trip->temperature, trend, throttle);
++		trip_id, trip->type, trip_threshold, trend, throttle);
+ 
+ 	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
+ 		if (instance->trip != trip)
+@@ -128,7 +130,7 @@
+ /**
+  * step_wise_throttle - throttles devices associated with the given zone
+  * @tz: thermal_zone_device
+- * @trip: trip point index
++ * @trip: trip point
+  *
+  * Throttling Logic: This uses the trend of the thermal zone to throttle.
+  * If the thermal zone is 'heating up' this throttles all the cooling
+@@ -136,13 +138,14 @@
+  * step. If the zone is 'cooling down' it brings back the performance of
+  * the devices by one step.
+  */
+-static int step_wise_throttle(struct thermal_zone_device *tz, int trip)
++static int step_wise_throttle(struct thermal_zone_device *tz,
++			      const struct thermal_trip *trip)
+ {
+ 	struct thermal_instance *instance;
+ 
+ 	lockdep_assert_held(&tz->lock);
+ 
+-	thermal_zone_trip_update(tz, trip);
++	thermal_zone_trip_update(tz, trip, trip->threshold);
+ 
+ 	list_for_each_entry(instance, &tz->thermal_instances, tz_node)
+ 		thermal_cdev_update(instance->cdev);

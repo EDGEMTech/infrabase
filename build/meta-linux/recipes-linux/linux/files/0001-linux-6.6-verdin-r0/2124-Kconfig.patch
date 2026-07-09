@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/input/keyboard/Kconfig	2026-04-08 18:20:07.522952484 +0200
++++ ./drivers/input/keyboard/Kconfig	2026-04-08 16:21:06.609012993 +0200
+@@ -445,6 +445,16 @@
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called mpr121_touchkey.
+ 
++config KEYBOARD_RPMSG
++       tristate "i.MX Rpmsg Keys Driver"
++       depends on RPMSG
++       depends on OF
++       help
++         This is rpmsg keys driver on i.mx7ulp, because some keys located
++         in M4 side.
++
++
++
+ config KEYBOARD_SNVS_PWRKEY
+ 	tristate "IMX SNVS Power Key Driver"
+ 	depends on ARCH_MXC || (COMPILE_TEST && HAS_IOMEM)

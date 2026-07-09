@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/sof/pcm.c	2026-04-08 18:20:10.950976100 +0200
++++ ./sound/soc/sof/pcm.c	2026-04-08 16:21:18.492685729 +0200
+@@ -698,7 +698,7 @@
+ 	else if (plat_data->of_machine)
+ 		drv_name = plat_data->of_machine->drv_name;
+ 	else
+-		drv_name = NULL;
++		drv_name = plat_data->machine_drv_name;
+ 
+ 	pd->name = "sof-audio-component";
+ 	pd->probe = sof_pcm_probe;

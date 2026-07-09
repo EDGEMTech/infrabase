@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/uio/Kconfig	2026-04-08 18:20:09.499007542 +0200
++++ ./drivers/uio/Kconfig	2026-04-08 16:21:09.632133309 +0200
+@@ -182,4 +182,11 @@
+ 	    opae-sdk/tools/libopaeuio/
+ 
+ 	  If you compile this as a module, it will be called uio_dfl.
++
++config UIO_IVSHMEM
++	tristate "Inter-VM Shared Memory driver"
++	depends on PCI
++	help
++	  Userspace I/O driver for the inter-VM shared memory PCI device
++	  as provided by QEMU and the Jailhouse hypervisor.
+ endif

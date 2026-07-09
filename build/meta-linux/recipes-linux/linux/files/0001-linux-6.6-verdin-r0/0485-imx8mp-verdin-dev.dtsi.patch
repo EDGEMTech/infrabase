@@ -1,0 +1,47 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi	2026-04-08 18:20:05.020882757 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi	2026-04-08 16:21:02.035486781 +0200
+@@ -22,7 +22,7 @@
+ 		simple-audio-card,format = "i2s";
+ 		simple-audio-card,frame-master = <&codec_dai>;
+ 		simple-audio-card,mclk-fs = <256>;
+-		simple-audio-card,name = "imx8mp-nau8822";
++		simple-audio-card,name = "verdin-nau8822";
+ 		simple-audio-card,routing =
+ 			"Headphones", "LHP",
+ 			"Headphones", "RHP",
+@@ -52,6 +52,11 @@
+ 	};
+ };
+ 
++/* Verdin HDMI_1 Audio */
++&aud2htx {
++	status = "okay";
++};
++
+ &backlight {
+ 	power-supply = <&reg_3p3v>;
+ };
+@@ -93,6 +98,11 @@
+ 	status = "okay";
+ };
+ 
++&gpio4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
++};
++
+ &gpio_expander_21 {
+ 	status = "okay";
+ 	vcc-supply = <&reg_1p8v>;
+@@ -168,6 +178,11 @@
+ 	status = "okay";
+ };
+ 
++/* Verdin HDMI_1 Audio */
++&sound_hdmi {
++	status = "okay";
++};
++
+ /* Verdin UART_1, connector X50 through RS485 transceiver */
+ &uart1 {
+ 	linux,rs485-enabled-at-boot-time;

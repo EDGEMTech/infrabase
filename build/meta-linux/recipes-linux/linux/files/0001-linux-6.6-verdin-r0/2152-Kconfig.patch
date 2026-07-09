@@ -1,0 +1,28 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/irqchip/Kconfig	2026-04-08 18:20:07.573107656 +0200
++++ ./drivers/irqchip/Kconfig	2026-04-08 16:21:06.712932790 +0200
+@@ -397,6 +397,16 @@
+ 	select IRQ_DOMAIN
+ 	select GENERIC_IRQ_CHIP
+ 
++config GIC_GENTLE_CONFIG
++	bool "GIC gentle configuration"
++	default n
++	depends on ARM_GIC_V3 && OF_IRQ
++	help
++	  If this flag is set, GIC driver will not disable SPIs and not
++	  change SPIs' affinity for interrupts that are not explicitly
++	  enabled in the device tree.
++	  Say 'n' if you're unsure.
++
+ config QCOM_IRQ_COMBINER
+ 	bool "QCOM IRQ combiner support"
+ 	depends on ARCH_QCOM && ACPI
+@@ -465,7 +475,7 @@
+ 	  the controller's register.
+ 
+ config IMX_IRQSTEER
+-	bool "i.MX IRQSTEER support"
++	tristate "i.MX IRQSTEER support"
+ 	depends on ARCH_MXC || COMPILE_TEST
+ 	default ARCH_MXC
+ 	select IRQ_DOMAIN

@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/tools/perf/pmu-events/arch/arm64/freescale/imx8mp/sys/metrics.json	2026-04-08 18:20:11.042228437 +0200
++++ ./tools/perf/pmu-events/arch/arm64/freescale/imx8mp/sys/metrics.json	2026-04-08 16:21:18.670197035 +0200
+@@ -1,5 +1,13 @@
+ [
+    {
++	    "BriefDescription": "bandwidth usage for lpddr4 evk board",
++	    "MetricName": "imx8mp_bandwidth_usage.lpddr4",
++	    "MetricExpr": "(( imx8_ddr0@axid\\-read\\,axi_mask\\=0xffff\\,axi_id\\=0x0000@ + imx8_ddr0@axid\\-write\\,axi_mask\\=0xffff\\,axi_id\\=0x0000@ ) / duration_time) / (1000 * 1000000 * 4 * 4)",
++	    "ScaleUnit": "1e2%",
++	    "Unit": "imx8_ddr",
++	    "Compat": "i.MX8MP"
++   },
++   {
+ 	    "BriefDescription": "bytes of all masters read from ddr",
+ 	    "MetricName": "imx8mp_ddr_read.all",
+ 	    "MetricExpr": "imx8_ddr0@axid\\-read\\,axi_mask\\=0xffff\\,axi_id\\=0x0000@",

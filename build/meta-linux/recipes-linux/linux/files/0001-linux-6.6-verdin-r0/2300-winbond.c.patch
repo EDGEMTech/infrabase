@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mtd/nand/spi/winbond.c	2026-04-08 18:20:07.997225034 +0200
++++ ./drivers/mtd/nand/spi/winbond.c	2026-04-08 16:21:07.270511210 +0200
+@@ -169,6 +169,15 @@
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
++	SPINAND_INFO("W25N02KW",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xba, 0x22),
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     0,
++		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
+ };
+ 
+ static int winbond_spinand_init(struct spinand_device *spinand)

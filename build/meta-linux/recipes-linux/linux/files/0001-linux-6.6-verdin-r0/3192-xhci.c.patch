@@ -1,0 +1,28 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/usb/host/xhci.c	2026-04-08 18:20:09.566009408 +0200
++++ ./drivers/usb/host/xhci.c	2026-04-08 16:21:09.726716795 +0200
+@@ -199,7 +199,7 @@
+ 	 * Without this delay, the subsequent HC register access,
+ 	 * may result in a system hang very rarely.
+ 	 */
+-	if (xhci->quirks & XHCI_INTEL_HOST)
++	if (xhci->quirks & (XHCI_INTEL_HOST | XHCI_WRITE_64_HI_LO))
+ 		udelay(1000);
+ 
+ 	ret = xhci_handshake(&xhci->op_regs->command, CMD_RESET, 0, timeout_us);
+@@ -5414,6 +5414,7 @@
+ 	.disable_usb3_lpm_timeout =	xhci_disable_usb3_lpm_timeout,
+ 	.find_raw_port_number =	xhci_find_raw_port_number,
+ 	.clear_tt_buffer_complete = xhci_clear_tt_buffer_complete,
++	.submit_single_step_set_feature	= xhci_submit_single_step_set_feature,
+ };
+ 
+ void xhci_init_driver(struct hc_driver *drv,
+@@ -5442,6 +5443,8 @@
+ 			drv->update_hub_device = over->update_hub_device;
+ 		if (over->hub_control)
+ 			drv->hub_control = over->hub_control;
++		if (over->bus_suspend)
++			drv->bus_suspend = over->bus_suspend;
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(xhci_init_driver);

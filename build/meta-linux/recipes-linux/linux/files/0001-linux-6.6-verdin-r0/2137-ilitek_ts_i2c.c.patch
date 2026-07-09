@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/input/touchscreen/ilitek_ts_i2c.c	2026-04-08 18:20:07.551953292 +0200
++++ ./drivers/input/touchscreen/ilitek_ts_i2c.c	2026-04-08 16:21:06.662221467 +0200
+@@ -397,9 +397,9 @@
+ static void ilitek_reset(struct ilitek_ts_data *ts, int delay)
+ {
+ 	if (ts->reset_gpio) {
+-		gpiod_set_value(ts->reset_gpio, 1);
++		gpiod_set_value_cansleep(ts->reset_gpio, 1);
+ 		mdelay(10);
+-		gpiod_set_value(ts->reset_gpio, 0);
++		gpiod_set_value_cansleep(ts->reset_gpio, 0);
+ 		mdelay(delay);
+ 	}
+ }

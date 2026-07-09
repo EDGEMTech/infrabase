@@ -1,0 +1,29 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/colibri-imx8x_spidev_overlay.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/colibri-imx8x_spidev_overlay.dts	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2021 Toradex
++ */
++
++// SPI generic spidev device for Colibri iMX8X.
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	compatible = "toradex,colibri-imx8x";
++};
++
++&lpspi2 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	spidev@0 {
++		/* Use compatible "rohm,dh2228fv" to bind spidev driver */
++		compatible = "rohm,dh2228fv";
++		reg = <0>;
++		spi-max-frequency = <10000000>;
++	};
++};

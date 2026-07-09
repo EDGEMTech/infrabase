@@ -1,0 +1,89 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/apalis-imx8_mezzanine_ov5640_overlay.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/apalis-imx8_mezzanine_ov5640_overlay.dts	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,86 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2021 Toradex
++ */
++
++// CSI Camera Module 5MP OV5640 previously orderable at Toradex.
++// Connected on the Apalis iMX8 Mezzanine X4
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	compatible = "toradex,apalis-imx8", "toradex,apalis-imx8-v1.1";
++};
++
++/* Apalis I2C1 (Apalis iMX8 TS Mezzanine JP3 and JP4 in position 2-3) */
++&i2c2 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	ov5640_mipi@3c {
++		compatible = "ovti,ov5640";
++		clocks = <&xtal24m>;
++		clock-names = "xclk";
++		csi_id = <0>;
++		mclk = <24000000>;
++		mclk_source = <0>;
++		mipi_csi;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_lpspi0>;
++		powerdown-gpios = <&lsio_gpio2 20 GPIO_ACTIVE_HIGH>;	/* Apalis WAKE1_MICO (MXM3 pin 37) */
++		reg = <0x3c>;
++		reset-gpios = <&lsio_gpio3 5 GPIO_ACTIVE_LOW>;		/* Apalis SPI1_CS (MXM3 pin 227) */
++		AVDD-supply = <&reg_module_3v3>;
++		DOVDD-supply = <&reg_module_3v3>;
++		DVDD-supply = <&reg_module_3v3>;
++		status = "okay";
++
++		port {
++			ov5640_mipi_0_ep: endpoint {
++				clock-lanes = <0>;
++				data-lanes = <1 2>;
++				remote-endpoint = <&mipi_csi0_ep>;
++			};
++		};
++	};
++};
++
++&isi_0 {
++	status = "okay";
++
++	cap_device {
++		status = "okay";
++	};
++
++	m2m_device {
++		status = "okay";
++	};
++};
++
++/* Disable Apalis SPI1 as Apalis SPI1_CS is used as reset GPIO */
++&lpspi0 {
++	status = "disabled";
++};
++
++&mipi_csi_0 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	/delete-property/virtual-channel;
++	status = "okay";
++
++	/* Camera 0 MIPI CSI-2 (CSIS0) */
++	port@0 {
++		reg = <0>;
++
++		mipi_csi0_ep: endpoint {
++			bus-type = <4>;
++			data-lanes = <1 2>;
++			remote-endpoint = <&ov5640_mipi_0_ep>;
++		};
++	};
++};
++

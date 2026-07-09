@@ -1,0 +1,84 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h	2026-04-08 18:20:07.762838159 +0200
++++ ./drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h	2026-04-08 16:21:07.032583756 +0200
+@@ -159,6 +159,7 @@
+ 	MXC_ISI_IMX8MN,
+ 	MXC_ISI_IMX8MP,
+ 	MXC_ISI_IMX93,
++	MXC_ISI_IMX95,
+ };
+ 
+ struct mxc_isi_plat_data {
+@@ -173,6 +174,8 @@
+ 	unsigned int num_clks;
+ 	bool buf_active_reverse;
+ 	bool has_36bit_dma;
++	bool raw32_chan_cfg;
++	bool buf_max_size;
+ };
+ 
+ struct mxc_isi_dma_buffer {
+@@ -182,7 +185,10 @@
+ };
+ 
+ struct mxc_isi_input {
+-	unsigned int			enable_count;
++	u64				enabled_streams;
++	/* Counter per stream */
++	unsigned int			*enabled_count;
++	bool				connected;
+ };
+ 
+ struct mxc_isi_crossbar {
+@@ -256,6 +262,9 @@
+ 	u8				acquired_res;
+ 	u8				chained_res;
+ 	bool				chained;
++
++	/* Virtual channel ID for the ISI channel */
++	u8				vc;
+ };
+ 
+ struct mxc_isi_m2m {
+@@ -297,6 +306,7 @@
+ 
+ extern const struct mxc_gasket_ops mxc_imx8_gasket_ops;
+ extern const struct mxc_gasket_ops mxc_imx93_gasket_ops;
++extern const struct mxc_gasket_ops mxc_imx95_gasket_ops;
+ 
+ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi);
+ void mxc_isi_crossbar_cleanup(struct mxc_isi_crossbar *xbar);
+@@ -342,6 +352,8 @@
+ #ifdef CONFIG_VIDEO_IMX8_ISI_M2M
+ int mxc_isi_m2m_register(struct mxc_isi_dev *isi, struct v4l2_device *v4l2_dev);
+ int mxc_isi_m2m_unregister(struct mxc_isi_dev *isi);
++void mxc_isi_m2m_suspend(struct mxc_isi_pipe *pipe);
++int mxc_isi_m2m_resume(struct mxc_isi_pipe *pipe);
+ #else
+ static inline int mxc_isi_m2m_register(struct mxc_isi_dev *isi,
+ 				       struct v4l2_device *v4l2_dev)
+@@ -352,6 +364,15 @@
+ {
+ 	return 0;
+ }
++
++static inline void mxc_isi_m2m_suspend(struct mxc_isi_pipe *pipe)
++{
++}
++
++static inline int mxc_isi_m2m_resume(struct mxc_isi_pipe *pipe)
++{
++	return 0;
++}
+ #endif
+ 
+ int mxc_isi_channel_acquire(struct mxc_isi_pipe *pipe,
+@@ -387,6 +408,9 @@
+ void mxc_isi_channel_set_outbuf(struct mxc_isi_pipe *pipe,
+ 				const dma_addr_t dma_addrs[3],
+ 				enum mxc_isi_buf_id buf_id);
++void mxc_isi_channel_set_max_size(struct mxc_isi_pipe *pipe,
++				  const struct vb2_v4l2_buffer *v4l2_buf,
++				  const bool buf_max_size);
+ 
+ u32 mxc_isi_channel_irq_status(struct mxc_isi_pipe *pipe, bool clear);
+ void mxc_isi_channel_irq_clear(struct mxc_isi_pipe *pipe);

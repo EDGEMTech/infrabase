@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/dma/fsl-qdma.c	2026-04-08 18:20:06.000064117 +0200
++++ ./drivers/dma/fsl-qdma.c	2026-04-08 16:21:04.866960206 +0200
+@@ -317,7 +317,7 @@
+ 
+ 	vchan_dma_desc_free_list(&fsl_chan->vchan, &head);
+ 
+-	if (!fsl_queue->comp_pool && !fsl_queue->desc_pool)
++	if (!fsl_queue->comp_pool || !fsl_queue->desc_pool)
+ 		return;
+ 
+ 	list_for_each_entry_safe(comp_temp, _comp_temp,
+@@ -1249,7 +1249,8 @@
+ 
+ 	ret = dma_async_device_register(&fsl_qdma->dma_dev);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
++		dev_err(&pdev->dev,
++			"Can't register NXP Layerscape qDMA engine.\n");
+ 		return ret;
+ 	}
+ 

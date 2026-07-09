@@ -1,0 +1,9 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/tee/Kconfig	2026-04-08 18:20:09.446547781 +0200
++++ ./drivers/tee/Kconfig	2026-04-08 16:21:09.587624449 +0200
+@@ -15,5 +15,6 @@
+ 
+ source "drivers/tee/optee/Kconfig"
+ source "drivers/tee/amdtee/Kconfig"
++source "drivers/tee/crypto/Kconfig"
+ 
+ endif

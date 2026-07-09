@@ -1,0 +1,28 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx6ull-14x14-evk.dts	2026-04-08 18:20:04.860878298 +0200
++++ ./arch/arm/boot/dts/nxp/imx/imx6ull-14x14-evk.dts	2026-04-08 16:21:00.885048200 +0200
+@@ -8,11 +8,22 @@
+ #include "imx6ul-14x14-evk.dtsi"
+ 
+ / {
+-	model = "Freescale i.MX6 UltraLiteLite 14x14 EVK Board";
++	model = "Freescale i.MX6 ULL 14x14 EVK Board";
+ 	compatible = "fsl,imx6ull-14x14-evk", "fsl,imx6ull";
+ };
+ 
+ &clks {
+-	assigned-clocks = <&clks IMX6UL_CLK_PLL3_PFD2>;
+-	assigned-clock-rates = <320000000>;
++	assigned-clocks = <&clks IMX6UL_CLK_PLL3_PFD2>,
++			  <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
++	assigned-clock-rates = <320000000>, <786432000>;
+ };
++
++&csi {
++	status = "okay";
++};
++
++&ov5640 {
++	status = "okay";
++};
++
++/delete-node/ &sim2;

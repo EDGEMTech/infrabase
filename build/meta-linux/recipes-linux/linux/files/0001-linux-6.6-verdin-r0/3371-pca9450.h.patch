@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/regulator/pca9450.h	2026-04-08 18:20:10.124024954 +0200
++++ ./include/linux/regulator/pca9450.h	2026-04-08 16:21:11.600155505 +0200
+@@ -9,6 +9,8 @@
+ enum pca9450_chip_type {
+ 	PCA9450_TYPE_PCA9450A = 0,
+ 	PCA9450_TYPE_PCA9450BC,
++	PCA9450_TYPE_PCA9451A,
++	PCA9450_TYPE_PCA9452,
+ 	PCA9450_TYPE_AMOUNT,
+ };
+ 
+@@ -93,6 +95,7 @@
+ 	PCA9450_MAX_REGISTER	    = 0x2F,
+ };
+ 
++#define PCA9450_REG_PWRCTRL_TOFF_DEB    BIT(5)
+ /* PCA9450 BUCK ENMODE bits */
+ #define BUCK_ENMODE_OFF			0x00
+ #define BUCK_ENMODE_ONREQ		0x01

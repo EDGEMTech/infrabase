@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/fsl/fsl_micfil.h	2026-04-08 18:20:10.900046572 +0200
++++ ./sound/soc/fsl/fsl_micfil.h	2026-04-08 16:21:18.381641607 +0200
+@@ -72,7 +72,7 @@
+ #define MICFIL_STAT_CHXF(ch)		BIT(ch)
+ 
+ /* MICFIL FIFO Control Register -- REG_MICFIL_FIFO_CTRL 0x10 */
+-#define MICFIL_FIFO_CTRL_FIFOWMK	GENMASK(2, 0)
++#define MICFIL_FIFO_CTRL_FIFOWMK	GENMASK(4, 0)
+ 
+ /* MICFIL FIFO Status Register -- REG_MICFIL_FIFO_STAT 0x14 */
+ #define MICFIL_FIFO_STAT_FIFOX_OVER(ch)	BIT(ch)

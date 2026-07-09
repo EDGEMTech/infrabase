@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mxc/mlb/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/mxc/mlb/Kconfig	2026-04-08 16:21:07.328728253 +0200
+@@ -0,0 +1,17 @@
++#
++# MLB150 configuration
++#
++
++menu "MXC Media Local Bus Driver"
++
++config MXC_MLB
++	bool
++
++config MXC_MLB150
++	tristate "MLB150 support"
++	depends on ARCH_MXC || COMPILE_TEST
++	select MXC_MLB
++	help
++	Say Y to get the MLB150 support.
++
++endmenu

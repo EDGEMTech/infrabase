@@ -1,0 +1,166 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi	2026-04-08 18:20:05.013882562 +0200
++++ ./arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi	2026-04-08 16:21:01.978775598 +0200
+@@ -31,6 +31,9 @@
+ 		ethernet6 = &enet6;
+ 		ethernet7 = &enet7;
+ 		rtc1 = &ftm_alarm0;
++		qman_fqd = &qman_fqd;
++		bman_fbpr = &bman_fbpr;
++		qman_pfdr = &qman_pfdr;
+ 	};
+ 
+ 	cpus {
+@@ -319,6 +322,48 @@
+ 			bus-width = <4>;
+ 		};
+ 
++		smmu: iommu@9000000 {
++			compatible = "arm,mmu-500";
++			reg = <0 0x9000000 0 0x400000>;
++			stream-match-mask = <0x7f00>;
++			#global-interrupts = <2>;
++			#iommu-cells = <1>;
++			interrupts = <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>;
++		};
++
+ 		scfg: scfg@1570000 {
+ 			compatible = "fsl,ls1046a-scfg", "syscon";
+ 			reg = <0x0 0x1570000 0x0 0x10000>;
+@@ -425,9 +470,25 @@
+ 			clock-names = "sfp";
+ 		};
+ 
++		serdes1: phy@1ea0000 {
++			compatible = "fsl,ls1046a-serdes1", "fsl,lynx-10g";
++			reg = <0x00 0x1ea0000 0x0 0xffff>;
++			#phy-cells = <1>;
++			big-endian;
++		};
++
++		serdes2: phy@1eb0000 {
++			compatible = "fsl,ls1046a-serdes2", "fsl,lynx-10g";
++			reg = <0x00 0x1eb0000 0x0 0xffff>;
++			#phy-cells = <1>;
++			big-endian;
++		};
++
+ 		dcfg: dcfg@1ee0000 {
+ 			compatible = "fsl,ls1046a-dcfg", "syscon";
+-			reg = <0x0 0x1ee0000 0x0 0x1000>;
++			reg = <0x0 0x1ee0000 0x0 0x1000>,
++			      <0x0 0x20140000 0x0 0x1000>;
++			reg-names = "dcfg_ccsr", "dcfg_dcsr";
+ 			big-endian;
+ 		};
+ 
+@@ -714,6 +775,7 @@
+ 					    QORIQ_CLK_PLL_DIV(2)>,
+ 				 <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(2)>;
++			dma-noncoherent;
+ 		};
+ 
+ 		aux_bus: aux_bus {
+@@ -724,7 +786,7 @@
+ 			dma-ranges = <0x0 0x0 0x0 0x0 0x100 0x00000000>;
+ 
+ 			usb0: usb@2f00000 {
+-				compatible = "snps,dwc3";
++				compatible = "fsl,ls1046a-dwc3", "snps,dwc3";
+ 				reg = <0x0 0x2f00000 0x0 0x10000>;
+ 				interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
+ 				dr_mode = "host";
+@@ -732,10 +794,12 @@
+ 				snps,dis_rxdet_inp3_quirk;
+ 				snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
+ 				usb3-lpm-capable;
++				snps,host-vbus-glitches;
++				dma-coherent;
+ 			};
+ 
+ 			usb1: usb@3000000 {
+-				compatible = "snps,dwc3";
++				compatible = "fsl,ls1046a-dwc3", "snps,dwc3";
+ 				reg = <0x0 0x3000000 0x0 0x10000>;
+ 				interrupts = <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>;
+ 				dr_mode = "host";
+@@ -743,10 +807,12 @@
+ 				snps,dis_rxdet_inp3_quirk;
+ 				snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
+ 				usb3-lpm-capable;
++				snps,host-vbus-glitches;
++				dma-coherent;
+ 			};
+ 
+ 			usb2: usb@3100000 {
+-				compatible = "snps,dwc3";
++				compatible = "fsl,ls1046a-dwc3", "snps,dwc3";
+ 				reg = <0x0 0x3100000 0x0 0x10000>;
+ 				interrupts = <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>;
+ 				dr_mode = "host";
+@@ -754,6 +820,8 @@
+ 				snps,dis_rxdet_inp3_quirk;
+ 				snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
+ 				usb3-lpm-capable;
++				snps,host-vbus-glitches;
++				dma-coherent;
+ 			};
+ 
+ 			sata: sata@3200000 {
+@@ -808,6 +876,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 			device_type = "pci";
++			iommu-map = <0 &smmu 0 1>;	/* update by bootloader */
+ 			num-viewport = <8>;
+ 			bus-range = <0x0 0xff>;
+ 			ranges = <0x81000000 0x0 0x00000000 0x40 0x00010000 0x0 0x00010000   /* downstream I/O */
+@@ -847,6 +916,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 			device_type = "pci";
++			iommu-map = <0 &smmu 0 1>;	/* update by bootloader */
+ 			num-viewport = <8>;
+ 			bus-range = <0x0 0xff>;
+ 			ranges = <0x81000000 0x0 0x00000000 0x48 0x00010000 0x0 0x00010000   /* downstream I/O */
+@@ -886,6 +956,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 			device_type = "pci";
++			iommu-map = <0 &smmu 0 1>;	/* update by bootloader */
+ 			num-viewport = <8>;
+ 			bus-range = <0x0 0xff>;
+ 			ranges = <0x81000000 0x0 0x00000000 0x50 0x00010000 0x0 0x00010000   /* downstream I/O */

@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/mdio/acpi_mdio.c	2026-04-08 18:20:08.497374929 +0200
++++ ./drivers/net/mdio/acpi_mdio.c	2026-04-08 16:21:07.970050753 +0200
+@@ -49,7 +49,10 @@
+ 		if (ret || addr >= PHY_MAX_ADDR)
+ 			continue;
+ 
+-		ret = fwnode_mdiobus_register_phy(mdio, child, addr);
++		if (fwnode_mdiobus_child_is_phy(child))
++			ret = fwnode_mdiobus_register_phy(mdio, child, addr);
++		else
++			ret = fwnode_mdiobus_register_device(mdio, child, addr);
+ 		if (ret == -ENODEV)
+ 			dev_err(&mdio->dev,
+ 				"MDIO device at address %d is missing.\n",

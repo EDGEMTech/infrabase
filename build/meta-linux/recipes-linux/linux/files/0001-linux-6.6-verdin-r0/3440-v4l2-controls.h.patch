@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/uapi/linux/v4l2-controls.h	2026-04-08 18:20:10.260028743 +0200
++++ ./include/uapi/linux/v4l2-controls.h	2026-04-08 16:21:17.372259399 +0200
+@@ -886,6 +886,8 @@
+ 	V4L2_MPEG_VIDEO_AV1_LEVEL_7_3 = 23
+ };
+ 
++#define V4L2_CID_MPEG_VIDEO_AVERAGE_QP  (V4L2_CID_CODEC_BASE + 657)
++
+ /*  MPEG-class control IDs specific to the CX2341x driver as defined by V4L2 */
+ #define V4L2_CID_CODEC_CX2341X_BASE				(V4L2_CTRL_CLASS_CODEC | 0x1000)
+ #define V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE		(V4L2_CID_CODEC_CX2341X_BASE+0)

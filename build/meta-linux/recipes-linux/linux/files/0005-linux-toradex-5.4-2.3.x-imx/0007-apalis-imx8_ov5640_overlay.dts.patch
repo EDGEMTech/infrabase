@@ -1,0 +1,79 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/overlays/apalis-imx8_ov5640_overlay.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/overlays/apalis-imx8_ov5640_overlay.dts	2023-08-10 09:55:58.415675165 +0200
+@@ -0,0 +1,76 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/*
++ * Copyright 2020-2021 Toradex
++ */
++
++// CSI Camera Module 5MP OV5640 previously orderable at Toradex.
++// Connected on either an Ixora V1.1 or later or the Apalis iMX8 Mezzanine X8
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	compatible = "toradex,apalis-imx8", "toradex,apalis-imx8-v1.1";
++};
++
++/* Apalis I2C3 (CAM) */
++&i2c3 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	ov5640_mipi@3c {
++		compatible = "ovti,ov5640";
++		clocks = <&xtal24m>;
++		clock-names = "xclk";
++		csi_id = <0>;
++		mclk = <24000000>;
++		mclk_source = <0>;
++		mipi_csi;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio1>, <&pinctrl_gpio2>;
++		powerdown-gpios = <&lsio_gpio0 9 GPIO_ACTIVE_HIGH>;	/* Apalis GPIO2 */
++		reg = <0x3c>;
++		reset-gpios = <&lsio_gpio0 8 GPIO_ACTIVE_LOW>;		/* Apalis GPIO1 */
++		AVDD-supply = <&reg_module_3v3>;
++		DOVDD-supply = <&reg_module_3v3>;
++		DVDD-supply = <&reg_module_3v3>;
++		status = "okay";
++
++		port {
++			ov5640_mipi_1_ep: endpoint {
++				clock-lanes = <0>;
++				data-lanes = <1 2>;
++				remote-endpoint = <&mipi_csi1_ep>;
++			};
++		};
++	};
++};
++
++&isi_4 {
++	status = "okay";
++
++	cap_device {
++		status = "okay";
++	};
++};
++
++&mipi_csi_1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	/delete-property/virtual-channel;
++	status = "okay";
++
++	/* Camera 1 MIPI CSI-2 (CSIS0) */
++	port@1 {
++		reg = <1>;
++
++		mipi_csi1_ep: endpoint {
++			bus-type = <4>;
++			data-lanes = <1 2>;
++			remote-endpoint = <&ov5640_mipi_1_ep>;
++		};
++	};
++};

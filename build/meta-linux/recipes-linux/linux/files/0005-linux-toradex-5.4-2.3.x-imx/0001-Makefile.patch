@@ -1,0 +1,11 @@
+--- /home/david/Projects/ChAV_TRVI/chav_trvi/build/tmp/work/linux-toradex-5.4-2.3.x-imx/git/arch/arm64/boot/dts/freescale/Makefile	2023-08-10 09:32:19.364945454 +0200
++++ ./arch/arm64/boot/dts/freescale/Makefile	2023-08-10 09:55:58.403675103 +0200
+@@ -9,6 +9,8 @@
+ DTC_FLAGS_fsl-ls1028a-qds-899b := -@
+ DTC_FLAGS_fsl-ls1028a-qds-9999 := -@
+ 
++subdir-y += overlays/
++
+ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1012a-2g5rdb.dtb
+ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1012a-frdm.dtb
+ dtb-$(CONFIG_ARCH_LAYERSCAPE) += fsl-ls1012a-frwy.dtb

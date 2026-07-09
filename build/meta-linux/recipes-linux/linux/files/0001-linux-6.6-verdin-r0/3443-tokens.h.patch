@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/uapi/sound/sof/tokens.h	2026-04-08 18:20:10.269440987 +0200
++++ ./include/uapi/sound/sof/tokens.h	2026-04-08 16:21:17.377931047 +0200
+@@ -213,4 +213,8 @@
+ #define SOF_TKN_AMD_ACPI2S_CH			1701
+ #define SOF_TKN_AMD_ACPI2S_TDM_MODE		1702
+ 
++/* MICFIL PDM */
++#define SOF_TKN_IMX_MICFIL_RATE			2000
++#define SOF_TKN_IMX_MICFIL_CH			2001
++
+ #endif

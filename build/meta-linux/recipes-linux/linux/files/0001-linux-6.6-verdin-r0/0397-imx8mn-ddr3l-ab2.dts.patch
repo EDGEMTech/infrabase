@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mn-ddr3l-ab2.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8mn-ddr3l-ab2.dts	2026-04-08 16:21:02.021472771 +0200
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++ /*
++  * Copyright 2021 NXP
++  */
++
++#include "imx8mn-ab2.dts"
++
++/ {
++	model = "NXP i.MX8MNano DDR3L Audio board 2.0";
++};
++
++&A53_0 {
++	cpu-supply = <&buck1>;
++};
++
++/delete-node/ &{/display-subsystem};
++&{/thermal-zones/cpu-thermal/cooling-maps/map0} {
++	cooling-device =
++			<&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++			<&A53_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++			<&A53_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++			<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++};
++/delete-node/ &gpu;
++/delete-node/ &lcdif;
++/delete-node/ &mipi_dsi;

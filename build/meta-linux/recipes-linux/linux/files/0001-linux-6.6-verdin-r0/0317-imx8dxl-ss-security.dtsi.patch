@@ -1,0 +1,27 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8dxl-ss-security.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8dxl-ss-security.dtsi	2026-04-08 16:21:02.007332887 +0200
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2020 NXP
++ */
++
++&sec_mu2 {
++	interrupts = <GIC_SPI 318 IRQ_TYPE_LEVEL_HIGH>;
++};
++
++&sec_mu3 {
++	interrupts = <GIC_SPI 319 IRQ_TYPE_LEVEL_HIGH>;
++};
++
++&sec_mu4 {
++	interrupts = <GIC_SPI 320 IRQ_TYPE_LEVEL_HIGH>;
++};
++
++&sec_jr2 {
++	interrupts = <GIC_SPI 323 IRQ_TYPE_LEVEL_HIGH>;
++};
++
++&sec_jr3 {
++	interrupts = <GIC_SPI 324 IRQ_TYPE_LEVEL_HIGH>;
++};

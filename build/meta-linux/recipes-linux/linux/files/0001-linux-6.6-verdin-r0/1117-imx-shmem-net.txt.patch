@@ -1,0 +1,40 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/net/imx-shmem-net.txt	1970-01-01 01:00:00.000000000 +0100
++++ ./Documentation/devicetree/bindings/net/imx-shmem-net.txt	2026-04-08 16:20:59.479281353 +0200
+@@ -0,0 +1,37 @@
++i.MX SHMEM-NET implementations
++
++A network device to communicate with another domain.
++Communication is done through shared memory
++ and synchronized by Mailbox Units of imx.
++Use Mailbox Units side A to communicate with side B.
++
++Required properties:
++- compatible : "fsl,imx-shmem-net".
++- rxfirst: The flag that indicates the position of the RX buffer,
++  one of the two partitions must set it.
++- mub-partition: The id number of the remote processors,
++  used on i.mx8qm for partition reset. The default
++  value is 3 in driver without this property.
++- mbox-names: the mailbox channel names.
++- mboxes: the mailboxes list containing:
++  MU name, channel type (0 for TX, 1 for RX) and channel id.
++- memory-region: the coherent memory shared across domains.
++
++=====================================================================
++
++Example:
++
++imx_shmem_net: imx_shmem_net {
++	compatible = "fsl,imx-shmem-net";
++	mub-partition = <1>;
++	mbox-names = "tx", "rx";
++	mboxes = <&lsio_mu8b 0 1
++			  &lsio_mu8b 1 1>;
++	status = "disabled";
++};
++
++&imx_shmem_net{
++	memory-region = <&shmem_dma_reserved>;
++	status = "okay";
++};
++

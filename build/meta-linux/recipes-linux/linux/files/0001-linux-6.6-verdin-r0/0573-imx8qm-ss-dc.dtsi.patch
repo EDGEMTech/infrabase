@@ -1,0 +1,81 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8qm-ss-dc.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8qm-ss-dc.dtsi	2026-04-08 16:21:02.064299775 +0200
+@@ -0,0 +1,78 @@
++// SPDX-License-Identifier: GPL-2.0+
++
++/*
++ * Copyright 2019 NXP
++ */
++
++&dpu1 {
++	compatible = "fsl,imx8qm-dpu";
++
++	dpu1_disp0: port@0 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0>;
++
++		dpu1_disp0_hdmi: endpoint@0 {
++			reg = <0>;
++			remote-endpoint = <&hdmi_disp>;
++		};
++
++		dpu1_disp0_mipi0: endpoint@1 {
++			reg = <1>;
++			remote-endpoint = <&mipi0_dsi_in>;
++		};
++	};
++
++	dpu1_disp1: port@1 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <1>;
++
++		dpu1_disp1_ldb1_ch0: endpoint@0 {
++			reg = <0>;
++			remote-endpoint = <&ldb1_ch0>;
++		};
++
++		dpu1_disp1_ldb1_ch1: endpoint@1 {
++			reg = <1>;
++			remote-endpoint = <&ldb1_ch1>;
++		};
++	};
++};
++
++&dpu2 {
++	compatible = "fsl,imx8qm-dpu";
++
++	dpu2_disp0: port@0 {
++		reg = <0>;
++
++		dpu2_disp0_mipi1: endpoint {
++			remote-endpoint = <&mipi1_dsi_in>;
++		};
++
++	};
++
++	dpu2_disp1: port@1 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <1>;
++
++		dpu2_disp1_ldb2_ch0: endpoint@0 {
++			reg = <0>;
++			remote-endpoint = <&ldb2_ch0>;
++		};
++
++		dpu2_disp1_ldb2_ch1: endpoint@1 {
++			reg = <1>;
++			remote-endpoint = <&ldb2_ch1>;
++		};
++	};
++};
++
++/ {
++	display-subsystem {
++		compatible = "fsl,imx-display-subsystem";
++		ports = <&dpu1_disp0>, <&dpu1_disp1>,
++			<&dpu2_disp0>, <&dpu2_disp1>;
++	};
++};

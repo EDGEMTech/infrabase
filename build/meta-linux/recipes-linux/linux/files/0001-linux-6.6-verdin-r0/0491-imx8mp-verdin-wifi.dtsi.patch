@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi	2026-04-08 18:20:05.020882757 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi	2026-04-08 16:21:02.039216743 +0200
+@@ -76,7 +76,6 @@
+ &usdhc1 {
+ 	bus-width = <4>;
+ 	keep-power-in-suspend;
+-	max-frequency = <100000000>;
+ 	non-removable;
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_wifi_ctrl>;

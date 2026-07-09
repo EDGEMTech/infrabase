@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml	2026-04-08 18:20:04.537680805 +0200
++++ ./Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml	2026-04-08 16:20:51.358664206 +0200
+@@ -16,6 +16,7 @@
+   compatible:
+     oneOf:
+       - enum:
++          - invensense,iam20380
+           - invensense,iam20680
+           - invensense,icm20608
+           - invensense,icm20609

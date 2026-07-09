@@ -1,0 +1,32 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/vfio/fsl-mc/vfio_fsl_mc.c	2026-04-08 18:20:09.612148565 +0200
++++ ./drivers/vfio/fsl-mc/vfio_fsl_mc.c	2026-04-08 16:21:09.800006693 +0200
+@@ -50,6 +50,7 @@
+ 		vdev->regions[i].flags |= VFIO_REGION_INFO_FLAG_READ;
+ 		if (!(mc_dev->regions[i].flags & IORESOURCE_READONLY))
+ 			vdev->regions[i].flags |= VFIO_REGION_INFO_FLAG_WRITE;
++		vdev->regions[i].type = mc_dev->regions[i].flags & IORESOURCE_BITS;
+ 	}
+ 
+ 	return 0;
+@@ -361,7 +362,6 @@
+ {
+ 	u64 size = vma->vm_end - vma->vm_start;
+ 	u64 pgoff, base;
+-	u8 region_cacheable;
+ 
+ 	pgoff = vma->vm_pgoff &
+ 		((1U << (VFIO_FSL_MC_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+@@ -370,9 +370,10 @@
+ 	if (region.size < PAGE_SIZE || base + size > region.size)
+ 		return -EINVAL;
+ 
+-	region_cacheable = (region.type & FSL_MC_REGION_CACHEABLE) &&
+-			   (region.type & FSL_MC_REGION_SHAREABLE);
+-	if (!region_cacheable)
++	if (region.type & FSL_MC_REGION_CACHEABLE) {
++		if (!(region.type & FSL_MC_REGION_SHAREABLE))
++			vma->vm_page_prot = pgprot_cached_ns(vma->vm_page_prot);
++	} else
+ 		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+ 
+ 	vma->vm_pgoff = (region.addr >> PAGE_SHIFT) + pgoff;

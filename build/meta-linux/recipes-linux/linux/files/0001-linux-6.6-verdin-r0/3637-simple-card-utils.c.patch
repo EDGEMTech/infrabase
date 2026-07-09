@@ -1,0 +1,33 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/generic/simple-card-utils.c	2026-04-08 18:20:10.904100025 +0200
++++ ./sound/soc/generic/simple-card-utils.c	2026-04-08 16:21:18.393682979 +0200
+@@ -115,6 +115,30 @@
+ }
+ EXPORT_SYMBOL_GPL(asoc_simple_parse_daifmt);
+ 
++int asoc_simple_parse_link_direction(struct device *dev, struct device_node *node, char *prefix,
++				     bool *playback_only, bool *capture_only)
++{
++	bool is_playback_only = false;
++	bool is_capture_only = false;
++
++	if (!prefix)
++		prefix = "";
++
++	is_playback_only = of_property_read_bool(node, "playback-only");
++	is_capture_only = of_property_read_bool(node, "capture-only");
++
++	if (is_playback_only && is_capture_only) {
++		dev_err(dev, "Invalid configuration, both playback-only / capture-only are set\n");
++		return -EINVAL;
++	}
++
++	*playback_only = is_playback_only;
++	*capture_only = is_capture_only;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(asoc_simple_parse_link_direction);
++
+ int asoc_simple_parse_tdm_width_map(struct device *dev, struct device_node *np,
+ 				    struct asoc_simple_dai *dai)
+ {

@@ -1,0 +1,27 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/arm/midgard/platform/devicetree/Kbuild	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/gpu/arm/midgard/platform/devicetree/Kbuild	2026-04-08 16:21:05.069871749 +0200
+@@ -0,0 +1,24 @@
++# SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note
++#
++# (C) COPYRIGHT 2012-2017, 2020-2021 ARM Limited. All rights reserved.
++#
++# This program is free software and is provided to you under the terms of the
++# GNU General Public License version 2 as published by the Free Software
++# Foundation, and any use by you of this program is subject to the terms
++# of such GNU license.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program; if not, you can access it online at
++# http://www.gnu.org/licenses/gpl-2.0.html.
++#
++#
++
++mali_kbase-y += \
++    platform/$(MALI_PLATFORM_DIR)/mali_kbase_config_devicetree.o \
++    platform/$(MALI_PLATFORM_DIR)/mali_kbase_runtime_pm.o \
++    platform/$(MALI_PLATFORM_DIR)/mali_kbase_clk_rate_trace.o

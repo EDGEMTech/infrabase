@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/crypto/caam/caamalg_desc.h	2026-04-08 18:20:05.949260401 +0200
++++ ./drivers/crypto/caam/caamalg_desc.h	2026-04-08 16:21:04.743060046 +0200
+@@ -17,6 +17,9 @@
+ #define DESC_QI_AEAD_DEC_LEN		(DESC_AEAD_DEC_LEN + 3 * CAAM_CMD_SZ)
+ #define DESC_QI_AEAD_GIVENC_LEN		(DESC_AEAD_GIVENC_LEN + 3 * CAAM_CMD_SZ)
+ 
++#define DESC_TLS_BASE			(4 * CAAM_CMD_SZ)
++#define DESC_TLS10_ENC_LEN		(DESC_TLS_BASE + 30  * CAAM_CMD_SZ)
++
+ /* Note: Nonce is counted in cdata.keylen */
+ #define DESC_AEAD_CTR_RFC3686_LEN	(4 * CAAM_CMD_SZ)
+ 
+@@ -72,6 +75,16 @@
+ 			       u32 *nonce, const u32 ctx1_iv_off,
+ 			       const bool is_qi, int era);
+ 
++void cnstr_shdsc_tls_encap(u32 *const desc, struct alginfo *cdata,
++			   struct alginfo *adata, unsigned int assoclen,
++			   unsigned int ivsize, unsigned int authsize,
++			   unsigned int blocksize, int era);
++
++void cnstr_shdsc_tls_decap(u32 *const desc, struct alginfo *cdata,
++			   struct alginfo *adata, unsigned int assoclen,
++			   unsigned int ivsize, unsigned int authsize,
++			   unsigned int blocksize, int era);
++
+ void cnstr_shdsc_gcm_encap(u32 * const desc, struct alginfo *cdata,
+ 			   unsigned int ivsize, unsigned int icvsize,
+ 			   const bool is_qi);

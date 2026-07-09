@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/uio/uio.c	2026-04-08 18:20:09.499944525 +0200
++++ ./drivers/uio/uio.c	2026-04-08 16:21:09.632449482 +0200
+@@ -792,6 +792,15 @@
+ 		goto out;
+ 	}
+ 
++	if (idev->info->mem[mi].readonly) {
++		if (vma->vm_flags & VM_WRITE) {
++			ret = -EINVAL;
++			goto out;
++		}
++
++		vm_flags_clear(vma, VM_MAYWRITE);
++	}
++
+ 	if (idev->info->mmap) {
+ 		ret = idev->info->mmap(idev->info, vma);
+ 		goto out;

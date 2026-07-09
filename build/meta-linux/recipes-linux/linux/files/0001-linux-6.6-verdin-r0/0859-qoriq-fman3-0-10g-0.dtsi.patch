@@ -1,0 +1,35 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-0.dtsi	2026-04-08 18:20:05.024882869 +0200
++++ ./arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-0.dtsi	2026-04-08 16:21:02.109306830 +0200
+@@ -9,19 +9,20 @@
+ fman@1a00000 {
+ 	fman0_rx_0x10: port@90000 {
+ 		cell-index = <0x10>;
+-		compatible = "fsl,fman-v3-port-rx";
++		compatible = "fsl,fman-v3-port-rx", "fsl,fman-port-10g-rx";
+ 		reg = <0x90000 0x1000>;
+ 		fsl,fman-10g-port;
+ 	};
+ 
+ 	fman0_tx_0x30: port@b0000 {
+ 		cell-index = <0x30>;
+-		compatible = "fsl,fman-v3-port-tx";
++		compatible = "fsl,fman-v3-port-tx", "fsl,fman-port-10g-tx";
+ 		reg = <0xb0000 0x1000>;
+ 		fsl,fman-10g-port;
++		fsl,qman-channel-id = <0x800>;
+ 	};
+ 
+-	ethernet@f0000 {
++	mac9: ethernet@f0000 {
+ 		cell-index = <0x8>;
+ 		compatible = "fsl,fman-memac";
+ 		reg = <0xf0000 0x1000>;
+@@ -29,7 +30,7 @@
+ 		pcsphy-handle = <&pcsphy6>;
+ 	};
+ 
+-	mdio@f1000 {
++	mdio9: mdio@f1000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";

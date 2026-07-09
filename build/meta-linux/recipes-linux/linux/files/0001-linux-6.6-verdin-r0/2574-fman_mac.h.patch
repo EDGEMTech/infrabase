@@ -1,0 +1,9 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/freescale/fman/fman_mac.h	2026-04-08 18:20:08.155970123 +0200
++++ ./drivers/net/ethernet/freescale/fman/fman_mac.h	2026-04-08 16:21:07.524338571 +0200
+@@ -1,5 +1,6 @@
+ /*
+  * Copyright 2008-2015 Freescale Semiconductor Inc.
++ * Copyright 2020 Puresoftware Ltd.
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions are met:

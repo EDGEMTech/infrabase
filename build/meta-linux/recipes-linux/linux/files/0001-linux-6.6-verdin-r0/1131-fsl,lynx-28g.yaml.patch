@@ -1,0 +1,31 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/phy/fsl,lynx-28g.yaml	2026-04-08 18:20:04.575218778 +0200
++++ ./Documentation/devicetree/bindings/phy/fsl,lynx-28g.yaml	2026-04-08 16:20:59.673349736 +0200
+@@ -11,8 +11,17 @@
+ 
+ properties:
+   compatible:
+-    enum:
+-      - fsl,lynx-28g
++    oneOf:
++      - items:
++          - const: fsl,lynx-28g
++      - items:
++          - enum:
++              - fsl,lx2160a-serdes1
++              - fsl,lx2160a-serdes2
++              - fsl,lx2160a-serdes3
++              - fsl,lx2162a-serdes1
++              - fsl,lx2162a-serdes2
++          - const: fsl,lynx-28g
+ 
+   reg:
+     maxItems: 1
+@@ -33,7 +42,7 @@
+       #address-cells = <2>;
+       #size-cells = <2>;
+       serdes_1: phy@1ea0000 {
+-        compatible = "fsl,lynx-28g";
++        compatible = "fsl,lx2160a-serdes1", "fsl,lynx-28g";
+         reg = <0x0 0x1ea0000 0x0 0x1e30>;
+         #phy-cells = <1>;
+       };

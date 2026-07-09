@@ -1,0 +1,34 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/radio/radio-si476x.c	2026-04-08 18:20:07.802960286 +0200
++++ ./drivers/media/radio/radio-si476x.c	2026-04-08 16:21:07.070704220 +0200
+@@ -983,6 +983,14 @@
+ 		}
+ 		break;
+ 
++	case V4L2_CID_AUDIO_MUTE:
++		if (ctrl->val)
++			retval = regmap_write(radio->core->regmap,
++					      SI476X_PROP_AUDIO_MUTE, 3);
++		else
++			retval = regmap_write(radio->core->regmap,
++					      SI476X_PROP_AUDIO_MUTE, 0);
++		break;
+ 	default:
+ 		retval = -EINVAL;
+ 		break;
+@@ -1470,6 +1478,16 @@
+ 			rval);
+ 		goto exit;
+ 	}
++
++	ctrl = v4l2_ctrl_new_std(&radio->ctrl_handler, &si476x_ctrl_ops,
++				 V4L2_CID_AUDIO_MUTE,
++				 0, 1, 1, 0);
++	rval = radio->ctrl_handler.error;
++	if (ctrl == NULL && rval) {
++		dev_err(&pdev->dev, "Could not initialize V4L2_CID_AUDIO_MUTE control %d\n",
++			rval);
++		goto exit;
++	}
+ 
+ 	if (si476x_core_has_diversity(radio->core)) {
+ 		si476x_ctrls[SI476X_IDX_DIVERSITY_MODE].def =

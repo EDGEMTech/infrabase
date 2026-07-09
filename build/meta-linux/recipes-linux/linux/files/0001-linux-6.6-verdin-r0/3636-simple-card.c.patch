@@ -1,0 +1,26 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/generic/simple-card.c	2026-04-08 18:20:10.904100025 +0200
++++ ./sound/soc/generic/simple-card.c	2026-04-08 16:21:18.394002717 +0200
+@@ -195,6 +195,7 @@
+ {
+ 	struct device *dev = simple_priv_to_dev(priv);
+ 	struct snd_soc_dai_link *dai_link = simple_priv_to_link(priv, li->link);
++	bool is_playback_only, is_capture_only;
+ 	int ret;
+ 
+ 	ret = asoc_simple_parse_daifmt(dev, node, codec,
+@@ -202,6 +203,15 @@
+ 	if (ret < 0)
+ 		return 0;
+ 
++	ret = asoc_simple_parse_link_direction(dev, node, prefix,
++					       &is_playback_only,
++					       &is_capture_only);
++	if (ret < 0)
++		return 0;
++
++	dai_link->playback_only = is_playback_only;
++	dai_link->capture_only = is_capture_only;
++
+ 	dai_link->init			= asoc_simple_dai_init;
+ 	dai_link->ops			= &simple_ops;
+ 

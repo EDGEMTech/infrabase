@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/imx/ipu-v3/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/gpu/imx/ipu-v3/Makefile	2026-04-08 16:21:06.329077740 +0200
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_IMX_IPUV3_CORE) += imx-ipu-v3.o
++
++imx-ipu-v3-objs := ipu-common.o ipu-cpmem.o ipu-csi.o ipu-dc.o ipu-di.o \
++		ipu-dp.o ipu-dmfc.o ipu-ic.o ipu-ic-csc.o \
++		ipu-image-convert.o ipu-smfc.o ipu-vdi.o
++
++ifdef CONFIG_DRM
++	imx-ipu-v3-objs += ipu-pre.o ipu-prg.o
++endif

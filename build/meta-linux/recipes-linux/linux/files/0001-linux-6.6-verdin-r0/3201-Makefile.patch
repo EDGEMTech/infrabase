@@ -1,0 +1,7 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/usb/typec/mux/Makefile	2026-04-08 18:20:09.603093554 +0200
++++ ./drivers/usb/typec/mux/Makefile	2026-04-08 16:21:09.774985514 +0200
+@@ -5,3 +5,4 @@
+ obj-$(CONFIG_TYPEC_MUX_PI3USB30532)	+= pi3usb30532.o
+ obj-$(CONFIG_TYPEC_MUX_INTEL_PMC)	+= intel_pmc_mux.o
+ obj-$(CONFIG_TYPEC_MUX_NB7VPQ904M)	+= nb7vpq904m.o
++obj-$(CONFIG_TYPEC_SWITCH_GPIO)		+= gpio-switch.o

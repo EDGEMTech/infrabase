@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/driver-api/driver-model/devres.rst	2026-04-08 18:20:04.626659636 +0200
++++ ./Documentation/driver-api/driver-model/devres.rst	2026-04-08 16:20:59.906057947 +0200
+@@ -426,6 +426,7 @@
+   devm_regulator_bulk_put()
+   devm_regulator_get()
+   devm_regulator_get_enable()
++  devm_regulator_get_enable_read_voltage()
+   devm_regulator_get_enable_optional()
+   devm_regulator_get_exclusive()
+   devm_regulator_get_optional()

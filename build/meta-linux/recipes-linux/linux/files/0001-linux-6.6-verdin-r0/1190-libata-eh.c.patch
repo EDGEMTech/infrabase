@@ -1,0 +1,36 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/ata/libata-eh.c	2026-04-08 18:20:05.721902295 +0200
++++ ./drivers/ata/libata-eh.c	2026-04-08 16:21:04.409512629 +0200
+@@ -562,6 +562,10 @@
+ 	/* finish or retry handled scmd's and clean up */
+ 	WARN_ON(!list_empty(&eh_work_q));
+ 
++#ifdef CONFIG_AHCI_IMX_PMP
++	ap->flags &= ~(0x7 << 29);
++#endif
++
+ }
+ 
+ /**
+@@ -2052,6 +2056,10 @@
+ 	if (ehc->i.flags & ATA_EHI_NO_AUTOPSY)
+ 		return;
+ 
++#ifdef CONFIG_AHCI_IMX_PMP
++	ata_msleep(ap, 20);
++#endif
++
+ 	/* obtain and analyze SError */
+ 	rc = sata_scr_read(link, SCR_ERROR, &serror);
+ 	if (rc == 0) {
+@@ -3704,6 +3712,11 @@
+ 	int rc, nr_fails;
+ 	unsigned long flags, deadline;
+ 
++#ifdef CONFIG_AHCI_IMX_PMP
++	if (ap->flags & (1 << 31))
++		ap->flags |= (1 << 29);
++#endif
++
+ 	/* prep for recovery */
+ 	ata_for_each_link(link, ap, EDGE) {
+ 		struct ata_eh_context *ehc = &link->eh_context;

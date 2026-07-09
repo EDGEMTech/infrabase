@@ -1,0 +1,129 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/MAINTAINERS	2026-04-08 18:20:04.771875817 +0200
++++ ./MAINTAINERS	2026-04-08 16:21:00.437737236 +0200
+@@ -6956,7 +6956,7 @@
+ L:	dri-devel@lists.freedesktop.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/display/imx/
+-F:	drivers/gpu/drm/imx/ipuv3/
++F:	drivers/gpu/drm/imx/
+ F:	drivers/gpu/ipu-v3/
+ 
+ DRM DRIVERS FOR FREESCALE IMX BRIDGE
+@@ -8360,6 +8360,14 @@
+ F:	drivers/ptp/ptp_qoriq_debugfs.c
+ F:	include/linux/fsl/ptp_qoriq.h
+ 
++FREESCALE QORIQ PPFE ETHERNET DRIVER
++M:	Anji Jagarlmudi <anji.jagarlmudi@nxp.com>
++M:	Calvin Johnson <calvin.johnson@nxp.com>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	drivers/staging/fsl_ppfe
++F:	Documentation/devicetree/bindings/net/fsl_ppfe/pfe.txt
++
+ FREESCALE QUAD SPI DRIVER
+ M:	Han Xu <han.xu@nxp.com>
+ L:	linux-spi@vger.kernel.org
+@@ -11234,6 +11242,7 @@
+ S:	Maintained
+ F:	arch/x86/include/asm/jailhouse_para.h
+ F:	arch/x86/kernel/jailhouse.c
++F:	drivers/virt/jailhouse_dbgcon.c
+ 
+ JC42.4 TEMPERATURE SENSOR DRIVER
+ M:	Guenter Roeck <linux@roeck-us.net>
+@@ -11633,6 +11642,18 @@
+ F:	include/keys/encrypted-type.h
+ F:	security/keys/encrypted-keys/
+ 
++KEYS-SECURE
++M:	Udit Agarwal <udit.agarwal@nxp.com>
++R:	Sahil Malhotra <sahil.malhotra@nxp.com>
++L:	linux-security-module@vger.kernel.org
++L:	keyrings@vger.kernel.org
++S:	Supported
++F:	include/keys/secure-type.h
++F:	security/keys/secure_key.c
++F:	security/keys/securekey_desc.c
++F:	security/keys/securekey_desc.h
++F:	security/keys/encrypted-keys/masterkey_secure.c
++
+ KEYS-TRUSTED
+ M:	James Bottomley <jejb@linux.ibm.com>
+ M:	Jarkko Sakkinen <jarkko@kernel.org>
+@@ -11662,6 +11683,15 @@
+ F:	include/keys/trusted_tee.h
+ F:	security/keys/trusted-keys/trusted_tee.c
+ 
++KEYS-TRUSTED-CAAM
++M:	Ahmad Fatoum <a.fatoum@pengutronix.de>
++R:	Pengutronix Kernel Team <kernel@pengutronix.de>
++L:	linux-integrity@vger.kernel.org
++L:	keyrings@vger.kernel.org
++S:	Maintained
++F:	include/keys/trusted_caam.h
++F:	security/keys/trusted-keys/trusted_caam.c
++
+ KEYS/KEYRINGS
+ M:	David Howells <dhowells@redhat.com>
+ M:	Jarkko Sakkinen <jarkko@kernel.org>
+@@ -20910,6 +20940,7 @@
+ F:	drivers/cpufreq/sc[mp]i-cpufreq.c
+ F:	drivers/firmware/arm_scmi/
+ F:	drivers/firmware/arm_scpi.c
++F:	drivers/pmdomain/arm/
+ F:	drivers/powercap/arm_scmi_powercap.c
+ F:	drivers/regulator/scmi-regulator.c
+ F:	drivers/reset/reset-scmi.c
+@@ -20917,6 +20948,13 @@
+ F:	include/trace/events/scmi.h
+ F:	include/uapi/linux/virtio_scmi.h
+ 
++PINCTRL DRIVER FOR SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI)
++M:	Oleksii Moisieiev <oleksii_moisieiev@epam.com>
++L:	linux-arm-kernel@lists.infradead.org
++S:	Maintained
++F:	drivers/firmware/arm_scmi/pinctrl.c
++F:	drivers/pinctrl/pinctrl-scmi.c
++
+ SYSTEM RESET/SHUTDOWN DRIVERS
+ M:	Sebastian Reichel <sre@kernel.org>
+ L:	linux-pm@vger.kernel.org
+@@ -21465,6 +21503,14 @@
+ S:	Odd Fixes
+ F:	drivers/gpio/gpio-thunderx.c
+ 
++TI ADS1119 ADC DRIVER
++M:	Francesco Dolcini <francesco@dolcini.it>
++M:	João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
++L:	linux-iio@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
++F:	drivers/iio/adc/ti-ads1119.c
++
+ TI ADS7924 ADC DRIVER
+ M:	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+ L:	linux-iio@vger.kernel.org
+@@ -21758,6 +21804,12 @@
+ S:	Maintained
+ F:	drivers/platform/x86/topstar-laptop.c
+ 
++TORADEX EMBEDDED CONTROLLER DRIVER
++M:	Emanuele Ghidoli <ghidoliemanuele@gmail.com>
++M:	Francesco Dolcini <francesco@dolcini.it>
++S:	Maintained
++F:	drivers/power/reset/tdx-ec-poweroff.c
++
+ TORTURE-TEST MODULES
+ M:	Davidlohr Bueso <dave@stgolabs.net>
+ M:	"Paul E. McKenney" <paulmck@kernel.org>
+@@ -23950,3 +24002,9 @@
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+ F:	*
+ F:	*/
++
++NXP IMX9 TRUE RANDOM NUMBER GENERATOR (TRNG) DRIVER
++M:	Gaurav Jain <gaurav.jain@nxp.com>
++L:	linux-crypto@vger.kernel.org
++S:	Maintained
++F:	drivers/firmware/imx/ele_trng.c

@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c	2026-04-08 18:20:07.008265114 +0200
++++ ./drivers/gpu/drm/bridge/synopsys/dw-hdmi.c	2026-04-08 16:21:05.808131088 +0200
+@@ -2985,6 +2985,9 @@
+ {
+ 	struct dw_hdmi *hdmi = bridge->driver_private;
+ 
++	if (!connector)
++		return dw_hdmi_get_edid(hdmi, &hdmi->connector);
++
+ 	return dw_hdmi_get_edid(hdmi, connector);
+ }
+ 

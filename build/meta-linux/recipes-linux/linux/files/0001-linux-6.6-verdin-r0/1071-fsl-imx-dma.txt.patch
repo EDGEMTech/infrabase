@@ -1,0 +1,24 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/dma/fsl-imx-dma.txt	2026-04-08 18:20:04.523117675 +0200
++++ ./Documentation/devicetree/bindings/dma/fsl-imx-dma.txt	2026-04-08 16:20:51.312395202 +0200
+@@ -18,6 +18,21 @@
+ - dma-requests : Number of DMA requests supported.
+ - #dma-requests : deprecated
+ 
++* DMA capability limitation
++
++Specify the DMA capability limitations.
++For example, some SoCs only support up to 32bit DMA capability, although
++they are 64bit SoCs.
++
++- only-dma-mask32: 1 means that the SoCs only suppot up to 32bit DMA
++  capability.
++
++Example:
++	dma_cap: dma_cap {
++		compatible = "dma-capability";
++		only-dma-mask32 = <1>;
++	};
++
+ Example:
+ 
+ 	dma: dma@10001000 {

@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/sound/simple_card_utils.h	2026-04-08 18:20:10.206027239 +0200
++++ ./include/sound/simple_card_utils.h	2026-04-08 16:21:11.748577998 +0200
+@@ -135,6 +135,11 @@
+ 			     struct device_node *codec,
+ 			     char *prefix,
+ 			     unsigned int *retfmt);
++int asoc_simple_parse_link_direction(struct device *dev,
++				     struct device_node *node,
++				     char *prefix,
++				     bool *is_playback_only,
++				     bool *is_capture_only);
+ int asoc_simple_parse_tdm_width_map(struct device *dev, struct device_node *np,
+ 				    struct asoc_simple_dai *dai);
+ 

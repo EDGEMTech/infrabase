@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/boot/dts/fsl/t1042rdb.dts	2026-04-08 18:20:05.274889837 +0200
++++ ./arch/powerpc/boot/dts/fsl/t1042rdb.dts	2026-04-08 16:21:03.193260640 +0200
+@@ -68,7 +68,7 @@
+ 
+ 	ifc: localbus@ffe124000 {
+ 		cpld@3,0 {
+-			compatible = "fsl,t1042rdb-cpld";
++			compatible = "fsl,t104xrdb-cpld", "fsl,deepsleep-cpld";
+ 		};
+ 	};
+ };

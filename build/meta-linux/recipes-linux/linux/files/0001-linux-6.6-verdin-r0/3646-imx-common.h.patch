@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/sof/imx/imx-common.h	2026-04-08 18:20:10.944549899 +0200
++++ ./sound/soc/sof/imx/imx-common.h	2026-04-08 16:21:18.488239909 +0200
+@@ -15,13 +15,4 @@
+ 
+ void imx8_dump(struct snd_sof_dev *sdev, u32 flags);
+ 
+-struct imx_clocks {
+-	struct clk_bulk_data *dsp_clks;
+-	int num_dsp_clks;
+-};
+-
+-int imx8_parse_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks);
+-int imx8_enable_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks);
+-void imx8_disable_clocks(struct snd_sof_dev *sdev, struct imx_clocks *clks);
+-
+ #endif

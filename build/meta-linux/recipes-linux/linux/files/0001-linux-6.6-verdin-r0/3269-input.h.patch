@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/dt-bindings/input/input.h	2026-04-08 18:20:10.003740208 +0200
++++ ./include/dt-bindings/input/input.h	2026-04-08 16:21:11.211319567 +0200
+@@ -15,4 +15,7 @@
+ #define MATRIX_KEY(row, col, code)	\
+ 	((((row) & 0xFF) << 24) | (((col) & 0xFF) << 16) | ((code) & 0xFFFF))
+ 
++#define FT5416		0x54160002
++#define FT5426		0x54260002
++
+ #endif /* _DT_BINDINGS_INPUT_INPUT_H */

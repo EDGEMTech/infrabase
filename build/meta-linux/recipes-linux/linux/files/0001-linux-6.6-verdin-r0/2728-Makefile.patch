@@ -1,0 +1,27 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Makefile	2026-04-08 16:21:07.530031456 +0200
+@@ -0,0 +1,24 @@
++#
++# Makefile for the Freescale Ethernet controllers
++#
++ccflags-y           += -DVERSION=\"\"
++#
++#Include netcomm SW specific definitions
++include $(srctree)/drivers/net/ethernet/freescale/sdk_fman/ncsw_config.mk
++NCSW_FM_INC = $(srctree)/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc
++
++ccflags-y += -I$(NCSW_FM_INC)
++
++
++obj-y		+= fsl-ncsw-PFM1.o
++
++fsl-ncsw-PFM1-objs	:=   fm.o fm_muram.o fman.o
++
++obj-y		+= MAC/
++obj-y		+= Pcd/
++obj-y		+= SP/
++obj-y		+= Port/
++obj-y		+= HC/
++obj-y		+= MACSEC/
++
++obj-$(CONFIG_FSL_SDK_FMAN_RTC_API)	+= Rtc/

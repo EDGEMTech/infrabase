@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/mmc/host.h	2026-04-08 18:20:10.088286118 +0200
++++ ./include/linux/mmc/host.h	2026-04-08 16:21:11.472602237 +0200
+@@ -483,7 +483,7 @@
+ 
+ 	unsigned int		sdio_irqs;
+ 	struct task_struct	*sdio_irq_thread;
+-	struct work_struct	sdio_irq_work;
++	struct delayed_work	sdio_irq_work;
+ 	bool			sdio_irq_pending;
+ 	atomic_t		sdio_irq_thread_abort;
+ 

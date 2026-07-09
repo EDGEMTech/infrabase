@@ -1,0 +1,27 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpio/gpio-mpc8xxx.c	2026-04-08 18:20:06.059911715 +0200
++++ ./drivers/gpio/gpio-mpc8xxx.c	2026-04-08 16:21:04.990560823 +0200
+@@ -431,6 +431,16 @@
+ 	return 0;
+ }
+ 
++static void mpc8xxx_shutdown(struct platform_device *pdev)
++{
++	struct mpc8xxx_gpio_chip *mpc8xxx_gc = platform_get_drvdata(pdev);
++
++	if (mpc8xxx_gc->irq) {
++		irq_set_chained_handler_and_data(mpc8xxx_gc->irqn, NULL, NULL);
++		irq_domain_remove(mpc8xxx_gc->irq);
++	}
++}
++
+ #ifdef CONFIG_ACPI
+ static const struct acpi_device_id gpio_acpi_ids[] = {
+ 	{"NXP0031",},
+@@ -442,6 +452,7 @@
+ static struct platform_driver mpc8xxx_plat_driver = {
+ 	.probe		= mpc8xxx_probe,
+ 	.remove		= mpc8xxx_remove,
++	.shutdown	= mpc8xxx_shutdown,
+ 	.driver		= {
+ 		.name = "gpio-mpc8xxx",
+ 		.of_match_table	= mpc8xxx_gpio_ids,

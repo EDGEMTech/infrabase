@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/regulator/nxp,pca9450-regulator.yaml	2026-04-08 18:20:04.591070671 +0200
++++ ./Documentation/devicetree/bindings/regulator/nxp,pca9450-regulator.yaml	2026-04-08 16:20:59.622266965 +0200
+@@ -28,6 +28,8 @@
+       - nxp,pca9450a
+       - nxp,pca9450b
+       - nxp,pca9450c
++      - nxp,pca9451a
++      - nxp,pca9452
+ 
+   reg:
+     maxItems: 1

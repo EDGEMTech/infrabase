@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml	2026-04-08 18:20:04.527869016 +0200
++++ ./Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml	2026-04-08 16:20:51.334582800 +0200
+@@ -35,6 +35,7 @@
+       - items:
+           - enum:
+               - mediatek,mt8192-mali
++              - nxp,imx95-mali
+           - const: arm,mali-valhall-jm # Mali Valhall GPU model/revision is fully discoverable
+ 
+   reg:

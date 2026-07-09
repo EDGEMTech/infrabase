@@ -1,0 +1,24 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8qxp-ss-hsio.dtsi	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8qxp-ss-hsio.dtsi	2026-04-08 16:21:02.076954250 +0200
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2018-2019 NXP
++ *	Richard Zhu <hongxing.zhu@nxp.com>
++ */
++
++&hsio_subsys {
++	phyx1_lpcg: clock-controller@5f090000 {
++		compatible = "fsl,imx8qxp-lpcg";
++		reg = <0x5f090000 0x10000>;
++		#clock-cells = <1>;
++		clocks = <&hsio_refb_clk>, <&hsio_per_clk>,
++			<&hsio_per_clk>, <&hsio_per_clk>;
++		bit-offset = <0 4 8 16>;
++		clock-output-names = "hsio_phyx1_pclk",
++				     "hsio_phyx1_epcs_tx_clk",
++				     "hsio_phyx1_epcs_rx_clk",
++				     "hsio_phyx1_apb_clk";
++		power-domains = <&pd IMX_SC_R_SERDES_1>;
++	};
++};

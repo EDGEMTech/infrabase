@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/amphion/vpu.h	2026-04-08 18:20:07.748982136 +0200
++++ ./drivers/media/platform/amphion/vpu.h	2026-04-08 16:21:07.002371469 +0200
+@@ -306,6 +306,7 @@
+ 	dma_addr_t chroma_v;
+ 	unsigned int state;
+ 	u32 tag;
++	u32 average_qp;
+ };
+ 
+ void vpu_writel(struct vpu_dev *vpu, u32 reg, u32 val);

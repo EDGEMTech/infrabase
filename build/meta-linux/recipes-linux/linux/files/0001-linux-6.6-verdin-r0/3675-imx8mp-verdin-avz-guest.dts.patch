@@ -1,0 +1,32 @@
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-avz-guest.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-avz-guest.dts
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2026 EDGEMTech SA <info@edgemtech.ch>
++ *
++ * Toradex Verdin iMX8MP — Linux guest DTS for AVZ hypervisor.
++ * Identical to the Mallow carrier board DTS except that the memory
++ * node starts at 0x48000000 to avoid AVZ's heap/stack/frame-table
++ * region (0x40080000–0x45100000).
++ *
++ * Memory layout (2 GiB DRAM @ 0x40000000):
++ *   0x40080000 – 0x45100000   ~80 MiB  AVZ hypervisor + heap + stack + frame table
++ *   0x48000000 – 0xBCFFFFFF  1872 MiB  Linux guest RAM (this file)
++ *   0xBD000000                  4 KiB  AVZ shared page
++ *   0xBE000000 – 0xBFFFFFFF    32 MiB  OP-TEE TZDRAM (reserved)
++ */
++
++#include "imx8mp-verdin-wifi-mallow.dts"
++
++&{/memory@40000000} {
++	/* Linux loaded at 0x48000000; identity stage-2 (IPA = PA). */
++	reg = <0x0 0x48000000 0x0 0x75000000>;
++};
++
++/* Override PSCI conduit: AVZ intercepts HVC at EL2, not SMC (which goes to ATF).
++ * Without this, Linux PSCI CPU_ON goes to ATF which returns ALREADY_ON (-4)
++ * for secondaries already started by AVZ. */
++&{/psci} {
++	method = "hvc";
++};

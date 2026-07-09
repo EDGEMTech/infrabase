@@ -1,0 +1,33 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/thermal/Kconfig	2026-04-08 18:20:09.447006093 +0200
++++ ./drivers/thermal/Kconfig	2026-04-08 16:21:09.589865358 +0200
+@@ -286,6 +286,16 @@
+ 	  cpufreq is used as the cooling device to throttle CPUs when the passive
+ 	  trip is crossed.
+ 
++config IMX91_THERMAL
++	tristate "Temperature sensor driver for NXP i.MX91 SoC"
++	depends on ARCH_MXC || COMPILE_TEST
++	depends on OF
++	help
++	  Support for Temperature sensor found on NXP i.MX91 SoC.
++	  It supports one critical trip point and one passive trip point. The
++	  cpufreq is used as the cooling device to throttle CPUs when the passive
++	  trip is crossed.
++
+ config K3_THERMAL
+ 	tristate "Texas Instruments K3 thermal support"
+ 	depends on ARCH_K3 || COMPILE_TEST
+@@ -296,6 +306,13 @@
+ 
+ 	  This includes temperature reading functionality.
+ 
++config DEVICE_THERMAL
++	tristate "generic device cooling support"
++	help
++	  Support for device cooling.
++	  It supports notification of crossing passive trip for devices,
++	  devices need to do their own actions to cool down the SOC.
++
+ config MAX77620_THERMAL
+ 	tristate "Temperature sensor driver for Maxim MAX77620 PMIC"
+ 	depends on MFD_MAX77620

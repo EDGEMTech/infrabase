@@ -1,0 +1,69 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/dma-buf/dma-heap.c	2026-04-08 18:20:05.992215690 +0200
++++ ./drivers/dma-buf/dma-heap.c	2026-04-08 16:21:04.846098763 +0200
+@@ -31,6 +31,7 @@
+  * @heap_devt		heap device node
+  * @list		list head connecting to list of heaps
+  * @heap_cdev		heap char device
++ * @heap_dev		heap device struct
+  *
+  * Represents a heap of memory from which buffers can be made.
+  */
+@@ -41,6 +42,7 @@
+ 	dev_t heap_devt;
+ 	struct list_head list;
+ 	struct cdev heap_cdev;
++	struct device *heap_dev;
+ };
+ 
+ static LIST_HEAD(heap_list);
+@@ -216,10 +218,21 @@
+ 	return heap->name;
+ }
+ 
++/**
++ * dma_heap_get_dev() - get device struct for the heap
++ * @heap: DMA-Heap to retrieve device struct from
++ *
++ * Returns:
++ * The device struct for the heap.
++ */
++struct device *dma_heap_get_dev(struct dma_heap *heap)
++{
++	return heap->heap_dev;
++}
++
+ struct dma_heap *dma_heap_add(const struct dma_heap_export_info *exp_info)
+ {
+ 	struct dma_heap *heap, *h, *err_ret;
+-	struct device *dev_ret;
+ 	unsigned int minor;
+ 	int ret;
+ 
+@@ -261,17 +274,20 @@
+ 		goto err1;
+ 	}
+ 
+-	dev_ret = device_create(dma_heap_class,
+-				NULL,
+-				heap->heap_devt,
+-				NULL,
+-				heap->name);
+-	if (IS_ERR(dev_ret)) {
++	heap->heap_dev = device_create(dma_heap_class,
++				       NULL,
++				       heap->heap_devt,
++				       NULL,
++				       heap->name);
++	if (IS_ERR(heap->heap_dev)) {
+ 		pr_err("dma_heap: Unable to create device\n");
+-		err_ret = ERR_CAST(dev_ret);
++		err_ret = ERR_CAST(heap->heap_dev);
+ 		goto err2;
+ 	}
+ 
++	/* Make sure it doesn't disappear on us */
++	heap->heap_dev = get_device(heap->heap_dev);
++
+ 	mutex_lock(&heap_list_lock);
+ 	/* check the name is unique */
+ 	list_for_each_entry(h, &heap_list, list) {

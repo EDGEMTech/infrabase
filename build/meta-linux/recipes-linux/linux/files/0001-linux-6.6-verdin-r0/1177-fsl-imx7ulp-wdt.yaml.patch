@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml	2026-04-08 18:20:04.622813026 +0200
++++ ./Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml	2026-04-08 16:20:59.889723594 +0200
+@@ -30,6 +30,11 @@
+   clocks:
+     maxItems: 1
+ 
++  fsl,ext-reset-output:
++    description:
++      When set, wdog can generate external reset from the wdog_any pin.
++    type: boolean
++
+ required:
+   - compatible
+   - interrupts

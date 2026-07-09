@@ -1,0 +1,125 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/sof/imx/imx8m.c	2026-04-08 18:20:10.944549899 +0200
++++ ./sound/soc/sof/imx/imx8m.c	2026-04-08 16:21:18.488322538 +0200
+@@ -26,12 +26,6 @@
+ #define MBOX_OFFSET	0x800000
+ #define MBOX_SIZE	0x1000
+ 
+-static struct clk_bulk_data imx8m_dsp_clks[] = {
+-	{ .id = "ipg" },
+-	{ .id = "ocram" },
+-	{ .id = "core" },
+-};
+-
+ /* DAP registers */
+ #define IMX8M_DAP_DEBUG                0x28800000
+ #define IMX8M_DAP_DEBUG_SIZE   (64 * 1024)
+@@ -54,7 +48,8 @@
+ 	struct imx_dsp_ipc *dsp_ipc;
+ 	struct platform_device *ipc_dev;
+ 
+-	struct imx_clocks *clks;
++	struct clk_bulk_data *clks;
++	int clk_num;
+ 
+ 	void __iomem *dap;
+ 	struct regmap *regmap;
+@@ -163,10 +158,6 @@
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	priv->clks = devm_kzalloc(&pdev->dev, sizeof(*priv->clks), GFP_KERNEL);
+-	if (!priv->clks)
+-		return -ENOMEM;
+-
+ 	sdev->num_cores = 1;
+ 	sdev->pdata->hw_pdata = priv;
+ 	priv->dev = sdev->dev;
+@@ -243,24 +234,25 @@
+ 	/* set default mailbox offset for FW ready message */
+ 	sdev->dsp_box.offset = MBOX_OFFSET;
+ 
+-	priv->regmap = syscon_regmap_lookup_by_phandle(np, "fsl,dsp-ctrl");
++	priv->regmap = syscon_regmap_lookup_by_phandle(sdev->dev->of_node, "fsl,dsp-ctrl");
+ 	if (IS_ERR(priv->regmap)) {
+ 		dev_err(sdev->dev, "cannot find dsp-ctrl registers");
+ 		ret = PTR_ERR(priv->regmap);
+ 		goto exit_pdev_unregister;
+ 	}
+ 
+-	/* init clocks info */
+-	priv->clks->dsp_clks = imx8m_dsp_clks;
+-	priv->clks->num_dsp_clks = ARRAY_SIZE(imx8m_dsp_clks);
+-
+-	ret = imx8_parse_clocks(sdev, priv->clks);
+-	if (ret < 0)
++	ret = devm_clk_bulk_get_all(sdev->dev, &priv->clks);
++	if (ret < 0) {
++		dev_err(sdev->dev, "failed to fetch clocks: %d\n", ret);
+ 		goto exit_pdev_unregister;
++	}
++	priv->clk_num = ret;
+ 
+-	ret = imx8_enable_clocks(sdev, priv->clks);
+-	if (ret < 0)
++	ret = clk_bulk_prepare_enable(priv->clk_num, priv->clks);
++	if (ret < 0) {
++		dev_err(sdev->dev, "failed to enable clocks: %d\n", ret);
+ 		goto exit_pdev_unregister;
++	}
+ 
+ 	return 0;
+ 
+@@ -273,7 +265,7 @@
+ {
+ 	struct imx8m_priv *priv = sdev->pdata->hw_pdata;
+ 
+-	imx8_disable_clocks(sdev, priv->clks);
++	clk_bulk_disable_unprepare(priv->clk_num, priv->clks);
+ 	platform_device_unregister(priv->ipc_dev);
+ 
+ 	return 0;
+@@ -315,6 +307,13 @@
+ 		.channels_max = 32,
+ 	},
+ },
++{
++	.name = "micfil",
++	.capture = {
++		.channels_min = 1,
++		.channels_max = 8,
++	},
++},
+ };
+ 
+ static int imx8m_dsp_set_power_state(struct snd_sof_dev *sdev,
+@@ -331,9 +330,11 @@
+ 	int ret;
+ 	int i;
+ 
+-	ret = imx8_enable_clocks(sdev, priv->clks);
+-	if (ret < 0)
++	ret = clk_bulk_prepare_enable(priv->clk_num, priv->clks);
++	if (ret < 0) {
++		dev_err(sdev->dev, "failed to enable clocks: %d\n", ret);
+ 		return ret;
++	}
+ 
+ 	for (i = 0; i < DSP_MU_CHAN_NUM; i++)
+ 		imx_dsp_request_channel(priv->dsp_ipc, i);
+@@ -349,7 +350,7 @@
+ 	for (i = 0; i < DSP_MU_CHAN_NUM; i++)
+ 		imx_dsp_free_channel(priv->dsp_ipc, i);
+ 
+-	imx8_disable_clocks(sdev, priv->clks);
++	clk_bulk_disable_unprepare(priv->clk_num, priv->clks);
+ }
+ 
+ static int imx8m_dsp_runtime_resume(struct snd_sof_dev *sdev)
+@@ -467,6 +468,7 @@
+ 		SNDRV_PCM_INFO_MMAP_VALID |
+ 		SNDRV_PCM_INFO_INTERLEAVED |
+ 		SNDRV_PCM_INFO_PAUSE |
++		SNDRV_PCM_INFO_BATCH |
+ 		SNDRV_PCM_INFO_NO_PERIOD_WAKEUP,
+ };
+ 

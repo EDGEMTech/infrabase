@@ -1,0 +1,34 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/imx/Kconfig	2026-04-08 18:20:05.826815961 +0200
++++ ./drivers/clk/imx/Kconfig	2026-04-08 16:21:04.569239787 +0200
+@@ -104,9 +104,17 @@
+ 	tristate "IMX8ULP CCM Clock Driver"
+ 	depends on ARCH_MXC || COMPILE_TEST
+ 	select MXC_CLK
++	select RESET_CONTROLLER
+ 	help
+ 	    Build the driver for i.MX8ULP CCM Clock Driver
+ 
++config CLK_IMX91
++	tristate "IMX91 CCM Clock Driver"
++	depends on ARCH_MXC || COMPILE_TEST
++	select MXC_CLK
++	help
++	    Build the driver for i.MX91 CCM Clock Driver
++
+ config CLK_IMX93
+ 	tristate "IMX93 CCM Clock Driver"
+ 	depends on ARCH_MXC || COMPILE_TEST
+@@ -114,6 +122,13 @@
+ 	help
+ 	    Build the driver for i.MX93 CCM Clock Driver
+ 
++config CLK_IMX95_BLK_CTL
++	tristate "IMX95 BLK CTRL Clock Driver"
++	depends on ARCH_MXC || COMPILE_TEST
++	select MXC_CLK
++	help
++	    Build the driver for i.MX95 BLK CTRL Clock Driver
++
+ config CLK_IMXRT1050
+ 	tristate "IMXRT1050 CCM Clock Driver"
+ 	depends on SOC_IMXRT || COMPILE_TEST

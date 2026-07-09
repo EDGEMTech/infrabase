@@ -1,0 +1,92 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/thermal/imx_thermal.c	2026-04-08 18:20:09.449006149 +0200
++++ ./drivers/thermal/imx_thermal.c	2026-04-08 16:21:09.591555480 +0200
+@@ -85,6 +85,8 @@
+ #define TEMPMON_IMX6SX			2
+ #define TEMPMON_IMX7D			3
+ 
++#define IMX_TEMP_PASSIVE_COOL_DELTA	10000
++
+ struct thermal_soc_data {
+ 	u32 version;
+ 
+@@ -345,21 +347,45 @@
+ 	if (ret)
+ 		return ret;
+ 
+-	/* do not allow changing critical threshold */
+-	if (trip.type == THERMAL_TRIP_CRITICAL)
+-		return -EPERM;
+-
+ 	/* do not allow passive to be set higher than critical */
+ 	if (temp < 0 || temp > trips[IMX_TRIP_CRITICAL].temperature)
+ 		return -EINVAL;
+ 
+-	imx_set_alarm_temp(data, temp);
++	if (trip.type == THERMAL_TRIP_CRITICAL) {
++		trips[IMX_TRIP_CRITICAL].temperature = temp;
++		if (data->socdata->version == TEMPMON_IMX6SX)
++			imx_set_panic_temp(data, temp);
++	}
++
++	if (trip.type == THERMAL_TRIP_PASSIVE) {
++		if (temp > (data->temp_max - (1000 * 10)))
++			return -EINVAL;
++		trips[IMX_TRIP_PASSIVE].temperature = temp;
++		imx_set_alarm_temp(data, temp);
++	}
+ 
+ 	pm_runtime_put(data->dev);
+ 
+ 	return 0;
+ }
+ 
++static int imx_get_trend(struct thermal_zone_device *tz,
++			 const struct thermal_trip *trip,
++			 enum thermal_trend *trend)
++{
++	int trip_temp;
++
++	trip_temp = (trip->type == THERMAL_TRIP_PASSIVE) ? trips[0].temperature :
++		    trips[1].temperature;
++
++	if (tz->temperature >= (trip_temp - IMX_TEMP_PASSIVE_COOL_DELTA))
++		*trend = THERMAL_TREND_RAISING;
++	else
++		*trend = THERMAL_TREND_DROPPING;
++
++	return 0;
++}
++
+ static int imx_bind(struct thermal_zone_device *tz,
+ 		    struct thermal_cooling_device *cdev)
+ {
+@@ -381,6 +407,7 @@
+ 	.get_temp = imx_get_temp,
+ 	.change_mode = imx_change_mode,
+ 	.set_trip_temp = imx_set_trip_temp,
++	.get_trend = imx_get_trend,
+ };
+ 
+ static int imx_init_calib(struct platform_device *pdev, u32 ocotp_ana1)
+@@ -575,8 +602,10 @@
+ 	}
+ 
+ 	of_node_put(np);
++	if (ret)
++		return ret;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static void imx_thermal_unregister_legacy_cooling(struct imx_thermal_data *data)
+@@ -699,7 +728,8 @@
+ 	data->tz = thermal_zone_device_register_with_trips("imx_thermal_zone",
+ 							   trips,
+ 							   ARRAY_SIZE(trips),
+-							   BIT(IMX_TRIP_PASSIVE), data,
++							   BIT(IMX_TRIP_PASSIVE) | BIT(IMX_TRIP_CRITICAL),
++							   data,
+ 							   &imx_tz_ops, NULL,
+ 							   IMX_PASSIVE_DELAY,
+ 							   IMX_POLLING_DELAY);

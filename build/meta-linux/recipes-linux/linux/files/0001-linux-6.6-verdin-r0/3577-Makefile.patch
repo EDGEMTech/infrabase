@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/security/keys/Makefile	2026-04-08 18:20:10.693982823 +0200
++++ ./security/keys/Makefile	2026-04-08 16:21:18.026215543 +0200
+@@ -29,4 +29,9 @@
+ #
+ obj-$(CONFIG_BIG_KEYS) += big_key.o
+ obj-$(CONFIG_TRUSTED_KEYS) += trusted-keys/
++CFLAGS_secure_key.o += -I$(obj)/../../drivers/crypto/caam/
++CFLAGS_securekey_desc.o += -I$(obj)/../../drivers/crypto/caam/
++obj-$(CONFIG_SECURE_KEYS) += securekey.o
++securekey-y := securekey_desc.o \
++	       secure_key.o
+ obj-$(CONFIG_ENCRYPTED_KEYS) += encrypted-keys/

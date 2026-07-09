@@ -1,0 +1,15 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/display/fsl,lcdif.yaml	2026-04-08 18:20:04.516462568 +0200
++++ ./Documentation/devicetree/bindings/display/fsl,lcdif.yaml	2026-04-08 16:20:51.291564091 +0200
+@@ -60,6 +60,12 @@
+     $ref: /schemas/graph.yaml#/properties/port
+     description: The LCDIF output port
+ 
++  max-memory-bandwidth:
++    - description: |
++	maximum bandwidth in bytes per second that the
++	controller can handle; if not present, the memory
++	interface is fast enough to handle all possible video modes
++
+ required:
+   - compatible
+   - reg

@@ -1,0 +1,46 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8qm-ss-lsio.dtsi	2026-04-08 18:20:05.022882813 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8qm-ss-lsio.dtsi	2026-04-08 16:21:02.065700632 +0200
+@@ -3,6 +3,35 @@
+  * Copyright 2019-2020 NXP
+  *	Dong Aisheng <aisheng.dong@nxp.com>
+  */
++&lsio_subsys {
++	lsio_mu6: mailbox@5d210000 {
++		compatible = "fsl,imx8qm-mu", "fsl,imx6sx-mu";
++		reg = <0x5d210000 0x10000>;
++		interrupts = <GIC_SPI 185 IRQ_TYPE_LEVEL_HIGH>;
++		#mbox-cells = <2>;
++		power-domains = <&pd IMX_SC_R_MU_6A>;
++	};
++
++	lsio_mu8: mailbox@5d230000 {
++		compatible = "fsl,imx8qm-mu", "fsl,imx6sx-mu";
++		reg = <0x5d230000 0x10000>;
++		interrupts = <GIC_SPI 187 IRQ_TYPE_LEVEL_HIGH>;
++		#mbox-cells = <2>;
++		power-domains = <&pd IMX_SC_R_MU_8A>;
++		status = "disabled";
++	};
++
++	lsio_mu8b: mailbox@5d2c0000 {
++		compatible = "fsl,imx8qm-mu", "fsl,imx6sx-mu";
++		reg = <0x5d2c0000 0x10000>;
++		interrupts = <GIC_SPI 203 IRQ_TYPE_LEVEL_HIGH>;
++		#mbox-cells = <2>;
++		fsl,mu-side-b;
++		power-domains = <&pd IMX_SC_R_MU_8B>;
++		status = "disabled";
++	};
++
++};
+ 
+ &lsio_gpio0 {
+ 	compatible = "fsl,imx8qm-gpio", "fsl,imx35-gpio";
+@@ -101,7 +130,3 @@
+ &lsio_mu6 {
+ 	compatible = "fsl,imx8qm-mu", "fsl,imx6sx-mu";
+ };
+-
+-&lsio_mu13 {
+-	compatible = "fsl,imx8qm-mu", "fsl,imx6sx-mu";
+-};

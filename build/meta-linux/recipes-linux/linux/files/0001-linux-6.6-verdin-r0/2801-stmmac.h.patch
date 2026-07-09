@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/ethernet/stmicro/stmmac/stmmac.h	2026-04-08 18:20:08.451978370 +0200
++++ ./drivers/net/ethernet/stmicro/stmmac/stmmac.h	2026-04-08 16:21:07.917136702 +0200
+@@ -238,12 +238,15 @@
+ 	struct stmmac_channel channel[STMMAC_CH_MAX];
+ 
+ 	int speed;
++	bool mdio_rst_after_resume;
++	bool wol_resume_reset;
+ 	unsigned int flow_ctrl;
+ 	unsigned int pause;
+ 	struct mii_bus *mii;
+ 
+ 	struct phylink_config phylink_config;
+ 	struct phylink *phylink;
++	bool is_phy_started;
+ 
+ 	struct stmmac_extra_stats xstats ____cacheline_aligned_in_smp;
+ 	struct stmmac_safety_stats sstats;

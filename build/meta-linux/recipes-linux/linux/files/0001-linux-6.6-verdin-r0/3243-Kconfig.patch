@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/video/Kconfig	2026-04-08 18:20:09.618010857 +0200
++++ ./drivers/video/Kconfig	2026-04-08 16:21:09.879247337 +0200
+@@ -41,7 +41,7 @@
+ source "drivers/gpu/vga/Kconfig"
+ 
+ source "drivers/gpu/host1x/Kconfig"
+-source "drivers/gpu/ipu-v3/Kconfig"
++source "drivers/gpu/imx/Kconfig"
+ 
+ source "drivers/gpu/drm/Kconfig"
+ 

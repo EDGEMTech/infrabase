@@ -1,0 +1,36 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/input/keyboard/imx_sc_key.c	2026-04-08 18:20:07.525952568 +0200
++++ ./drivers/input/keyboard/imx_sc_key.c	2026-04-08 16:21:06.611195579 +0200
+@@ -27,6 +27,7 @@
+ struct imx_key_drv_data {
+ 	u32 keycode;
+ 	bool keystate;  /* true: pressed, false: released */
++	int wakeup;
+ 	struct delayed_work check_work;
+ 	struct input_dev *input;
+ 	struct imx_sc_ipc *key_ipc_handle;
+@@ -110,6 +111,7 @@
+ 
+ static int imx_sc_key_probe(struct platform_device *pdev)
+ {
++	struct device_node *np = pdev->dev.of_node;
+ 	struct imx_key_drv_data *priv;
+ 	struct input_dev *input;
+ 	int error;
+@@ -130,6 +132,8 @@
+ 
+ 	INIT_DELAYED_WORK(&priv->check_work, imx_sc_check_for_events);
+ 
++	priv->wakeup = of_property_read_bool(np, "wakeup-source");
++
+ 	input = devm_input_allocate_device(&pdev->dev);
+ 	if (!input) {
+ 		dev_err(&pdev->dev, "failed to allocate the input device\n");
+@@ -151,6 +155,8 @@
+ 	priv->input = input;
+ 	platform_set_drvdata(pdev, priv);
+ 
++	device_init_wakeup(&pdev->dev, !!(priv->wakeup));
++
+ 	error = imx_scu_irq_group_enable(SC_IRQ_GROUP_WAKE, SC_IRQ_BUTTON,
+ 					 true);
+ 	if (error) {

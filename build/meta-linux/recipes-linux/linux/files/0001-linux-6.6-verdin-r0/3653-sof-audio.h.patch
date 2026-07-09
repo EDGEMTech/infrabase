@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/sof/sof-audio.h	2026-04-08 18:20:10.951047993 +0200
++++ ./sound/soc/sof/sof-audio.h	2026-04-08 16:21:18.492954755 +0200
+@@ -277,6 +277,7 @@
+ 	SOF_GAIN_TOKENS,
+ 	SOF_ACPDMIC_TOKENS,
+ 	SOF_ACPI2S_TOKENS,
++	SOF_MICFIL_TOKENS,
+ 
+ 	/* this should be the last */
+ 	SOF_TOKEN_COUNT,

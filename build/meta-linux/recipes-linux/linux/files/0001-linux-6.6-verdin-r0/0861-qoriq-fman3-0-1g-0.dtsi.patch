@@ -1,0 +1,20 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-0.dtsi	2026-04-08 18:20:05.024882869 +0200
++++ ./arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-0.dtsi	2026-04-08 16:21:02.109437381 +0200
+@@ -9,14 +9,15 @@
+ fman@1a00000 {
+ 	fman0_rx_0x08: port@88000 {
+ 		cell-index = <0x8>;
+-		compatible = "fsl,fman-v3-port-rx";
++		compatible = "fsl,fman-v3-port-rx", "fsl,fman-port-1g-rx";
+ 		reg = <0x88000 0x1000>;
+ 	};
+ 
+ 	fman0_tx_0x28: port@a8000 {
+ 		cell-index = <0x28>;
+-		compatible = "fsl,fman-v3-port-tx";
++		compatible = "fsl,fman-v3-port-tx", "fsl,fman-port-1g-tx";
+ 		reg = <0xa8000 0x1000>;
++		fsl,qman-channel-id = <0x802>;
+ 	};
+ 
+ 	ethernet@e0000 {

@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/v4l2-core/videobuf-core.c	2026-04-08 18:20:07.885962599 +0200
++++ ./drivers/media/v4l2-core/videobuf-core.c	2026-04-08 16:21:07.158591252 +0200
+@@ -591,6 +591,13 @@
+ 		    buf->baddr != b->m.userptr)
+ 			q->ops->buf_release(q, buf);
+ 		buf->baddr = b->m.userptr;
++		if (q->type == V4L2_BUF_TYPE_VIDEO_OUTPUT
++		    || q->type == V4L2_BUF_TYPE_VBI_OUTPUT
++		    || q->type == V4L2_BUF_TYPE_SLICED_VBI_OUTPUT
++		    || q->type == V4L2_BUF_TYPE_SDR_OUTPUT) {
++			buf->field = b->field;
++			buf->ts = v4l2_buffer_get_timestamp(b);
++		}
+ 		break;
+ 	case V4L2_MEMORY_OVERLAY:
+ 		buf->boff = b->m.offset;

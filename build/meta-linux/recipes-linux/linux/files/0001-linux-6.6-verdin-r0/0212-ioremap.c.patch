@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/mm/ioremap.c	2026-04-08 18:20:04.988881865 +0200
++++ ./arch/arm/mm/ioremap.c	2026-04-08 16:21:01.890747799 +0200
+@@ -410,6 +410,13 @@
+ }
+ EXPORT_SYMBOL(ioremap_wc);
+ 
++void __iomem *ioremap_cache_ns(resource_size_t res_cookie, size_t size)
++{
++	return arch_ioremap_caller(res_cookie, size, MT_MEMORY_RW_NS,
++				   __builtin_return_address(0));
++}
++EXPORT_SYMBOL(ioremap_cache_ns);
++
+ /*
+  * Remap an arbitrary physical address space into the kernel virtual
+  * address space as memory. Needed when the kernel wants to execute

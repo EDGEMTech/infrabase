@@ -1,0 +1,67 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/watchdog/imx_sc_wdt.c	2026-04-08 18:20:09.678012529 +0200
++++ ./drivers/watchdog/imx_sc_wdt.c	2026-04-08 16:21:09.914656087 +0200
+@@ -32,8 +32,7 @@
+ 
+ #define SC_TIMER_WDOG_ACTION_PARTITION	0
+ 
+-#define SC_IRQ_WDOG			1
+-#define SC_IRQ_GROUP_WDOG		1
++#define SC_TIMER_ERR_BUSY		10
+ 
+ static bool nowayout = WATCHDOG_NOWAYOUT;
+ module_param(nowayout, bool, 0000);
+@@ -61,7 +60,9 @@
+ 
+ 	arm_smccc_smc(IMX_SIP_TIMER, IMX_SIP_TIMER_START_WDOG,
+ 		      0, 0, 0, 0, 0, 0, &res);
+-	if (res.a0)
++
++	/* Ignore if already enabled(SC_TIMER_ERR_BUSY) */
++	if (res.a0 && res.a0 != SC_TIMER_ERR_BUSY)
+ 		return -EACCES;
+ 
+ 	arm_smccc_smc(IMX_SIP_TIMER, IMX_SIP_TIMER_SET_WDOG_ACT,
+@@ -121,8 +122,8 @@
+ 					      struct imx_sc_wdt_device,
+ 					      wdt_notifier);
+ 
+-	if (event & SC_IRQ_WDOG &&
+-	    *(u8 *)group == SC_IRQ_GROUP_WDOG)
++	if (event & IMX_SC_IRQ_WDOG &&
++	    *(u8 *)group == IMX_SC_IRQ_GROUP_WDOG)
+ 		watchdog_notify_pretimeout(&imx_sc_wdd->wdd);
+ 
+ 	return 0;
+@@ -133,8 +134,8 @@
+ 	struct notifier_block *wdt_notifier = data;
+ 
+ 	imx_scu_irq_unregister_notifier(wdt_notifier);
+-	imx_scu_irq_group_enable(SC_IRQ_GROUP_WDOG,
+-				 SC_IRQ_WDOG,
++	imx_scu_irq_group_enable(IMX_SC_IRQ_GROUP_WDOG,
++				 IMX_SC_IRQ_WDOG,
+ 				 false);
+ }
+ 
+@@ -183,8 +184,8 @@
+ 	watchdog_stop_on_reboot(wdog);
+ 	watchdog_stop_on_unregister(wdog);
+ 
+-	ret = imx_scu_irq_group_enable(SC_IRQ_GROUP_WDOG,
+-				       SC_IRQ_WDOG,
++	ret = imx_scu_irq_group_enable(IMX_SC_IRQ_GROUP_WDOG,
++				       IMX_SC_IRQ_WDOG,
+ 				       true);
+ 	if (ret) {
+ 		dev_warn(dev, "Enable irq failed, pretimeout NOT supported\n");
+@@ -194,8 +195,8 @@
+ 	imx_sc_wdd->wdt_notifier.notifier_call = imx_sc_wdt_notify;
+ 	ret = imx_scu_irq_register_notifier(&imx_sc_wdd->wdt_notifier);
+ 	if (ret) {
+-		imx_scu_irq_group_enable(SC_IRQ_GROUP_WDOG,
+-					 SC_IRQ_WDOG,
++		imx_scu_irq_group_enable(IMX_SC_IRQ_GROUP_WDOG,
++					 IMX_SC_IRQ_WDOG,
+ 					 false);
+ 		dev_warn(dev,
+ 			 "Register irq notifier failed, pretimeout NOT supported\n");

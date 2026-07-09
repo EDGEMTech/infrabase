@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/Kconfig	2026-04-08 18:20:04.792864905 +0200
++++ ./arch/arm/Kconfig	2026-04-08 16:21:00.530951956 +0200
+@@ -138,6 +138,7 @@
+ 	select PERF_USE_VMALLOC
+ 	select RTC_LIB
+ 	select SPARSE_IRQ if !(ARCH_FOOTBRIDGE || ARCH_RPC)
++	select SET_FS
+ 	select SYS_SUPPORTS_APM_EMULATION
+ 	select THREAD_INFO_IN_TASK
+ 	select TIMER_OF if OF

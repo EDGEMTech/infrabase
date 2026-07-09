@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/fsl-ls1028a-qds-899b.dtso	2026-04-08 18:20:05.013194400 +0200
++++ ./arch/arm64/boot/dts/freescale/fsl-ls1028a-qds-899b.dtso	2026-04-08 16:21:01.972657150 +0200
+@@ -36,6 +36,8 @@
+ &enetc_port0 {
+ 	phy-handle = <&slot1_sgmii0>;
+ 	phy-mode = "sgmii";
++	phys = <&serdes 0>;
++	phy-names = "serdes";
+ 	managed = "in-band-status";
+ 	status = "okay";
+ };
+@@ -45,6 +47,8 @@
+ 		status = "okay";
+ 		phy-handle = <&slot1_sgmii1>;
+ 		phy-mode = "sgmii";
++		phys = <&serdes 1>;
++		phy-names = "serdes";
+ 		managed = "in-band-status";
+ 	};
+ 
+@@ -52,6 +56,8 @@
+ 		status = "okay";
+ 		phy-handle = <&slot1_sgmii2>;
+ 		phy-mode = "sgmii";
++		phys = <&serdes 2>;
++		phy-names = "serdes";
+ 		managed = "in-band-status";
+ 	};
+ };

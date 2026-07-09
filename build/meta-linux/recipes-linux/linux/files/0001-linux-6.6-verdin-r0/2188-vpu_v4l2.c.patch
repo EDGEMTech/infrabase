@@ -1,0 +1,32 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/media/platform/amphion/vpu_v4l2.c	2026-04-08 18:20:07.748982136 +0200
++++ ./drivers/media/platform/amphion/vpu_v4l2.c	2026-04-08 16:21:07.003939052 +0200
+@@ -63,6 +63,13 @@
+ 	return vpu_buf->state;
+ }
+ 
++void vpu_set_buffer_average_qp(struct vb2_v4l2_buffer *vbuf, u32 qp)
++{
++	struct vpu_vb2_buffer *vpu_buf = to_vpu_vb2_buffer(vbuf);
++
++	vpu_buf->average_qp = qp;
++}
++
+ void vpu_v4l2_set_error(struct vpu_inst *inst)
+ {
+ 	vpu_inst_lock(inst);
+@@ -539,6 +546,15 @@
+ 	struct vpu_inst *inst = vb2_get_drv_priv(vb->vb2_queue);
+ 	struct vb2_queue *q = vb->vb2_queue;
+ 
++	if (V4L2_TYPE_IS_CAPTURE(vb->type)) {
++		struct vpu_vb2_buffer *vpu_buf = to_vpu_vb2_buffer(vbuf);
++		struct v4l2_ctrl *ctrl = v4l2_ctrl_find(&inst->ctrl_handler,
++							V4L2_CID_MPEG_VIDEO_AVERAGE_QP);
++
++		if (ctrl)
++			v4l2_ctrl_s_ctrl(ctrl, vpu_buf->average_qp);
++	}
++
+ 	if (vbuf->flags & V4L2_BUF_FLAG_LAST)
+ 		vpu_notify_eos(inst);
+ 

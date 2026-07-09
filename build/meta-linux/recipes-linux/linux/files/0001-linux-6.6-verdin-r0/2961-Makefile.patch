@@ -1,0 +1,9 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/rpmsg/Makefile	2026-04-08 18:20:09.043636358 +0200
++++ ./drivers/rpmsg/Makefile	2026-04-08 16:21:09.026649062 +0200
+@@ -10,3 +10,6 @@
+ obj-$(CONFIG_RPMSG_QCOM_GLINK_SMEM) += qcom_glink_smem.o
+ obj-$(CONFIG_RPMSG_QCOM_SMD)	+= qcom_smd.o
+ obj-$(CONFIG_RPMSG_VIRTIO)	+= virtio_rpmsg_bus.o
++obj-$(CONFIG_HAVE_IMX_RPMSG)	+= imx_rpmsg.o
++obj-$(CONFIG_IMX_RPMSG_PINGPONG)	+= imx_rpmsg_pingpong.o
++obj-$(CONFIG_IMX_RPMSG_TTY)	+= imx_rpmsg_tty.o

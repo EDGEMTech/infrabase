@@ -1,0 +1,28 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/nvmem/imx-ocotp.c	2026-04-08 18:20:08.838036492 +0200
++++ ./drivers/nvmem/imx-ocotp.c	2026-04-08 16:21:08.610763914 +0200
+@@ -14,6 +14,7 @@
+  * Copyright (C) 2010-2013 Freescale Semiconductor, Inc
+  */
+ 
++#include <linux/busfreq-imx.h>
+ #include <linux/clk.h>
+ #include <linux/device.h>
+ #include <linux/io.h>
+@@ -332,6 +333,8 @@
+ 		return ret;
+ 	}
+ 
++	request_bus_freq(BUS_FREQ_HIGH);
++
+ 	/* Setup the write timing values */
+ 	priv->params->set_timing(priv);
+ 
+@@ -469,6 +472,8 @@
+ 		dev_err(priv->dev, "timeout during shadow register reload\n");
+ 
+ write_end:
++	release_bus_freq(BUS_FREQ_HIGH);
++
+ 	clk_disable_unprepare(priv->clk);
+ 	mutex_unlock(&ocotp_mutex);
+ 	return ret < 0 ? ret : bytes;

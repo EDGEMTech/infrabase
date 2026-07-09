@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/imx/Makefile	2026-04-08 18:20:05.826883804 +0200
++++ ./drivers/clk/imx/Makefile	2026-04-08 16:21:04.569299206 +0200
+@@ -30,7 +30,9 @@
+ obj-$(CONFIG_CLK_IMX8MP) += clk-imx8mp.o clk-imx8mp-audiomix.o
+ obj-$(CONFIG_CLK_IMX8MQ) += clk-imx8mq.o
+ 
++obj-$(CONFIG_CLK_IMX91) += clk-imx91.o
+ obj-$(CONFIG_CLK_IMX93) += clk-imx93.o
++obj-$(CONFIG_CLK_IMX95_BLK_CTL) += imx95-blk-ctrl.o
+ 
+ obj-$(CONFIG_MXC_CLK_SCU) += clk-imx-scu.o clk-imx-lpcg-scu.o clk-imx-acm.o
+ clk-imx-scu-$(CONFIG_CLK_IMX8QXP) += clk-scu.o clk-imx8qxp.o \

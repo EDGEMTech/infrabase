@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h	2026-04-08 18:20:07.563347823 +0200
++++ ./drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h	2026-04-08 16:21:06.696647950 +0200
+@@ -682,6 +682,7 @@
+ 
+ 	struct rb_root			streams;
+ 	struct mutex			streams_mutex;
++	bool				bypass;
+ };
+ 
+ struct arm_smmu_stream {

@@ -1,0 +1,30 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/i2c/busses/Kconfig	2026-04-08 18:20:07.365282376 +0200
++++ ./drivers/i2c/busses/Kconfig	2026-04-08 16:21:06.409221696 +0200
+@@ -735,6 +735,14 @@
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called i2c-imx-lpi2c.
+ 
++config I2C_IMX_FLEXIO
++	tristate "NXP IMX FLEXIO I2C MASTER"
++	depends on (ARCH_MXC && MFD_IMX_FLEXIO) || COMPILE_TEST
++	default y
++	help
++          If you say yes to this option, support will be included for the
++	  I2C controller simulated by flexio embedded in NXP IMX8ULP SOCs.
++
+ config I2C_IOP3XX
+ 	tristate "Intel IXP4xx on-chip I2C interface"
+ 	depends on ARCH_IXP4XX || COMPILE_TEST
+@@ -1033,6 +1041,12 @@
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called i2c-rzv2m.
+ 
++config I2C_RPBUS
++	tristate "I2C proxy bus over RPMSG"
++	depends on I2C && RPMSG
++	help
++	  This driver can support virtual i2c-rpmsg function.
++
+ config I2C_S3C2410
+ 	tristate "S3C/Exynos I2C Driver"
+ 	depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S5PV210 || COMPILE_TEST

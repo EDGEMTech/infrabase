@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/tools/testing/vsock/Makefile	2026-04-08 18:20:11.258079367 +0200
++++ ./tools/testing/vsock/Makefile	2026-04-08 16:21:19.344759608 +0200
+@@ -10,3 +10,15 @@
+ clean:
+ 	${RM} *.o *.d vsock_test vsock_diag_test vsock_perf
+ -include *.d
++
++VSOCK_INSTALL_PATH ?=
++
++install: all
++ifdef VSOCK_INSTALL_PATH
++	mkdir -p $(VSOCK_INSTALL_PATH)
++	install -m 744 vsock_test $(VSOCK_INSTALL_PATH)
++	install -m 744 vsock_perf $(VSOCK_INSTALL_PATH)
++	install -m 744 vsock_diag_test $(VSOCK_INSTALL_PATH)
++else
++	$(error Error: set VSOCK_INSTALL_PATH to use install)
++endif

@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/skbuff.h	2026-04-08 18:20:10.132025177 +0200
++++ ./include/linux/skbuff.h	2026-04-08 16:21:11.617107965 +0200
+@@ -1253,6 +1253,7 @@
+ #endif
+ 
+ void __consume_stateless_skb(struct sk_buff *skb);
++void skb_recycle(struct sk_buff *skb);
+ void  __kfree_skb(struct sk_buff *skb);
+ extern struct kmem_cache *skbuff_cache;
+ 

@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/power/supply/Makefile	2026-04-08 18:20:08.996399934 +0200
++++ ./drivers/power/supply/Makefile	2026-04-08 16:21:08.915165820 +0200
+@@ -65,6 +65,7 @@
+ obj-$(CONFIG_AB8500_BM)		+= ab8500_bmdata.o ab8500_charger.o ab8500_fg.o ab8500_btemp.o ab8500_chargalg.o
+ obj-$(CONFIG_CHARGER_CPCAP)	+= cpcap-charger.o
+ obj-$(CONFIG_CHARGER_ISP1704)	+= isp1704_charger.o
++obj-$(CONFIG_SABRESD_MAX8903)   += sabresd_battery.o
+ obj-$(CONFIG_CHARGER_MAX8903)	+= max8903_charger.o
+ obj-$(CONFIG_CHARGER_TWL4030)	+= twl4030_charger.o
+ obj-$(CONFIG_CHARGER_LP8727)	+= lp8727_charger.o

@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/char/hw_random/optee-rng.c	2026-04-08 18:20:05.798904440 +0200
++++ ./drivers/char/hw_random/optee-rng.c	2026-04-08 16:21:04.529055833 +0200
+@@ -272,6 +272,8 @@
+ static const struct tee_client_device_id optee_rng_id_table[] = {
+ 	{UUID_INIT(0xab7a617c, 0xb8e7, 0x4d8f,
+ 		   0x83, 0x01, 0xd0, 0x9b, 0x61, 0x03, 0x6b, 0x64)},
++	{UUID_INIT(0x035a4479, 0xc369, 0x47f4,
++		   0x94, 0x51, 0xc6, 0xfd, 0xff, 0x28, 0xad, 0x65)},
+ 	{}
+ };
+ 

@@ -1,0 +1,56 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/sound/soc/fsl/Kconfig	2026-04-08 18:20:10.898054885 +0200
++++ ./sound/soc/fsl/Kconfig	2026-04-08 16:21:18.376240250 +0200
+@@ -129,6 +129,9 @@
+ 	  This option is only useful for out-of-tree drivers since
+ 	  in-tree drivers select it automatically.
+ 
++config SND_SOC_FSL_HDMI
++	tristate
++
+ config SND_SOC_IMX_PCM_DMA
+ 	tristate
+ 	select SND_SOC_GENERIC_DMAENGINE_PCM
+@@ -269,6 +272,11 @@
+ 
+ comment "SoC Audio support for Freescale i.MX boards:"
+ 
++config SND_SOC_IMX_HDMI_DMA
++	bool
++	select SND_SOC_GENERIC_DMAENGINE_PCM
++	select SND_SOC_IMX_PCM_DMA
++
+ config SND_SOC_EUKREA_TLV320
+ 	tristate "Eukrea TLV320"
+ 	depends on ARCH_MXC && !ARM64 && I2C
+@@ -381,6 +389,31 @@
+ 	  with OF-graph DT bindings.
+ 	  It also support DPCM of single CPU multi Codec ststem.
+ 
++config SND_SOC_IMX_PCM512X
++	tristate "SoC Audio support for i.MX boards with PCM512x, PCM186x ADC and headphone amp"
++	depends on OF && I2C
++	select SND_SOC_PCM512x_I2C
++	select SND_SOC_PCM186X_I2C
++	select SND_SOC_TPA6130A2
++	select SND_SOC_IMX_PCM_DMA
++	select SND_SOC_FSL_SAI
++	select SND_SOC_FSL_UTILS
++	help
++	  SoC Audio support for i.MX boards with pcm512x
++	  Say Y if you want to add support for SoC audio on an i.MX board with
++	  an pcm512x codec.
++
++config SND_SOC_IMX6QDL_HDMI
++	tristate "SoC Audio support for i.MX6QDL boards with HDMI port"
++	depends on MFD_MXC_HDMI
++	select SND_SOC_IMX_HDMI_DMA
++	select SND_SOC_FSL_HDMI
++	select SND_SOC_HDMI_CODEC
++	help
++	  SoC Audio support for i.MX6QDL boards with HDMI audio
++	  Say Y if you want to add support for SoC audio on an i.MX board with
++	  IMX6QDL HDMI.
++
+ endif # SND_IMX_SOC
+ 
+ endmenu

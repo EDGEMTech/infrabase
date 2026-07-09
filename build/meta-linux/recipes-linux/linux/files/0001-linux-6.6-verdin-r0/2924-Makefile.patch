@@ -1,0 +1,7 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/ptp/Makefile	2026-04-08 18:20:09.011772312 +0200
++++ ./drivers/ptp/Makefile	2026-04-08 16:21:08.953632048 +0200
+@@ -20,3 +20,4 @@
+ obj-$(CONFIG_PTP_1588_CLOCK_VMW)	+= ptp_vmw.o
+ obj-$(CONFIG_PTP_1588_CLOCK_OCP)	+= ptp_ocp.o
+ obj-$(CONFIG_PTP_DFL_TOD)		+= ptp_dfl_tod.o
++obj-$(CONFIG_PTP_1588_CLOCK_NETC)	+= ptp_netc.o

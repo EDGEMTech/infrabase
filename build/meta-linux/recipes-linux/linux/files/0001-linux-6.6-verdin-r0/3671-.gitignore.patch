@@ -1,0 +1,8 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/tools/virtio/.gitignore	2026-04-08 18:20:11.263044556 +0200
++++ ./tools/virtio/.gitignore	2026-04-08 16:21:19.358598939 +0200
+@@ -3,3 +3,5 @@
+ virtio_test
+ vringh_test
+ virtio-trace/trace-agent
++virtio-ivshmem-block
++virtio-ivshmem-console

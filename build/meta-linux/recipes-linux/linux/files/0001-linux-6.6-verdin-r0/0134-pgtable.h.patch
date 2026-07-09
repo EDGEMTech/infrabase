@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/include/asm/pgtable.h	2026-04-08 18:20:04.927880165 +0200
++++ ./arch/arm/include/asm/pgtable.h	2026-04-08 16:21:01.133097657 +0200
+@@ -115,6 +115,13 @@
+ #define pgprot_noncached(prot) \
+ 	__pgprot_modify(prot, L_PTE_MT_MASK, L_PTE_MT_UNCACHED)
+ 
++#define pgprot_cached(prot) \
++	__pgprot_modify(prot, L_PTE_MT_MASK, L_PTE_MT_DEV_CACHED)
++
++#define pgprot_cached_ns(prot) \
++	__pgprot_modify(prot, L_PTE_MT_MASK, L_PTE_MT_DEV_CACHED | \
++			L_PTE_MT_DEV_NONSHARED)
++
+ #define pgprot_writecombine(prot) \
+ 	__pgprot_modify(prot, L_PTE_MT_MASK, L_PTE_MT_BUFFERABLE)
+ 

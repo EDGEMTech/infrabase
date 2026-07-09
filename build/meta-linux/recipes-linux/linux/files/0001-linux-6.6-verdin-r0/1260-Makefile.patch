@@ -1,0 +1,4 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/s32/s32v234/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/clk/s32/s32v234/Makefile	2026-04-08 16:21:04.645507956 +0200
+@@ -0,0 +1 @@
++obj-$(CONFIG_ARCH_S32_CLK) += clk.o clk-plldig.o clk-dfs.o

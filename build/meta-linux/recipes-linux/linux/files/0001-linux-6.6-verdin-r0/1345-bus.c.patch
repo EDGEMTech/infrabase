@@ -1,0 +1,12 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/firmware/arm_scmi/bus.c	2026-04-08 18:20:06.036820628 +0200
++++ ./drivers/firmware/arm_scmi/bus.c	2026-04-08 16:21:04.940756226 +0200
+@@ -373,7 +373,8 @@
+ 	scmi_dev->id = id;
+ 	scmi_dev->protocol_id = protocol;
+ 	scmi_dev->dev.parent = parent;
+-	device_set_node(&scmi_dev->dev, of_fwnode_handle(np));
++	if ((protocol != SCMI_PROTOCOL_PERF) || strcmp(name, "cpufreq"))
++		device_set_node(&scmi_dev->dev, of_fwnode_handle(np));
+ 	scmi_dev->dev.bus = &scmi_bus_type;
+ 	scmi_dev->dev.release = scmi_device_release;
+ 	dev_set_name(&scmi_dev->dev, "scmi_dev.%d", id);

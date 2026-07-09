@@ -1,0 +1,15 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/imx/mhdp/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/gpu/drm/imx/mhdp/Kconfig	2026-04-08 16:21:05.967305023 +0200
+@@ -0,0 +1,12 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++config DRM_IMX_CDNS_MHDP
++	tristate "NXP i.MX MX8 DRM HDMI/DP"
++	select DRM_CDNS_MHDP
++	select DRM_CDNS_DP
++	select DRM_CDNS_HDMI
++	select DRM_CDNS_AUDIO
++	select DRM_CDNS_HDCP
++	depends on DRM
++	help
++	  Choose this if you want to use HDMI on i.MX8.

@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/media/i2c/ti,ds90ub960.yaml	2026-04-08 18:20:04.549869629 +0200
++++ ./Documentation/devicetree/bindings/media/i2c/ti,ds90ub960.yaml	2026-04-08 16:20:51.435785565 +0200
+@@ -106,6 +106,18 @@
+             maximum: 14
+             description: Manual EQ level
+ 
++	ti,bc-gpio:
++            $ref: /schemas/types.yaml#/definitions/uint32
++            enum:
++              - 0 # GPIO0
++              - 1 # GPIO1
++              - 2 # GPIO2
++              - 3 # GPIO3
++            description:
++              Back channel GPIO select. The deserializer can link GPIO
++	      pin input data on up to four available slots to send on
++	      the back channel per each remote serializer connection.
++
+           serializer:
+             type: object
+             description: FPD-Link Serializer node

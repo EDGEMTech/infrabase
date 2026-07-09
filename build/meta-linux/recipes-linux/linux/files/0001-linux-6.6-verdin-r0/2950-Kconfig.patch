@@ -1,0 +1,26 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/remoteproc/Kconfig	2026-04-08 18:20:09.035994642 +0200
++++ ./drivers/remoteproc/Kconfig	2026-04-08 16:21:09.013444980 +0200
+@@ -45,6 +45,23 @@
+ 
+ 	  It's safe to say N here.
+ 
++config IMX_NEUTRON_REMOTEPROC
++	tristate "i.MX neutron remoteproc support"
++	depends on ARCH_MXC
++	help
++	  Say y here to support iMX's neutron npu via the remote
++	  processor framework.
++
++config IMX_ISP_REMOTEPROC
++	tristate "i.MX ISP remoteproc support"
++	depends on ARCH_MXC
++	select MAILBOX
++	help
++	  Say y here to support iMX's ISP remote processors via the remote
++	  processor framework.
++
++	  It's safe to say N here.
++
+ config INGENIC_VPU_RPROC
+ 	tristate "Ingenic JZ47xx VPU remoteproc support"
+ 	depends on MIPS || COMPILE_TEST

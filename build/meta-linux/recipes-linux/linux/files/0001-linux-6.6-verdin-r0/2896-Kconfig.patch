@@ -1,0 +1,16 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/phy/ti/Kconfig	2026-04-08 18:20:08.900990881 +0200
++++ ./drivers/phy/ti/Kconfig	2026-04-08 16:21:08.720535820 +0200
+@@ -111,3 +111,13 @@
+ 	help
+ 	  This driver supports configuring of the TI CPSW Port mode depending on
+ 	  the Ethernet PHY connected to the CPSW Port.
++
++config PHY_TI_DS125DF111
++	bool "DS125DF111 2-Channel Retimer Driver"
++	depends on OF && I2C
++	select GENERIC_PHY
++	help
++	  Enable this to add support for configuration and runtime management
++	  of the TI SD125SF111 Multi-Protocol 2-Channel Retimer.
++	  The retimer is modeled as a Generic PHY and supports both 10G and 1G
++	  link speeds.

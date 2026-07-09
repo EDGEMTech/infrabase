@@ -1,0 +1,21 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto-flexcan1.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto-flexcan1.dts	2026-04-08 16:21:00.852719808 +0200
+@@ -0,0 +1,18 @@
++/*
++ * Copyright (C) 2015 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include "imx6qp-sabreauto.dts"
++
++&can1{
++	status = "okay";
++};
++
++&fec {
++	/* pin conflict with flexcan1 */
++	status = "disabled";
++};

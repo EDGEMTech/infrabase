@@ -1,0 +1,17 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/Kconfig	2026-04-08 18:20:05.636899925 +0200
++++ ./drivers/Kconfig	2026-04-08 16:21:04.208475193 +0200
+@@ -207,6 +207,8 @@
+ 
+ source "drivers/android/Kconfig"
+ 
++source "drivers/gpu/arm/Kconfig"
++
+ source "drivers/gpu/trace/Kconfig"
+ 
+ source "drivers/nvdimm/Kconfig"
+@@ -243,4 +245,5 @@
+ 
+ source "drivers/cdx/Kconfig"
+ 
++source "drivers/mxc/Kconfig"
+ endmenu

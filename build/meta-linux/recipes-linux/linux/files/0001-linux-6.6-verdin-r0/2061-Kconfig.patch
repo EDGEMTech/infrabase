@@ -1,0 +1,13 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/imx/lcdifv3/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/gpu/imx/lcdifv3/Kconfig	2026-04-08 16:21:06.330001522 +0200
+@@ -0,0 +1,10 @@
++config IMX_LCDIFV3_CORE
++	tristate "i.MX LCDIFV3 core support"
++	depends on ARCH_MXC
++	depends on DRM && OF
++	select RESET_CONTROLLER
++	help
++	  Choose this if you have a NXP i.MX8MP platform and want to use the
++	  LCDIFV3 display controller. This option only enables LCDIFV3 base
++	  support.
++

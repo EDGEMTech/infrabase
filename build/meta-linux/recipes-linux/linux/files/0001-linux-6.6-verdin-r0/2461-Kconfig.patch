@@ -1,0 +1,24 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/mxc/ipu3/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/mxc/ipu3/Kconfig	2026-04-08 16:21:07.323122703 +0200
+@@ -0,0 +1,21 @@
++config MXC_IPU_V3
++	bool
++
++config MXC_IPU_V3_PRG
++	tristate "i.MX IPUv3 prefetch gasket engine"
++	depends on MXC_IPU_V3 && MXC_IPU_V3_PRE
++	help
++	  This enables support for the IPUv3 prefetch gasket engine to
++	  support double buffer handshake control bewteen IPUv3 and
++	  prefetch engine(PRE), snoop the AXI interface for display
++	  refresh requests to memory and modify the request address to
++	  fetch the double buffered row of blocks in OCRAM.
++
++config MXC_IPU_V3_PRE
++	tristate "i.MX IPUv3 prefetch engine"
++	depends on MXC_IPU_V3
++	select MXC_IPU_V3_PRG
++	help
++	  This enables support for the IPUv3 prefetch engine to improve
++	  the system memory performance.  The engine has the capability
++	  to resolve framebuffers in tile pixel format to linear.

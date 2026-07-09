@@ -1,0 +1,42 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-ldo.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/boot/dts/nxp/imx/imx6sx-sdb-ldo.dts	2026-04-08 16:21:00.866338244 +0200
+@@ -0,0 +1,39 @@
++/*
++ * Copyright (C) 2015 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include "imx6sx-sdb.dts"
++
++&cpu0 {
++	operating-points = <
++		/* kHz    uV */
++		996000  1250000
++		792000  1175000
++		396000  1075000
++		198000	975000
++		>;
++	fsl,soc-operating-points = <
++		/* ARM kHz      SOC uV */
++		996000	1175000
++		792000	1175000
++		396000	1175000
++		198000	1175000
++	>;
++	fsl,arm-soc-shared = <0>;
++};
++
++&gpc {
++	fsl,ldo-bypass = <0>; /* use ldo-enable, u-boot will check it and configure */
++};
++
++&reg_arm {
++	/delete-property/ vin-supply;
++};
++
++&reg_soc {
++	/delete-property/ vin-supply;
++};

@@ -1,0 +1,22 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/ethtool_netlink.h	2026-04-08 18:20:10.039022586 +0200
++++ ./include/linux/ethtool_netlink.h	2026-04-08 16:21:11.331704567 +0200
+@@ -40,6 +40,8 @@
+ void ethtool_aggregate_rmon_stats(struct net_device *dev,
+ 				  struct ethtool_rmon_stats *rmon_stats);
+ bool ethtool_dev_mm_supported(struct net_device *dev);
++void mm_state_to_cfg(const struct ethtool_mm_state *state,
++		     struct ethtool_mm_cfg *cfg);
+ 
+ #else
+ static inline int ethnl_cable_test_alloc(struct phy_device *phydev, u8 cmd)
+@@ -118,5 +120,10 @@
+ 	return false;
+ }
+ 
++static inline void mm_state_to_cfg(const struct ethtool_mm_state *state,
++				   struct ethtool_mm_cfg *cfg)
++{
++}
++
+ #endif /* IS_ENABLED(CONFIG_ETHTOOL_NETLINK) */
+ #endif /* _LINUX_ETHTOOL_NETLINK_H_ */

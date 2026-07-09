@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/clk/Kconfig	2026-04-08 18:20:05.813707546 +0200
++++ ./drivers/clk/Kconfig	2026-04-08 16:21:04.546903867 +0200
+@@ -487,6 +487,7 @@
+ source "drivers/clk/ralink/Kconfig"
+ source "drivers/clk/renesas/Kconfig"
+ source "drivers/clk/rockchip/Kconfig"
++source "drivers/clk/s32/Kconfig"
+ source "drivers/clk/samsung/Kconfig"
+ source "drivers/clk/sifive/Kconfig"
+ source "drivers/clk/socfpga/Kconfig"

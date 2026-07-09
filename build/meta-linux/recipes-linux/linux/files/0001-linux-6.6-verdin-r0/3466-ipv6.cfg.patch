@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/.kernel-meta/configs/standard/cfg/net/ipv6.cfg	1970-01-01 01:00:00.000000000 +0100
++++ ./.kernel-meta/configs/standard/cfg/net/ipv6.cfg	2026-04-08 16:21:19.368376119 +0200
+@@ -0,0 +1,14 @@
++CONFIG_IPV6=y
++CONFIG_INET6_TUNNEL=m
++CONFIG_IPV6_TUNNEL=m
++CONFIG_IPV6_ROUTER_PREF=y
++CONFIG_INET6_AH=y
++CONFIG_INET6_ESP=y
++CONFIG_INET6_IPCOMP=m
++CONFIG_INET6_XFRM_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_TRANSPORT=y
++CONFIG_INET6_XFRM_MODE_TUNNEL=y
++CONFIG_INET6_XFRM_MODE_BEET=y
++CONFIG_IPV6_SIT=y
++CONFIG_IPV6_NDISC_NODETYPE=y
++CONFIG_IPV6_MULTIPLE_TABLES=y
+\ No newline at end of file

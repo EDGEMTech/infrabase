@@ -1,0 +1,71 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/boot/dts/fsl/p5040ds-sdk.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/powerpc/boot/dts/fsl/p5040ds-sdk.dts	2026-04-08 16:21:03.176567841 +0200
+@@ -0,0 +1,68 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright 2017-2018 NXP
++ */
++
++/include/ "p5040ds.dts"
++
++/include/ "qoriq-fman-0-sdk.dtsi"
++/include/ "qoriq-fman-1-sdk.dtsi"
++/include/ "qoriq-bman-portals-sdk.dtsi"
++/include/ "qoriq-qman1-portals-sdk.dtsi"
++
++&soc {
++	fsldpaa: fsl,dpaa {
++		compatible = "simple-bus", "fsl,dpaa";
++		ethernet@0 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet0>;
++			status = "disabled";
++		};
++		ethernet@1 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet1>;
++		};
++		ethernet@2 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet2>;
++		};
++		ethernet@3 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet3>;
++		};
++		ethernet@4 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet4>;
++		};
++		ethernet@5 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet5>;
++		};
++		ethernet@6 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet6>;
++			status = "disabled";
++		};
++		ethernet@7 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet7>;
++		};
++		ethernet@8 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet8>;
++		};
++		ethernet@9 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet9>;
++		};
++		ethernet@10 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet10>;
++		};
++		ethernet@11 {
++			compatible = "fsl,dpa-ethernet";
++			fsl,fman-mac = <&enet11>;
++		};
++	};
++};
++

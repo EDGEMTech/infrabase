@@ -1,0 +1,35 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/kernel/entry-common.S	2026-04-08 18:20:04.931880277 +0200
++++ ./arch/arm/kernel/entry-common.S	2026-04-08 16:21:01.149754961 +0200
+@@ -42,6 +42,10 @@
+  UNWIND(.fnstart	)
+  UNWIND(.cantunwind	)
+ 	disable_irq_notrace			@ disable interrupts
++	ldr	r2, [tsk, #TI_ADDR_LIMIT]
++	ldr	r1, =TASK_SIZE
++	cmp	r2, r1
++	blne	addr_limit_check_failed
+ 	ldr	r1, [tsk, #TI_FLAGS]		@ re-check for syscall tracing
+ 	movs	r1, r1, lsl #16
+ 	bne	fast_work_pending
+@@ -72,6 +76,10 @@
+ 	bl	do_rseq_syscall
+ #endif
+ 	disable_irq_notrace			@ disable interrupts
++	ldr	r2, [tsk, #TI_ADDR_LIMIT]
++	ldr     r1, =TASK_SIZE
++	cmp     r2, r1
++	blne	addr_limit_check_failed
+ 	ldr	r1, [tsk, #TI_FLAGS]		@ re-check for syscall tracing
+ 	movs	r1, r1, lsl #16
+ 	beq	no_work_pending
+@@ -111,6 +119,10 @@
+ #endif
+ 	disable_irq_notrace			@ disable interrupts
+ ENTRY(ret_to_user_from_irq)
++	ldr	r2, [tsk, #TI_ADDR_LIMIT]
++	ldr     r1, =TASK_SIZE
++	cmp	r2, r1
++	blne	addr_limit_check_failed
+ 	ldr	r1, [tsk, #TI_FLAGS]
+ 	movs	r1, r1, lsl #16
+ 	bne	slow_work_pending

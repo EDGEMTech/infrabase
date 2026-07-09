@@ -1,0 +1,34 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/iio/temperature/p3t/p3t1085.h	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/iio/temperature/p3t/p3t1085.h	2026-04-08 16:21:06.508503338 +0200
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * NXP P3T1085 Temperature Sensor Driver
++ *
++ * Copyright 2024 NXP
++ */
++#ifndef P3T1085_H
++#define P3T1085_H
++
++#include <linux/device.h>
++#include <linux/iio/iio.h>
++
++#define P3T1085_REG_TEMP		0x0
++#define P3T1085_REG_CFGR		0x1
++#define P3T1085_REG_HIGH_LIM		0x2
++#define P3T1085_REG_LOW_LIM		0x3
++
++#define P3T1085_RESOLUTION_10UC		62500
++
++enum p3t1085_hw_id {
++	P3T1085_ID,
++};
++
++struct p3t1085_data {
++	struct device *dev;
++	struct regmap *regmap;
++};
++
++int p3t1085_probe(struct device *dev, int irq, int hw_id, struct regmap *regmap);
++
++#endif /* P3T1085_H */

@@ -1,0 +1,19 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8dxl-ss-lsio.dtsi	2026-04-08 18:20:05.014882590 +0200
++++ ./arch/arm64/boot/dts/freescale/imx8dxl-ss-lsio.dtsi	2026-04-08 16:21:02.007092322 +0200
+@@ -2,7 +2,6 @@
+ /*
+  * Copyright 2019~2020, 2022 NXP
+  */
+-
+ &flexspi0 {
+ 	compatible = "nxp,imx8dxl-fspi";
+ 	interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
+@@ -90,7 +89,7 @@
+ };
+ 
+ &lsio_mu0 {
+-	compatible = "fsl,imx8qxp-mu", "fsl,imx6sx-mu";
++	compatible = "fsl,imx8dxl-mu", "fsl,imx8qxp-mu", "fsl,imx6sx-mu";
+ 	interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
+ };
+ 

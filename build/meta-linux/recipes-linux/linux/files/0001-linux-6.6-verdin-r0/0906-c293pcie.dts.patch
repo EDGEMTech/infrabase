@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/boot/dts/fsl/c293pcie.dts	2026-04-08 18:20:05.268640167 +0200
++++ ./arch/powerpc/boot/dts/fsl/c293pcie.dts	2026-04-08 16:21:03.152678756 +0200
+@@ -42,7 +42,7 @@
+ 		device_type = "memory";
+ 	};
+ 
+-	ifc: ifc@fffe1e000 {
++	ifc: memory-controller@fffe1e000 {
+ 		reg = <0xf 0xffe1e000 0 0x2000>;
+ 		ranges = <0x0 0x0 0xf 0xec000000 0x04000000
+ 			  0x1 0x0 0xf 0xff800000 0x00010000

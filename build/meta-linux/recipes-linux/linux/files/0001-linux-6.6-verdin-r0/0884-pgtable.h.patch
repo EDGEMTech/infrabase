@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/include/asm/pgtable.h	2026-04-08 18:20:05.092884764 +0200
++++ ./arch/arm64/include/asm/pgtable.h	2026-04-08 16:21:02.392815122 +0200
+@@ -564,6 +564,11 @@
+ 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_DEVICE_nGnRnE) | PTE_PXN | PTE_UXN)
+ #define pgprot_writecombine(prot) \
+ 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_NORMAL_NC) | PTE_PXN | PTE_UXN)
++#define pgprot_cached(prot) \
++	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_NORMAL) | \
++			PTE_PXN | PTE_UXN)
++#define pgprot_cached_ns(prot) \
++	__pgprot(pgprot_val(pgprot_cached(prot)) ^ PTE_SHARED)
+ #define pgprot_device(prot) \
+ 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_DEVICE_nGnRE) | PTE_PXN | PTE_UXN)
+ #define pgprot_tagged(prot) \

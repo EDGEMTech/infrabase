@@ -1,0 +1,11 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/usb/host/ehci-hcd.c	2026-04-08 18:20:09.550008963 +0200
++++ ./drivers/usb/host/ehci-hcd.c	2026-04-08 16:21:09.704949146 +0200
+@@ -82,7 +82,7 @@
+ MODULE_PARM_DESC (log2_irq_thresh, "log2 IRQ latency, 1-64 microframes");
+ 
+ /* initial park setting:  slower than hw default */
+-static unsigned park;
++static unsigned park = 3;
+ module_param (park, uint, S_IRUGO);
+ MODULE_PARM_DESC (park, "park setting; 1-3 back-to-back async packets");
+ 

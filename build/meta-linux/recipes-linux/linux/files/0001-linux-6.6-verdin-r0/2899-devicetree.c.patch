@@ -1,0 +1,51 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/pinctrl/devicetree.c	2026-04-08 18:20:08.907588225 +0200
++++ ./drivers/pinctrl/devicetree.c	2026-04-08 16:21:08.736701022 +0200
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/device.h>
+ #include <linux/of.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/pinctrl/pinctrl.h>
+ #include <linux/slab.h>
+ 
+@@ -197,6 +198,27 @@
+ 	return dt_remember_or_free_map(p, statename, NULL, map, 1);
+ }
+ 
++static int dt_gpio_assert_pinctrl(struct pinctrl *p)
++{
++	struct device_node *np = p->dev->of_node;
++	struct gpio_desc *gpio;
++	int index = 0;
++
++	if (!of_find_property(np, "pinctrl-assert-gpios", NULL))
++		return 0; /* Missing the property, so nothing to be done */
++
++	for (;; index++) {
++		gpio = devm_gpiod_get_index(p->dev, "pinctrl-assert", index, GPIOD_OUT_HIGH);
++		if (IS_ERR(gpio)) {
++			if (PTR_ERR(gpio) == -EPROBE_DEFER)
++				return -EPROBE_DEFER;
++ 			break; /* End of the phandle list */
++ 		}
++	}
++
++	return 0;
++}
++
+ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
+ {
+ 	struct device_node *np = p->dev->of_node;
+@@ -217,6 +239,12 @@
+ 		return 0;
+ 	}
+ 
++	ret = dt_gpio_assert_pinctrl(p);
++	if (ret) {
++		dev_dbg(p->dev, "failed to assert pinctrl setting: %d\n", ret);
++		return ret;
++	}
++
+ 	/* We may store pointers to property names within the node */
+ 	of_node_get(np);
+ 

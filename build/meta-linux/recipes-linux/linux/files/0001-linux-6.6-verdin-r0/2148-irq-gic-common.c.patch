@@ -1,0 +1,25 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/irqchip/irq-gic-common.c	2026-04-08 18:20:07.573953905 +0200
++++ ./drivers/irqchip/irq-gic-common.c	2026-04-08 16:21:06.721995992 +0200
+@@ -108,6 +108,14 @@
+ 	for (i = 32; i < gic_irqs; i += 4)
+ 		writel_relaxed(GICD_INT_DEF_PRI_X4, base + GIC_DIST_PRI + i);
+ 
++#ifndef CONFIG_GIC_GENTLE_CONFIG
++	/*
++	 * eCockpit: do not deactivate all SPIs as this would erase the other
++	 * cluster's GIC configuration.
++	 * This is now done in function gic_set_type() (called by request_irq)
++	 * which allows to limit this to the interrupts registered by the
++	 * cluster.
++	 */
+ 	/*
+ 	 * Deactivate and disable all SPIs. Leave the PPI and SGIs
+ 	 * alone as they are in the redistributor registers on GICv3.
+@@ -118,6 +126,7 @@
+ 		writel_relaxed(GICD_INT_EN_CLR_X32,
+ 			       base + GIC_DIST_ENABLE_CLEAR + i / 8);
+ 	}
++#endif
+ 
+ 	if (sync_access)
+ 		sync_access();

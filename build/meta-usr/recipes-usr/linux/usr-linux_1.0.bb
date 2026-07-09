@@ -50,8 +50,13 @@ python do_deploy() {
 	
     __do_fs_umount(d)
 }
- 
-addtask do_deploy
+
+# `after do_build`: do_deploy copies build/deploy/ into the rootfs, so the
+# recipe's own do_build must have produced it first. Without this ordering
+# a single-shot `bitbake bsp-linux` (whose do_prepare_initrd pulls this
+# do_deploy early) can schedule do_deploy before do_build and fatal on the
+# missing build/deploy dir.
+addtask do_deploy after do_build
 
 # Build extra components which is not in src/ directory like modules
 do_build:prepend () {

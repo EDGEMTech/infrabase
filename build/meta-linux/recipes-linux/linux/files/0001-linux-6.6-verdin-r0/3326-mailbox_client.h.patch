@@ -1,0 +1,9 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/include/linux/mailbox_client.h	2026-04-08 18:20:10.068299097 +0200
++++ ./include/linux/mailbox_client.h	2026-04-08 16:21:11.456896711 +0200
+@@ -46,5 +46,6 @@
+ void mbox_client_txdone(struct mbox_chan *chan, int r); /* atomic */
+ bool mbox_client_peek_data(struct mbox_chan *chan); /* atomic */
+ void mbox_free_channel(struct mbox_chan *chan); /* may sleep */
++extern uint8_t *get_mu_buf(struct mbox_chan *chan);
+ 
+ #endif /* __MAILBOX_CLIENT_H */

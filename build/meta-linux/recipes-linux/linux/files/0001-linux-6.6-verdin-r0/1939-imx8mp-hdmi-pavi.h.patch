@@ -1,0 +1,34 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/gpu/drm/imx/imx8mp-hdmi-pavi.h	1970-01-01 01:00:00.000000000 +0100
++++ ./drivers/gpu/drm/imx/imx8mp-hdmi-pavi.h	2026-04-08 16:21:05.962603167 +0200
+@@ -0,0 +1,31 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2020-2022 NXP
++ *
++ * PAI/PVI Head file
++ *
++ */
++#ifndef _IMX8MP_HDMI_AV_CTL_H_
++#define _IMX8MP_HDMI_AV_CTL_H_
++
++#include <linux/clk.h>
++#include <drm/drm_modes.h>
++
++struct imx8mp_hdmi_pavi {
++	struct device *dev;
++
++	void __iomem *base;
++	atomic_t rpm_suspended;
++
++	struct clk *clk_apb;
++};
++
++void imx8mp_hdmi_pai_enable(int channel, int width, int rate, int non_pcm);
++void imx8mp_hdmi_pai_disable(void);
++
++void imx8mp_hdmi_pvi_enable(const struct drm_display_mode *mode);
++void imx8mp_hdmi_pvi_disable(void);
++
++struct imx8mp_hdmi_pavi *imx8mp_hdmi_pavi_init(void);
++
++#endif /* _IMX8MP_HDMI_PAVI_H_ */

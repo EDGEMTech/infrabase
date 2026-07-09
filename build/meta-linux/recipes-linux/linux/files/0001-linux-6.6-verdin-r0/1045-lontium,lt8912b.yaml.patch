@@ -1,0 +1,30 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/Documentation/devicetree/bindings/display/bridge/lontium,lt8912b.yaml	2026-04-08 18:20:04.515144849 +0200
++++ ./Documentation/devicetree/bindings/display/bridge/lontium,lt8912b.yaml	2026-04-08 16:20:51.288270504 +0200
+@@ -55,6 +55,27 @@
+       - port@0
+       - port@1
+ 
++  vcchdmipll-supply:
++    description: A 1.8V supply that powers the HDMI PLL.
++
++  vcchdmitx-supply:
++    description: A 1.8V supply that powers the HDMI TX part.
++
++  vcclvdspll-supply:
++    description: A 1.8V supply that powers the LVDS PLL.
++
++  vcclvdstx-supply:
++    description: A 1.8V supply that powers the LVDS TX part.
++
++  vccmipirx-supply:
++    description: A 1.8V supply that powers the MIPI RX part.
++
++  vccsysclk-supply:
++    description: A 1.8V supply that powers the SYSCLK.
++
++  vdd-supply:
++    description: A 1.8V supply that powers the digital part.
++
+ required:
+   - compatible
+   - reg

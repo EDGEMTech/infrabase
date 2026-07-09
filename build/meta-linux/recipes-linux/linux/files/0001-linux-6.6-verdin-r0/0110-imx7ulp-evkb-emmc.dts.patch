@@ -1,0 +1,29 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm/boot/dts/nxp/imx/imx7ulp-evkb-emmc.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm/boot/dts/nxp/imx/imx7ulp-evkb-emmc.dts	2026-04-08 16:21:00.909748986 +0200
+@@ -0,0 +1,26 @@
++/*
++ * Copyright 2019 NXP.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include "imx7ulp-evkb.dts"
++
++/* To support eMMC HS200/HS400, need to do the following reowrk:
++ * 1,remove TF sd slot, replace eMMC chip
++ * 2,fix eMMC I/O voltage to 1.8v, remove R183, short TP3 and TP89
++ * 3,add R107, make eMMC boot work
++ */
++&usdhc0 {
++	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
++	pinctrl-0 = <&pinctrl_usdhc0_8bit>;
++	pinctrl-1 = <&pinctrl_usdhc0_8bit>;
++	pinctrl-2 = <&pinctrl_usdhc0_8bit>;
++	pinctrl-3 = <&pinctrl_usdhc0_8bit>;
++	non-removable;
++	bus-width = <8>;
++	status = "okay";
++};
++

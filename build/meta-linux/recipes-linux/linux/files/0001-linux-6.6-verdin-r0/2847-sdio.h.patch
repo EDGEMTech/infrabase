@@ -1,0 +1,18 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/net/wireless/marvell/mwifiex/sdio.h	2026-04-08 18:20:08.696985197 +0200
++++ ./drivers/net/wireless/marvell/mwifiex/sdio.h	2026-04-08 16:21:08.331721539 +0200
+@@ -259,6 +259,7 @@
+ 	bool can_auto_tdls;
+ 	bool can_ext_scan;
+ 	bool fw_ready_extra_delay;
++	bool host_mlme;
+ 
+ 	struct mwifiex_sdio_mpa_tx mpa_tx;
+ 	struct mwifiex_sdio_mpa_rx mpa_rx;
+@@ -283,6 +284,7 @@
+ 	bool can_auto_tdls;
+ 	bool can_ext_scan;
+ 	bool fw_ready_extra_delay;
++	bool host_mlme;
+ };
+ 
+ /*

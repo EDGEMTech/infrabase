@@ -1,0 +1,14 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/iio/accel/fxls8962af.h	2026-04-08 18:20:07.387948722 +0200
++++ ./drivers/iio/accel/fxls8962af.h	2026-04-08 16:21:06.445124076 +0200
+@@ -11,8 +11,11 @@
+ enum {
+ 	fxls8962af,
+ 	fxls8964af,
++	fxls8967af,
++	fxls8974cf,
+ };
+ 
++void fxls8962af_core_shutdown(struct device *dev);
+ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
+ int fxls8962af_core_remove(struct device *dev);
+ 

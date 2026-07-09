@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/drivers/iio/imu/Makefile	2026-04-08 18:20:07.416017560 +0200
++++ ./drivers/iio/imu/Makefile	2026-04-08 16:21:06.479209150 +0200
+@@ -20,6 +20,7 @@
+ obj-$(CONFIG_FXOS8700) += fxos8700_core.o
+ obj-$(CONFIG_FXOS8700_I2C) += fxos8700_i2c.o
+ obj-$(CONFIG_FXOS8700_SPI) += fxos8700_spi.o
++obj-$(CONFIG_RPMSG_IIO_PEDOMETER) += rpmsg_iio_pedometer.o
+ 
+ obj-y += inv_icm42600/
+ obj-y += inv_mpu6050/

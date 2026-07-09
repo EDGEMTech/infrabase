@@ -1,0 +1,50 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/arm64/boot/dts/freescale/imx8ulp-evk-flexio-i2c.dts	1970-01-01 01:00:00.000000000 +0100
++++ ./arch/arm64/boot/dts/freescale/imx8ulp-evk-flexio-i2c.dts	2026-04-08 16:21:02.080034599 +0200
+@@ -0,0 +1,47 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2021 NXP
++ */
++
++#include "imx8ulp-evk.dts"
++
++/{
++	aliases {
++		i2c8 = &flexio_i2c;
++	};
++};
++
++&lpi2c7 {
++	status = "disabled";
++	/delete-node/ gpio@21;
++};
++
++&flexio1 {
++	status = "okay";
++};
++
++&flexio_i2c {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&pinctrl_flexio_i2c_master>;
++	pinctrl-1 = <&pinctrl_flexio_i2c_master>;
++	sda = /bits/ 8 <0xa>;
++	scl = /bits/ 8 <0xb>;
++	status = "okay";
++
++	pcal6408: gpio@21 {
++		compatible = "nxp,pcal9554b";
++		reg = <0x21>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		status = "okay";
++	};
++};
++
++&iomuxc1 {
++	pinctrl_flexio_i2c_master: flexiogrp {
++		fsl,pins = <
++			MX8ULP_PAD_PTE12__FXIO1_D11	0x20
++			MX8ULP_PAD_PTE13__FXIO1_D10	0x20
++		>;
++	};
++};

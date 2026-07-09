@@ -51,7 +51,7 @@ linux/linux
 rootfs/buildroot
 
 # so3 is fetched from the official repository
-so3
+#so3
 
 # except the followings:
 !.gitignore #Don't ignore the ignore file ;-)

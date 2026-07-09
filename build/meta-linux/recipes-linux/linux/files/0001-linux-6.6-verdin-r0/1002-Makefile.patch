@@ -1,0 +1,10 @@
+--- /home/rossierd/edgemtech/products/edgem1/edgem1/30/build/tmp/work/linux-6.6-verdin-r0/linux-6.6-verdin/arch/powerpc/kernel/Makefile	2026-04-08 18:20:05.312877032 +0200
++++ ./arch/powerpc/kernel/Makefile	2026-04-08 16:21:03.332157262 +0200
+@@ -108,6 +108,7 @@
+ obj-$(CONFIG_CRASH_DUMP)	+= crash_dump.o
+ obj-$(CONFIG_FA_DUMP)		+= fadump.o
+ obj-$(CONFIG_PRESERVE_FA_DUMP)	+= fadump.o
++obj-$(CONFIG_FSL_SOC)		+= fsl_pm.o
+ obj-$(CONFIG_PPC_85xx)		+= idle_85xx.o
+ obj-$(CONFIG_PPC_BOOK3S_32)	+= idle_6xx.o l2cr_6xx.o cpu_setup_6xx.o
+ obj-$(CONFIG_TAU)		+= tau_6xx.o
