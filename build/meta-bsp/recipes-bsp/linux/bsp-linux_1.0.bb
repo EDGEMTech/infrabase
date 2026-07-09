@@ -23,12 +23,7 @@ COMPATIBLE_PLATFORM = "virt32|virt64|rpi4_64|x86_qemu|verdin-imx8mp"
 
 do_attach_infrabase[noexec] = "1"
 
-# Platform-specific deploy logic. e1c-relevant platforms (verdin-imx8mp,
-# virt64) live in meta-e1c/recipes-e1c/common/; the rest stay in meta-bsp.
-# bitbake's `include` silently skips missing files, so both lines are safe
-# regardless of IB_PLATFORM.
-
-include recipes-e1c/common/bsp_${IB_PLATFORM}.inc
+# Platform-specific deploy logic.
 include recipes-bsp/bsp/files/bsp_${IB_PLATFORM}.inc
 
 do_configure[noexec] = "1"
@@ -48,43 +43,18 @@ do_itb[nostamp] = "1"
 
 do_itb () {
 
-	if [ "${IB_BOOT_CHAIN}" = "full" ]; then
-		# Full capsule mode: AVZ ITB + e1c capsule ITB. Both source and
-		# output of the capsule ITB use board-generic ${IB_PLATFORM}_e1c
-		# names; the capsule layer's bbappend pre-generates the ITS (see
-		# meta-e1c-<variant>/recipes-bsp/bsp-linux/bsp-linux_1.0.bbappend
-		# do_gen_e1c_its), this recipe just mkimage's it.
+	# Single plain ITB from ${IB_PLATFORM}.its with the buildroot initrd
+	# bundled in. Direct bootm by U-Boot.
 
-		if [ ! -f ${IB_ITB_PATH}/${IB_TARGET_ITS}.its ]; then
-			bbfatal "No corresponding ITS found (${IB_TARGET_ITS})"
-		fi
-		mkimage -f ${IB_ITB_PATH}/${IB_TARGET_ITS}.its ${IB_ITB_PATH}/${IB_PLATFORM}_avz.itb
-
-		if [ "${IB_E1C_ACTIVE}" = "1" ]; then
-			if [ ! -f ${IB_ITB_PATH}/${IB_PLATFORM}_e1c.its ]; then
-				bbfatal "No e1c ITS found at ${IB_ITB_PATH}/${IB_PLATFORM}_e1c.its — the capsule bbappend's do_gen_e1c_its should have produced it"
-			fi
-			mkimage -f ${IB_ITB_PATH}/${IB_PLATFORM}_e1c.its ${IB_ITB_PATH}/${IB_PLATFORM}_e1c.itb
-		fi
-	else
-		# Bare bsp-linux (IB_BOOT_CHAIN ∈ {uboot, atf+uboot}): single
-		# plain ITB from ${IB_PLATFORM}.its with the buildroot initrd
-		# bundled in. Direct bootm by U-Boot, no AVZ wrapping.
-
-		if [ ! -f ${IB_ITB_PATH}/${IB_PLATFORM}.its ]; then
-			bbfatal "No bare ITS found at ${IB_ITB_PATH}/${IB_PLATFORM}.its"
-		fi
-		mkimage -f ${IB_ITB_PATH}/${IB_PLATFORM}.its ${IB_ITB_PATH}/${IB_PLATFORM}.itb
+	if [ ! -f ${IB_ITB_PATH}/${IB_PLATFORM}.its ]; then
+		bbfatal "No ITS found at ${IB_ITB_PATH}/${IB_PLATFORM}.its"
 	fi
+	mkimage -f ${IB_ITB_PATH}/${IB_PLATFORM}.its ${IB_ITB_PATH}/${IB_PLATFORM}.itb
 }
 
 # do_prepare_initrd: gzip rootfs.cpio (produced by usr-linux:do_deploy)
-# into initrd.cpio.gz so do_itb /incbin/'s it. Lived in the FC capsule
-# bbappend originally; moved here so bare bsp-linux (no capsule layer
-# loaded) still gets a fresh initrd in the bare ITB. The FC bbappend's
-# do_inject_kernel_modules still runs before this, editing rootfs.cpio
-# in place — the content-hash guard below picks up the new content and
-# regenerates initrd.cpio.gz.
+# into initrd.cpio.gz so do_itb /incbin/'s it. The content-hash guard
+# below regenerates initrd.cpio.gz whenever rootfs.cpio changes.
 
 do_prepare_initrd[nostamp] = "1"
 do_prepare_initrd[depends] = "usr-linux:do_deploy"
@@ -167,7 +137,7 @@ addtask do_deploy_boot
 do_clean[depends] = "usr-linux:do_clean rootfs-linux:do_clean linux:do_clean uboot:do_clean"
 python () {
     if d.getVar('IB_PLATFORM') in ('virt64', 'verdin-imx8mp'):
-        d.appendVarFlag('do_clean', 'depends', ' atf:do_clean optee:do_clean avz:do_clean')
+        d.appendVarFlag('do_clean', 'depends', ' atf:do_clean optee:do_clean')
 }
 do_clean[nostamp] = "1"
 do_clean () {

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-python /root/sootest.py &
+# Copyright (c) 2025-2026 EDGEMTech SA
+
 
 
 

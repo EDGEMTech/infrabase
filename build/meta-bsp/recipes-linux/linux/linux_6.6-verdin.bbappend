@@ -22,13 +22,16 @@
 # task body ${THISDIR} would re-expand to the BASE recipe's directory
 # (meta-linux/recipes-linux/linux/) and the firmware path would resolve
 # to meta-linux/recipes-bsp/... instead of meta-bsp/recipes-bsp/...
-VERDIN_FIRMWARE_DIR := "${THISDIR}/../../recipes-bsp/bsp/verdin-imx8mp/firmware/imx/sdma"
+VERDIN_FIRMWARE_DIR := "${THISDIR}/../../recipes-bsp/bsp/verdin-imx8mp/firmware"
 
 do_stage_verdin_firmware[nostamp] = "1"
 do_stage_verdin_firmware () {
     install -d ${IB_TARGET}/firmware/imx/sdma
-    install -m 0644 ${VERDIN_FIRMWARE_DIR}/sdma-imx7d.bin \
+    install -m 0644 ${VERDIN_FIRMWARE_DIR}/imx/sdma/sdma-imx7d.bin \
         ${IB_TARGET}/firmware/imx/sdma/sdma-imx7d.bin
+    install -d ${IB_TARGET}/firmware/mrvl
+    install -m 0644 ${VERDIN_FIRMWARE_DIR}/mrvl/sdiouart8997_combo_v4.bin \
+        ${IB_TARGET}/firmware/mrvl/sdiouart8997_combo_v4.bin
 }
 
 addtask do_stage_verdin_firmware after do_attach_infrabase before do_configure

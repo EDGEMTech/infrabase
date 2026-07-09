@@ -4,15 +4,9 @@
 #
 # Two partitions:
 # - p1, FAT, 128 MiB — boot partition
-#       uEnv.txt, AVZ ITB (small), legacy firmware artefacts
+#       uEnv.txt, ITB, firmware artefacts
 # - p2, ext4, ~rest of IB_ROOTFS_SIZE — rootfs partition (label "rootfs1")
-#       /e1c/      — staging area for e1c capsule ITBs. Read by U-Boot's
-#                    e1c-boot at boot time. A capsule's ITB is transient:
-#                    once a deployment phase extracts the kernel into
-#                    /boot/ (TBD), the original ITB can be removed.
-#       /boot/      — kernel + dtb extracted from a capsule (post-deploy).
-#       /           — Linux rootfs proper (deployed by rootfs-linux or by
-#                    a capsule that extracts/downloads its own rootfs).
+#       /           — Linux rootfs proper (deployed by rootfs-linux).
 #
 # bitbake itself runs as the unprivileged user. Each privileged op
 # (losetup/fdisk/mkfs/mount/umount) goes through utils_sudo (`sudo -n`)

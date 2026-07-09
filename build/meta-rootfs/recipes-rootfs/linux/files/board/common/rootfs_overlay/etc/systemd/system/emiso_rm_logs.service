@@ -1,9 +1,0 @@
-[Unit]
-Description=Clean SOO Logs
-
-[Service]
-Type=oneshot
-ExecStart=/etc/soo/remove_logs.sh
-
-[Install]
-WantedBy=multi-user.target
