@@ -170,10 +170,11 @@ Before running ``build.sh``, always start by sourcing the IB environment like so
 This will modify the ``PATH`` variable - making it possible to invoke standard scripts from anywhere
 in the project.
 
-The initial build can be achieved by means of the ``build.sh -a <bsp_name>`` command. It will fetch, patch, prepare
-the environment and build everything (kernel, rootfs, apps, etc.).
+The initial build can be achieved by means of the ``build.sh <bsp_name>`` command (the recipe is a
+positional argument). It will fetch, patch, prepare the environment and build everything (kernel,
+rootfs, apps, etc.).
 
-To list the available BSPs one can use ``build.sh -l -a``, this search for recipes in ``meta-bsp`` layer
+To list all available recipes (BSPs and components) one can use ``build.sh -l``.
 
 In the build process, there is a particular task called ``do_attach_infrabase`` which perform a copy
 of source code to the root of *infrabase*. Hence, the development can be done independently

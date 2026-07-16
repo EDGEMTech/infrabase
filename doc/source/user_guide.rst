@@ -141,34 +141,46 @@ it can be achieved with the following command:
 
 Components are built using the ``build.sh`` standard script.
 
-The script ``build.sh`` has two kind options, 'component options' ``[-a|-b|-x|-k|-f|-r]``
-and 'global behaviour' options. All component options may have an optional argument which is
-the name of a specific recipe to execute.
+.. code-block:: text
+
+   build.sh [-h] [-l] [-c] [-v] [-x] <recipe>
+
+The **recipe name is a positional argument**. The ``-x`` flag is an optional,
+no-op marker kept for explicitness/symmetry — ``build.sh bsp-linux`` and
+``build.sh -x bsp-linux`` are equivalent. Options come *before* the recipe.
+
++--------+----------------------------------------------------------------+
+| Option | Effect                                                         |
++========+================================================================+
+| ``-l`` | List all available recipes (BSPs and components).              |
++--------+----------------------------------------------------------------+
+| ``-c`` | Clean the recipe first (``-c clean``), then rebuild.           |
++--------+----------------------------------------------------------------+
+| ``-v`` | Verbose build logs (``-vDDD``).                                |
++--------+----------------------------------------------------------------+
+| ``-x`` | Optional "build this recipe" marker (recipe stays positional). |
++--------+----------------------------------------------------------------+
+| ``-h`` | Print help.                                                    |
++--------+----------------------------------------------------------------+
+
+A **BSP recipe** (e.g. ``bsp-linux``) pulls its whole dependency tree; a
+**component** recipe (``uboot``, ``linux``, ``rootfs``, ``usr-linux``, ``qemu``,
+``filesystem``, ``atf``, ``optee``) builds just itself.
 
 .. code-block:: bash
 
-   $ build.sh -a bsp-linux
+   $ build.sh bsp-linux          # full Linux BSP (kernel + buildroot userspace + fs image)
+   $ build.sh linux              # rebuild just the kernel
+   $ build.sh -c uboot           # clean + rebuild u-boot
+   $ build.sh -v -c bsp-linux    # clean + rebuild everything, verbose
+   $ build.sh -l                 # list all recipes
 
-This builds everything needed to produce a system
-with a Linux kernel and the user space system utilities provided by Buildroot.
+.. note::
 
-
-It is also to build a specific component, for example, to build the kernel
-use the following command: ``build.sh -k linux``
-
-To see all the recipes that are provided by the ``meta-kernel`` layer,
-one can use the ``-l`` option combined with the ``-k`` option.
-
-.. code-block::
-
-   $ build.sh -l -k
-   linux
-   avz
-   so3
-
-The other global options are ``-v`` which outputs verbose logs,
-``-c`` which allows to build the task from scratch and finally ``-h`` which prints
-the help menu. The order in which the options are specified is important.
+   ``bitbake`` itself runs **unprivileged**. Recipes that need root at build
+   time (``bsp-linux`` loop-mounts the rootfs, ``filesystem`` creates the image)
+   escalate individual commands via ``sudo -n`` against a sudo timestamp opened
+   once by the script — you are prompted for your password at most once.
 
 QEMU
 ****
@@ -228,83 +240,99 @@ Main root filesystem (**rootfs**)
 The main root filesystem (*rootfs*) contains all application and configuration files
 required by the distribution. It actually refers to user space activities.
 
-To mount the rootfs, the following command can be executed:
+The storage image is ``filesystem/…/sdcard.img.<platform>``. To mount its
+partitions (boot = ``p1``, rootfs = ``p2``) under the ``filesystem`` recipe
+workdir:
 
 .. code-block:: bash
 
-   $ mount.sh rootfs
-
-The mounting point is the directory ``filesystem/pX``.
+   $ mount.sh
 
 And to unmount:
 
 .. code-block:: bash
 
-   $ umount.sh rootfs
+   $ umount.sh
 
-To mount, un-mount and access loop devices, root privileges are required -
-you will be prompted to enter your password.
-
-Initial ramfs (initrd) filesystem
-=================================
-
-The initial rootfs filesystem, aka *ramfs* (or *initrd*) is loaded in RAM during the kernel
-boot. It aims at starting user space applications dedicated to initialization; firmware loading
-and mounting specific storage can be achieved at this moment.
-
-To mount the ramfs, the following command can be executed:
+Both wrap the ``filesystem`` recipe tasks (``fs_mount`` / ``fs_umount``). In
+``soft`` storage mode (the default for *virt64*) the image is attached via a
+loop device. ``bitbake`` runs unprivileged; the mount/losetup calls escalate via
+``sudo -n`` — you may be prompted for your password once. If the image does not
+yet exist, create it first with:
 
 .. code-block:: bash
 
-   $ mount.sh ramfs
+   $ init_storage.sh          # partition + mkfs the storage image/device
 
-The mounting point is the directory ``fs/``.
+.. warning::
 
-And to unmount:
-
-.. code-block:: bash
-
-   $ umount.sh ramfs
-
-Running ``mount.sh`` without arguments mounts all partitions.
+   **Unmount before redeploying** — otherwise ``fs_mount`` sees ``p2`` already
+   mounted and skips it. And with ``IB_STORAGE_MODE = "hard"`` the target is a
+   *real* block device (``IB_STORAGE_DEVICE``): double-check ``local.conf``.
 
 .. _user_guide_deployment:
 
 Deployment
 **********
 
-Once the build is complete, one can deploy the results to a SD card image, a directory or even a physical disk device.
-When using the later method - be sure to double check the configuration in ``conf/local.conf``.
+Once the build is complete, one can deploy the results to an SD card image, a
+directory or even a physical disk device. When using the latter, be sure to
+double-check ``IB_STORAGE_MODE`` / ``IB_STORAGE_DEVICE`` in ``conf/local.conf``.
 
-Most commonly, deployment is achieved by running ``deploy.sh -a <name_of_bsp_recipe>`` e.g: ``deploy.sh -a bsp-linux``,
+.. code-block:: text
 
-This invocation will create an SD card image if it doesn't exist, then mount it on a ``/dev/loopXX`` device
-The bootloader and `.itb` will then be copied to the first partition and the rootfs to the second partition.
+   deploy.sh [-h] [-l] [-v] [-x] <recipe>
 
-``deploy.sh`` follows the same usage convention as ``build.sh``
+Like ``build.sh``, the recipe is a **positional argument** (``-x`` optional/no-op)
+and ``deploy.sh`` inherits the build state left by the prior ``build.sh`` for the
+same recipe. Deploying the BSP recipe writes the full image:
 
-A deployment can be done on a per-component basis, for example if one makes changes
-to a recipe provided by the ``meta-rootfs`` layer
-and rebuilds it. It is then possible to re-deploy the updated rootfs to the second partition
-like so: ``deploy.sh -r rootfs-linux``
+.. code-block:: bash
 
-``mount.sh`` and ``unmount.sh`` can mount/unmount the file system image, this allows to inspect the contents
-simply by browsing the ``filesystem/pX`` directories.
+   $ deploy.sh bsp-linux         # full BSP: boot chain + .itb to p1, rootfs to p2
 
-To get the exact name of a deployable recipe use the ``-l`` option combined with the ``-a``, ``-b``, ``-x`` or ``-r``
-component type options.
+This creates the SD card image if it doesn't exist, mounts it (loop device in
+``soft`` mode), copies the bootloader/``.itb`` to the boot partition and the
+rootfs to the second partition.
 
-The ``-l`` option is currently quite slow, because it re-executes *bitbake* for each recipe
-to check if recipe defines a ``do_deploy`` task.
+Deployment can also be done per-component — e.g. after rebuilding only the
+userspace, re-deploy just that part:
+
+.. code-block:: bash
+
+   $ deploy.sh usr-linux
+
+``mount.sh`` / ``umount.sh`` let you inspect the image contents by browsing the
+mounted ``pX`` directories.
+
+``deploy.sh -l`` lists only recipes that define a ``do_deploy`` task (it is a bit
+slow, as it queries *bitbake* per recipe).
 
 .. note::
 
-   ``deploy.sh`` requires root priviledges to be able to mount the disk image on the ``/dev/loopXX`` devices -
-   you may be prompted for your password. 
+   ``bitbake`` runs **unprivileged**. The privileged deploy operations
+   (``mount`` / ``losetup`` / ``mkfs`` / ``parted`` / …) escalate individually
+   via ``sudo -n`` against a sudo timestamp opened once at the start of the
+   deploy — you may be prompted for your password a single time. (Earlier
+   versions ran *bitbake* itself as root; that is no longer the case.)
 
-   Moreover, during deployment *bitbake* is invoked with root
-   priviledges. This is not the case with Yocto, recent versions will complain about running *bitbake* as root.
-   Unfortunately, the use *fakeroot* commands does not allow to use ``losetup`` correctly.
+Running the emulated system (QEMU)
+**********************************
+
+For *virt64*, two standard scripts launch the freshly deployed image in the
+patched QEMU (``qemu/build/qemu-system-aarch64``):
+
+.. code-block:: bash
+
+   $ st.sh        # headless: serial multiplexed on stdio, no display
+   $ stg.sh       # graphical: adds virtio-gpu/keyboard/mouse + an SDL window
+
+Both auto-detect the boot mode from ``filesystem/flash0.img``: present → ATF
+chain (``-M virt,virtualization=on,secure=on`` + pflash), absent → bare U-Boot
+(``-kernel u-boot/u-boot`` at EL1). User-mode networking forwards the guest SSH
+to host port ``2222`` (``ssh -p 2222 …@localhost``), and a GDB stub is exposed on
+``tcp::1234`` (offset by the number of running QEMU instances). Extra QEMU
+arguments can be passed through (e.g. ``st.sh -S`` to freeze at reset for GDB).
 
 User space applications
 ***********************
