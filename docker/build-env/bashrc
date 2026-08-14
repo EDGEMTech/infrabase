@@ -56,7 +56,7 @@ env.sh is already sourced.
   build.sh -l                 list recipes
   build.sh bsp-linux          build the Linux BSP
   deploy.sh bsp-linux         deploy (kernel + rootfs + sdcard)
-  st.sh / stg.sh              run in QEMU (headless / graphical)
+  st.sh / st.sh -d            run in QEMU (headless / graphical)
   exit                        leave the container
 
 EOF

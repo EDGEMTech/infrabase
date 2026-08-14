@@ -103,7 +103,7 @@ libgnutls28-dev
 # --- QEMU: building AND running ----------------------------------------
 # The runtime half is easy to overlook — qemu/build/qemu-system-* is built
 # into the bind-mounted tree but resolves its libraries inside the
-# container. The display backends matter too: stg.sh runs the guest with
+# container. The display backends matter too: st.sh -d runs the guest with
 # -display sdl and virtio-gpu, and GTK is kept as the alternative backend.
 
 libglib2.0-dev
