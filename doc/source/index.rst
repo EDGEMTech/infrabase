@@ -13,6 +13,7 @@
    introduction
    rootfs/rootfs
    User guide <user_guide>
+   Container <container>
    build_system/build_system
    dev_flow
    base_extension/base_extension
@@ -33,6 +34,7 @@ Setup and environment
 *********************
 
 -  :ref:`User Guide <user_guide>`
+-  :ref:`Containerised build environment <container>`
 
 .. rst-class:: left
 
