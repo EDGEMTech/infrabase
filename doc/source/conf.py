@@ -62,7 +62,7 @@ master_doc = 'index'
 # General information about the project.
 project = u'Infrabase'
 
-copyright = u'2022-2025, EDGEMTech Ltd (Switzerland)'
+copyright = u'2022-2026, EDGEMTech Ltd (Switzerland)'
 
 
 # The version info for the project you're documenting, acts as replacement for
@@ -125,7 +125,8 @@ html_theme = u'default'
 try:
     import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+    # No html_theme_path: the theme registers itself as a Sphinx entry point,
+    # and get_html_theme_path() is deprecated (it warned on every build).
     def setup(app):
 #        app.add_stylesheet('style.css')
         app.add_css_file('style.css')

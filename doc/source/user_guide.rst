@@ -2,151 +2,217 @@
 
 User Guide
 ##########
-   
-The installation should work in any Ubuntu/Kubuntu installation superior
-to ``20.04``. It is assumed that you are running an x86_64 version.
 
-The following description is used to build the different target boards
-including the emulated environment based upon QEMU.
+This chapter is the day-to-day reference: how to get a build environment, how to
+configure the target, and how to build, deploy and run a system. The concepts
+behind the build system (layers, recipes, tasks, patchsets) are described in the
+:ref:`build system chapter <build_system>`.
 
-According to the board and requirements of your configuration, all components
-are not necessary such as OPTEE-OS or even U-boot if you use x86 boards.
+Everything below assumes an x86_64 Linux host. Ubuntu 24.04 is what the build is
+validated on, but the :ref:`container <container>` makes the host distribution
+mostly irrelevant.
 
-Pre-requisites
-**************
+Getting a build environment
+***************************
 
-Shell
-=====
+There are two ways to get one, and they are interchangeable: the tree is built at
+its own absolute path in both cases, so you can switch back and forth without
+invalidating BitBake stamps or CMake caches.
 
-The build system requires the **bash** shell.
+Using the container (recommended)
+=================================
+
+The container carries the *environment* — cross toolchains, host packages,
+Python — and no project source. The repository stays on the host, bind-mounted at
+its own path, and the build runs as your own user, so nothing comes back
+root-owned.
+
+.. code-block:: bash
+
+   $ scripts/dbuild.sh --build              # build the image, once
+   $ scripts/dbuild.sh build.sh bsp-linux   # run a build inside it
+   $ scripts/dbuild.sh                      # interactive shell, env.sh sourced
+
+See the :ref:`container chapter <container>` for the details, including what
+cannot be done from inside (running the emulator's GUI, mounts outliving the
+command).
+
+.. note::
+
+   The container also solves a class of host problems for good: it carries its
+   own ``sudo`` configuration, so a host whose PAM stack interferes with
+   ``sudo -v`` (a fingerprint reader, for instance) can still run
+   ``build.sh bsp-linux`` and ``deploy.sh``.
+
+Building on the host
+====================
+
+The build requires the **bash** shell.
 
 .. warning::
 
-   With Ubuntu 22.04, the default shell is now ``dash`` which does not
-   have the same syntax as *bash*. Please have a look at 
-   `this procedure <https://askubuntu.com/questions/1064773/how-can-i-make-bin-sh-point-to-bin-bash>`_ 
-   to replace *dash* by *bash* 
+   On Ubuntu, ``/bin/sh`` points at ``dash``, which does not share bash's
+   syntax. If you invoke the scripts through ``sh``, see
+   `this procedure <https://askubuntu.com/questions/1064773/how-can-i-make-bin-sh-point-to-bin-bash>`_.
 
-Packages
-========
+The authoritative list of host packages is
+``docker/build-env/packages.txt`` — the same file the container image installs,
+one package per line with comments explaining why each group is there. Install it
+with:
 
-The following packages need to be installed:
+.. code-block:: bash
 
-.. code:: bash
+   $ sed -e 's/#.*//' -e '/^[[:space:]]*$/d' docker/build-env/packages.txt \
+       | xargs sudo apt install -y
 
+That list covers BitBake, the boot images, the storage tooling, the rootfs
+pipeline, CMake for the user space, QEMU (building *and* running it) and Sphinx
+for this documentation.
 
-    sudo apt install make cmake gcc-arm-none-eabi libc-dev \
-    bison flex bash patch mount dtc \
-    dosfstools u-boot-tools net-tools \
-    bridge-utils iptables dnsmasq libssl-dev \
-    util-linux e2fsprogs
- 
-Since the documentation relies on `Sphinx <https://www.sphinx-doc.org>`_, 
-the python environment is required as well as some additional extensions:
+Toolchains
+----------
 
-.. code:: bash
-
-   sudo apt install python3
-   pip install sphinxcontrib-openapi sphinxcontrib-plantuml
-
-If OPTEE-OS is required, the following python packages are required:
-
-.. code:: bash
-
-   pip3 install pycryptodome
-   sudo apt install python3-pyelftools
-
-
-Toolchain
-=========
- 
-The AArch-32 (ARM 32-bit) toolchain can be installed with the following commands:
+The 32-bit cross toolchain comes from apt and is in the list above
+(``gcc-arm-linux-gnueabihf``, matching ``IB_TOOLCHAIN:arm``). The 64-bit one is
+**not** interchangeable with Ubuntu's: the recipes pin the prefix
+``aarch64-none-linux-gnu-``, while ``gcc-aarch64-linux-gnu`` installs
+``aarch64-linux-gnu-``. Install the official Arm toolchain (12.3.rel1 is the
+version the build is validated with, and the one the container ships):
 
 .. code-block:: shell
 
    $ sudo mkdir -p /opt/toolchains && cd /opt/toolchains
-   # Download and extract arm-none-linux-gnueabihf toolchain (gcc v9.2.1).
-   $ sudo wget https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
-   $ sudo tar xf gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
-   $ sudo rm gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
-   $ sudo mv gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf arm-none-linux-gnueabihf_9.2.1
-   $ sudo echo 'export PATH="${PATH}:/opt/toolchains/arm-none-linux-gnueabihf_9.2.1/bin"' | sudo tee -a /etc/profile.d/02-toolchains.sh
+   $ sudo curl -fSLO "https://developer.arm.com/-/media/Files/downloads/gnu/12.3.rel1/binrel/arm-gnu-toolchain-12.3.rel1-x86_64-aarch64-none-linux-gnu.tar.xz"
+   $ sudo tar xf arm-gnu-toolchain-12.3.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
+   $ sudo mv arm-gnu-toolchain-12.3.rel1-x86_64-aarch64-none-linux-gnu aarch64-none-linux-gnu
+   $ echo 'export PATH="${PATH}:/opt/toolchains/aarch64-none-linux-gnu/bin"' \
+       | sudo tee /etc/profile.d/02-toolchains.sh
 
-For the 64-bit version (virt64 & RPi4), we are using the `aarch64-none-linux-gnu toolchain version 12.1.rel1 <ARM_toolchain_>`_,
-which is the official ARM toolchain. 
+If the toolchain lives somewhere else, point ``IB_TOOLCHAIN_PATH`` at its
+``bin/`` directory instead; ``env.sh`` appends it to ``PATH``.
 
-Configuration options
-*********************
+The environment — ``env.sh``
+****************************
 
-The main configuration of the project resides in the ``build/conf/local.conf`` file.
+Sourcing ``env.sh`` from the top of the tree is required before anything else:
 
-Be sure to check the default values for each variable and read the comments.
+.. code-block:: bash
+
+   $ . ./env.sh
+
+It exports ``IB_ROOT_DIR`` and ``BUILDDIR``, and puts ``scripts/`` and the
+bundled ``bitbake`` on your ``PATH`` — which is what lets you invoke a
+:term:`standard script` from anywhere inside the tree. It also *removes* the
+previous tree's entries, so moving between two checkouts leaves no stale paths.
+
+Every script prints a banner on stderr naming the tree and the platform it is
+about to act on:
+
+.. code-block:: text
+
+   [infrabase] bsp-linux  root=/home/user/infrabase  platform=virt64
+
+It is worth a glance: the scripts resolve the *target tree* from the current
+directory (falling back to their own location), so running a script from another
+checkout prompts you before switching, and refuses outright when
+non-interactive.
+
+Configuration
+*************
+
+The project configuration lives in ``build/conf/local.conf``. All project
+variables use the ``IB_`` prefix, and BitBake's override syntax
+``VAR:<override>`` scopes a value to a platform or a component. Read the comments
+in the file — they carry the reasoning behind each default.
+
+A second, **untracked** file is read *after* it: ``build/conf/site.conf``. That is
+where a single machine deviates from the tracked defaults, without dirtying the
+repository. It is absent on most machines.
 
 Platforms
 =========
 
-The ``IB_PLATFORM`` variable defines the target platform (also known as "machine").
+``IB_PLATFORM`` selects the target platform (BitBake calls it the *machine*):
 
-The following values are possible target platforms:
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
 
-+----------------+-------------------------------+
-| Name           | Platform                      |
-+================+===============================+
-| *virt32*       | QEMU 32-bit emulated platform |
-+----------------+-------------------------------+
-| *virt64*       | QEMU 64-bit emulated platform |
-+----------------+-------------------------------+
-| *rpi4*         | Raspberry Pi 4 in 32-bit mode |
-+----------------+-------------------------------+
-| *rpi4_64*      | Raspberry Pi 4 in 64-bit mode |
-+----------------+-------------------------------+
-| *bbb*          | BeagleBone Black platform     |
-+----------------+-------------------------------+
-| *x86*          | x86 PC platform               |
-+----------------+-------------------------------+
-| *x86_qemu*     | x86 PC emulated platform      |
-+----------------+-------------------------------+
-| *imx8_colibri* | x86 PC emulated platform      |
-+----------------+-------------------------------+
+   * - Name
+     - Platform
+   * - *virt64*
+     - QEMU ``virt``, 64-bit (aarch64) — **the default**
+   * - *virt32*
+     - QEMU ``virt``, 32-bit (arm)
+   * - *rpi4_64*
+     - Raspberry Pi 4 in 64-bit mode
+   * - *rpi4*
+     - Raspberry Pi 4 in 32-bit mode
+   * - *x86-qemu*
+     - QEMU x86 platform
 
-Execution of a *bitbake* task
-*****************************
+``verdin-imx8mp`` (Toradex Verdin iMX8M Plus) is configured in ``local.conf`` —
+kernel recipe, toolchain, U-Boot 2024.07 and the TEZI network install — but has
+no BSP include in this tree yet, so it cannot be built as it stands.
 
-Tasks can be executed manually or automatically depending of the dependency scheme as 
-defined for a specific recipe.
+.. note::
 
-For manual execution, the task can be executed with the following command, 
-from the ``build/`` directory:
+   After changing ``IB_PLATFORM``, rebuild *and* redeploy. Component trees are
+   attached in place, so a stale kernel or buildroot ``.config`` from the previous
+   platform can survive; ``build.sh -c <recipe>`` forces a clean re-attach.
 
-.. code-block:: bash
+Key variables
+=============
 
-   bitbake *<recipe>* -c *<task>*
+.. list-table::
+   :header-rows: 1
+   :widths: 34 66
 
-Where *<task>* is the name **without** the ``do_`` prefix. For example, the *do_patch* task is
-executed as follows:
+   * - Variable
+     - Meaning
+   * - ``IB_PLATFORM``
+     - Target platform, see above.
+   * - ``IB_CONFIG:linux:<plat>``
+     - Kernel defconfig, e.g. ``virt64_defconfig``.
+   * - ``IB_TARGET_ITS:linux:<plat>``
+     - ITS basename used to build the FIT image (``<name>.itb``).
+   * - ``IB_BOOT_CHAIN``
+     - ``""`` bare U-Boot (default), ``atf+uboot``, or ``full`` (adds OP-TEE).
+   * - ``IB_STORAGE_MODE:<plat>``
+     - Where a deploy writes: ``soft`` loopback image, ``hard`` real device,
+       ``http`` network install; ``remote``/``local`` also exist.
+   * - ``IB_STORAGE_DEVICE:<plat>``
+     - Device for ``hard`` mode, without ``/dev/``. **No default on purpose** —
+       a wrong one could overwrite a host disk.
+   * - ``IB_ROOTFS_METHOD``
+     - ``buildroot`` (default) or ``debootstrap``.
+   * - ``IB_ROOTFS_SIZE``
+     - Storage image size, default ``2G``.
+   * - ``IB_ROOTFS_PARTITION:<plat>``
+     - Partition holding the rootfs (``p2`` on ARM, ``p1`` on *x86-qemu*).
+   * - ``IB_PLAT_CPU``, ``IB_TOOLCHAIN``
+     - Architecture and cross-compiler prefix per platform.
+   * - ``IB_BUILD_QEMU``
+     - Set to ``"0"`` to stop a BSP build from bootstrapping QEMU.
+   * - ``IB_HTTP_DEPLOY_PATH``
+     - Where an ``http`` deploy publishes its files; defaults inside the tree
+       (``build/deploy/tezi/<plat>``).
+   * - ``IB_HTTP_FEED_PORT``
+     - Port ``tezi-feed-serve.sh`` listens on, default ``8080``.
+   * - ``IB_FORCE_ATTACH``
+     - ``1`` overrides the dirty-tree guard on ``do_attach_infrabase``.
 
-.. code-block:: bash
+Building
+********
 
-   bitbake linux -c patch
-
-Build script
-************
-
-Before using any :term:`standard script` environment variables must be set,
-it can be achieved with the following command:
-
-.. code-block:: bash
-
-   $ source env.sh
-
-Components are built using the ``build.sh`` standard script.
+Components are built with the ``build.sh`` :term:`standard script`:
 
 .. code-block:: text
 
    build.sh [-h] [-l] [-c] [-v] [-x] <recipe>
 
 The **recipe name is a positional argument**. The ``-x`` flag is an optional,
-no-op marker kept for explicitness/symmetry — ``build.sh bsp-linux`` and
+no-op marker kept for explicitness — ``build.sh bsp-linux`` and
 ``build.sh -x bsp-linux`` are equivalent. Options come *before* the recipe.
 
 +--------+----------------------------------------------------------------+
@@ -163,185 +229,207 @@ no-op marker kept for explicitness/symmetry — ``build.sh bsp-linux`` and
 | ``-h`` | Print help.                                                    |
 +--------+----------------------------------------------------------------+
 
-A **BSP recipe** (e.g. ``bsp-linux``) pulls its whole dependency tree; a
-**component** recipe (``uboot``, ``linux``, ``rootfs``, ``usr-linux``, ``qemu``,
-``filesystem``, ``atf``, ``optee``) builds just itself.
+A **BSP recipe** (``bsp-linux``) pulls its whole dependency tree; a **component**
+recipe (``uboot``, ``linux``, ``rootfs-linux``, ``buildroot``, ``usr-linux``,
+``qemu``, ``filesystem``, ``atf``, ``optee``) builds just itself.
 
 .. code-block:: bash
 
-   $ build.sh bsp-linux          # full Linux BSP (kernel + buildroot userspace + fs image)
+   $ build.sh bsp-linux          # full Linux BSP (kernel + rootfs + user space + FIT)
    $ build.sh linux              # rebuild just the kernel
    $ build.sh -c uboot           # clean + rebuild u-boot
    $ build.sh -v -c bsp-linux    # clean + rebuild everything, verbose
    $ build.sh -l                 # list all recipes
 
+On the QEMU platforms (*virt32*, *virt64*), a BSP build also **builds the
+emulator when its binary is missing**, so a fresh tree is runnable with ``st.sh``
+right away. This is a bootstrap only: an already-built emulator is left
+untouched, and the QEMU-hacking loop stays the explicit ``build.sh qemu``. Set
+``IB_BUILD_QEMU = "0"`` in ``local.conf`` to skip it — useful in CI, which builds
+and deploys but never runs the emulator.
+
 .. note::
 
-   ``bitbake`` itself runs **unprivileged**. Recipes that need root at build
-   time (``bsp-linux`` loop-mounts the rootfs, ``filesystem`` creates the image)
-   escalate individual commands via ``sudo -n`` against a sudo timestamp opened
-   once by the script — you are prompted for your password at most once.
+   ``bitbake`` itself runs **unprivileged**. The build steps that need root
+   (``filesystem`` creating the image, ``bsp-linux`` loop-mounting the rootfs)
+   escalate individual commands via ``sudo -n`` against a timestamp the script
+   opens once — you are prompted for your password at most once per invocation.
 
-QEMU
-****
+Running a task by hand
+======================
 
-The installation of *QEMU* depends on the necessity to have the emulated framebuffer or not.
-Currently, the QEMU macine is ``virt`` and is referred as **virt32** for 32-bit and **virt64**
-for 64-bit versions in *Infrabase*.
-
-For the standard installation, QEMU can be installed via the standard ``apt-get`` command.
-There are two possible versions of QEMU according to the architecture (32-/64-bit)
-
-.. code-block:: shell
-
-   $ sudo apt-get install qemu-system-arm      (for 32-bit version)
-   $ sudo apt-get install qemu-system-aarch64  (for 64-bit version)
-
-In the case of the patched version (with framebuffer enabled), QEMU can be built using the build system with
-the following command:
+Tasks normally run through the dependency graph, but any single one can be
+invoked from the ``build/`` directory, *without* the ``do_`` prefix:
 
 .. code-block:: bash
 
-   $ build.sh -x qemu
+   $ bitbake linux -c patch
+   $ bitbake linux -c updiff        # regenerate the patchset, see the build system chapter
 
-The script will invoke the build task of the QEMU recipe.
+Storage
+*******
 
-If you wish to compile QEMU using ``build.sh -x qemu``, the following packages are required:
+``IB_STORAGE_MODE`` decides where a deploy writes: a loopback image
+(``soft``, the default on *virt64*), a real block device (``hard``), or an HTTP
+feed for a network install (``http``).
 
-.. code:: bash
-
-   sudo apt install python3-pip ninja-build libglib2.0-dev libsdl2-dev
-
- 
-The following configurations are available:
-
-+-----------------------+-------------------------------------+
-| Name                  | Platform                            |
-+=======================+=====================================+
-| *vexpress_defconfig*  | Basic QEMU/vExpress 32-bit platform |
-+-----------------------+-------------------------------------+
-| *virt64_defconfig*    | QEMU/virt 64-bit platform           |
-+-----------------------+-------------------------------------+
-| *rpi_4_32b_defconfig* | Raspberry Pi 4 in 32-bit mode       |
-+-----------------------+-------------------------------------+
-| *rpi4_64_defconfig*   | Raspberry Pi 4 in 64-bit mode       |
-+-----------------------+-------------------------------------+
-
-(The last one is a custom configuration and is to be used as replacemenent
-of rpi_4_defconfig)
-
-
-Root filesystem (*rootfs*)
-**************************
-
-Main root filesystem (**rootfs**)
-=================================
-
-The main root filesystem (*rootfs*) contains all application and configuration files
-required by the distribution. It actually refers to user space activities.
-
-The storage image is ``filesystem/…/sdcard.img.<platform>``. To mount its
-partitions (boot = ``p1``, rootfs = ``p2``) under the ``filesystem`` recipe
-workdir:
-
-.. code-block:: bash
-
-   $ mount.sh
-
-And to unmount:
-
-.. code-block:: bash
-
-   $ umount.sh
-
-Both wrap the ``filesystem`` recipe tasks (``fs_mount`` / ``fs_umount``). In
-``soft`` storage mode (the default for *virt64*) the image is attached via a
-loop device. ``bitbake`` runs unprivileged; the mount/losetup calls escalate via
-``sudo -n`` — you may be prompted for your password once. If the image does not
-yet exist, create it first with:
+The storage image is ``filesystem/sdcard.img.<platform>``. A deploy creates it
+when it is missing, so the explicit step below is rarely needed:
 
 .. code-block:: bash
 
    $ init_storage.sh          # partition + mkfs the storage image/device
 
+To inspect or edit its contents, mount the two partitions — boot (FAT) as
+``filesystem/p1``, rootfs (ext4) as ``filesystem/p2``:
+
+.. code-block:: bash
+
+   $ mount.sh                 # mount p1 + p2
+   $ umount.sh                # unmount them
+
+Both wrap the ``filesystem`` recipe tasks (``fs_mount`` / ``fs_umount``); the
+``losetup``/``mount`` calls escalate via ``sudo -n``.
+
 .. warning::
 
-   **Unmount before redeploying** — otherwise ``fs_mount`` sees ``p2`` already
-   mounted and skips it. And with ``IB_STORAGE_MODE = "hard"`` the target is a
-   *real* block device (``IB_STORAGE_DEVICE``): double-check ``local.conf``.
+   **Unmount before redeploying** — ``deploy.sh`` reuses an existing mount
+   instead of making a fresh one. And with ``IB_STORAGE_MODE = "hard"`` the
+   target is a *real* block device named by ``IB_STORAGE_DEVICE``: double-check
+   ``local.conf``.
+
+Editing an archive instead of the storage
+=========================================
+
+The same two scripts also open the **cpio archives**, which is what you want when
+the target is the initrd rather than the SD card:
+
+.. code-block:: bash
+
+   $ mount.sh -i              # extract board/<plat>/initrd.cpio into filesystem/p1
+   $ umount.sh -i             # repack it
+
+A cpio archive is not a block image, so there is nothing to loop-mount:
+"mounting" it means extracting it into a tree you can edit, and unmounting means
+repacking. Both run under ``fakeroot``, so the archive keeps its root ownership
+and modes **without sudo and without bitbake** — the fake-ownership database is
+saved on mount and replayed on umount.
+
+For the cases that need real root (``cpio -id`` restoring device nodes) the
+bitbake path is still there, unpacking into the recipe's own workdir:
+
+.. code-block:: bash
+
+   $ mount.sh ramfs                    # rootfs-linux's initrd.cpio
+   $ mount.sh rootfs rootfs-linux      # ... or its rootfs.cpio
+   $ umount.sh ramfs                   # repack with the matching call
+
+``mount.sh -h`` and ``umount.sh -h`` spell out all of it.
 
 .. _user_guide_deployment:
 
 Deployment
 **********
 
-Once the build is complete, one can deploy the results to an SD card image, a
-directory or even a physical disk device. When using the latter, be sure to
-double-check ``IB_STORAGE_MODE`` / ``IB_STORAGE_DEVICE`` in ``conf/local.conf``.
-
 .. code-block:: text
 
    deploy.sh [-h] [-l] [-v] [-x] <recipe>
 
-Like ``build.sh``, the recipe is a **positional argument** (``-x`` optional/no-op)
-and ``deploy.sh`` inherits the build state left by the prior ``build.sh`` for the
-same recipe. Deploying the BSP recipe writes the full image:
+Like ``build.sh``, the recipe is a **positional argument** (``-x`` optional and
+no-op), and ``deploy.sh`` inherits the state left by the prior ``build.sh``.
+Deploying the BSP recipe writes the full image:
 
 .. code-block:: bash
 
-   $ deploy.sh bsp-linux         # full BSP: boot chain + .itb to p1, rootfs to p2
+   $ deploy.sh bsp-linux         # boot chain + FIT to p1, rootfs to p2
 
-This creates the SD card image if it doesn't exist, mounts it (loop device in
-``soft`` mode), copies the bootloader/``.itb`` to the boot partition and the
-rootfs to the second partition.
-
-Deployment can also be done per-component — e.g. after rebuilding only the
-userspace, re-deploy just that part:
+It creates the storage image if needed, mounts it, then copies the bootloader and
+the ``.itb`` to the boot partition and the root filesystem to the second one.
+Deployment can also be done per component — after rebuilding only the user space,
+redeploy just that:
 
 .. code-block:: bash
 
    $ deploy.sh usr-linux
 
-``mount.sh`` / ``umount.sh`` let you inspect the image contents by browsing the
-mounted ``pX`` directories.
-
-``deploy.sh -l`` lists only recipes that define a ``do_deploy`` task (it is a bit
-slow, as it queries *bitbake* per recipe).
+``deploy.sh -l`` lists the recipes that define a ``do_deploy`` task (it is a
+little slow: it queries *bitbake* per recipe).
 
 .. note::
 
-   ``bitbake`` runs **unprivileged**. The privileged deploy operations
-   (``mount`` / ``losetup`` / ``mkfs`` / ``parted`` / …) escalate individually
-   via ``sudo -n`` against a sudo timestamp opened once at the start of the
-   deploy — you may be prompted for your password a single time. (Earlier
-   versions ran *bitbake* itself as root; that is no longer the case.)
+   As with the build, ``bitbake`` runs **unprivileged** and the privileged
+   operations (``mount``, ``losetup``, ``mkfs``, ``parted``, …) escalate via
+   ``sudo -n`` against a timestamp opened once at the start of the deploy.
 
-Running the emulated system (QEMU)
-**********************************
+Network install (``http`` mode)
+===============================
 
-For *virt64*, two standard scripts launch the freshly deployed image in the
-patched QEMU (``qemu/build/qemu-system-aarch64``):
+On a platform whose ``IB_STORAGE_MODE`` is ``http``, the deploy does not write a
+storage device at all: it publishes a file set the board downloads and installs
+over the network. The files land in ``IB_HTTP_DEPLOY_PATH``, which defaults
+**inside the tree** (``build/deploy/tezi/<platform>``) — no web-server document
+root to arrange, no root privilege, and nothing written outside the tree.
+
+``deploy.sh`` then starts a server for it, so a deploy leaves a working feed
+behind with no manual step:
+
+.. code-block:: bash
+
+   $ tezi-feed-serve.sh              # serve in the foreground
+   $ tezi-feed-serve.sh --status     # is it running, and on which URL?
+   $ tezi-feed-serve.sh --stop       # stop a detached server
+
+It is a plain ``python3 -m http.server`` on ``IB_HTTP_FEED_PORT`` (8080 by
+default, so it runs as your user), rooted at the feed directory. ``--status``
+prints the URL to hand to the board. To publish somewhere else on one machine —
+a real web server's document root, say — override ``IB_HTTP_DEPLOY_PATH`` in
+``build/conf/site.conf`` rather than in the tracked ``local.conf``.
+
+Running the emulated system
+***************************
+
+Two scripts launch the freshly deployed image in the patched QEMU built by the
+``qemu`` recipe:
 
 .. code-block:: bash
 
    $ st.sh        # headless: serial multiplexed on stdio, no display
-   $ stg.sh       # graphical: adds virtio-gpu/keyboard/mouse + an SDL window
+   $ stg.sh       # graphical: adds virtio-gpu/keyboard/mouse and an SDL window
 
-Both auto-detect the boot mode from ``filesystem/flash0.img``: present → ATF
-chain (``-M virt,virtualization=on,secure=on`` + pflash), absent → bare U-Boot
-(``-kernel u-boot/u-boot`` at EL1). User-mode networking forwards the guest SSH
-to host port ``2222`` (``ssh -p 2222 …@localhost``), and a GDB stub is exposed on
-``tcp::1234`` (offset by the number of running QEMU instances). Extra QEMU
-arguments can be passed through (e.g. ``st.sh -S`` to freeze at reset for GDB).
+``st.sh`` handles *virt64* and *virt32*, picking the emulator binary from
+``IB_PLATFORM`` (``qemu-system-aarch64`` / ``qemu-system-arm``); ``stg.sh`` is
+*virt64* only. Both take ``-h``, and pass any other argument through to QEMU —
+``st.sh -S`` freezes the machine at reset, waiting for a debugger.
+
+The boot mode is picked from ``filesystem/flash0.img``: present means the ATF
+chain (``-M virt,virtualization=on,secure=on`` plus the pflash image), absent
+means bare U-Boot loaded with ``-kernel u-boot/u-boot`` at EL1.
+
+Networking is user-mode (slirp): the guest gets its address immediately, needs no
+``sudo`` and no ``tap`` device, and guest SSH is forwarded to host port ``2222``
+(``ssh -p 2222 root@localhost``). A GDB stub listens on ``tcp::1234``, offset by
+the number of emulators already running so two instances never collide.
 
 User space applications
 ***********************
 
-Custom user applications as well as kernel modules are located in
-``linux/usr``.
+Custom applications and out-of-tree kernel modules live in ``linux/usr`` and are
+built with CMake by the ``usr-linux`` recipe. See
+:ref:`Linux user applications <linux_usr>` for how they are installed into the
+root filesystem.
 
-The build system for user applications relies on *Cmake*.
+For a tight edit-compile loop, ``makeusr.sh`` reproduces what the recipe does in
+``do_build`` — CMake plus ``make``, and the kernel modules — without going
+through bitbake. Run it from inside ``linux/usr``:
 
+.. code-block:: bash
 
-.. _ARM_toolchain: https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz?rev=6750d007ffbf4134b30ea58ea5bf5223&hash=6C7D2A7C9BD409C42077F203DF120385AEEBB3F5
+   $ cd linux/usr && makeusr.sh
+   $ makeusr.sh -M               # skip the kernel modules
+   $ makeusr.sh -C               # remove build/ and exit
+   $ makeusr.sh -h               # all options
 
+It needs the buildroot toolchain to have been built once (it takes the CMake
+toolchain file from ``linux/rootfs/host``), and it deploys locally into
+``linux/usr/build/deploy``. A full ``deploy.sh usr-linux`` is still what puts the
+result into the target rootfs.

@@ -10,8 +10,8 @@ Here is an overview of the *development flow* used in the Infrabase project.
    branch.
 *  The development activities are done in a specific branch. An issue is linked
    with each development branches.
-*  Once the development of a new feature has completed, the developer create a ``merge
-   request (MR)``. The *changes* are reviewed and then merged into the ``main`` branch
+*  Once the development of a new feature has completed, the developer opens a ``pull
+   request (PR)``. The *changes* are reviewed and then merged into the ``main`` branch
    by the *Infrabase maintainers*.
 
 The gitFlow_ figures shows this flow.
@@ -60,32 +60,37 @@ the development branch is merged of in the ``main`` branch.
 Create new issue & branch
 =========================
 
-To create a branch with an associated issue:
+Infrabase is hosted on `GitHub <https://github.com/EDGEMTech/infrabase>`__. To create a
+branch with an associated issue:
 
-1. Create a new issue. The doc from gitlab: `Create a new
-   issue <https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#create-a-new-issue>`__
-2. Create the branch from the issue. The doc from gitlab: `Create a new
-   branch from an
-   issue <https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-new-branch-from-an-issue>`__
+1. Create a new issue: `Creating an issue
+   <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__
+2. Create the branch from the issue, so the two stay linked: `Creating a branch to work on
+   an issue <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-a-branch-for-an-issue>`__
 
 
 Merge in the main branch
 ========================
 
 Once the development of a specific topic has completed and been tested, it has to be
-*integrated* in the ``main`` branch. It is done by creating a ``merge request (MR)``.
+*integrated* in the ``main`` branch. It is done by opening a ``pull request (PR)``.
 
-By creating a ``merge request``, a developer asks *SOO maintainers* to:
+By opening a ``pull request``, a developer asks the *Infrabase maintainers* to:
 
 -  Do a review of the modifications
--  Performs the ``merge``
+-  Perform the ``merge``
 
-The creation of a ``merge request`` is simple:
+Either from the branch page on GitHub, or with the CLI:
 
-1. Form the issue page in gitlab, click ``Create merge request`` button
-2. Validate the creation of the ``merge request`` in the new Windows
+.. code-block:: bash
 
-`Merge request official doc <https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html>`__.
+   $ gh pr create --base main
+
+`Pull request official doc
+<https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request>`__.
+
+A PR description should say **what** changed and **why**, and how it was tested — which
+platform, which recipes, and whether the result was actually run.
 
 .. note::
 	
