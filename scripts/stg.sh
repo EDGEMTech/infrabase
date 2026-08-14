@@ -8,6 +8,18 @@
 # build/conf/local.conf) is anchored on that root. See
 # scripts/common/setup_env.sh.
 
+# Handled before setup_env.sh: printing the help should not trigger the
+# tree-switch prompt that sourcing the environment can raise.
+
+case "$1" in
+    -h|--help)
+        echo "Usage: $(basename "$0") [qemu-option]"
+        echo "  Run the deployed image under QEMU with a graphical display"
+        echo "  (SDL + virtio-gpu). virt64 only; use st.sh for headless."
+        exit 0
+        ;;
+esac
+
 . "$(cd "$(dirname "$(command -v -- "$0")")" && pwd)/common/setup_env.sh"
 
 QEMU_AUDIO_DRV="none"
@@ -15,7 +27,11 @@ GDB_PORT_BASE=1234
 USR_OPTION=$1
 QEMU_BIN="$IB_ROOT_DIR/qemu/build/qemu-system-aarch64"
 
-N_QEMU_INSTANCES=`ps -A | grep qemu-system-arm | wc -l`
+# Count every emulator, whatever the architecture: "qemu-system-arm" does
+# not match "qemu-system-aarch64", so a 64-bit instance used to go
+# uncounted and a second run reused its MAC address and GDB port.
+
+N_QEMU_INSTANCES=`ps -A | grep qemu-system | wc -l`
 
 launch_qemu() {
     QEMU_MAC_ADDR="$(printf 'DE:AD:BE:EF:%02X:%02X\n' $((N_QEMU_INSTANCES)) $((N_QEMU_INSTANCES)))"
