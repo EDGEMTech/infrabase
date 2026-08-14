@@ -103,9 +103,15 @@ def __do_fs_init_storage(d):
     if IB_STORAGE_MODE == "remote":
         return None
 
-    if IB_STORAGE_MODE == "hard" and IB_STORAGE_DEVICE == "":
-        bb.fatal(("No device found; please edit conf/local.conf"
-                  " IB_STORAGE_DEVICE is not set"))
+    # `not` catches both unset (commented out in local.conf -> None) and empty.
+    # IB_STORAGE_DEVICE has no default ON PURPOSE: a wrong/default device (e.g.
+    # /dev/sda) on a mechanical deploy could overwrite a host disk.
+    if IB_STORAGE_MODE == "hard" and not IB_STORAGE_DEVICE:
+        bb.fatal("IB_STORAGE_MODE is 'hard' for platform '%s' but IB_STORAGE_DEVICE "
+                 "is not set. Refusing to initialise storage: writing to a wrong or "
+                 "default device (e.g. /dev/sda) could overwrite a host disk. "
+                 "Uncomment and set IB_STORAGE_DEVICE for this platform in "
+                 "conf/local.conf before deploying." % (d.getVar('IB_PLATFORM') or '?'))
 
     # Perform the tasks specific to the platform
     __platform_init_storage(d)
@@ -163,7 +169,13 @@ def __do_fs_mount(d):
             os.stat(img_path)
         except OSError as e:
             if e.errno == errno.ENOENT:
-                bb.fatal(f"{img_path} does not exist")
+                bb.fatal(
+                    f"Storage image '{img_path}' does not exist: the filesystem "
+                    f"for platform '{IB_PLATFORM}' has not been initialised yet.\n"
+                    f"Deploy normally creates it automatically; if you reach this, "
+                    f"initialise the storage explicitly by running:\n"
+                    f"    ./scripts/init_storage.sh\n"
+                    f"then run the deploy again.")
 
     p1 = os.path.join(WORKDIR, "p1")
     p2 = os.path.join(WORKDIR, "p2")
@@ -192,6 +204,15 @@ def __do_fs_mount(d):
         devname = devname.replace("/dev/", "")
     else:
         devname = d.getVar('IB_STORAGE_DEVICE')
+        # IB_STORAGE_DEVICE has no default ON PURPOSE (a wrong device could
+        # overwrite a host disk). Fail with an actionable message instead of
+        # crashing on `devname[-1]` below when it is unset.
+        if not devname:
+            bb.fatal("IB_STORAGE_DEVICE is not set for platform '%s' (IB_STORAGE_MODE='%s'). "
+                     "Set it to the target device without /dev/ — e.g. "
+                     "IB_STORAGE_DEVICE:%s = \"sda\" — in build/conf/local.conf, or use "
+                     "IB_STORAGE_MODE:%s = \"soft\" to build a flashable sdcard.img instead."
+                     % (IB_PLATFORM, IB_STORAGE_MODE, IB_PLATFORM, IB_PLATFORM))
 
     shdata = {
         'IB_FILESYSTEM_DEVNAME': devname

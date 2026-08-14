@@ -8,14 +8,32 @@
 # build/conf/local.conf) is anchored on that root. See
 # scripts/common/setup_env.sh.
 
+# Handled before setup_env.sh: printing the help should not trigger the
+# tree-switch prompt that sourcing the environment can raise.
+
+case "$1" in
+    -h|--help)
+        echo "Usage: $(basename "$0") [qemu-option]"
+        echo "  Run the deployed image under QEMU, headless (serial console on"
+        echo "  stdio). Use stg.sh for the graphical variant."
+        exit 0
+        ;;
+esac
+
 . "$(cd "$(dirname "$(command -v -- "$0")")" && pwd)/common/setup_env.sh"
 
 QEMU_AUDIO_DRV="none"
 GDB_PORT_BASE=1234
 USR_OPTION=$1
-QEMU_BIN="$IB_ROOT_DIR/qemu/build/qemu-system-aarch64"
 
-N_QEMU_INSTANCES=`ps -A | grep qemu-system-arm | wc -l`
+# QEMU_BIN is selected per IB_PLATFORM below (qemu-system-aarch64 for
+# virt64, qemu-system-arm for virt32).
+
+# Count every emulator, whatever the architecture: "qemu-system-arm" does
+# not match "qemu-system-aarch64", so a 64-bit instance used to go
+# uncounted and a second run reused its MAC address and GDB port.
+
+N_QEMU_INSTANCES=`ps -A | grep qemu-system | wc -l`
 
 launch_qemu() {
     QEMU_MAC_ADDR="$(printf 'DE:AD:BE:EF:%02X:%02X\n' $((N_QEMU_INSTANCES)) $((N_QEMU_INSTANCES)))"
@@ -38,6 +56,7 @@ launch_qemu() {
     done < build/conf/local.conf
 
     if [ "$IB_PLATFORM" == "virt64" ]; then
+    QEMU_BIN="$IB_ROOT_DIR/qemu/build/qemu-system-aarch64"
     echo Starting on virt64
     # User-mode (slirp) networking: QEMU plays DHCP + DNS + NAT internally, so
     # the guest gets 10.0.2.15 immediately and NetworkManager-wait-online
@@ -83,6 +102,28 @@ launch_qemu() {
         	-gdb tcp::${GDB_PORT}
 	fi
 
+    if [ "$IB_PLATFORM" == "virt32" ]; then
+    QEMU_BIN="$IB_ROOT_DIR/qemu/build/qemu-system-arm"
+    echo Starting on virt32
+    # 32-bit ARM virt: U-Boot is loaded directly with -kernel (no ATF/flash
+    # chain on this platform) and cortex-a15 matches the virt32 kernel build.
+    # Serial console is muxed onto stdio and networking is slirp, exactly as
+    # on virt64. Without this branch a virt32 tree ran nothing at all.
+    ${QEMU_BIN} $@ ${USR_OPTION} \
+		-smp 4  \
+		-chardev stdio,id=char0,mux=on,signal=off \
+		-mon chardev=char0 \
+		-serial chardev:char0 \
+		-M virt -cpu cortex-a15 \
+		-kernel u-boot/u-boot \
+		-device virtio-blk-device,drive=hd0 \
+		-drive if=none,file=filesystem/sdcard.img.virt32,id=hd0,format=raw,file.locking=off \
+		-m 1024 \
+		-display none \
+		-netdev user,id=n1,hostfwd=tcp::2222-:22 \
+		-device virtio-net-device,netdev=n1,mac=${QEMU_MAC_ADDR} \
+        	-gdb tcp::${GDB_PORT}
+	fi
 
     QEMU_RESULT=$?
 }

@@ -16,6 +16,18 @@ build/bitbake
 build/bitbake.lock
 build/cache
 
+# Per-machine bitbake overrides, included by build/meta/conf/bitbake.conf
+/build/conf/site.conf
+
+# TEZI HTTP feed published by deploy.sh, plus the feed server's pid/log, and
+# the makeusr.sh local deploy. Deliberately outside build/tmp so a clean does
+# not wipe a feed a board may be installing from.
+/build/deploy/
+
+# do_attach_infrabase records what it wrote (base.bbclass), one manifest per
+# attached component tree, so the next attach can refuse to clobber local edits.
+*.attach.sha256
+
 **/doxy/**
 **/generated/**
 **/rootfs/build/**
