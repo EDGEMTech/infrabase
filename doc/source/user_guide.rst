@@ -388,18 +388,19 @@ a real web server's document root, say — override ``IB_HTTP_DEPLOY_PATH`` in
 Running the emulated system
 ***************************
 
-Two scripts launch the freshly deployed image in the patched QEMU built by the
+``st.sh`` launches the freshly deployed image in the patched QEMU built by the
 ``qemu`` recipe:
 
 .. code-block:: bash
 
    $ st.sh        # headless: serial multiplexed on stdio, no display
-   $ stg.sh       # graphical: adds virtio-gpu/keyboard/mouse and an SDL window
+   $ st.sh -d     # graphical: adds virtio-gpu/keyboard/mouse and an SDL window
 
-``st.sh`` handles *virt64* and *virt32*, picking the emulator binary from
-``IB_PLATFORM`` (``qemu-system-aarch64`` / ``qemu-system-arm``); ``stg.sh`` is
-*virt64* only. Both take ``-h``, and pass any other argument through to QEMU —
-``st.sh -S`` freezes the machine at reset, waiting for a debugger.
+It handles *virt64* and *virt32*, picking the emulator binary from
+``IB_PLATFORM`` (``qemu-system-aarch64`` / ``qemu-system-arm``). The serial
+console stays on stdio in graphical mode too, so a run with ``-d`` remains
+scriptable. Any argument other than ``-d`` and ``-h`` is passed through to
+QEMU — ``st.sh -S`` freezes the machine at reset, waiting for a debugger.
 
 The boot mode is picked from ``filesystem/flash0.img``: present means the ATF
 chain (``-M virt,virtualization=on,secure=on`` plus the pflash image), absent

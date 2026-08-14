@@ -79,7 +79,8 @@ What the container is given
   through the host resolver.
 * The ssh-agent socket, when present, so a fetch over SSH works from inside.
   Nothing is copied into the image.
-* ``DISPLAY`` and the X11 socket *with the X cookie*, mounted at its own path
+* ``DISPLAY`` and the X11 socket *with the X cookie* — what ``st.sh -d`` needs
+  to open its window — mounted at its own path
   with ``XAUTHORITY`` pointing at it — the container user has a different
   ``HOME``, and under Wayland the cookie lives outside ``HOME`` anyway.
 * stdin, always (``-i``): without it Docker hands the container ``/dev/null`` and

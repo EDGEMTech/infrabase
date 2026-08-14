@@ -38,7 +38,7 @@ build.sh -l                              # list every recipe
 build.sh bsp-linux                       # build (also bootstraps QEMU if needed)
 deploy.sh bsp-linux                      # deploy
 st.sh                                    # run, headless (serial on stdio)
-stg.sh                                   # run, with a graphical display
+st.sh -d                                 # run, with a graphical display
 ```
 
 Host prerequisites are the package list in
