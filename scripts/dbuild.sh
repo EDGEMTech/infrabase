@@ -187,7 +187,7 @@ if [ -n "$SSH_AUTH_SOCK" ] && [ -S "$SSH_AUTH_SOCK" ]; then
 		-v "$SSH_AUTH_SOCK:$SSH_AUTH_SOCK" "$@"
 fi
 
-# Forward the X11 display for the graphical QEMU launcher (stg.sh).
+# Forward the X11 display for the graphical QEMU launcher (st.sh -d).
 #
 # The X cookie must come along with the socket: the container user has a
 # different HOME, so ~/.Xauthority would not be found, and under Wayland

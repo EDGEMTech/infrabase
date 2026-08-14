@@ -13,9 +13,11 @@
 
 case "$1" in
     -h|--help)
-        echo "Usage: $(basename "$0") [qemu-option]"
-        echo "  Run the deployed image under QEMU, headless (serial console on"
-        echo "  stdio). Use stg.sh for the graphical variant."
+        echo "Usage: $(basename "$0") [-d] [qemu-option]"
+        echo "  Run the deployed image under QEMU. Headless by default: the"
+        echo "  serial console is multiplexed onto stdio."
+        echo "    -d   graphical — open an SDL window with a virtio GPU and"
+        echo "         virtio keyboard/mouse attached to the guest"
         exit 0
         ;;
 esac
@@ -24,7 +26,32 @@ esac
 
 QEMU_AUDIO_DRV="none"
 GDB_PORT_BASE=1234
+
+# Parse our own options out of the argument list before what is left is
+# forwarded to QEMU as USR_OPTION.
+
+WITH_DISPLAY=0
+POSARGS=()
+for _a in "$@"; do
+    case "$_a" in
+        -d) WITH_DISPLAY=1 ;;
+        *)  POSARGS+=("$_a") ;;
+    esac
+done
+set -- "${POSARGS[@]}"
 USR_OPTION=$1
+
+# Display mode. Headless by default: serial only, no window. With -d, present
+# the guest on a virtio GPU in an SDL window and give it virtio input devices
+# — the console stays on stdio either way, so a graphical run is still
+# scriptable. This replaces the former separate stg.sh.
+
+if [ "$WITH_DISPLAY" = "1" ]; then
+    DISPLAY_OPT="-device virtio-gpu-pci -device virtio-keyboard-pci \
+		-device virtio-mouse-pci -display sdl"
+else
+    DISPLAY_OPT="-display none"
+fi
 
 # QEMU_BIN is selected per IB_PLATFORM below (qemu-system-aarch64 for
 # virt64, qemu-system-arm for virt32).
@@ -96,7 +123,7 @@ launch_qemu() {
 		-device virtio-blk-device,drive=hd0 \
 		-drive if=none,file=filesystem/sdcard.img.virt64,id=hd0,format=raw,file.locking=off \
 		-m 1024 \
-		-display none \
+		${DISPLAY_OPT} \
 		-netdev user,id=n1,hostfwd=tcp::2222-:22 \
 		-device virtio-net-device,netdev=n1,mac=${QEMU_MAC_ADDR} \
         	-gdb tcp::${GDB_PORT}
@@ -119,7 +146,7 @@ launch_qemu() {
 		-device virtio-blk-device,drive=hd0 \
 		-drive if=none,file=filesystem/sdcard.img.virt32,id=hd0,format=raw,file.locking=off \
 		-m 1024 \
-		-display none \
+		${DISPLAY_OPT} \
 		-netdev user,id=n1,hostfwd=tcp::2222-:22 \
 		-device virtio-net-device,netdev=n1,mac=${QEMU_MAC_ADDR} \
         	-gdb tcp::${GDB_PORT}
