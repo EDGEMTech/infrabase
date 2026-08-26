@@ -4,8 +4,15 @@ pages:
   tags:
     - sphinx
   stage: deploy
+  # -W turns warnings into errors. Without it, an extension that cannot
+  # reach its native tool — plantuml without a JRE, imgmath without LaTeX —
+  # only logs a warning and drops the node: the job stays green while the
+  # diagrams and the formulas are missing from the published pages.
+  # --keep-going reports every warning of the run instead of stopping at
+  # the first one.
+
   script:
-    - sphinx-build -b html doc/source/ public/
+    - sphinx-build -W --keep-going -b html doc/source/ public/
   artifacts:
     paths:
       - public
