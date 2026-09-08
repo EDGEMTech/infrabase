@@ -88,7 +88,7 @@ An absent cell is a hardware or upstream limit, not an omission — the i.MX8MP
 boot ROM always installs BL31, TF-A's `rpi4` port is AArch64-only, OP-TEE has no
 `plat-rpi4` upstream (and the BCM2711 has no secure memory controller, so a TEE
 there could never be real), and AVZ ships aarch64 defconfigs only. Each is
-explained in [`build/conf/platforms.conf`](build/conf/platforms.conf), and
+explained next to `IB_BOOT_CHAINS_SUPPORTED` in `build/conf/local.conf`, and
 asking for an unsupported combination is refused at parse time rather than
 producing a board that boots nothing.
 
@@ -99,7 +99,6 @@ env.sh                  source this first
 scripts/                the day-to-day scripts (build, deploy, run, mount, …)
 docker/build-env/       the container build environment used by dbuild.sh
 build/conf/local.conf   THE configuration file (all IB_* variables)
-build/conf/platforms.conf  what each platform can boot (facts, not choices)
 build/meta*/            the BitBake layers (tracked — do not delete build/)
 build/tmp/              generated; safe to remove for a clean slate
 linux/ u-boot/ qemu/    component trees, fetched and patched by the build

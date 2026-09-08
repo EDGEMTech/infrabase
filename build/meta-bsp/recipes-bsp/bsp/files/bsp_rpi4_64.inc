@@ -33,7 +33,8 @@ def __do_platform_deploy(d):
     # ATF chain: BL31 replaces the GPU firmware's armstub. It is loaded at
     # address 0, stays resident as the EL3 monitor and hands over at EL2 to
     # whatever the firmware loaded as kernel8.img — our U-Boot, unchanged.
-    # OP-TEE is not an option on this SoC; see build/conf/platforms.conf.
+    # OP-TEE is not an option on this SoC; see IB_BOOT_CHAINS_SUPPORTED in
+    # build/conf/local.conf.
     if chain == "atf+uboot":
         atf_plat = d.getVar('IB_ATF_PLAT') or "rpi4"
         bl31 = os.path.join(d.getVar('IB_ATF_PATH'), "build", atf_plat, "release", "bl31.bin")
