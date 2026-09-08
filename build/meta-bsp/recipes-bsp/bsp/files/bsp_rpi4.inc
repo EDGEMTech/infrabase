@@ -5,7 +5,8 @@
 # No __do_platform_boot_chain: TF-A's rpi4 port is AArch64-only (BL31 is an
 # armv8 binary loaded as the armstub), so this platform has the bare U-Boot
 # chain and nothing else — and AVZ, being aarch64-only too, does not run
-# here either. See build/conf/platforms.conf.
+# here either. See IB_BOOT_CHAINS_SUPPORTED / IB_HYPERVISORS_SUPPORTED in
+# build/conf/local.conf.
 
 require bsp_arm_common.inc
 

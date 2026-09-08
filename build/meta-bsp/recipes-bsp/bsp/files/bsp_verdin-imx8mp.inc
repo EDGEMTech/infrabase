@@ -14,7 +14,8 @@
 # The firmware imx-boot (flash.bin = SPL + ATF(BL31) [+ OP-TEE] + U-Boot) is
 # built by the uboot 2024.07 recipe; whether it carries OP-TEE follows
 # IB_BOOT_CHAIN. The i.MX8MP boot ROM always needs BL31, so there is no bare
-# "uboot" chain on this platform (see build/conf/platforms.conf).
+# "uboot" chain on this platform (see IB_BOOT_CHAINS_SUPPORTED in
+# build/conf/local.conf).
 #
 # Deploy: assemble a Toradex TEZI image set (the official base image provides
 # image.json + the partition layout; we replace imx-boot with our flash.bin

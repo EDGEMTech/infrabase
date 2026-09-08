@@ -224,7 +224,8 @@ supports is buildable:
      - —
 
 An absent cell is a hardware or upstream limit, not an omission, and each one
-is explained in ``build/conf/platforms.conf``. In short: the i.MX8MP boot ROM
+is explained next to ``IB_BOOT_CHAINS_SUPPORTED`` in ``build/conf/local.conf``.
+In short: the i.MX8MP boot ROM
 always installs BL31, so there is no bare-U-Boot chain on the Verdin; TF-A's
 ``rpi4`` port is AArch64-only, so the 32-bit Pi has no ATF; OP-TEE has no
 ``plat-rpi4`` upstream and the BCM2711 has no secure memory controller, so a
@@ -236,7 +237,7 @@ the platform does support::
 
    ERROR: Platform "rpi4_64" cannot boot IB_BOOT_CHAIN="atf+optee+uboot".
           Supported on this platform: uboot atf+uboot.
-          See build/conf/platforms.conf for why.
+          See IB_BOOT_CHAINS_SUPPORTED in build/conf/local.conf for why.
 
 .. note::
 

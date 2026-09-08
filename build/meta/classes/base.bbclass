@@ -37,7 +37,8 @@ THISDIR = "${@os.path.dirname(d.getVar('FILE'))}"
 # (QEMU virtualization=on gives EL2 without any secure world), and a secure
 # world is equally useful under a plain Linux. Every combination the
 # platform supports is buildable — the supported sets are declared per
-# platform in build/conf/platforms.conf.
+# platform in build/conf/local.conf (IB_BOOT_CHAINS_SUPPORTED /
+# IB_HYPERVISORS_SUPPORTED).
 #
 # "full" is accepted as a LEGACY alias for the edge-m1 capsule chain
 # (atf+optee+uboot with AVZ). It is expanded here, once, so that no recipe,
@@ -86,7 +87,7 @@ def ib_normalize_boot_axes(d):
                  "Expected one of: %s." % (hyp, " ".join(hyps)))
 
     # Platform capability check. The supported sets are facts about the SoC
-    # and about what is available upstream, declared in conf/platforms.conf;
+    # and about what is available upstream, declared in conf/local.conf;
     # failing here, at parse time, beats failing in the middle of a firmware
     # link or — worse — booting a board that then stays silent.
 
@@ -94,14 +95,14 @@ def ib_normalize_boot_axes(d):
     if supported_chains and chain not in supported_chains:
         bb.fatal("Platform \"%s\" cannot boot IB_BOOT_CHAIN=\"%s\".\n"
                  "Supported on this platform: %s.\n"
-                 "See build/conf/platforms.conf for why."
+                 "See IB_BOOT_CHAINS_SUPPORTED in build/conf/local.conf for why."
                  % (plat, chain, " ".join(supported_chains)))
 
     supported_hyps = (d.getVar('IB_HYPERVISORS_SUPPORTED') or "").split()
     if supported_hyps and hyp not in supported_hyps:
         bb.fatal("Platform \"%s\" cannot run IB_HYPERVISOR=\"%s\".\n"
                  "Supported on this platform: %s.\n"
-                 "See build/conf/platforms.conf for why."
+                 "See IB_HYPERVISORS_SUPPORTED in build/conf/local.conf for why."
                  % (plat, hyp, " ".join(supported_hyps)))
 
     # Write the normalised values back. Any scoped variant still in effect
