@@ -1,6 +1,6 @@
 --- /dev/null	2026-03-20 16:30:38.468300202 +0100
 +++ ./arch/arm64/boot/dts/arm/virt64_guest.dts	2026-03-20 16:55:19.220277261 +0100
-@@ -0,0 +1,425 @@
+@@ -0,0 +1,385 @@
 +/dts-v1/;
 +
 +/ {
@@ -324,12 +324,6 @@
 +		};
 +	};
 +
-+	flash@0 {
-+		bank-width = <0x04>;
-+		reg = <0x00 0x00 0x00 0x4000000 0x00 0x4000000 0x00 0x4000000>;
-+		compatible = "cfi-flash";
-+	};
-+
 +	cpus {
 +		#size-cells = <0x00>;
 +		#address-cells = <0x01>;
@@ -369,60 +363,26 @@
 +		compatible = "arm,armv8-timer\0arm,armv7-timer";
 +	};
 +
++	/*
++	 * No clcd@8800000 / panel here, on purpose. The QEMU PL111 CLCD
++	 * belongs to AVZ, not to the guest: with the node present, the
++	 * guest's pl111_amba_driver_init never returns (it prints
++	 * "Initialized pl111 ... on minor 0" and then blocks), so the boot
++	 * stops dead before the block layer with no error message. Booting
++	 * with initcall_blacklist=pl111_amba_driver_init reaches userspace,
++	 * which is how this was pinned down. Giving the guest a display is a
++	 * separate feature (framebuffer virtualisation), not something a
++	 * passthrough DT node provides.
++	 *
++	 * Same reasoning as the absent flash@0: this DT describes only what
++	 * the guest actually owns.
++	 */
++
 +	apb_clk: apb-pclk {
 +		clock-output-names = "clk24mhz";
 +		clock-frequency = <0x16e3600>;
 +		#clock-cells = <0x00>;
 +		compatible = "fixed-clock";
-+	};
-+
-+	clcd_clk: clcd-clk {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0x00>;
-+		clock-frequency = <25175000>;
-+		clock-output-names = "clcdclk";
-+	};
-+
-+	panel: panel {
-+		compatible = "panel-dpi";
-+		width-mm = <152>;
-+		height-mm = <91>;
-+
-+		panel-timing {
-+			clock-frequency = <25175000>;
-+			hactive = <640>;
-+			vactive = <480>;
-+			hback-porch = <48>;
-+			hfront-porch = <16>;
-+			hsync-len = <96>;
-+			vback-porch = <33>;
-+			vfront-porch = <10>;
-+			vsync-len = <2>;
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			de-active = <1>;
-+			pixelclk-active = <0>;
-+		};
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&clcd_out>;
-+			};
-+		};
-+	};
-+
-+	clcd@8800000 {
-+		compatible = "arm,pl111", "arm,primecell";
-+		reg = <0x00 0x8800000 0x00 0x1000>;
-+		interrupts = <0x00 0x0a 0x04>;
-+		clocks = <&clcd_clk>, <&apb_clk>;
-+		clock-names = "clcdclk", "apb_pclk";
-+
-+		port {
-+			clcd_out: endpoint {
-+				remote-endpoint = <&panel_in>;
-+			};
-+		};
 +	};
 +
 +};
