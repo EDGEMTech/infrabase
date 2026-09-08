@@ -1,5 +1,3 @@
-
-
 # Copyright (c) 2023-2026 EDGEMTech Ltd
 
 # Class for BSP - Main recipe
@@ -14,42 +12,140 @@ IB_BSP_PATH = "${IB_DIR}/build/meta-bsp/recipes-bsp/bsp"
 IB_ATF_PATH = "${IB_DIR}/atf"
 IB_OPTEE_PATH = "${IB_DIR}/atf/optee"
 
-# Path to the ITB files
+# ITB build/output directory (gitignored). The ITS *sources* live in the
+# BSP recipe's files/its/ (IB_ITS_SRC) and reference the component trees via
+# ${IB_*_PATH} variables; do_render_its renders them here before mkimage and
+# writes the resulting .itb here too.
+IB_ITB_PATH:linux = "${IB_DIR}/linux/images"
 
-IB_ITB_PATH:linux = "${IB_DIR}/linux/target"
+# Component tree locations referenced from the ITS templates. Provided here
+# (?=) so every BSP recipe can render any ITS regardless of which classes it
+# inherits; the real definitions in avz/linux .bbclass take precedence.
+IB_AVZ_PATH ?= "${IB_DIR}/avz"
+IB_LINUX_PATH ?= "${IB_DIR}/linux/linux"
+
+# AVZ two-ITB boot: the guest ITB basename is <IB_TARGET_ITS without _avz> +
+# this suffix. Infrabase only ever boots a Linux guest, hence _linux_guest;
+# it stays a variable so a downstream tree can add another guest flavour
+# without touching this class.
+IB_GUEST_SUFFIX ?= "_linux_guest"
+
+# Which cpio feeds the embedded ramfs (the initrd.cpio.gz that the ITS
+# /incbin/'s into the guest ITB). Both modes run-from-RAM; only the source
+# differs:
+#   "rootfs" (default) - the freshly built board/<plat>/rootfs.cpio (~30 MB,
+#                        full buildroot rootfs). p2 holds the same content.
+#   "initrd"           - the static, git-tracked board/<plat>/initrd.cpio
+#                        (small busybox ramfs). p2 still receives the full
+#                        rootfs.cpio; the kernel just boots the small initrd.
+# Override per build in conf/local.conf, e.g. IB_RAMFS_SOURCE = "initrd".
+IB_RAMFS_SOURCE ?= "rootfs"
+
+# Render an ITS template from IB_ITS_SRC into IB_ITB_PATH, expanding the
+# ${IB_*_PATH} / ${IB_PLATFORM} placeholders to absolute build paths. The sed
+# patterns use char classes ([$][{]...[}]) so bitbake leaves them untouched
+# and only the replacement side is expanded.
+bsp_render_its() {
+	mkdir -p "${IB_ITB_PATH}"
+	sed -e "s|[$][{]IB_AVZ_PATH[}]|${IB_AVZ_PATH}|g" \
+	    -e "s|[$][{]IB_LINUX_PATH[}]|${IB_LINUX_PATH}|g" \
+	    -e "s|[$][{]IB_ROOTFS_PATH[}]|${IB_ROOTFS_PATH}|g" \
+	    -e "s|[$][{]IB_PLATFORM[}]|${IB_PLATFORM}|g" \
+	    "${IB_ITS_SRC}/$1.its" > "${IB_ITB_PATH}/$1.its"
+}
+
+# Default ITS source dir for the generic (bare Linux / AVZ) templates.
+IB_ITS_SRC ?= "${IB_DIR}/build/meta-bsp/recipes-bsp/linux/files/its"
+
+# Python counterpart of bsp_render_its, used by do_render_its below. Renders
+# IB_ITS_SRC/<name>.its into IB_ITB_PATH, expanding the same placeholders.
+# Returns False (a no-op) when IB_ITS_SRC has no <name>.its template, so
+# callers can offer a superset of candidate names and let missing ones skip.
+
+def bsp_render_its_py(d, name):
+    import os
+    src = os.path.join(d.getVar('IB_ITS_SRC') or '', name + '.its')
+    if not os.path.isfile(src):
+        return False
+    repl = {
+        '${IB_AVZ_PATH}':    d.getVar('IB_AVZ_PATH') or '',
+        '${IB_LINUX_PATH}':  d.getVar('IB_LINUX_PATH') or '',
+        '${IB_ROOTFS_PATH}': d.getVar('IB_ROOTFS_PATH') or '',
+        '${IB_PLATFORM}':    d.getVar('IB_PLATFORM') or '',
+    }
+    with open(src) as f:
+        text = f.read()
+    for k, v in repl.items():
+        text = text.replace(k, v)
+    dst_dir = d.getVar('IB_ITB_PATH')
+    os.makedirs(dst_dir, exist_ok=True)
+    with open(os.path.join(dst_dir, name + '.its'), 'w') as f:
+        f.write(text)
+    return True
+
+# Generic ITS render step, shared by every BSP recipe and its per-platform
+# do_itb include. Renders all the generic (placeholder) ITS a do_itb may
+# mkimage — bare (IB_PLATFORM), the AVZ ITB (IB_TARGET_ITS) and, for the
+# two-ITB AVZ case, the guest — from IB_ITS_SRC into IB_ITB_PATH, ONCE,
+# before do_itb. Doing it here (not inline in each do_itb) means adding a
+# platform or variant never needs to re-add render calls;
+# bsp_render_its_py just skips the names that have no template.
+# do_itb then only reads + mkimage's.
+
+python do_render_its() {
+    plat       = d.getVar('IB_PLATFORM') or ''
+    target_its = d.getVar('IB_TARGET_ITS') or ''
+    suffix     = d.getVar('IB_GUEST_SUFFIX') or '_linux_guest'
+    names = [plat, target_its]
+    if target_its.endswith('_avz'):
+        names.append(target_its[:-len('_avz')] + suffix)
+    seen = set()
+    for n in names:
+        if n and n not in seen:
+            seen.add(n)
+            bsp_render_its_py(d, n)
+}
+do_render_its[nostamp] = "1"
+addtask do_render_its before do_itb
 
 # This is the uEnv.txt file related to U-boot depending on the BSP
 IB_UENV = "${FILE_DIRNAME}/files/uEnv_${IB_PLATFORM}.txt"
 
-inherit logging
 inherit filesystem
 
 # Platform boot chain — produces the bootloader-side artefacts (flash0.img
-# + FIP for virt64, flash.bin for verdin). Lives at the BSP class level so
-# it is shared across every BSP recipe.
+# + FIP for virt64, bl31/armstub for rpi4_64, flash.bin for verdin). Lives
+# at the BSP class level so it is shared across every BSP recipe.
 #
 # Per-platform bootloader assembly lives in bsp_<platform>.inc as
 # __do_platform_boot_chain(d).
 
-# Boot-chain dependencies gate on IB_BOOT_CHAIN:
-#   "uboot"      → only u-boot (no ATF, no OP-TEE pulled in)
-#   "atf+uboot"  → ATF + u-boot, no OP-TEE
-#   "full"       → ATF + OP-TEE + u-boot
+# Build dependencies gate on the two orthogonal axes (both already
+# normalised by ib_normalize_boot_axes in base.bbclass, so "full" and the
+# empty string never reach here):
 #
-# Deps are wired into BOTH do_build (so `build.sh -a` actually compiles
+#   IB_BOOT_CHAIN = "uboot"            u-boot only
+#                   "atf+uboot"        + ATF
+#                   "atf+optee+uboot"  + ATF + OP-TEE
+#   IB_HYPERVISOR = "avz"              + AVZ, on any of the three chains
+#
+# Deps are wired into BOTH do_build (so `build.sh <bsp>` actually compiles
 # every source artefact) AND do_deploy_boot_chain (so a standalone
-# `deploy.sh -a` without a prior build still pulls them through sstate).
+# `deploy.sh <bsp>` without a prior build still pulls them through sstate).
 
 do_deploy_boot_chain[nostamp] = "1"
 do_deploy_boot_chain[depends] = "uboot:do_build"
 
 python () {
     chain = d.getVar('IB_BOOT_CHAIN') or ""
+    hyp = d.getVar('IB_HYPERVISOR') or "none"
     extra = []
-    if chain in ("atf+uboot", "full"):
+    if chain in ("atf+uboot", "atf+optee+uboot"):
         extra.append("atf:do_build")
-    if chain == "full":
+    if chain == "atf+optee+uboot":
         extra.append("optee:do_build")
+    if hyp == "avz":
+        extra.append("avz:do_build")
     if extra:
         deps = ' ' + ' '.join(extra)
         d.appendVarFlag('do_deploy_boot_chain', 'depends', deps)
@@ -59,12 +155,16 @@ python () {
 python do_deploy_boot_chain () {
     plat = d.getVar('IB_PLATFORM') or '?'
     chain = d.getVar('IB_BOOT_CHAIN') or '?'
-    bb.plain(f"Deploy boot chain for platform {plat} (chain={chain})")
+    hyp = d.getVar('IB_HYPERVISOR') or '?'
+    bb.plain(f"Deploy boot chain for platform {plat} (chain={chain}, hypervisor={hyp})")
 
     try:
         __do_platform_boot_chain(d)
     except NameError:
         bb.note(f"No __do_platform_boot_chain defined for {plat} — skipping")
+
+    # The AVZ ITB is produced by do_itb (wired `before do_build`), so it
+    # exists by the time do_deploy_boot_chain runs.
 }
 addtask do_deploy_boot_chain before do_deploy
 

@@ -70,17 +70,25 @@ launch_qemu() {
     echo -e "\033[01;36mMAC addr: " ${QEMU_MAC_ADDR} "\033[0;37m"
     echo -e "\033[01;36mGDB port: " ${GDB_PORT} "\033[0;37m"
 
-    while IFS= read -r line; do
-      # Check if the line starts with "IB_PLATFORM"
-      if [[ $line == IB_PLATFORM* ]]; then
-    	  # Extract the value between the quotes
-    	  value=$(echo "$line" | awk -F'"' '{print $2}')
-    
-    	  # Set the IB_PLATFORM variable to the extracted value
-    	  IB_PLATFORM="$value"
-    	  break
-      fi     
-    done < build/conf/local.conf
+    # Read a plain (non-override) assignment out of the configuration.
+    # Reads local.conf THEN site.conf, in the order bitbake.conf includes
+    # them, and takes the LAST match: bitbake is last-assignment-wins, so a
+    # site.conf override has to win here too — otherwise the launcher would
+    # boot a machine differently from how it was built. (An image build may
+    # likewise append its own value after the "?=" default.)
+    conf_value() {
+        cat build/conf/local.conf build/conf/site.conf 2>/dev/null \
+            | grep -E "^$1[[:space:]]*[?:]?=" \
+            | grep -v "^$1:" \
+            | tail -1 | sed -n 's/.*"\([^"]*\)".*/\1/p'
+    }
+
+    IB_PLATFORM="$(conf_value IB_PLATFORM)"
+
+    # The hypervisor axis decides whether the guest needs EL2. Defaults to
+    # "none" so an older local.conf without the variable behaves as before.
+    IB_HYPERVISOR="$(conf_value IB_HYPERVISOR)"
+    : "${IB_HYPERVISOR:=none}"
 
     if [ "$IB_PLATFORM" == "virt64" ]; then
     QEMU_BIN="$IB_ROOT_DIR/qemu/build/qemu-system-aarch64"
@@ -98,17 +106,25 @@ launch_qemu() {
     #   * flash0.img present → ATF chain (IB_BOOT_CHAIN=atf+uboot / full,
     #     ATF BL1+FIP, optionally OP-TEE). QEMU exposes EL3 (secure=on) and
     #     pflash-loads BL1+FIP; EL2 enabled so U-Boot's hyp-mode can run.
-    #   * flash0.img absent → bare bsp-linux (IB_BOOT_CHAIN=uboot). The boot
-    #     chain is just U-Boot + Linux; QEMU `-kernel`-loads the U-Boot ELF
-    #     (u-boot/u-boot) at EL1 directly. EL2 (and EL3) are deliberately
-    #     disabled — the qemu-arm64 U-Boot config expects to run at EL1,
-    #     and running at EL2 without firmware handling PSCI / breaking
-    #     the bootm path triggers a synchronous external abort during
-    #     AMBA PL011 probe.
+    #   * flash0.img absent, IB_HYPERVISOR=avz → bare U-Boot chain, but AVZ
+    #     is an EL2 hypervisor, so QEMU must still expose EL2
+    #     (virtualization=on). No secure world: the two axes are
+    #     independent, and AVZ needs EL2 rather than EL3.
+    #   * flash0.img absent, IB_HYPERVISOR=none → standalone Linux
+    #     (IB_BOOT_CHAIN=uboot). The boot chain is just U-Boot + Linux; QEMU
+    #     `-kernel`-loads the U-Boot ELF (u-boot/u-boot) at EL1 directly.
+    #     EL2 (and EL3) are deliberately disabled — the qemu-arm64 U-Boot
+    #     config expects to run at EL1, and running at EL2 without firmware
+    #     handling PSCI / breaking the bootm path triggers a synchronous
+    #     external abort during AMBA PL011 probe.
 
     if [ -f filesystem/flash0.img ]; then
         MACHINE_OPT="-M virt,virtualization=on,gic-version=2,secure=on"
         BOOT_OPT="-drive if=pflash,format=raw,file=filesystem/flash0.img"
+    elif [ "$IB_HYPERVISOR" = "avz" ]; then
+        echo "AVZ guest on the bare U-Boot chain — enabling EL2 (virtualization=on)"
+        MACHINE_OPT="-M virt,gic-version=2,virtualization=on"
+        BOOT_OPT="-kernel u-boot/u-boot"
     else
         MACHINE_OPT="-M virt,gic-version=2"
         BOOT_OPT="-kernel u-boot/u-boot"
