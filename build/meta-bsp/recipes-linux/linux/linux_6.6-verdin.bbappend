@@ -1,12 +1,12 @@
 # Copyright (c) 2025-2026 EDGEMTech SA
 
 # Verdin-iMX8MP platform firmware staging — runs unconditionally for
-# every verdin kernel build (bare bsp-linux / bare bsp-torizon / FC /
-# dev-lvgl). The bake-in policy (CONFIG_EXTRA_FIRMWARE) is decided per
-# config via Kconfig fragments (see e.g. meta-e1c-dev-lvgl's
-# e1c-dev-lvgl-verdin.cfg) — this bbappend only ensures the blob is
-# present on disk in the kernel work-tree so the build can find it
-# when CONFIG_EXTRA_FIRMWARE references it.
+# every verdin kernel build. The bake-in policy (CONFIG_EXTRA_FIRMWARE) is
+# decided per kernel config; this bbappend only ensures the blob is present
+# on disk in the kernel work-tree so the build can find it when
+# CONFIG_EXTRA_FIRMWARE references it. (In the edge-m1 product tree the same
+# bbappend also serves the capsule configs, which is why it stages
+# unconditionally rather than gating on a config.)
 #
 # Why a separate nostamp task and not do_attach_infrabase:append:
 # do_attach_infrabase is stamped, so when a capsule layer that adds a

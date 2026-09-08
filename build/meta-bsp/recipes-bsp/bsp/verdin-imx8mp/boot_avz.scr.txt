@@ -1,0 +1,28 @@
+# U-Boot boot script for the Toradex Verdin iMX8MP — two-ITB AVZ boot.
+#
+# Loads the AVZ ITB and the Linux guest ITB to staging addresses, then jumps
+# via the guest-boot U-Boot command, which passes the AVZ FIT in x0 and the
+# guest ITB in x1. AVZ extracts its own sub-images (AVZ -> 0x40080000,
+# avz_dt -> 0x46000000) and its loadAgency() then loads the guest
+# (-> 0x48000000, dtb, initrd) from x1.
+#
+# The two staging addresses MUST stay inside AVZ's early identity map, which
+# is a single 1 GB block at the DRAM base — [0x40000000, 0x80000000) on the
+# iMX8MP (AVZ arch/arm64/mmu.c:mmu_configure). AVZ re-reads both FITs after
+# enabling its MMU, so an address in the next block (0x90000000 and above,
+# fine for a plain bootm) faults with a translation fault. Both are placed
+# above the inner payload ceiling (~0x57000000) and below 0x80000000.
+
+echo "=== Linux on AVZ (Verdin iMX8MP, two-ITB) ==="
+
+# Guest kernel command line. guest-boot propagates it into the guest FDT's
+# /chosen/bootargs (env_get("bootargs") + fdt_chosen()). As in boot.scr.txt,
+# it lives here because the TEZI deploy installs no uEnv.txt.
+env set bootargs "earlycon=ec_imx6q,0x30880000,115200 console=ttymxc2,115200 root=/dev/ram coherent_pool=1M cma=256M rootwait vt.global_cursor_default=0"
+
+env set avz_addr 0x58000000
+env set guest_addr 0x59000000
+
+ext4load mmc 2:1 ${avz_addr} /boot_avz.itb
+ext4load mmc 2:1 ${guest_addr} /boot_guest.itb
+guest-boot ${avz_addr} ${guest_addr}

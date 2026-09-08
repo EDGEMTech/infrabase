@@ -1,0 +1,14 @@
+
+# --- ATF boot chain (appended by bsp_rpi4_64.inc when IB_BOOT_CHAIN="atf+uboot") ---
+# TF-A's rpi4 port is BL31-only (RESET_TO_BL31): the GPU firmware loads
+# bl31.bin as the armstub at address 0 instead of its own, BL31 stays
+# resident at 0x1000-0x80000 as the EL3 monitor, and then drops to EL2 at
+# 0x80000 — where the firmware has loaded kernel8.img, i.e. our U-Boot. So
+# the U-Boot entry is unchanged from the bare chain; what BL31 adds is a
+# resident EL3 with PSCI, replacing the firmware's spin-table for secondary
+# CPU bring-up.
+#
+# enable_gic=1 makes the firmware set up the GIC-400 rather than the legacy
+# interrupt controller — required by BL31's GICv2 driver.
+armstub=bl31.bin
+enable_gic=1

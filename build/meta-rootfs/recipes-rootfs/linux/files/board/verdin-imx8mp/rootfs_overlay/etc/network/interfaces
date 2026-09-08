@@ -1,0 +1,34 @@
+# /etc/network/interfaces — Verdin iMX8MP (FC)
+#
+# Wired Ethernet is the preferred uplink; on-module WiFi (Marvell 88W8997,
+# mwifiex station interface "mlan0") is the fallback. Preference is by route
+# metric: eth0 (100) beats mlan0 (200) when both hold a lease. With no cable at
+# boot, eth0's DHCP gets no lease and installs no route, so WiFi is used.
+#
+# The per-interface metric is applied by the udhcpc hook
+# /usr/share/udhcpc/default.script.d/50-route-metric (ifupdown exports the
+# `metric` option below as $IF_METRIC).
+#
+# eth0 is brought up/down by ifplugd on cable (carrier) change rather than at
+# boot, so a hot unplug drops its address+route and WiFi (metric 200) takes
+# over; replug restores eth0 (metric 100). Hence "allow-hotplug", not "auto":
+# the boot-time `ifup -a` skips it and ifplugd's action script runs `ifup eth0`
+# only when a cable is present. See /etc/ifplugd/ifplugd.conf.
+
+auto lo
+iface lo inet loopback
+
+allow-hotplug eth0
+iface eth0 inet dhcp
+    metric 100
+
+# WiFi is also "allow-hotplug" (not "auto"): mwifiex is built-in and mlan0 only
+# appears ~7s into boot, so bringing it up from the synchronous boot-time
+# `ifup -a` would stall the UI. Instead /etc/init.d/S44wifi runs `ifup mlan0`
+# in the background; its pre-up (fc-wifi-up) waits for the device, then
+# associates, then ifupdown's udhcpc leases an address.
+allow-hotplug mlan0
+iface mlan0 inet dhcp
+    metric 200
+    pre-up /usr/bin/fc-wifi-up
+    post-down killall wpa_supplicant 2>/dev/null || true

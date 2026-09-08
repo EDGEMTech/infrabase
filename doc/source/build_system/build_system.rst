@@ -87,6 +87,42 @@ board may be installing from.
 In *bitbake*, a layer corresponds to a ``meta`` directory entry. For example, the *meta/* directory is
 a generic layer which is used by all other layers.
 
+The layer set is fixed and regenerated into ``build/conf/bblayers.conf`` by
+``scripts/common/bblayers.sh:regen_bblayers`` on every ``build.sh`` / ``deploy.sh``
+invocation, so adding a layer is a one-line change there rather than a hand edit:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 24 76
+
+   * - Layer
+     - Content
+   * - ``meta``
+     - the generic OpenEmbedded base (classes shared by every other layer)
+   * - ``meta-qemu``
+     - the QEMU emulator built for the *virt32* / *virt64* platforms
+   * - ``meta-filesystem``
+     - storage images, partitioning and the mount/umount machinery
+   * - ``meta-uboot``
+     - U-Boot 2022.04 (QEMU virt, Raspberry Pi) and 2024.07 (imx-boot for the Verdin)
+   * - ``meta-linux``
+     - the Linux kernel, one recipe per version/fork
+   * - ``meta-rootfs``
+     - the root filesystem (buildroot by default) and the initramfs
+   * - ``meta-usr``
+     - the user-space applications
+   * - ``meta-bsp``
+     - the per-platform glue: boot chain assembly, ITS templates, deploy
+   * - ``meta-atf``
+     - ARM Trusted Firmware and OP-TEE
+   * - ``meta-avz``
+     - the AVZ hypervisor, fetched from the SO3 repository and built with an
+       ``*_avz_defconfig``
+
+Which of ``atf``, ``optee`` and ``avz`` a given build actually compiles is decided
+by ``IB_BOOT_CHAIN`` / ``IB_HYPERVISOR`` at the dependency level (``bsp.bbclass``),
+not by adding and removing layers — the layer set is the same for every build.
+
 Let's focus on the **meta-linux** layer as an example.
 
 Directory ``conf/``

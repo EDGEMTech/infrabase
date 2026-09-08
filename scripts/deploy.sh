@@ -88,6 +88,14 @@ then
 	dodeploy=1
 fi
 
+# Regenerate bblayers.conf from the layer set in
+# scripts/common/bblayers.sh. Rewrites the file only when its content
+# would change, so a tree whose layer set is already current stays quiet
+# and `git status` clean. Without this call the "auto-generated" header
+# on bblayers.conf was a claim nothing honoured, and a layer added to
+# regen_bblayers() never reached a build.
+regen_bblayers
+
 show_env "$recipename"
 
 if test -z "$recipename" && test $dolist -eq 0

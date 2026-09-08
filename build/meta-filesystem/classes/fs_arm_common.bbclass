@@ -3,10 +3,10 @@
 # Storage layout for ARM platforms (sdcard.img, IB_ROOTFS_SIZE total).
 #
 # Two partitions:
-# - p1, FAT, 128 MiB — boot partition
-#       uEnv.txt, ITB, firmware artefacts
+# - p1, FAT, IB_BOOT_PARTITION_SIZE (256 MiB by default) — boot partition
+#       uEnv.txt, AVZ ITB (small), legacy firmware artefacts
 # - p2, ext4, ~rest of IB_ROOTFS_SIZE — rootfs partition (label "rootfs1")
-#       /           — Linux rootfs proper (deployed by rootfs-linux).
+#       /          — Linux rootfs proper (deployed by rootfs-linux).
 #
 # bitbake itself runs as the unprivileged user. Each privileged op
 # (losetup/fdisk/mkfs/mount/umount) goes through utils_sudo (`sudo -n`)
@@ -70,7 +70,19 @@ def __platform_init_storage(d):
 
     # Create the partition layout this way
     # TODO: use sfdisk(8) which is more suitable for scripting
-    fdisk_input = "o\nn\np\n\n\n+128M\nt\nc\na\nn\np\n\n\n+1600M\nw\n"
+    #
+    # p1 sizing: the boot partition holds the ITB(s), and on a Linux BSP an
+    # ITB carries a kernel plus an initramfs — tens of megabytes each. The
+    # AVZ shape needs TWO of them (the hypervisor ITB and the guest ITB), so
+    # the former hardcoded 128 MiB overflowed as soon as IB_HYPERVISOR was
+    # "avz" with the default IB_RAMFS_SOURCE="rootfs". 256 MiB fits both
+    # shapes; p1 + p2 (1600 MiB) still sit inside the default 2 GiB image.
+    #
+    # NOTE: this only applies when the storage is (re)initialised. An image
+    # partitioned by an older tree keeps its 128 MiB p1 — delete
+    # filesystem/sdcard.img.<platform> to have it recreated.
+    boot_size = d.getVar('IB_BOOT_PARTITION_SIZE') or "256M"
+    fdisk_input = f"o\nn\np\n\n\n+{boot_size}\nt\nc\na\nn\np\n\n\n+1600M\nw\n"
     utils_sudo(["fdisk", f"/dev/{devname}"], input=fdisk_input.encode())
 
     print("Waiting ...")

@@ -1,0 +1,81 @@
+/*
+ * Copyright (C) 2020-2026 EDGEMTech SA <info@edgemtech.ch>
+ *
+ * Linux guest ITS for the Toradex Verdin iMX8MP running on AVZ. Paired
+ * with verdin-imx8mp_avz.its: U-Boot's guest-boot command loads both
+ * ITBs and hands the guest FIT to AVZ in x1, which loads the guest from
+ * it. The kernel node is type "guest" (not "kernel") so U-Boot stages it
+ * without trying to boot it itself.
+ *
+ * The device tree is imx8mp-verdin-avz-guest.dtb — the Verdin DT reduced
+ * to the memory range AVZ grants the guest. Torizon DT overlays are NOT
+ * merged here: that is an edge-m1 product concern, and this generic BSP
+ * boots the buildroot rootfs.
+ *
+ * Template: ${IB_*_PATH} placeholders are expanded to absolute build
+ * paths by bsp_render_its (bsp.bbclass) at do_itb time.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+
+/dts-v1/;
+
+/ {
+	description = "Linux guest bundle for the Toradex Verdin iMX8MP";
+
+	images {
+
+		linux {
+			description = "Linux kernel (guest)";
+			data = /incbin/("${IB_LINUX_PATH}/arch/arm64/boot/Image");
+			type = "guest";
+			arch = "arm64";
+			os = "linux";
+			compression = "none";
+			load = <0x48000000>;
+			entry = <0x48000000>;
+		};
+
+		fdt {
+			description = "Linux guest device tree (AVZ: reduced memory)";
+			data = /incbin/("${IB_LINUX_PATH}/arch/arm64/boot/dts/freescale/imx8mp-verdin-avz-guest.dtb");
+			type = "flat_dt";
+			arch = "arm64";
+			compression = "none";
+			load = <0x50200000>;
+		};
+
+		initrd {
+			description = "Linux initrd";
+			data = /incbin/("${IB_ROOTFS_PATH}/board/${IB_PLATFORM}/initrd.cpio.gz");
+			type = "ramdisk";
+			arch = "arm64";
+			os = "linux";
+			compression = "none";
+			load = <0x50300000>;
+		};
+	};
+
+	configurations {
+		default = "guest";
+
+		guest {
+			description = "Linux guest on AVZ (Verdin iMX8MP)";
+			loadables = "linux";
+			fdt = "fdt";
+			ramdisk = "initrd";
+		};
+	};
+};

@@ -19,6 +19,112 @@ FILESPATH = "${@base_set_filespath(["${FILE_DIRNAME}/${P}", "${FILE_DIRNAME}/${P
 
 THISDIR = "${@os.path.dirname(d.getVar('FILE'))}"
 
+# ---------------------------------------------------------------------------
+# Boot axes: IB_BOOT_CHAIN and IB_HYPERVISOR
+# ---------------------------------------------------------------------------
+# Two INDEPENDENT axes describe what a build produces:
+#
+#   IB_BOOT_CHAIN    the firmware chain underneath the OS
+#                      "uboot"            U-Boot alone
+#                      "atf+uboot"        ATF (BL1/BL2/BL31) + U-Boot
+#                      "atf+optee+uboot"  ... + OP-TEE (BL32), secure world
+#
+#   IB_HYPERVISOR    what the firmware finally hands control to
+#                      "none"             Linux runs directly on the firmware
+#                      "avz"              AVZ runs at EL2, Linux is its guest
+#
+# They are orthogonal on purpose: AVZ boots fine on a bare U-Boot chain
+# (QEMU virtualization=on gives EL2 without any secure world), and a secure
+# world is equally useful under a plain Linux. Every combination the
+# platform supports is buildable — the supported sets are declared per
+# platform in build/conf/platforms.conf.
+#
+# "full" is accepted as a LEGACY alias for the edge-m1 capsule chain
+# (atf+optee+uboot with AVZ). It is expanded here, once, so that no recipe,
+# script or .inc has to know about it. Kept so an edge-m1 / so3 tree
+# aligning onto this one does not have to change its local.conf in the same
+# step.
+#
+# Why base.bbclass: IB_BOOT_CHAIN is read from recipes whose OVERRIDES carry
+# no :linux (uboot, atf, optee), so a scoped assignment in local.conf is
+# invisible to them. Normalising per-recipe, in the class every recipe
+# inherits, is the only place that reaches all of them.
+
+def ib_normalize_boot_axes(d):
+    """Expand aliases, apply defaults, and refuse unsupported combinations."""
+
+    chains = ("uboot", "atf+uboot", "atf+optee+uboot")
+    hyps = ("none", "avz")
+
+    chain = (d.getVar('IB_BOOT_CHAIN') or "").strip()
+    hyp = (d.getVar('IB_HYPERVISOR') or "").strip()
+
+    # An empty chain has always meant "bare U-Boot" in this build system.
+    if chain == "":
+        chain = "uboot"
+
+    # Legacy alias. Only sets the hypervisor when the tree has not already
+    # made that choice explicitly, so "full" plus an explicit
+    # IB_HYPERVISOR="none" stays a plain secure-world build.
+    if chain == "full":
+        chain = "atf+optee+uboot"
+        if hyp == "":
+            hyp = "avz"
+
+    if hyp == "":
+        hyp = "none"
+
+    plat = d.getVar('IB_PLATFORM') or "<unset>"
+
+    if chain not in chains:
+        bb.fatal("IB_BOOT_CHAIN=\"%s\" is not a known chain.\n"
+                 "Expected one of: %s (or the legacy alias \"full\")."
+                 % (chain, " ".join(chains)))
+
+    if hyp not in hyps:
+        bb.fatal("IB_HYPERVISOR=\"%s\" is not a known hypervisor.\n"
+                 "Expected one of: %s." % (hyp, " ".join(hyps)))
+
+    # Platform capability check. The supported sets are facts about the SoC
+    # and about what is available upstream, declared in conf/platforms.conf;
+    # failing here, at parse time, beats failing in the middle of a firmware
+    # link or — worse — booting a board that then stays silent.
+
+    supported_chains = (d.getVar('IB_BOOT_CHAINS_SUPPORTED') or "").split()
+    if supported_chains and chain not in supported_chains:
+        bb.fatal("Platform \"%s\" cannot boot IB_BOOT_CHAIN=\"%s\".\n"
+                 "Supported on this platform: %s.\n"
+                 "See build/conf/platforms.conf for why."
+                 % (plat, chain, " ".join(supported_chains)))
+
+    supported_hyps = (d.getVar('IB_HYPERVISORS_SUPPORTED') or "").split()
+    if supported_hyps and hyp not in supported_hyps:
+        bb.fatal("Platform \"%s\" cannot run IB_HYPERVISOR=\"%s\".\n"
+                 "Supported on this platform: %s.\n"
+                 "See build/conf/platforms.conf for why."
+                 % (plat, hyp, " ".join(supported_hyps)))
+
+    # Write the normalised values back. Any scoped variant still in effect
+    # has to go with them: getVar() resolves overrides, but setVar() writes
+    # the BASE name only — so an `IB_BOOT_CHAIN:linux = "full"` (the shape an
+    # edge-m1 tree carries) would keep winning on the next read and the
+    # expansion above would silently not stick. Dropping the in-effect
+    # variants makes the normalised value the single answer for every reader.
+
+    for var, value in (('IB_BOOT_CHAIN', chain), ('IB_HYPERVISOR', hyp)):
+        for override in (d.getVar('OVERRIDES') or "").split(':'):
+            if override:
+                d.delVar('%s:%s' % (var, override))
+        d.setVar(var, value)
+
+
+# Runs before the anonymous python below (and before any class that
+# inherits base), so every later reader sees the normalised values.
+python () {
+    ib_normalize_boot_axes(d)
+}
+
+
 python () {
     import sys
     import os

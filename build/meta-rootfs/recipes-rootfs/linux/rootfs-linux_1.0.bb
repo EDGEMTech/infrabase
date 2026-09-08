@@ -22,11 +22,22 @@ do_configure[noexec] = "1"
 do_build[depends] = "${IB_ROOTFS_METHOD}:do_build"
 do_build[depends] += "linux:do_build"
 
-# Check that the image is present before deploying rootfs. The rootfs
-# generator (buildroot by default) must also have produced rootfs.cpio
-# under board/${IB_PLATFORM}/ — without this dep, do_deploy can race
-# ahead of buildroot:do_build on a fresh checkout (no cached cpio) and
-# fail in __do_rootfs_mount.
+# do_deploy extracts rootfs.cpio (apps baked in by usr-linux:do_deploy),
+# copies it onto p2 and repacks it.
+#
+# It DOES depend on ${IB_ROOTFS_METHOD}:do_build, and that dependency is
+# load-bearing rather than a leftover: nothing else orders this task after
+# the rootfs generator, and usr-linux:do_deploy pulls it into the *build*
+# graph too (usr-linux:do_deploy[depends] = rootfs-linux:do_deploy). Without
+# it, bitbake is free to run this task while buildroot is still writing
+# board/<plat>/rootfs.cpio, and `cpio -id` then reads a truncated archive and
+# aborts with exit status 2 — an intermittent build failure whose message
+# says nothing about a race. It also covers the fresh-checkout case, where
+# there is no cached cpio at all.
+#
+# The cost is one `make` in an already-built buildroot on a standalone
+# deploy (do_build is nostamp), which is a no-op in practice — cheap next to
+# a racy deploy. Do not "simplify" this dependency away.
 do_deploy[depends] += "filesystem:do_fs_check ${IB_ROOTFS_METHOD}:do_build"
 
 do_build[nostamp] = "1"
@@ -48,13 +59,15 @@ do_attach_infrabase () {
 	# Keep a private working copy of the board directory under WORKDIR
 	# (tmp/work). The rootfs generator writes its productions there during
 	# the build (rootfs.cpio via post_image.sh, then rootfs.cpio.backup,
-	# rootfs.cpio.sha256, initrd.cpio, initrd.cpio.gz). Pointing the board
-	# symlink at this copy keeps those productions out of the git-tracked
-	# source tree under files/board.
+	# initrd.cpio.gz, initrd.cpio.gz.srchash). Pointing the board symlink
+	# at this copy keeps those productions out of the git-tracked source
+	# tree under files/board. Note: board/<plat>/initrd.cpio is now a
+	# git-tracked SOURCE (the static embedded ramfs for IB_RAMFS_SOURCE =
+	# "initrd"), refreshed from files/board on every attach.
 	#
 	# `cp -r .../board/.` refreshes the source config files on top of the
 	# copy but does NOT remove the dest-only productions, so the
-	# do_prepare_initrd content-hash guard (rootfs.cpio.sha256 +
+	# do_prepare_initrd content-hash guard (initrd.cpio.gz.srchash +
 	# initrd.cpio.gz) keeps working across builds.
 	mkdir -p ${WORKDIR}/board
 	cp -r ${FILE_DIRNAME}/files/board/. ${WORKDIR}/board
@@ -77,6 +90,15 @@ python do_deploy () {
     import subprocess
 
     bb.plain("Deploy the rootfs into the filesystem")
+
+    # Verdin-imx8mp does not deploy its rootfs via a build-time partition
+    # mount: storage is delivered through the platform's Tezi / HTTP recovery
+    # flow (IB_STORAGE_MODE = "http"), so the verdin __do_fs_mount would try
+    # to mount a physical /dev/sda1 that is absent in a build/CI context,
+    # so do_deploy returns early for verdin here.
+    if d.getVar('IB_PLATFORM') == "verdin-imx8mp":
+        bb.plain("verdin-imx8mp: rootfs delivered via Tezi/HTTP, skipping partition deploy")
+        return
 
     __do_fs_mount(d)
 
@@ -104,7 +126,12 @@ python do_deploy () {
     cmd = f"ls {IB_TARGET}/fs/."
     result = subprocess.run(cmd, shell=True, check=True)
 
-    cmd = f"cp -rv {IB_TARGET}/fs/. {IB_FILESYSTEM_PATH}/{IB_ROOTFS_PARTITION}"
+    # Privileged + archive copy: the source IB_TARGET/fs is the rootfs image
+    # loop-mounted as root (so its files are root-owned, some unreadable to the
+    # unprivileged builder — a plain `cp` aborts with exit 1), and the ext4 p2
+    # rootfs needs ownership/perms/symlinks preserved (setuid bins, /etc/shadow,
+    # ...). `sudo cp -a` both reads the root-owned tree and reproduces it faithfully.
+    cmd = f"sudo cp -av {IB_TARGET}/fs/. {IB_FILESYSTEM_PATH}/{IB_ROOTFS_PARTITION}"
 
     result = subprocess.run(cmd, shell=True, check=True)
 

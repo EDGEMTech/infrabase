@@ -16,15 +16,21 @@ def __do_platform_deploy(d):
 def __do_platform_boot_chain(d):
     """Assemble the virt64 QEMU boot firmware in ${IB_DIR}/filesystem/.
 
-    Selected by IB_BOOT_CHAIN (see local.conf):
-      "" / "uboot"  bare U-Boot — no flash0.img. The QEMU launcher boots
-                    U-Boot directly (st.sh: -kernel u-boot at EL1). Any
-                    stale flash0.img is removed so the launcher picks the
-                    bare path.
-      "atf+uboot"   flash0.img = BL1 @ 0 + FIP @ 256K, FIP = BL2 + BL31 +
-                    U-Boot (no OP-TEE). ATF gives EL3 -> EL2.
-      "full"        flash0.img = BL1 + FIP[BL2 + BL31 + OP-TEE(3-part) +
-                    U-Boot] — secure world (S-EL1 OP-TEE).
+    Selected by IB_BOOT_CHAIN (see local.conf), normalised beforehand by
+    ib_normalize_boot_axes (base.bbclass):
+      "uboot"            bare U-Boot — no flash0.img. The QEMU launcher
+                         boots U-Boot directly (st.sh: -bios u-boot.bin).
+                         Any stale flash0.img is removed so the launcher
+                         picks the bare path.
+      "atf+uboot"        flash0.img = BL1 @ 0 + FIP @ 256K, FIP = BL2 +
+                         BL31 + U-Boot (no OP-TEE). ATF gives EL3 -> EL2.
+      "atf+optee+uboot"  flash0.img = BL1 + FIP[BL2 + BL31 + OP-TEE
+                         (3-part) + U-Boot] — secure world (S-EL1 OP-TEE).
+
+    Orthogonal to IB_HYPERVISOR: whether Linux runs directly or as an AVZ
+    guest changes the ITB shape, not the firmware assembled here — AVZ
+    boots on any of the three chains.
+
     Invoked from bsp.bbclass:do_deploy_boot_chain (which has already pulled
     in atf/optee builds when the chain requires them)."""
     import os
@@ -42,14 +48,14 @@ def __do_platform_boot_chain(d):
     subprocess.run(['cp', f"{uboot_path}/u-boot.bin",
                     os.path.join(fs_dir, "u-boot.bin")], check=True)
 
-    if chain in ("", "uboot"):
+    if chain == "uboot":
         # Bare U-Boot: drop any stale flash0.img from a prior ATF deploy.
         if os.path.exists(flash_path):
             os.remove(flash_path)
         return
 
-    # ATF chains: build flash0.img. "atf+uboot" and "full" differ only by
-    # whether the FIP carries the OP-TEE (BL32) entries.
+    # ATF chains: build flash0.img. "atf+uboot" and "atf+optee+uboot"
+    # differ only by whether the FIP carries the OP-TEE (BL32) entries.
     atf_path    = d.getVar('IB_ATF_PATH')
     atf_release = f"{atf_path}/build/qemu/release"
     subprocess.run(['cp', f"{atf_release}/bl31.bin",
@@ -61,7 +67,7 @@ def __do_platform_boot_chain(d):
         '--nt-fw',  f'{uboot_path}/u-boot.bin',
     ]
 
-    if chain == "full":
+    if chain == "atf+optee+uboot":
         optee_core = f"{d.getVar('IB_OPTEE_PATH')}/out/arm-plat-vexpress/core"
         for src, name in [
             (f"{optee_core}/tee-header_v2.bin",   "tee-header_v2.bin"),

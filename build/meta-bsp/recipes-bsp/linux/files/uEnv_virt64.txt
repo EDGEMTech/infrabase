@@ -2,8 +2,8 @@ fdt_high=ffffffffffffffff
 initrd_high=ffffffffffffffff
 
 # Bare bsp-linux on virt64: U-Boot bootm's a single ITB carrying kernel
-# + DTB + buildroot initrd. No AVZ, no e1c-boot. QEMU loads U-Boot
-# directly via -bios filesystem/u-boot.bin (no flash0.img in this mode).
+# + DTB + buildroot initrd. No AVZ. QEMU loads U-Boot directly via
+# -bios filesystem/u-boot.bin (no flash0.img in this mode).
 
 LOAD_ADDR=0x65000000
 

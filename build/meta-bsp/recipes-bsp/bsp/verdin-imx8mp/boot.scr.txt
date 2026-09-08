@@ -1,0 +1,26 @@
+# U-Boot boot script for the Toradex Verdin iMX8MP — single-ITB boot.
+#
+# Loads one FIT image and boots it with bootm, which parses the FIT and
+# copies each sub-image to its load address (kernel -> 0x40400000, dtb,
+# initrd) before entering the kernel. Used for standalone Linux, on either
+# firmware chain the iMX8MP supports (atf+uboot or atf+optee+uboot).
+#
+# The ITB is loaded high (0x90000000) so it never overlaps the
+# 0x40400000-0x50300000 sub-image range during extraction. Unlike the AVZ
+# script below, this address is unconstrained: bootm extracts before any
+# hypervisor MMU exists.
+
+echo "=== Linux (Verdin iMX8MP) ==="
+
+# Kernel command line. It lives here rather than in a uEnv.txt because the
+# TEZI deploy never installs one: U-Boot's bootcmd sources this script
+# directly (see IB_VERDIN_BOOTCMD in bsp_verdin-imx8mp.inc), so this file is
+# the only place a bootargs= would be read from on this platform.
+env set bootargs "earlycon=ec_imx6q,0x30880000,115200 console=ttymxc2,115200 root=/dev/ram coherent_pool=1M cma=256M rootwait vt.global_cursor_default=0"
+
+env set itb_addr 0x90000000
+
+# The deploy stages the selected ITB under the fixed name boot.itb, so this
+# script is independent of which ITS produced it.
+ext4load mmc 2:1 ${itb_addr} /boot.itb
+bootm ${itb_addr}
