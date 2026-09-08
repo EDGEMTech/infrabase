@@ -63,11 +63,12 @@ show_env() {
 
 # Regenerate build/conf/bblayers.conf for the minimal Linux base.
 #
-# Emits the fixed set of generic layers: Linux + ATF/OP-TEE + AVZ + U-Boot +
-# QEMU + rootfs/usr/bsp. meta-avz carries the hypervisor alone (fetched from
-# the SO3 repo, built with an avz defconfig); the SO3 *kernel*, the Torizon
-# (meta-torizon) and capsule (meta-e1c) layers stay out of Infrabase — this
-# base boots Linux, standalone or as an AVZ guest, and nothing else.
+# Emits the fixed set of generic layers: Linux + ATF/OP-TEE + SO3/AVZ +
+# U-Boot + QEMU + rootfs/usr/bsp. meta-so3 is the canonical home of the AVZ
+# recipe in every tree of this family, so it keeps that name here even
+# though Infrabase carries only its avz half — the SO3 *kernel* recipe, the
+# Torizon (meta-torizon) and capsule (meta-e1c) layers stay out: this base
+# boots Linux, standalone or as an AVZ guest, and nothing else.
 #
 # The layer set is unconditional: which of atf/optee/avz a given build
 # actually compiles is decided by IB_BOOT_CHAIN / IB_HYPERVISOR at the
@@ -89,7 +90,7 @@ regen_bblayers() {
 		echo 'BBFILES ?= ""'
 		echo 'BBLAYERS = " \'
 		for _l in meta meta-qemu meta-filesystem meta-uboot meta-linux \
-		          meta-rootfs meta-usr meta-bsp meta-atf meta-avz; do
+		          meta-rootfs meta-usr meta-bsp meta-atf meta-so3; do
 			echo "  \${TOPDIR}/$_l \\"
 		done
 		echo '  "'

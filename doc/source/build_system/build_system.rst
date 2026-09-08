@@ -115,9 +115,11 @@ invocation, so adding a layer is a one-line change there rather than a hand edit
      - the per-platform glue: boot chain assembly, ITS templates, deploy
    * - ``meta-atf``
      - ARM Trusted Firmware and OP-TEE
-   * - ``meta-avz``
+   * - ``meta-so3``
      - the AVZ hypervisor, fetched from the SO3 repository and built with an
-       ``*_avz_defconfig``
+       ``*_avz_defconfig``. Named for the upstream it comes from, and the same
+       layer the other trees of this family use; Infrabase carries only its
+       ``avz`` recipe, not the SO3 kernel.
 
 Which of ``atf``, ``optee`` and ``avz`` a given build actually compiles is decided
 by ``IB_BOOT_CHAIN`` / ``IB_HYPERVISOR`` at the dependency level (``bsp.bbclass``),
