@@ -1,0 +1,58 @@
+#!/bin/sh
+
+DAEMON="bluetoothd"
+PIDFILE="/var/run/$DAEMON.pid"
+BLUETOOTHD_ARGS="-n"
+
+start() {
+	printf 'Starting %s: ' "$DAEMON"
+	# Unblock BT via sysfs (no rfkill binary needed)
+	for r in /sys/class/rfkill/rfkill*; do
+		[ "$(cat $r/type 2>/dev/null)" = "bluetooth" ] && echo 1 > "$r/state"
+	done
+	# Wait for the HCI adapter to be enumerated by the kernel
+	timeout=10
+	while [ $timeout -gt 0 ] && ! hciconfig hci0 > /dev/null 2>&1; do
+		sleep 1
+		timeout=$((timeout - 1))
+	done
+	if ! hciconfig hci0 > /dev/null 2>&1; then
+		echo "FAIL (no hci0 adapter found)"
+		return 1
+	fi
+	start-stop-daemon -S -q -m -b -p "$PIDFILE" -x "/usr/libexec/bluetooth/$DAEMON" \
+		-- $BLUETOOTHD_ARGS
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+stop() {
+	printf 'Stopping %s: ' "$DAEMON"
+	start-stop-daemon -K -q -p "$PIDFILE"
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+restart() {
+	stop
+	sleep 1
+	start
+}
+
+case "$1" in
+	start|stop|restart)
+		"$1";;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac

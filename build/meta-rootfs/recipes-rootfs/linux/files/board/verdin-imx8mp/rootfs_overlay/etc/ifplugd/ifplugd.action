@@ -1,0 +1,20 @@
+#!/bin/sh
+# ifplugd action — invoked as: ifplugd.action <interface> <up|down>
+#
+# Bring the wired interface up/down via ifupdown as its cable (carrier) state
+# changes: a hot unplug runs `ifdown eth0` (dropping its address + metric-100
+# default route) so the higher-metric WiFi route takes over; a replug runs
+# `ifup eth0`, which DHCPs and reinstalls the preferred metric-100 route.
+IF="$1"
+STATUS="$2"
+
+case "$STATUS" in
+    up)
+        /sbin/ifup "$IF"
+        ;;
+    down)
+        /sbin/ifdown "$IF"
+        ;;
+esac
+
+exit 0
