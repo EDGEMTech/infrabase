@@ -35,6 +35,8 @@ build/cache
 **/rootfs/target/**
 **/doc/build/**
 **/linux/usr/build/**
+# AVZ is fetched from the SO3 repository by the avz recipe
+# (meta-avz/recipes-avz/avz) and built in place — never committed.
 avz/**
 
 vmlinux*
@@ -47,8 +49,16 @@ modules.order
 
 # Backup files
 *~
-*.d
 *.back
+
+# Dependency files produced by in-tree component builds. The negation is
+# load-bearing: an unanchored "*.d" also excludes any DIRECTORY named *.d,
+# and git then never descends into it — so a board overlay's etc/init.d/,
+# modules-load.d/, sysctl.d/ … silently never reached a commit, and a fresh
+# clone built a subtly different rootfs from the working tree. Files keep
+# being ignored; directories are re-included.
+*.d
+!*.d/
 
 # Hidden files
 .*
@@ -61,6 +71,12 @@ u-boot
 /qemu
 linux/linux
 rootfs/buildroot
+
+# Rendered ITS + assembled ITB. The ITS *sources* are tracked under
+# build/meta-bsp/recipes-bsp/linux/files/its/; do_render_its expands their
+# ${IB_*_PATH} placeholders into this directory, so what lands here is a
+# build product carrying absolute machine paths.
+/linux/images/
 
 # so3 is fetched from the official repository
 #so3

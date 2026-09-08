@@ -151,15 +151,104 @@ Platforms
    * - *x86-qemu*
      - QEMU x86 platform
 
-``verdin-imx8mp`` (Toradex Verdin iMX8M Plus) is configured in ``local.conf`` —
-kernel recipe, toolchain, U-Boot 2024.07 and the TEZI network install — but has
-no BSP include in this tree yet, so it cannot be built as it stands.
+.. list-table::
+   :header-rows: 0
+   :widths: 20 80
+
+   * - *verdin-imx8mp*
+     - Toradex Verdin iMX8M Plus, installed over the network with TEZI
 
 .. note::
 
    After changing ``IB_PLATFORM``, rebuild *and* redeploy. Component trees are
    attached in place, so a stale kernel or buildroot ``.config`` from the previous
    platform can survive; ``build.sh -c <recipe>`` forces a clean re-attach.
+
+.. _boot_axes:
+
+What gets built: the two axes
+=============================
+
+Infrabase builds four components — **ATF**, **OP-TEE**, **AVZ** and **Linux**.
+Which of them end up in an image is decided by two *independent* variables in
+``build/conf/local.conf``:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 24 76
+
+   * - Variable
+     - Values
+   * - ``IB_BOOT_CHAIN``
+     - the firmware underneath the OS —
+       ``uboot`` (U-Boot alone),
+       ``atf+uboot`` (ATF BL1/BL2/BL31 + U-Boot),
+       ``atf+optee+uboot`` (… + OP-TEE as BL32, a secure world)
+   * - ``IB_HYPERVISOR``
+     - what the firmware hands control to —
+       ``none`` (Linux runs directly on the firmware) or
+       ``avz`` (AVZ runs at EL2, Linux is its guest)
+
+They are orthogonal on purpose: AVZ boots fine on a bare U-Boot chain (QEMU's
+``virtualization=on`` gives EL2 with no secure world at all), and a secure
+world is equally useful under a plain Linux. Every combination a platform
+supports is buildable:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 26 26 26
+
+   * - Platform
+     - ``uboot``
+     - ``atf+uboot``
+     - ``atf+optee+uboot``
+   * - *virt64*
+     - none / avz
+     - none / avz
+     - none / avz
+   * - *verdin-imx8mp*
+     - —
+     - none / avz
+     - none / avz
+   * - *rpi4_64*
+     - none / avz
+     - none / avz
+     - —
+   * - *rpi4*
+     - none
+     - —
+     - —
+   * - *virt32*
+     - none
+     - —
+     - —
+
+An absent cell is a hardware or upstream limit, not an omission, and each one
+is explained in ``build/conf/platforms.conf``. In short: the i.MX8MP boot ROM
+always installs BL31, so there is no bare-U-Boot chain on the Verdin; TF-A's
+``rpi4`` port is AArch64-only, so the 32-bit Pi has no ATF; OP-TEE has no
+``plat-rpi4`` upstream and the BCM2711 has no secure memory controller, so a
+secure world on either Pi could never be a real TEE; and AVZ ships aarch64
+defconfigs only, so the 32-bit platforms are standalone-Linux only.
+
+Asking for an unsupported combination is refused at parse time, naming what
+the platform does support::
+
+   ERROR: Platform "rpi4_64" cannot boot IB_BOOT_CHAIN="atf+optee+uboot".
+          Supported on this platform: uboot atf+uboot.
+          See build/conf/platforms.conf for why.
+
+.. note::
+
+   ``IB_TARGET_ITS`` is *derived* from ``IB_HYPERVISOR`` — ``<plat>`` when it is
+   ``none``, ``<plat>_avz`` when it is ``avz`` — so the boot image always matches
+   the requested shape. Set it explicitly only for a hand-written ITS.
+
+.. note::
+
+   ``IB_BOOT_CHAIN = "full"`` is still accepted as a legacy alias for
+   ``atf+optee+uboot`` **plus** ``IB_HYPERVISOR = "avz"`` (the edge-m1 capsule
+   chain), so a tree aligning onto this one keeps building unchanged.
 
 Key variables
 =============
@@ -175,9 +264,18 @@ Key variables
    * - ``IB_CONFIG:linux:<plat>``
      - Kernel defconfig, e.g. ``virt64_defconfig``.
    * - ``IB_TARGET_ITS:linux:<plat>``
-     - ITS basename used to build the FIT image (``<name>.itb``).
+     - ITS basename used to build the FIT image (``<name>.itb``). Derived from
+       ``IB_HYPERVISOR``; override only for a hand-written ITS.
    * - ``IB_BOOT_CHAIN``
-     - ``""`` bare U-Boot (default), ``atf+uboot``, or ``full`` (adds OP-TEE).
+     - Firmware chain: ``uboot`` (default), ``atf+uboot`` or
+       ``atf+optee+uboot``. See :ref:`boot_axes`.
+   * - ``IB_HYPERVISOR``
+     - ``none`` (default) or ``avz``. See :ref:`boot_axes`.
+   * - ``IB_CONFIG:avz:<plat>``
+     - AVZ defconfig, e.g. ``virt64_avz_defconfig``.
+   * - ``IB_RAMFS_SOURCE``
+     - Which cpio becomes the embedded ramfs: ``rootfs`` (default, the freshly
+       built buildroot rootfs) or ``initrd`` (the small tracked busybox ramfs).
    * - ``IB_STORAGE_MODE:<plat>``
      - Where a deploy writes: ``soft`` loopback image, ``hard`` real device,
        ``http`` network install; ``remote``/``local`` also exist.

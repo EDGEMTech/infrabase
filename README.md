@@ -5,6 +5,11 @@ development. It builds a **minimal Linux system** — bootloader, kernel, root
 filesystem and user-space applications — for real boards and for QEMU-emulated
 ones, and deploys it to an SD-card image or to a real device.
 
+It builds four components — **ATF**, **OP-TEE**, **AVZ** and **Linux** — and
+lets you combine them freely: Linux standalone or as a guest of the AVZ
+hypervisor, on a firmware chain with or without ATF and with or without a
+secure world. See [What gets built](#what-gets-built) below.
+
 It is driven by [BitBake](https://docs.yoctoproject.org/bitbake), the task
 orchestrator behind Yocto, but stays deliberately small: components are fetched
 from upstream and patched from tracked patchsets, the root filesystem comes from
@@ -55,11 +60,37 @@ The platform is selected with `IB_PLATFORM` in `build/conf/local.conf`:
 | `virt32` | QEMU `virt`, 32-bit (arm) |
 | `rpi4_64` | Raspberry Pi 4, 64-bit |
 | `rpi4` | Raspberry Pi 4, 32-bit |
+| `verdin-imx8mp` | Toradex Verdin iMX8M Plus (TEZI network install) |
 | `x86-qemu` | QEMU x86 |
 
-`verdin-imx8mp` (Toradex Verdin iMX8M Plus) is wired in `local.conf` — kernel
-recipe, toolchain, U-Boot 2024.07, TEZI network install — but has no BSP include
-yet, so it is not buildable from this tree as it stands.
+## What gets built
+
+Two independent variables in `build/conf/local.conf` decide which of the four
+components end up in an image:
+
+- **`IB_BOOT_CHAIN`** — the firmware underneath the OS: `uboot`, `atf+uboot`,
+  or `atf+optee+uboot` (a secure world).
+- **`IB_HYPERVISOR`** — what the firmware hands control to: `none` (Linux runs
+  directly) or `avz` (AVZ at EL2, Linux as its guest).
+
+They are orthogonal: AVZ boots on a bare U-Boot chain just as well as on a full
+secure one. Every combination a platform supports is buildable:
+
+| Platform | `uboot` | `atf+uboot` | `atf+optee+uboot` |
+|---|---|---|---|
+| `virt64` | none / avz | none / avz | none / avz |
+| `verdin-imx8mp` | — | none / avz | none / avz |
+| `rpi4_64` | none / avz | none / avz | — |
+| `rpi4` | none | — | — |
+| `virt32` | none | — | — |
+
+An absent cell is a hardware or upstream limit, not an omission — the i.MX8MP
+boot ROM always installs BL31, TF-A's `rpi4` port is AArch64-only, OP-TEE has no
+`plat-rpi4` upstream (and the BCM2711 has no secure memory controller, so a TEE
+there could never be real), and AVZ ships aarch64 defconfigs only. Each is
+explained in [`build/conf/platforms.conf`](build/conf/platforms.conf), and
+asking for an unsupported combination is refused at parse time rather than
+producing a board that boots nothing.
 
 ## Layout
 
@@ -68,9 +99,11 @@ env.sh                  source this first
 scripts/                the day-to-day scripts (build, deploy, run, mount, …)
 docker/build-env/       the container build environment used by dbuild.sh
 build/conf/local.conf   THE configuration file (all IB_* variables)
+build/conf/platforms.conf  what each platform can boot (facts, not choices)
 build/meta*/            the BitBake layers (tracked — do not delete build/)
 build/tmp/              generated; safe to remove for a clean slate
 linux/ u-boot/ qemu/    component trees, fetched and patched by the build
+atf/ atf/optee/ avz/    ditto for ATF, OP-TEE and the AVZ hypervisor
 filesystem/             storage images and the mounted partitions (p1, p2)
 doc/                    this documentation (Sphinx)
 ```
